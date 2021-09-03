@@ -21,5 +21,7 @@ export class AccountValidator {
     if (!input.email) return new MissingParamError('email')
 
     if (!input.name) return new MissingParamError('name')
+
+    if (!input.password) return new MissingParamError('password')
   }
 }
