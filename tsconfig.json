@@ -20,7 +20,7 @@
       "@/main/*": ["./main/*"],
       "@/persitence/*": ["./persitence/*"],
       "@/presentation/*": ["./presentation/*"],
-      "@/*": ["./*"]
+      "@/*": ["*"]
     }
   },
   "include": ["src", "tests"],
