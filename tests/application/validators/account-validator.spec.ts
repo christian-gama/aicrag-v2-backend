@@ -97,4 +97,30 @@ describe('AccountValidator', () => {
 
     expect(value).toEqual(new MissingParamError('name'))
   })
+
+  it('Should return a new MissingParamError if password is missing', () => {
+    const sut = new AccountValidator()
+    const account = {
+      name: 'Example',
+      email: 'example@email.com',
+      passwordConfirmation: 'password'
+    }
+
+    const value = sut.validateRequiredFields(account)
+
+    expect(value).toEqual(new MissingParamError('password'))
+  })
+
+  it('Should return a new MissingParamError if password is missing', () => {
+    const sut = new AccountValidator()
+    const account = {
+      name: 'Example',
+      email: 'example@email.com',
+      passwordConfirmation: 'password'
+    }
+
+    const value = sut.validateRequiredFields(account)
+
+    expect(value).toEqual(new MissingParamError('password'))
+  })
 })
