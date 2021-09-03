@@ -17,11 +17,13 @@ export class AccountValidator {
     if (password !== passwordConfirmation) return new InvalidParamError('passwordConfirmation')
   }
 
-  validateRequiredFields (input: Record<any, unknown>): Error | undefined {
+  validateRequiredFields (input: Record<string, unknown>): Error | undefined {
     if (!input.email) return new MissingParamError('email')
 
     if (!input.name) return new MissingParamError('name')
 
     if (!input.password) return new MissingParamError('password')
+
+    if (!input.passwordConfirmation) return new MissingParamError('passwordConfirmation')
   }
 }
