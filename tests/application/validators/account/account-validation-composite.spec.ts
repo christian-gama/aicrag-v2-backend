@@ -1,5 +1,5 @@
 import { MissingParamError } from '@/application/errors'
-import { makeSut } from '../mocks/account/account-validation-composite-mock'
+import { makeSut } from './mocks/account-validation-composite-mock'
 
 describe('AccountValidationCompose', () => {
   it('Should return an error if validate returns an error', () => {

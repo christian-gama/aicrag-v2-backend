@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@/application/errors'
-import { fakeValidAccount } from '../mocks/account/account-mock'
-import { makeSut } from '../mocks/account/validate-email-mock'
+import { fakeValidAccount } from './mocks/account-mock'
+import { makeSut } from './mocks/validate-email-mock'
 
 describe('ValidateEmail', () => {
   it('Should return a new InvalidParamError if email is invalid', () => {

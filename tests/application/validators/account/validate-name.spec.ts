@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/application/errors'
-import { makeSut } from '../mocks/account/validate-name-mock'
+import { makeSut } from './mocks/validate-name-mock'
 
 describe('ValidateName', () => {
   it('Should return InvalidParamError if name is invalid with symbols', () => {

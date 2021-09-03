@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@/application/errors'
-import { fakeValidAccount } from '../mocks/account/account-mock'
-import { makeSut } from '../mocks/account/compare-passwords-mock'
+import { fakeValidAccount } from './mocks/account-mock'
+import { makeSut } from './mocks/compare-passwords-mock'
 
 describe('ValidateName', () => {
   it('Should return InvalidParamError if passwords are not equal', () => {

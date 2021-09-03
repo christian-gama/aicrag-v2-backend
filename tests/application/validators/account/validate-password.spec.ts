@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/application/errors'
-import { makeSut } from '../mocks/account/validate-password-mock'
+import { makeSut } from './mocks/validate-password-mock'
 
 describe('ValidateName', () => {
   it('Should return InvalidParamError if password is lesser than 6 characters', () => {
