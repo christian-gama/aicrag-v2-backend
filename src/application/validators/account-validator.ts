@@ -25,14 +25,8 @@ export class AccountValidator {
     return true
   }
 
-  validateRequiredFields (input: Record<string, unknown>): Error | true {
-    if (!input.email) return new MissingParamError('email')
-
-    if (!input.name) return new MissingParamError('name')
-
-    if (!input.password) return new MissingParamError('password')
-
-    if (!input.passwordConfirmation) return new MissingParamError('passwordConfirmation')
+  validateRequiredFields (inputs: Record<string, unknown>, field: string): Error | true {
+    if (!inputs[field]) return new MissingParamError(field)
 
     return true
   }

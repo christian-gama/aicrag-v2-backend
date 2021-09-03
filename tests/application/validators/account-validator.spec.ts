@@ -80,7 +80,7 @@ describe('AccountValidator', () => {
       passwordConfirmation: 'password'
     }
 
-    const value = sut.validateRequiredFields(account)
+    const value = sut.validateRequiredFields(account, 'email')
 
     expect(value).toEqual(new MissingParamError('email'))
   })
@@ -93,7 +93,7 @@ describe('AccountValidator', () => {
       passwordConfirmation: 'password'
     }
 
-    const value = sut.validateRequiredFields(account)
+    const value = sut.validateRequiredFields(account, 'name')
 
     expect(value).toEqual(new MissingParamError('name'))
   })
@@ -106,7 +106,7 @@ describe('AccountValidator', () => {
       passwordConfirmation: 'password'
     }
 
-    const value = sut.validateRequiredFields(account)
+    const value = sut.validateRequiredFields(account, 'password')
 
     expect(value).toEqual(new MissingParamError('password'))
   })
@@ -119,7 +119,7 @@ describe('AccountValidator', () => {
       password: 'password'
     }
 
-    const value = sut.validateRequiredFields(account)
+    const value = sut.validateRequiredFields(account, 'passwordConfirmation')
 
     expect(value).toEqual(new MissingParamError('passwordConfirmation'))
   })
@@ -133,8 +133,17 @@ describe('AccountValidator', () => {
       passwordConfirmation: 'password'
     }
 
-    const required = sut.validateRequiredFields(account)
-    expect(required).toBe(true)
+    const requiredEmail = sut.validateRequiredFields(account, 'email')
+    expect(requiredEmail).toBe(true)
+
+    const requiredName = sut.validateRequiredFields(account, 'name')
+    expect(requiredName).toBe(true)
+
+    const requiredPassword = sut.validateRequiredFields(account, 'password')
+    expect(requiredPassword).toBe(true)
+
+    const requiredPasswordConfirmation = sut.validateRequiredFields(account, 'passwordConfirmation')
+    expect(requiredPasswordConfirmation).toBe(true)
 
     const email = sut.validateEmail(account.email)
     expect(email).toBe(true)
