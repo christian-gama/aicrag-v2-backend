@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors/invalid-param-error'
+import { MissingParamError, InvalidParamError } from '@/application/errors'
 
 export class AccountValidator {
   validateEmail (email: string): Error | undefined {
@@ -15,5 +15,9 @@ export class AccountValidator {
 
   validatePasswordEquality (password: string, passwordConfirmation: string): Error | undefined {
     if (password !== passwordConfirmation) return new InvalidParamError('passwordConfirmation')
+  }
+
+  validateRequiredFields (input: Record<any, unknown>): Error | undefined {
+    if (!input.email) return new MissingParamError('email')
   }
 }
