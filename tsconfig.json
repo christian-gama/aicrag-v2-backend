@@ -11,16 +11,16 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "rootDirs": ["src", "tests"],
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@tests/*": ["tests/*"],
-      "@domain/*": ["src/domain/*"],
-      "@application/*": ["src/application/*"],
-      "@infraestructure/*": ["src/infraestructure/*"],
-      "@main/*": ["./src/main/*"],
-      "@persitence/*": ["./src/persitence/*"],
-      "@presentation/*": ["src/presentation/*"],
-      "@root/*": ["*"]
+      "@/tests/*": ["../tests/*"],
+      "@/domain/*": ["./domain/*"],
+      "@/application/*": ["./application/*"],
+      "@/infraestructure/*": ["./infraestructure/*"],
+      "@/main/*": ["./main/*"],
+      "@/persitence/*": ["./persitence/*"],
+      "@/presentation/*": ["./presentation/*"],
+      "@/*": ["./*"]
     }
   },
   "include": ["src", "tests"],
