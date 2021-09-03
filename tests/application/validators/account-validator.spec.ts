@@ -111,16 +111,16 @@ describe('AccountValidator', () => {
     expect(value).toEqual(new MissingParamError('password'))
   })
 
-  it('Should return a new MissingParamError if password is missing', () => {
+  it('Should return a new MissingParamError if passwordConfirmation is missing', () => {
     const sut = new AccountValidator()
     const account = {
       name: 'Example',
       email: 'example@email.com',
-      passwordConfirmation: 'password'
+      password: 'password'
     }
 
     const value = sut.validateRequiredFields(account)
 
-    expect(value).toEqual(new MissingParamError('password'))
+    expect(value).toEqual(new MissingParamError('passwordConfirmation'))
   })
 })
