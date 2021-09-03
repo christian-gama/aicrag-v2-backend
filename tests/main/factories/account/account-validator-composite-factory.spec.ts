@@ -1,9 +1,11 @@
-import { AccountValidationComposite } from '@/application/validators/account/account-validation-composite'
-import { ComparePasswords } from '@/application/validators/account/compare-passwords'
-import { RequiredFields } from '@/application/validators/account/required-fields'
-import { ValidateEmail } from '@/application/validators/account/validate-email'
-import { ValidateName } from '@/application/validators/account/validate-name'
-import { ValidatePassword } from '@/application/validators/account/validate-password'
+import {
+  RequiredFields,
+  ValidateEmail,
+  ValidateName,
+  ValidatePassword,
+  ComparePasswords,
+  AccountValidationComposite
+} from '@/application/validators/account'
 import { Validation } from '@/application/validators/protocols/validation-protocol'
 import { makeAccountValidatorComposite } from '@/main/factories/account-validator/account-validator-composite-factory'
 import { makeEmailValidatorStub } from './mocks/email-validator-mock'

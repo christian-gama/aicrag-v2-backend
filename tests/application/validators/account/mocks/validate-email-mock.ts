@@ -1,4 +1,4 @@
-import { ValidateEmail } from '@/application/validators/account/validate-email'
+import { ValidateEmail } from '@/application/validators/account'
 import { EmailValidator } from '@/application/validators/protocols/email-validator-protocol'
 import { Validation } from '@/application/validators/protocols/validation-protocol'
 

@@ -1,5 +1,5 @@
 import { MissingParamError } from '@/application/errors'
-import { RequiredFields } from '@/application/validators/account/required-fields'
+import { RequiredFields } from '@/application/validators/account'
 
 describe('RequiredFields', () => {
   it('Should return MissingParamError if field is missing', () => {

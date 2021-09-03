@@ -1,5 +1,5 @@
 import { Validation } from '@/application/validators/protocols/validation-protocol'
-import { AccountValidationComposite } from '@/application/validators/account/account-validation-composite'
+import { AccountValidationComposite } from '@/application/validators/account'
 
 interface SutTypes {
   sut: Validation
