@@ -19,5 +19,7 @@ export class AccountValidator {
 
   validateRequiredFields (input: Record<any, unknown>): Error | undefined {
     if (!input.email) return new MissingParamError('email')
+
+    if (!input.name) return new MissingParamError('name')
   }
 }
