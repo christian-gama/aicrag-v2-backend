@@ -123,4 +123,32 @@ describe('AccountValidator', () => {
 
     expect(value).toEqual(new MissingParamError('passwordConfirmation'))
   })
+
+  it('Should return true if all validatons succeds', () => {
+    const { sut } = makeSut()
+    const account = {
+      name: 'Example',
+      email: 'example@email.com',
+      password: 'password',
+      passwordConfirmation: 'password'
+    }
+
+    const required = sut.validateRequiredFields(account)
+    expect(required).toBe(true)
+
+    const email = sut.validateEmail(account.email)
+    expect(email).toBe(true)
+
+    const name = sut.validateName(account.name)
+    expect(name).toBe(true)
+
+    const password = sut.validatePassword(account.password)
+    expect(password).toBe(true)
+
+    const passwordEquality = sut.validatePasswordEquality(
+      account.password,
+      account.passwordConfirmation
+    )
+    expect(passwordEquality).toBe(true)
+  })
 })
