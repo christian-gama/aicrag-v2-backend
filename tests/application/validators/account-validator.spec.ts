@@ -1,5 +1,5 @@
-import { InvalidParamError } from '@/application/errors/invalid-param-error'
 import { AccountValidator } from '@/application/validators/account-validator'
+import { MissingParamError, InvalidParamError } from '@/application//errors'
 
 describe('AccountValidator', () => {
   it('Should return a new InvalidParamError if email is invalid', () => {
@@ -70,5 +70,31 @@ describe('AccountValidator', () => {
     const value = sut.validatePasswordEquality(account.password, account.passwordConfirmation)
 
     expect(value).toEqual(new InvalidParamError('passwordConfirmation'))
+  })
+
+  it('Should return a new MissingParamError if email is missing', () => {
+    const sut = new AccountValidator()
+    const account = {
+      name: 'Example',
+      password: 'password',
+      passwordConfirmation: 'password'
+    }
+
+    const value = sut.validateRequiredFields(account)
+
+    expect(value).toEqual(new MissingParamError('email'))
+  })
+
+  it('Should return a new MissingParamError if email is missing', () => {
+    const sut = new AccountValidator()
+    const account = {
+      name: 'Example',
+      password: 'password',
+      passwordConfirmation: 'password'
+    }
+
+    const value = sut.validateRequiredFields(account)
+
+    expect(value).toEqual(new MissingParamError('email'))
   })
 })
