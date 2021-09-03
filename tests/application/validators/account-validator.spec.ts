@@ -1,9 +1,9 @@
-import { AccountValidator } from '@/application/validators/account-validator'
 import { MissingParamError, InvalidParamError } from '@/application//errors'
+import { makeSut } from './mocks/account-validator-mocks'
 
 describe('AccountValidator', () => {
   it('Should return a new InvalidParamError if email is invalid', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Example',
       email: 'invalid_email',
@@ -17,7 +17,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new InvalidParamError if name is invalid', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Ex@mple',
       email: 'example@email.com',
@@ -31,7 +31,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new InvalidParamError if password is lesser than 6 characters', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Example',
       email: 'example@email.com',
@@ -45,7 +45,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new InvalidParamError if password is greater than 32 characters', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Example',
       email: 'example@email.com',
@@ -59,7 +59,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new InvalidParamError if passwords are different', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Example',
       email: 'example@email.com',
@@ -73,7 +73,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new MissingParamError if email is missing', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Example',
       password: 'password',
@@ -86,7 +86,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new MissingParamError if name is missing', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       email: 'example@email.com',
       password: 'password',
@@ -99,7 +99,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new MissingParamError if password is missing', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Example',
       email: 'example@email.com',
@@ -112,7 +112,7 @@ describe('AccountValidator', () => {
   })
 
   it('Should return a new MissingParamError if passwordConfirmation is missing', () => {
-    const sut = new AccountValidator()
+    const { sut } = makeSut()
     const account = {
       name: 'Example',
       email: 'example@email.com',
