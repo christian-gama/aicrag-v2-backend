@@ -1,5 +1,5 @@
-import { UserAccount } from '@domain/user/user-account-protocol'
-import { User } from '@domain/user/user-protocol'
+import { UserAccount } from '@/domain/user/user-account-protocol'
+import { User } from '@/domain/user/user-protocol'
 
 export interface Account {
   add: (account: UserAccount) => Promise<User>
