@@ -16,4 +16,20 @@ describe('Uiid', () => {
 
     expect(typeof value).toBe('string')
   })
+
+  it('Should return an unique id', () => {
+    const sut = makeSut()
+
+    const loopTimes = 100_000
+    const values: Partial<string[]> = []
+    for (let i = 0; i < loopTimes; i++) {
+      const value = sut.generate()
+
+      values.push(value)
+    }
+
+    const filteredValues = [...new Set(values)]
+
+    expect(filteredValues.length).toBe(loopTimes)
+  })
 })
