@@ -20,7 +20,7 @@ describe('Uiid', () => {
   it('Should return an unique id', () => {
     const sut = makeSut()
 
-    const loopTimes = 100_000
+    const loopTimes = 50
     const values: Partial<string[]> = []
     for (let i = 0; i < loopTimes; i++) {
       const value = sut.generate()
