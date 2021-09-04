@@ -4,10 +4,12 @@ import { randomAlphanumeric } from '../random-alphanumeric/random-alphanumeric'
 export class Uiid implements IUiid {
   generate (): string {
     const id: Partial<string[]> = []
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 18; i++) {
       id.push(randomAlphanumeric())
     }
 
-    return id.join('')
+    const nowToString = Date.now().toString()
+
+    return id.join('') + nowToString.slice(6, -1)
   }
 }
