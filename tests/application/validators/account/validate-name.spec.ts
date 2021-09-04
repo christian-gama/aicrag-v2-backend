@@ -33,7 +33,7 @@ describe('ValidateName', () => {
 
   it('Should return nothing if succeds', () => {
     const sut = makeSut()
-    const data = { name: faker.name.findName() }
+    const data = { name: faker.name.firstName() }
 
     const value = sut.validate(data)
 
