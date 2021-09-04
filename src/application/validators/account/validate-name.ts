@@ -1,7 +1,7 @@
 import { InvalidParamError } from '@/application/errors'
-import { Validation } from '../protocols/validation-protocol'
+import { AccountValidator } from '@/domain/validators/account-validator-protocol'
 
-export class ValidateName implements Validation {
+export class ValidateName implements AccountValidator {
   validate (input: any): Error | undefined {
     if (input.name.match(/[^a-zA-Z .']/g)) return new InvalidParamError('name')
   }

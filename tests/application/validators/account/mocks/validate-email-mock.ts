@@ -1,6 +1,6 @@
 import { ValidateEmail } from '@/application/validators/account'
 import { EmailValidator } from '@/application/validators/protocols/email-validator-protocol'
-import { Validation } from '@/application/validators/protocols/validation-protocol'
+import { AccountValidator } from '@/domain/validators/account-validator-protocol'
 
 const makeEmailValidatorStub = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -13,7 +13,7 @@ const makeEmailValidatorStub = (): EmailValidator => {
 }
 
 interface SutTypes {
-  sut: Validation
+  sut: AccountValidator
   emailValidatorStub: EmailValidator
 }
 

@@ -1,7 +1,7 @@
-import { Validation } from '../protocols/validation-protocol'
+import { AccountValidator } from '@/domain/validators/account-validator-protocol'
 
-export class AccountValidationComposite implements Validation {
-  constructor (private readonly validations: Validation[]) {}
+export class AccountValidationComposite implements AccountValidator {
+  constructor (private readonly validations: AccountValidator[]) {}
 
   validate (input: any): Error | undefined {
     for (const validation of this.validations) {

@@ -1,9 +1,9 @@
-import { Validation } from '@/application/validators/protocols/validation-protocol'
 import { AccountValidationComposite } from '@/application/validators/account'
+import { AccountValidator } from '@/domain/validators/account-validator-protocol'
 
 interface SutTypes {
-  sut: Validation
-  validationStubs: Validation[]
+  sut: AccountValidator
+  validationStubs: AccountValidator[]
 }
 
 export const makeSut = (): SutTypes => {
@@ -13,8 +13,8 @@ export const makeSut = (): SutTypes => {
   return { sut, validationStubs }
 }
 
-export const makeValidationStub = (): Validation => {
-  class ValidationStub implements Validation {
+export const makeValidationStub = (): AccountValidator => {
+  class ValidationStub implements AccountValidator {
     validate (input: any): Error | undefined {
       return undefined
     }

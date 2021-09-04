@@ -6,7 +6,7 @@ import {
   ComparePasswords,
   AccountValidationComposite
 } from '@/application/validators/account'
-import { Validation } from '@/application/validators/protocols/validation-protocol'
+import { AccountValidator } from '@/domain/validators/account-validator-protocol'
 import { makeAccountValidatorComposite } from '@/main/factories/account-validator/account-validator-composite-factory'
 import { makeEmailValidatorStub } from './mocks/email-validator-mock'
 
@@ -16,7 +16,7 @@ describe('AccountValidator Factory', () => {
   it('Should create factory with all validations', () => {
     makeAccountValidatorComposite()
 
-    const validations: Validation[] = []
+    const validations: AccountValidator[] = []
 
     const fields = ['name', 'email', 'password', 'passwordConfirmation']
     for (const field of fields) {

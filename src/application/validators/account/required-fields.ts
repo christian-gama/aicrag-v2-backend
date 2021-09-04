@@ -1,7 +1,7 @@
 import { MissingParamError } from '@/application/errors'
-import { Validation } from '../protocols/validation-protocol'
+import { AccountValidator } from '@/domain/validators/account-validator-protocol'
 
-export class RequiredFields implements Validation {
+export class RequiredFields implements AccountValidator {
   constructor (private readonly field: string) {}
 
   validate (input: any): Error | undefined {

@@ -6,11 +6,11 @@ import {
   ComparePasswords,
   AccountValidationComposite
 } from '@/application/validators/account'
-import { Validation } from '@/application/validators/protocols/validation-protocol'
+import { AccountValidator } from '@/domain/validators/account-validator-protocol'
 import { EmailValidatorAdapter } from '@/main/adapters/email-validator/email-validator-adapter'
 
-export const makeAccountValidatorComposite = (): Validation => {
-  const validations: Validation[] = []
+export const makeAccountValidatorComposite = (): AccountValidator => {
+  const validations: AccountValidator[] = []
 
   const fields = ['name', 'email', 'password', 'passwordConfirmation']
   for (const field of fields) {

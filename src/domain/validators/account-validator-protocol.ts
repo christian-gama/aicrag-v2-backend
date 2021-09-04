@@ -1,3 +1,3 @@
-export interface Validation {
+export interface AccountValidator {
   validate: (input: any) => Error | undefined
 }
