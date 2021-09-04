@@ -18,11 +18,17 @@ describe('ValidateName', () => {
 
   it('Should return nothing if succeds', () => {
     const sut = makeSut()
-    const password = faker.internet.password()
-    const data = { password: password, passwordConfirmation: password }
 
-    const value = sut.validate(data)
+    let error = 0
+    for (let i = 0; i < 50; i++) {
+      const password = faker.internet.password()
+      const data = { password: password, passwordConfirmation: password }
 
-    expect(value).toBeFalsy()
+      const value = sut.validate(data)
+
+      if (value !== undefined) error++
+    }
+
+    expect(error).toBe(0)
   })
 })

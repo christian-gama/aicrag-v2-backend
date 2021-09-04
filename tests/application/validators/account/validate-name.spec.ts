@@ -33,10 +33,16 @@ describe('ValidateName', () => {
 
   it('Should return nothing if succeds', () => {
     const sut = makeSut()
-    const data = { name: faker.name.firstName() }
 
-    const value = sut.validate(data)
+    let error = 0
+    for (let i = 0; i < 50; i++) {
+      const data = { name: faker.name.findName() }
 
-    expect(value).toBeFalsy()
+      const value = sut.validate(data)
+
+      if (value !== undefined) error++
+    }
+
+    expect(error).toBe(0)
   })
 })

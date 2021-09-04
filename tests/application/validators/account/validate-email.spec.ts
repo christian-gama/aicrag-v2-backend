@@ -15,16 +15,6 @@ describe('ValidateEmail', () => {
     expect(value).toEqual(new InvalidParamError('email'))
   })
 
-  it('Should return nothing if succeds', () => {
-    const { sut } = makeSut()
-
-    const data = { email: faker.internet.email() }
-
-    const value = sut.validate(data)
-
-    expect(value).toBeFalsy()
-  })
-
   it('Should call emailValidator with correct value', () => {
     const { sut, emailValidatorStub } = makeSut()
     const isEmailSpy = jest.spyOn(emailValidatorStub, 'isEmail')
@@ -43,5 +33,20 @@ describe('ValidateEmail', () => {
     })
 
     expect(sut.validate).toThrow()
+  })
+
+  it('Should return nothing if succeds', () => {
+    const { sut } = makeSut()
+
+    let error = 0
+    for (let i = 0; i < 50; i++) {
+      const data = { email: faker.internet.email() }
+
+      const value = sut.validate(data)
+
+      if (value !== undefined) error++
+    }
+
+    expect(error).toBe(0)
   })
 })
