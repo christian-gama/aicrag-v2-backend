@@ -35,4 +35,12 @@ describe('CodeGenerator', () => {
 
     expect(typeof value).toBe('string')
   })
+
+  it('Should contain only alphanumerics', () => {
+    const sut = makeSut()
+
+    const value = sut.generate()
+
+    expect(value.match(/[a-zA-Z0-9]{5}/g)).toBeTruthy()
+  })
 })
