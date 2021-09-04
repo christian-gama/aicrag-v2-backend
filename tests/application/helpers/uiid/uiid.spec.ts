@@ -6,7 +6,7 @@ describe('Uiid', () => {
 
     const value = sut.generate()
 
-    expect(value.length).toBe(24)
+    expect(value.length).toBe(36)
   })
 
   it('Should return a string', () => {

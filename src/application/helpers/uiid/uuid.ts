@@ -1,15 +1,11 @@
 import { IUiid } from '@/domain/uuid/uuid-protocol'
-import { randomAlphanumeric } from '../random-alphanumeric/random-alphanumeric'
 
 export class Uiid implements IUiid {
   generate (): string {
-    const id: Partial<string[]> = []
-    for (let i = 0; i < 18; i++) {
-      id.push(randomAlphanumeric())
-    }
-
-    const nowToString = Date.now().toString()
-
-    return id.join('') + nowToString.slice(6, -1)
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = (Math.random() * 16) | 0
+      const v = c === 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
   }
 }
