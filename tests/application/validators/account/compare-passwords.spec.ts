@@ -1,26 +1,27 @@
 import { InvalidParamError } from '@/application/errors'
-import { fakeValidAccount } from './mocks/account-mock'
 import { makeSut } from './mocks/compare-passwords-mock'
+
+import faker from 'faker'
 
 describe('ValidateName', () => {
   it('Should return InvalidParamError if passwords are not equal', () => {
     const sut = makeSut()
-    const fakeInvalidAccount = {
-      name: 'Example Name',
-      email: 'example@email.com',
-      password: 'password',
-      passwordConfirmation: 'different_password'
+    const data = {
+      password: faker.internet.password(),
+      passwordConfirmation: faker.internet.password()
     }
 
-    const value = sut.validate(fakeInvalidAccount)
+    const value = sut.validate(data)
 
     expect(value).toEqual(new InvalidParamError('passwordConfirmation'))
   })
 
   it('Should return nothing if succeds', () => {
     const sut = makeSut()
+    const password = faker.internet.password()
+    const data = { password: password, passwordConfirmation: password }
 
-    const value = sut.validate(fakeValidAccount)
+    const value = sut.validate(data)
 
     expect(value).toBeFalsy()
   })

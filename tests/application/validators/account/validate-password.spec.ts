@@ -1,60 +1,48 @@
 import { InvalidParamError } from '@/application/errors'
 import { makeSut } from './mocks/validate-password-mock'
 
+import faker from 'faker'
+
 describe('ValidateName', () => {
   it('Should return InvalidParamError if password is lesser than 6 characters', () => {
     const sut = makeSut()
-    const fakeInvalidAccount = {
-      name: 'Example Name',
-      email: 'example@email.com',
-      password: '12345',
-      passwordConfirmation: 'password'
-    }
+    const data = { password: faker.internet.password(5) }
 
-    const value = sut.validate(fakeInvalidAccount)
+    const value = sut.validate(data)
 
     expect(value).toEqual(new InvalidParamError('password'))
   })
 
   it('Should return InvalidParamError if password is greater than 32 characters', () => {
     const sut = makeSut()
-    const fakeInvalidAccount = {
-      name: 'Example Name',
-      email: 'example@email.com',
-      password: '012345678901234567890123456789012',
-      passwordConfirmation: 'password'
-    }
+    const data = { password: faker.internet.password(33) }
 
-    const value = sut.validate(fakeInvalidAccount)
+    const value = sut.validate(data)
 
     expect(value).toEqual(new InvalidParamError('password'))
   })
 
   it('Should return InvalidParamError if password is empty', () => {
     const sut = makeSut()
-    const fakeInvalidAccount = {
-      name: 'Example Name',
-      email: 'example@email.com',
-      password: '',
-      passwordConfirmation: 'password'
-    }
+    const data = { password: '' }
 
-    const value = sut.validate(fakeInvalidAccount)
+    const value = sut.validate(data)
 
     expect(value).toEqual(new InvalidParamError('password'))
   })
 
   it('Should return nothing if succeds', () => {
     const sut = makeSut()
-    const fakeInvalidAccount = {
-      name: 'Example Name',
-      email: 'example@email.com',
-      password: 'password',
-      passwordConfirmation: 'password'
-    }
+    const data1 = { password: faker.internet.password(6) }
 
-    const value = sut.validate(fakeInvalidAccount)
+    const value1 = sut.validate(data1)
 
-    expect(value).toBeFalsy()
+    expect(value1).toBeFalsy()
+
+    const data2 = { password: faker.internet.password(32) }
+
+    const value2 = sut.validate(data2)
+
+    expect(value2).toBeFalsy()
   })
 })

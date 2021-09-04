@@ -1,20 +1,16 @@
 import { InvalidParamError } from '@/application/errors'
-import { fakeValidAccount } from './mocks/account-mock'
 import { makeSut } from './mocks/validate-email-mock'
+
+import faker from 'faker'
 
 describe('ValidateEmail', () => {
   it('Should return a new InvalidParamError if email is invalid', () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isEmail').mockReturnValueOnce(false)
 
-    const fakeInvalidAccount = {
-      name: 'Example Name',
-      email: 'invalid_email',
-      password: 'password',
-      passwordConfirmation: 'password'
-    }
+    const data = { email: 'invalid_email' }
 
-    const value = sut.validate(fakeInvalidAccount)
+    const value = sut.validate(data)
 
     expect(value).toEqual(new InvalidParamError('email'))
   })
@@ -22,7 +18,9 @@ describe('ValidateEmail', () => {
   it('Should return nothing if succeds', () => {
     const { sut } = makeSut()
 
-    const value = sut.validate(fakeValidAccount)
+    const data = { email: faker.internet.email() }
+
+    const value = sut.validate(data)
 
     expect(value).toBeFalsy()
   })
@@ -31,9 +29,11 @@ describe('ValidateEmail', () => {
     const { sut, emailValidatorStub } = makeSut()
     const isEmailSpy = jest.spyOn(emailValidatorStub, 'isEmail')
 
-    sut.validate(fakeValidAccount)
+    const data = { email: faker.internet.email() }
 
-    expect(isEmailSpy).toHaveBeenCalledWith(fakeValidAccount.email)
+    sut.validate(data)
+
+    expect(isEmailSpy).toHaveBeenCalledWith(data.email)
   })
 
   it('Should throw if emailValidator throws', () => {
