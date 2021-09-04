@@ -16,9 +16,8 @@
       "@/tests/*": ["../tests/*"],
       "@/domain/*": ["./domain/*"],
       "@/application/*": ["./application/*"],
-      "@/infraestructure/*": ["./infraestructure/*"],
+      "@/infra/*": ["./infra/*"],
       "@/main/*": ["./main/*"],
-      "@/persitence/*": ["./persitence/*"],
       "@/presentation/*": ["./presentation/*"],
       "@/*": ["*"]
     }
