@@ -5,5 +5,5 @@ export interface AccountProtocol {
   add: (account: UserAccount) => Promise<User>
   get: (id: User['personal']['id']) => Promise<User>
   update: (id: User['personal']['id']) => Promise<User>
-  delete: (id: User['personal']['id']) => Promise<null>
+  remove: (id: User['personal']['id']) => Promise<null>
 }
