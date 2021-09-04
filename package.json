@@ -38,6 +38,7 @@
     "node": "16.x"
   },
   "dependencies": {
-    "bcrypt": "^5.0.1"
+    "bcrypt": "^5.0.1",
+    "mongo": "^0.1.0"
   }
 }

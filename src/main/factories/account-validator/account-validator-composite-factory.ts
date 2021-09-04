@@ -5,8 +5,8 @@ import {
   ValidatePassword,
   ComparePasswords,
   AccountValidationComposite
-} from '@/application/validators/account'
-import { AccountValidator } from '@/domain/validators/account-validator-protocol'
+} from '@/infra/validators/account'
+import { AccountValidator } from '@/application/validators/account/account-validator-protocol'
 import { EmailValidatorAdapter } from '@/main/adapters/email-validator/email-validator-adapter'
 
 export const makeAccountValidatorComposite = (): AccountValidator => {
