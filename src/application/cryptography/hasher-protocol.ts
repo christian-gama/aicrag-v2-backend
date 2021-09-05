@@ -1,6 +1,7 @@
 
 export interface Hasher {
   /**
+  * @async Asynchronous method.
   * @param value The value to be encrypted.
   * @returns Return a promise with the encrypted value as string.
   */
