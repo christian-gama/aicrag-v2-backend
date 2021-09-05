@@ -13,7 +13,12 @@ describe('AccountRepository', () => {
     const user = await sut.saveAccount(account)
 
     expect(user).toEqual({
-      personal: { id: fakeId, name: account.name, email: account.email, password: fakeHashedPassword },
+      personal: {
+        id: fakeId,
+        name: account.name,
+        email: account.email,
+        password: fakeHashedPassword
+      },
       settings: { accountActivated: false, handicap: 1, currency: 'USD' },
       logs: {
         createdAt: dateNow,
@@ -25,5 +30,15 @@ describe('AccountRepository', () => {
         activationCode: fakeActivationCode
       }
     })
+  })
+
+  it('Should call hash with correct values', async () => {
+    const { sut, hasherStub } = makeSut()
+    const account = fakeValidAccount
+    const hashSpy = jest.spyOn(hasherStub, 'hash')
+
+    await sut.saveAccount(account)
+
+    expect(hashSpy).toHaveBeenCalledWith(account.password)
   })
 })
