@@ -1,8 +1,8 @@
-import { Hasher } from '@/application/protocols/cryptography/hasher-protocol'
+import { HasherProtocol } from '@/application/protocols/cryptography/hasher-protocol'
 
 import bcrypt from 'bcrypt'
 
-export class BcryptAdapter implements Hasher {
+export class BcryptAdapter implements HasherProtocol {
   constructor (private readonly salt = 12) {}
 
   async hash (value: string): Promise<string> {

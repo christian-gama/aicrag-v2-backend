@@ -1,5 +1,5 @@
 
-export interface Hasher {
+export interface HasherProtocol {
   /**
   * @async Asynchronous method.
   * @param value The value to be encrypted.
