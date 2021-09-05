@@ -1,3 +1,4 @@
+import { config } from '@/tests/config'
 import { makeSut } from './mocks/validation-code-mock'
 
 describe('CodeGenerator', () => {
@@ -5,7 +6,7 @@ describe('CodeGenerator', () => {
     const sut = makeSut()
 
     let error = 0
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < config.loopTimes; i++) {
       const value = sut.generate()
 
       if (value.length !== 5) error++
@@ -18,14 +19,14 @@ describe('CodeGenerator', () => {
     const sut = makeSut()
 
     const values: Partial<string[]> = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < config.loopTimes; i++) {
       const value = sut.generate()
       values.push(value)
     }
 
     const filteredValues = [...new Set(values)]
 
-    expect(filteredValues.length).not.toBe(1)
+    expect(filteredValues.length).toBe(config.loopTimes)
   })
 
   it('Should return a string', () => {

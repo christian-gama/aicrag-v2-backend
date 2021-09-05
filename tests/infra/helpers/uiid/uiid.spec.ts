@@ -1,3 +1,4 @@
+import { config } from '@/tests/config'
 import { makeSut } from './mocks/uiid-mock'
 
 describe('Uiid', () => {
@@ -20,9 +21,8 @@ describe('Uiid', () => {
   it('Should return an unique id', () => {
     const sut = makeSut()
 
-    const loopTimes = 50
     const values: Partial<string[]> = []
-    for (let i = 0; i < loopTimes; i++) {
+    for (let i = 0; i < config.loopTimes; i++) {
       const value = sut.generate()
 
       values.push(value)
@@ -30,6 +30,6 @@ describe('Uiid', () => {
 
     const filteredValues = [...new Set(values)]
 
-    expect(filteredValues.length).toBe(loopTimes)
+    expect(filteredValues.length).toBe(config.loopTimes)
   })
 })

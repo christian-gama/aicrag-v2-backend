@@ -1,5 +1,6 @@
 import { InvalidParamError } from '@/infra/errors'
 import { makeSut } from './mocks/compare-passwords-mock'
+import { config } from '@/tests/config'
 
 import faker from 'faker'
 
@@ -20,7 +21,7 @@ describe('ValidateName', () => {
     const sut = makeSut()
 
     let error = 0
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < config.loopTimes; i++) {
       const password = faker.internet.password()
       const data = { password: password, passwordConfirmation: password }
 

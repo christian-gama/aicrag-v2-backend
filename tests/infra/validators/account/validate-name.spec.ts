@@ -1,5 +1,6 @@
 import { InvalidParamError } from '@/infra/errors'
 import { makeSut } from './mocks/validate-name-mock'
+import { config } from '@/tests/config'
 
 import faker from 'faker'
 
@@ -35,7 +36,7 @@ describe('ValidateName', () => {
     const sut = makeSut()
 
     let error = 0
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < config.loopTimes; i++) {
       const data = { name: faker.name.findName() }
 
       const value = sut.validate(data)
