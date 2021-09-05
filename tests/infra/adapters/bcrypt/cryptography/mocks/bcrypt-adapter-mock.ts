@@ -1,5 +1,5 @@
 import { Hasher } from '@/application/cryptography/hasher-protocol'
-import { BcryptAdapter } from '@/infra/adapters/bcrypt/bcrypt-adapter'
+import { BcryptAdapter } from '@/infra/adapters/cryptography/bcrypt/bcrypt-adapter'
 
 interface SutTypes {
   sut: Hasher
