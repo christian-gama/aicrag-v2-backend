@@ -1,3 +1,5 @@
+type rangeNumbers = 0.6 | 0.65 | 0.7 | 0.75 | 0.8 | 0.85 | 0.9 | 0.95 | 1
+
 /**
  * @description User interface that will be persisted to the repository.
  */
@@ -16,7 +18,7 @@ export interface User {
    */
   settings: {
     accountActivated: boolean
-    handicap: number
+    handicap: rangeNumbers
     currency: 'USD' | 'BRL'
   }
   /**
@@ -24,16 +26,16 @@ export interface User {
    */
   logs: {
     createdAt: Date
-    updatedAt: Date
-    lastSeen: Date
-    lastLogin: Date
+    updatedAt: Date | null
+    lastSeen: Date | null
+    lastLogin: Date | null
   }
   /**
    * @property Temporary create properties to help validations. (Optional)
    */
   temporary?: {
-    activationCode: string
-    temporaryEmail: string
-    resetCode: string
+    activationCode?: string
+    temporaryEmail?: string
+    resetCode?: string
   }
 }
