@@ -1,3 +1,6 @@
+import { AccountValidator } from '@/application/protocols/validators/account/account-validator-protocol'
+import { makeAccountValidatorComposite } from '@/main/factories/account-validator/account-validator-composite-factory'
+import { makeEmailValidatorStub } from './mocks/email-validator-mock'
 import {
   RequiredFields,
   ValidateEmail,
@@ -5,12 +8,9 @@ import {
   ValidatePassword,
   ComparePasswords,
   AccountValidationComposite
-} from '@/infra/validators/account'
-import { AccountValidator } from '@/application/validators/account/account-validator-protocol'
-import { makeAccountValidatorComposite } from '@/main/factories/account-validator/account-validator-composite-factory'
-import { makeEmailValidatorStub } from './mocks/email-validator-mock'
+} from '@/application/usecases/validators/account'
 
-jest.mock('../../../../src/infra/validators/account/account-validation-composite.ts')
+jest.mock('../../../../src/application/usecases/validators/account/account-validation-composite.ts')
 
 describe('AccountValidator Factory', () => {
   it('Should create factory with all validations', () => {
