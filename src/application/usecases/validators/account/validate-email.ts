@@ -1,8 +1,8 @@
-import { AccountValidator } from '@/application/protocols/validators/account/account-validator-protocol'
+import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
 import { EmailValidator } from '@/application/protocols/validators/email-validator/email-validator-protocol'
 import { InvalidParamError } from '../../errors'
 
-export class ValidateEmail implements AccountValidator {
+export class ValidateEmail implements AccountValidatorProtocol {
   constructor (private readonly emailValidator: EmailValidator) {}
 
   validate (input: any): Error | undefined {

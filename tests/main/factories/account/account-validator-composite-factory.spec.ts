@@ -1,4 +1,4 @@
-import { AccountValidator } from '@/application/protocols/validators/account/account-validator-protocol'
+import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
 import { makeAccountValidatorComposite } from '@/main/factories/account/account-validator/account-validator-composite-factory'
 import { makeEmailValidatorStub } from './mocks/email-validator-mock'
 import {
@@ -16,7 +16,7 @@ describe('AccountValidator Factory', () => {
   it('Should create factory with all validations', () => {
     makeAccountValidatorComposite()
 
-    const validations: AccountValidator[] = []
+    const validations: AccountValidatorProtocol[] = []
 
     const fields = ['name', 'email', 'password', 'passwordConfirmation']
     for (const field of fields) {

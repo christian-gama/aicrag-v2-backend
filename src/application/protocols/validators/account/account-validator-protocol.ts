@@ -1,4 +1,4 @@
-export interface AccountValidator {
+export interface AccountValidatorProtocol {
   /**
    * @param input Is the object to be validated.
    * @returns Return an Error if validation fails and return undefined if succeds.

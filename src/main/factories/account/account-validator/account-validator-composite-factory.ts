@@ -1,4 +1,4 @@
-import { AccountValidator } from '@/application/protocols/validators/account/account-validator-protocol'
+import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
 import { EmailValidatorAdapter } from '@/infra/adapters/validators/email-validator/email-validator-adapter'
 import {
   RequiredFields,
@@ -9,8 +9,8 @@ import {
   AccountValidationComposite
 } from '@/application/usecases/validators/account'
 
-export const makeAccountValidatorComposite = (): AccountValidator => {
-  const validations: AccountValidator[] = []
+export const makeAccountValidatorComposite = (): AccountValidatorProtocol => {
+  const validations: AccountValidatorProtocol[] = []
 
   const fields = ['name', 'email', 'password', 'passwordConfirmation']
   for (const field of fields) {
