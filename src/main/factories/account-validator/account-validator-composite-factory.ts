@@ -1,5 +1,5 @@
 import { AccountValidator } from '@/application/protocols/validators/account/account-validator-protocol'
-import { EmailValidatorAdapter } from '@/infra/adapters/email-validator/email-validator-adapter'
+import { EmailValidatorAdapter } from '@/infra/adapters/validators/email-validator/email-validator-adapter'
 import {
   RequiredFields,
   ValidateEmail,
