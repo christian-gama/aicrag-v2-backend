@@ -9,4 +9,11 @@ describe('EmailValidatorAdapter', () => {
 
     expect(value).toBe(true)
   })
+
+  it('Should return false if value is an invalid email', () => {
+    const sut = makeSut()
+    const value = sut.isEmail(faker.random.word())
+
+    expect(value).toBe(false)
+  })
 })
