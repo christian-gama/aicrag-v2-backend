@@ -1,5 +1,5 @@
 import { AccountValidator } from '@/application/protocols/validators/account/account-validator-protocol'
-import { makeAccountValidatorComposite } from '@/main/factories/account-validator/account-validator-composite-factory'
+import { makeAccountValidatorComposite } from '@/main/factories/account/account-validator/account-validator-composite-factory'
 import { makeEmailValidatorStub } from './mocks/email-validator-mock'
 import {
   RequiredFields,
