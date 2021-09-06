@@ -9,7 +9,7 @@ describe('AccountRepository', () => {
     const fakeActivationCode = validationCodeStub.generate()
     const fakeId = uuidStub.generate()
 
-    const user = await sut.saveAccount(account)
+    const user = await sut.createAccount(account)
 
     expect(user.personal).toEqual({
       id: fakeId,
@@ -33,7 +33,7 @@ describe('AccountRepository', () => {
     const account = fakeValidAccount
     const hashSpy = jest.spyOn(hasherStub, 'hash')
 
-    await sut.saveAccount(account)
+    await sut.createAccount(account)
 
     expect(hashSpy).toHaveBeenCalledWith(account.password)
   })

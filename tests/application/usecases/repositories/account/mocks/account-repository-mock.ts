@@ -2,7 +2,7 @@ import { HasherProtocol } from '@/application/protocols/cryptography/hasher-prot
 import { IUiid } from '@/application/protocols/helpers/uuid/uuid-protocol'
 import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
 import { ValidationCode } from '@/application/usecases/helpers/validation-code/validation-code'
-import { AccountRepository } from '@/application/usecases/repository/account/account-repository'
+import { AccountRepository } from '@/application/usecases/repositories/account/account-repository'
 
 const makeHasherStub = (): HasherProtocol => {
   class HasherStub implements HasherProtocol {

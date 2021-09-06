@@ -11,7 +11,7 @@ export class AccountRepository implements AccountRepositoryProtocol {
     private readonly uuid: IUiid
   ) {}
 
-  async saveAccount (account: UserAccount): Promise<User> {
+  async createAccount (account: UserAccount): Promise<User> {
     const hashedPassword = await this.hasher.hash(account.password)
     const activationCode = this.activationCode.generate()
     const id = this.uuid.generate()
