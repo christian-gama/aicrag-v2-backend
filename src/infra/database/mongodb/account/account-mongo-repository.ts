@@ -8,7 +8,7 @@ export class AccountMongoRepository {
   async saveAccount (account: UserAccount): Promise<User> {
     const accountCollection = MongoHelper.getCollection('accounts')
 
-    const user = this.accountRepository.createAccount(account)
+    const user = await this.accountRepository.createAccount(account)
 
     const insertedResult = await accountCollection.insertOne(user)
 
