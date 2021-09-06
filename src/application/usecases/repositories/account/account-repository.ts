@@ -1,5 +1,5 @@
 import { HasherProtocol } from '@/application/protocols/cryptography/hasher-protocol'
-import { IUiid } from '@/application/protocols/helpers/uuid/uuid-protocol'
+import { IUuid } from '@/application/protocols/helpers/uuid/uuid-protocol'
 import { ValidationCodeProtocol } from '@/application/protocols/helpers/validation-code/validation-code'
 import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
 import { UserAccount, User } from '@/domain/user'
@@ -8,7 +8,7 @@ export class AccountRepository implements AccountRepositoryProtocol {
   constructor (
     private readonly hasher: HasherProtocol,
     private readonly activationCode: ValidationCodeProtocol,
-    private readonly uuid: IUiid
+    private readonly uuid: IUuid
   ) {}
 
   async createAccount (account: UserAccount): Promise<User> {

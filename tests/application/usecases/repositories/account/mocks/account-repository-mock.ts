@@ -1,5 +1,5 @@
 import { HasherProtocol } from '@/application/protocols/cryptography/hasher-protocol'
-import { IUiid } from '@/application/protocols/helpers/uuid/uuid-protocol'
+import { IUuid } from '@/application/protocols/helpers/uuid/uuid-protocol'
 import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
 import { ValidationCode } from '@/application/usecases/helpers/validation-code/validation-code'
 import { AccountRepository } from '@/application/usecases/repositories/account/account-repository'
@@ -24,21 +24,21 @@ const makeValidationCodeStub = (): ValidationCode => {
   return new ValidationCodeStub()
 }
 
-const makeUuidStub = (): IUiid => {
-  class IUiidStub implements IUiid {
+const makeUuidStub = (): IUuid => {
+  class IUuidStub implements IUuid {
     generate (): string {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
     }
   }
 
-  return new IUiidStub()
+  return new IUuidStub()
 }
 
 interface SutTypes {
   sut: AccountRepositoryProtocol
   hasherStub: HasherProtocol
   validationCodeStub: ValidationCode
-  uuidStub: IUiid
+  uuidStub: IUuid
 }
 
 export const makeSut = (): SutTypes => {

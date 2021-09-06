@@ -1,6 +1,6 @@
-import { IUiid } from '@/application/protocols/helpers/uuid/uuid-protocol'
+import { IUuid } from '@/application/protocols/helpers/uuid/uuid-protocol'
 
-export class Uiid implements IUiid {
+export class Uuid implements IUuid {
   generate (): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = (Math.random() * 16) | 0
