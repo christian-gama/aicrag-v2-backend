@@ -1,6 +1,6 @@
 import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
 import { User, UserAccount } from '@/domain/user'
-import { AccountMongoRepository } from '@/infra/database/mongodb/account/account-mongo-repository'
+import { AccountDbRepository } from '@/infra/database/mongodb/account/account-db-repository'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
 const makeAccountRepositoryStub = (fakeUser: User): AccountRepositoryProtocol => {
@@ -14,7 +14,7 @@ const makeAccountRepositoryStub = (fakeUser: User): AccountRepositoryProtocol =>
 }
 
 interface SutTypes {
-  sut: AccountMongoRepository
+  sut: AccountDbRepository
   accountRepositoryStub: AccountRepositoryProtocol
   fakeUser: User
 }
@@ -22,7 +22,7 @@ interface SutTypes {
 export const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const accountRepositoryStub = makeAccountRepositoryStub(fakeUser)
-  const sut = new AccountMongoRepository(accountRepositoryStub)
+  const sut = new AccountDbRepository(accountRepositoryStub)
 
   return { sut, fakeUser, accountRepositoryStub }
 }
