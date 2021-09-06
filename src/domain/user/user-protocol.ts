@@ -27,8 +27,8 @@ export interface User {
   logs: {
     createdAt: Date
     updatedAt: Date | null
-    lastSeen: Date | null
-    lastLogin: Date | null
+    lastSeenAt: Date | null
+    lastLoginAt: Date | null
   }
   /**
    * @property Temporary create properties to help validations. (Optional)

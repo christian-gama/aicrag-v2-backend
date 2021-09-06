@@ -22,8 +22,8 @@ export class AccountRepository implements AccountRepositoryProtocol {
       settings: { accountActivated: false, handicap: 1, currency: 'USD' },
       logs: {
         createdAt: dateNow,
-        lastLogin: null,
-        lastSeen: null,
+        lastLoginAt: null,
+        lastSeenAt: null,
         updatedAt: null
       },
       temporary: {

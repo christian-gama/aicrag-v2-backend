@@ -21,8 +21,8 @@ describe('AccountRepository', () => {
     expect(user.settings).toEqual({ accountActivated: false, handicap: 1, currency: 'USD' })
 
     // Do not test createdAt because of inconsitence of Date.now()
-    expect(user.logs.lastLogin).toBe(null)
-    expect(user.logs.lastSeen).toBe(null)
+    expect(user.logs.lastLoginAt).toBe(null)
+    expect(user.logs.lastSeenAt).toBe(null)
     expect(user.logs.updatedAt).toBe(null)
 
     expect(user.temporary?.activationCode).toBe(fakeActivationCode)

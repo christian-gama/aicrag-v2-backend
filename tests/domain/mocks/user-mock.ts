@@ -13,8 +13,8 @@ export const makeFakeUser = (): User => {
     settings: { accountActivated: false, handicap: 1, currency: 'USD' },
     logs: {
       createdAt: new Date(Date.now()),
-      lastLogin: null,
-      lastSeen: null,
+      lastLoginAt: null,
+      lastSeenAt: null,
       updatedAt: null
     },
     temporary: {

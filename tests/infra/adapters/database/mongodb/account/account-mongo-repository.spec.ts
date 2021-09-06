@@ -39,8 +39,8 @@ describe('', () => {
 
     expect(user.logs).toEqual({
       createdAt: fakeUser.logs.createdAt,
-      lastLogin: fakeUser.logs.lastLogin,
-      lastSeen: fakeUser.logs.lastSeen,
+      lastLoginAt: fakeUser.logs.lastLoginAt,
+      lastSeenAt: fakeUser.logs.lastSeenAt,
       updatedAt: fakeUser.logs.updatedAt
     })
 
