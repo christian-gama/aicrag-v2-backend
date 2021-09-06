@@ -8,28 +8,24 @@ describe('AccountRepository', () => {
     const fakeHashedPassword = await hasherStub.hash(account.password)
     const fakeActivationCode = validationCodeStub.generate()
     const fakeId = uuidStub.generate()
-    const dateNow = new Date(Date.now())
 
     const user = await sut.saveAccount(account)
 
-    expect(user).toEqual({
-      personal: {
-        id: fakeId,
-        name: account.name,
-        email: account.email,
-        password: fakeHashedPassword
-      },
-      settings: { accountActivated: false, handicap: 1, currency: 'USD' },
-      logs: {
-        createdAt: dateNow,
-        lastLogin: null,
-        lastSeen: null,
-        updatedAt: null
-      },
-      temporary: {
-        activationCode: fakeActivationCode
-      }
+    expect(user.personal).toEqual({
+      id: fakeId,
+      name: account.name,
+      email: account.email,
+      password: fakeHashedPassword
     })
+
+    expect(user.settings).toEqual({ accountActivated: false, handicap: 1, currency: 'USD' })
+
+    // Do not test createdAt because of inconsitence of Date.now()
+    expect(user.logs.lastLogin).toBe(null)
+    expect(user.logs.lastSeen).toBe(null)
+    expect(user.logs.updatedAt).toBe(null)
+
+    expect(user.temporary?.activationCode).toBe(fakeActivationCode)
   })
 
   it('Should call hash with correct values', async () => {
