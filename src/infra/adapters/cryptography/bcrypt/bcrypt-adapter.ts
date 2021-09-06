@@ -6,8 +6,6 @@ export class BcryptAdapter implements HasherProtocol {
   constructor (private readonly salt: number) {}
 
   async hash (value: string): Promise<string> {
-    const hashedValue = await bcrypt.hash(value, this.salt)
-
-    return hashedValue
+    return await bcrypt.hash(value, this.salt)
   }
 }
