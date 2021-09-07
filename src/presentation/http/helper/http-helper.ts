@@ -15,6 +15,13 @@ export class HttpHelper implements HttpHelperProtocol {
     }
   }
 
+  conflict (error: Error): HttpResponse {
+    return {
+      statusCode: 409,
+      data: { message: error.message }
+    }
+  }
+
   ok (data: any): HttpResponse {
     return { statusCode: 200, data }
   }
