@@ -21,6 +21,15 @@ describe('HttpHelper', () => {
     expect(response).toEqual({ statusCode: 404, data: { message: errorMessage } })
   })
 
+  it('Should return 409 and an error message when calls conflict', () => {
+    const sut = makeSut()
+    const errorMessage = faker.lorem.words(3)
+
+    const response = sut.conflict(new Error(errorMessage))
+
+    expect(response).toEqual({ statusCode: 409, data: { message: errorMessage } })
+  })
+
   it('Should return 200 and a data when calls ok', () => {
     const sut = makeSut()
     const fakeData = { [faker.random.word()]: faker.random.word() }
