@@ -29,6 +29,13 @@ export class HttpHelper implements HttpHelperProtocol {
     }
   }
 
+  forbidden (error: Error): HttpResponse {
+    return {
+      statusCode: 403,
+      data: { message: error.message }
+    }
+  }
+
   ok (data: any): HttpResponse {
     return { statusCode: 200, data }
   }
