@@ -54,4 +54,11 @@ describe('AccountDbRepository', () => {
 
     expect(user2).toHaveProperty('_id')
   })
+
+  it('Should return undefined if does not findAccountByEmail finds a user', async () => {
+    const { sut } = makeSut()
+    const user = await sut.findAccountByEmail('non_existent@email.com')
+
+    expect(user).toBe(undefined)
+  })
 })
