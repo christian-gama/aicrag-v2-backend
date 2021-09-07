@@ -21,12 +21,21 @@ describe('HttpHelper', () => {
     expect(response).toEqual({ statusCode: 404, data: { message: errorMessage } })
   })
 
-  it('Should return 404 and an error message when calls notFound', () => {
+  it('Should return 200 and a data when calls ok', () => {
     const sut = makeSut()
     const fakeData = { [faker.random.word()]: faker.random.word() }
 
     const response = sut.ok(fakeData)
 
     expect(response).toEqual({ statusCode: 200, data: fakeData })
+  })
+
+  it('Should return 201 and a data when calls created', () => {
+    const sut = makeSut()
+    const fakeData = { [faker.random.word()]: faker.random.word() }
+
+    const response = sut.created(fakeData)
+
+    expect(response).toEqual({ statusCode: 201, data: fakeData })
   })
 })
