@@ -1,3 +1,4 @@
+import { InvalidParamError } from '@/application/usecases/errors'
 import { fakeValidAccount } from '@/tests/domain/mocks/account-mock'
 import { makeSut } from './mocks/signup-controller-mock'
 
@@ -20,5 +21,16 @@ describe('SignUpController', () => {
     await sut.handle(request)
 
     expect(validateSpy).toHaveBeenCalledWith(request.body)
+  })
+
+  it('Should return badRequest if validation fails', async () => {
+    const { sut, accountValidatorStub } = makeSut()
+    const error = new InvalidParamError('any_field')
+    jest.spyOn(accountValidatorStub, 'validate').mockReturnValueOnce(error)
+    const request = { body: fakeValidAccount }
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual({ statusCode: 400, data: { message: error.message } })
   })
 })
