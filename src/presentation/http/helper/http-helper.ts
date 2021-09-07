@@ -22,6 +22,13 @@ export class HttpHelper implements HttpHelperProtocol {
     }
   }
 
+  unauthorized (error: Error): HttpResponse {
+    return {
+      statusCode: 401,
+      data: { message: error.message }
+    }
+  }
+
   ok (data: any): HttpResponse {
     return { statusCode: 200, data }
   }
