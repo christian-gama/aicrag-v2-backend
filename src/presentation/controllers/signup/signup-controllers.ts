@@ -12,14 +12,16 @@ export class SignUpController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const account = httpRequest.body
 
+    console.log(account)
+
     const error = this.accountValidator.validate(account)
 
     if (error) {
       return { statusCode: 400, data: { message: error.message } }
     }
 
-    await this.accountDbRepository.saveAccount(account)
+    const user = await this.accountDbRepository.saveAccount(account)
 
-    return Promise.resolve({ statusCode: 0, data: {} })
+    return Promise.resolve({ statusCode: 200, data: { user } })
   }
 }
