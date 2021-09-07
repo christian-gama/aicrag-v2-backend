@@ -65,4 +65,12 @@ describe('HttpHelper', () => {
 
     expect(response).toEqual({ statusCode: 201, data: fakeData })
   })
+
+  it('Should return 204 and a data when calls deleted', () => {
+    const sut = makeSut()
+
+    const response = sut.deleted()
+
+    expect(response).toEqual({ statusCode: 204, data: { message: 'Content deleted' } })
+  })
 })
