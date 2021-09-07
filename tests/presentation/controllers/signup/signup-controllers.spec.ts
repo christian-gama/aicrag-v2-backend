@@ -1,7 +1,28 @@
-import { InvalidParamError } from '@/application/usecases/errors'
+import { ConflictParamError, InvalidParamError } from '@/application/usecases/errors'
 import { makeSut } from './mocks/signup-controller-mock'
 
 describe('SignUpController', () => {
+  it('Should call findAccountByEmail with the correct value', async () => {
+    const { sut, accountDbRepositoryStub, request } = makeSut()
+    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+
+    await sut.handle(request)
+
+    expect(findAccountByEmailSpy).toHaveBeenCalledWith(request.body.email)
+  })
+
+  it('Should return conflict if email exists', async () => {
+    const { sut, accountDbRepositoryStub, httpHelper, request, fakeUser } = makeSut()
+    const error = new ConflictParamError('email')
+    jest
+      .spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+      .mockReturnValueOnce(Promise.resolve(fakeUser))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.conflict(error))
+  })
+
   it('Should call the saveAccount with correct values', async () => {
     const { sut, accountDbRepositoryStub, request } = makeSut()
     const saveAccountSpy = jest.spyOn(accountDbRepositoryStub, 'saveAccount')

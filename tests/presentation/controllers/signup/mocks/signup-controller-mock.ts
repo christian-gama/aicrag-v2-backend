@@ -11,6 +11,10 @@ const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtoco
     async saveAccount (account: UserAccount): Promise<User> {
       return Promise.resolve(fakeUser)
     }
+
+    async findAccountByEmail (email: string): Promise<User | undefined> {
+      return Promise.resolve(undefined)
+    }
   }
 
   return new AccountDbRepositoryStub()
