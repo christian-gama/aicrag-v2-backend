@@ -18,4 +18,8 @@ export class HttpHelper implements HttpHelperProtocol {
   ok (data: any): HttpResponse {
     return { statusCode: 200, data }
   }
+
+  created (data: any): HttpResponse {
+    return { statusCode: 201, data }
+  }
 }
