@@ -7,4 +7,11 @@ export class HttpHelper implements HttpHelperProtocol {
       data: { message: error.message }
     }
   }
+
+  notFound (error: Error): HttpResponse {
+    return {
+      statusCode: 404,
+      data: { message: error.message }
+    }
+  }
 }
