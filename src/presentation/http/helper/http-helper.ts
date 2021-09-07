@@ -8,20 +8,6 @@ export class HttpHelper implements HttpHelperProtocol {
     }
   }
 
-  notFound (error: Error): HttpResponse {
-    return {
-      statusCode: 404,
-      data: { message: error.message }
-    }
-  }
-
-  conflict (error: Error): HttpResponse {
-    return {
-      statusCode: 409,
-      data: { message: error.message }
-    }
-  }
-
   unauthorized (error: Error): HttpResponse {
     return {
       statusCode: 401,
@@ -36,11 +22,29 @@ export class HttpHelper implements HttpHelperProtocol {
     }
   }
 
+  notFound (error: Error): HttpResponse {
+    return {
+      statusCode: 404,
+      data: { message: error.message }
+    }
+  }
+
+  conflict (error: Error): HttpResponse {
+    return {
+      statusCode: 409,
+      data: { message: error.message }
+    }
+  }
+
   ok (data: any): HttpResponse {
     return { statusCode: 200, data }
   }
 
   created (data: any): HttpResponse {
     return { statusCode: 201, data }
+  }
+
+  deleted (): HttpResponse {
+    return { statusCode: 204, data: { message: 'Content deleted' } }
   }
 }
