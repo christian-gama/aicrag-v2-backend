@@ -50,4 +50,21 @@ describe('SignUpController', () => {
     expect(response.data.user.personal.name).toBe(request.body.name)
     expect(response.data.user.personal.email).toBe(request.body.email)
   })
+
+  it('Should call ok with the correct value', async () => {
+    const { sut, fakeUser, httpHelper } = makeSut()
+    const okSpy = jest.spyOn(httpHelper, 'ok')
+    const request = {
+      body: {
+        name: fakeUser.personal.name,
+        email: fakeUser.personal.email,
+        password: fakeUser.personal.password,
+        passwordConfirmation: fakeUser.personal.password
+      }
+    }
+
+    await sut.handle(request)
+
+    expect(okSpy).toHaveBeenCalledWith({ user: fakeUser })
+  })
 })
