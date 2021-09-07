@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "module": "CommonJS",
-    "target": "ES2020",
-    "moduleResolution": "Node",
-    "removeComments": true,
+    "module": "commonjs",
+    "target": "es2019",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "strictNullChecks": true,
     "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
     "rootDirs": ["src", "tests"],
     "baseUrl": "src",
     "paths": {
@@ -22,6 +17,6 @@
       "@/*": ["*"]
     }
   },
-  "include": ["src", "tests"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
