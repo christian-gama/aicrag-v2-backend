@@ -23,7 +23,7 @@ describe('SignUpController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('Should return badRequest if validation fails', async () => {
+  it('Should return a bad request if validation fails with an error message', async () => {
     const { sut, accountValidatorStub } = makeSut()
     const error = new InvalidParamError('any_field')
     jest.spyOn(accountValidatorStub, 'validate').mockReturnValueOnce(error)
@@ -34,7 +34,7 @@ describe('SignUpController', () => {
     expect(response).toEqual({ statusCode: 400, data: { message: error.message } })
   })
 
-  it('Should return ok if validation succeds', async () => {
+  it('Should return a user if validation succeds', async () => {
     const { sut, fakeUser } = makeSut()
     const request = {
       body: {
@@ -47,7 +47,6 @@ describe('SignUpController', () => {
 
     const response = await sut.handle(request)
 
-    expect(response.statusCode).toBe(200)
     expect(response.data.user.personal.name).toBe(request.body.name)
     expect(response.data.user.personal.email).toBe(request.body.email)
   })
