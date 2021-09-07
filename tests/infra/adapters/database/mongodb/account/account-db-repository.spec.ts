@@ -1,11 +1,11 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { fakeValidAccount } from '@/tests/domain/mocks/account-mock'
 import { Collection } from 'mongodb'
-import { makeSut } from './mocks/account-mongo-repository-mock'
+import { makeSut } from './mocks/account-db-repository-mock'
 
 let accountCollection: Collection
 
-describe('', () => {
+describe('AccountDbRepository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
   })
@@ -19,7 +19,7 @@ describe('', () => {
     await accountCollection.deleteMany({})
   })
 
-  it('Should create a user on success', async () => {
+  it('Should create a user on success of saveAccount', async () => {
     const { sut, fakeUser } = makeSut()
     const user = await sut.saveAccount(fakeValidAccount)
 
@@ -45,5 +45,13 @@ describe('', () => {
     })
 
     expect(user.temporary?.activationCode).toBe(fakeUser.temporary?.activationCode)
+  })
+
+  it('Should return a user if findUserByEmail find a user', async () => {
+    const { sut } = makeSut()
+    const user = await sut.saveAccount(fakeValidAccount)
+    const user2 = await sut.findAccountByEmail(user.personal.email)
+
+    expect(user2).toHaveProperty('_id')
   })
 })
