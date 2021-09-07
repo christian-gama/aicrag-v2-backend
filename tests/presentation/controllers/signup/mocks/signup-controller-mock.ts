@@ -3,7 +3,7 @@ import { AccountValidatorProtocol } from '@/application/protocols/validators/acc
 import { User, UserAccount } from '@/domain/user'
 import { SignUpController } from '@/presentation/controllers/signup/signup-controllers'
 import { HttpHelper } from '@/presentation/http/helper/http-helper'
-import { HttpHelperProtocol } from '@/presentation/http/protocols'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
 const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
@@ -32,6 +32,7 @@ export interface SutTypes {
   accountValidatorStub: AccountValidatorProtocol
   fakeUser: User
   httpHelper: HttpHelperProtocol
+  request: HttpRequest
 }
 
 export const makeSut = (): SutTypes => {
@@ -39,7 +40,15 @@ export const makeSut = (): SutTypes => {
   const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
   const accountValidatorStub = makeAccountValidatorStub()
   const httpHelper = new HttpHelper()
+  const request = {
+    body: {
+      name: fakeUser.personal.name,
+      email: fakeUser.personal.email,
+      password: fakeUser.personal.password,
+      passwordConfirmation: fakeUser.personal.password
+    }
+  }
   const sut = new SignUpController(accountDbRepositoryStub, accountValidatorStub, httpHelper)
 
-  return { sut, accountDbRepositoryStub, accountValidatorStub, fakeUser, httpHelper }
+  return { sut, accountDbRepositoryStub, accountValidatorStub, fakeUser, httpHelper, request }
 }
