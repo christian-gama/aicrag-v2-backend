@@ -4,10 +4,10 @@ import { User, UserAccount } from '@/domain/user'
 import { SignUpController } from '@/presentation/controllers/signup/signup-controllers'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
-const makeAccountDbRepositoryStub = (): AccountDbRepositoryProtocol => {
+const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {
     async saveAccount (account: UserAccount): Promise<User> {
-      return Promise.resolve(makeFakeUser())
+      return Promise.resolve(fakeUser)
     }
   }
 
@@ -28,12 +28,14 @@ export interface SutTypes {
   sut: SignUpController
   accountDbRepositoryStub: AccountDbRepositoryProtocol
   accountValidatorStub: AccountValidatorProtocol
+  fakeUser: User
 }
 
 export const makeSut = (): SutTypes => {
-  const accountDbRepositoryStub = makeAccountDbRepositoryStub()
+  const fakeUser = makeFakeUser()
+  const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
   const accountValidatorStub = makeAccountValidatorStub()
   const sut = new SignUpController(accountDbRepositoryStub, accountValidatorStub)
 
-  return { sut, accountDbRepositoryStub, accountValidatorStub }
+  return { sut, accountDbRepositoryStub, accountValidatorStub, fakeUser }
 }

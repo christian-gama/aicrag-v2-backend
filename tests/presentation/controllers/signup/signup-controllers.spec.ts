@@ -33,4 +33,22 @@ describe('SignUpController', () => {
 
     expect(response).toEqual({ statusCode: 400, data: { message: error.message } })
   })
+
+  it('Should return ok if validation succeds', async () => {
+    const { sut, fakeUser } = makeSut()
+    const request = {
+      body: {
+        name: fakeUser.personal.name,
+        email: fakeUser.personal.email,
+        password: fakeUser.personal.password,
+        passwordConfirmation: fakeUser.personal.password
+      }
+    }
+
+    const response = await sut.handle(request)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.data.user.personal.name).toBe(request.body.name)
+    expect(response.data.user.personal.email).toBe(request.body.email)
+  })
 })
