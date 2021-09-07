@@ -12,6 +12,15 @@ describe('HttpHelper', () => {
     expect(response).toEqual({ statusCode: 400, data: { message: errorMessage } })
   })
 
+  it('Should return 401 and an error message when calls unauthorized', () => {
+    const sut = makeSut()
+    const errorMessage = faker.lorem.words(3)
+
+    const response = sut.unauthorized(new Error(errorMessage))
+
+    expect(response).toEqual({ statusCode: 401, data: { message: errorMessage } })
+  })
+
   it('Should return 404 and an error message when calls notFound', () => {
     const sut = makeSut()
     const errorMessage = faker.lorem.words(3)
