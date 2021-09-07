@@ -1,12 +1,13 @@
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
-import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class SignUpController implements ControllerProtocol {
   constructor (
     private readonly accountDbRepository: AccountDbRepositoryProtocol,
-    private readonly accountValidator: AccountValidatorProtocol
+    private readonly accountValidator: AccountValidatorProtocol,
+    private readonly httpHelper: HttpHelperProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -15,11 +16,11 @@ export class SignUpController implements ControllerProtocol {
     const error = this.accountValidator.validate(account)
 
     if (error) {
-      return { statusCode: 400, data: { message: error.message } }
+      return this.httpHelper.badRequest(error)
     }
 
     const user = await this.accountDbRepository.saveAccount(account)
 
-    return { statusCode: 200, data: { user } }
+    return this.httpHelper.ok({ user })
   }
 }

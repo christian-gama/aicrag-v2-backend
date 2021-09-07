@@ -1,6 +1,25 @@
-import { HttpHelperProtocol, HttpResponse } from '../protocols'
+import {
+  HttpBadRequestProtocol,
+  HttpConflictProtocol,
+  HttpCreatedProtocol,
+  HttpDeletedProtocol,
+  HttpForbiddenProtocol,
+  HttpNotFoundProtocol,
+  HttpOkProtocol,
+  HttpResponse,
+  HttpUnauthorizedProtocol
+} from '../protocols'
 
-export class HttpHelper implements HttpHelperProtocol {
+export class HttpHelper
+implements
+    HttpBadRequestProtocol,
+    HttpUnauthorizedProtocol,
+    HttpForbiddenProtocol,
+    HttpNotFoundProtocol,
+    HttpConflictProtocol,
+    HttpOkProtocol,
+    HttpCreatedProtocol,
+    HttpDeletedProtocol {
   badRequest (error: Error): HttpResponse {
     return {
       statusCode: 400,
