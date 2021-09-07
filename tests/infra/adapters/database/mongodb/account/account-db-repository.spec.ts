@@ -47,7 +47,7 @@ describe('AccountDbRepository', () => {
     expect(user.temporary?.activationCode).toBe(fakeUser.temporary?.activationCode)
   })
 
-  it('Should return a user if findUserByEmail find a user', async () => {
+  it('Should return a user if findAccountByEmail finds a user', async () => {
     const { sut } = makeSut()
     const user = await sut.saveAccount(fakeValidAccount)
     const user2 = await sut.findAccountByEmail(user.personal.email)
