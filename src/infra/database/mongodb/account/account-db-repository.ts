@@ -4,15 +4,21 @@ import { UserAccount, User } from '@/domain/user'
 import { MongoHelper } from '../helper/mongo-helper'
 
 export class AccountDbRepository implements AccountDbRepositoryProtocol {
+  private readonly collection = MongoHelper.getCollection('accounts')
+
   constructor (private readonly accountRepository: AccountRepositoryProtocol) {}
 
   async saveAccount (account: UserAccount): Promise<User> {
-    const accountCollection = MongoHelper.getCollection('accounts')
-
     const user = await this.accountRepository.createAccount(account)
 
-    const insertedResult = await accountCollection.insertOne(user)
+    const insertedResult = await this.collection.insertOne(user)
 
-    return (await accountCollection?.findOne(insertedResult.insertedId)) as User
+    return (await this.collection.findOne(insertedResult.insertedId)) as User
+  }
+
+  async findAccountByEmail (email: string): Promise<User | undefined> {
+    const account = (await this.collection.findOne({ 'personal.email': email })) as User
+
+    if (account) return account
   }
 }
