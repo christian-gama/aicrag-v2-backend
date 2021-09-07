@@ -1,8 +1,8 @@
-import { MongoClient } from 'mongodb'
+import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import app from './config/app'
 import { env } from './config/env'
 
-MongoClient.connect(env.MONGO_URL)
+MongoHelper.connect(env.MONGO_URL)
   .then(() => {
     app.listen(env.PORT, () => {
       console.log(`Server listening on port ${env.PORT}`)
