@@ -20,6 +20,6 @@ export class SignUpController implements ControllerProtocol {
 
     const user = await this.accountDbRepository.saveAccount(account)
 
-    return Promise.resolve({ statusCode: 200, data: { user } })
+    return { statusCode: 200, data: { user } }
   }
 }
