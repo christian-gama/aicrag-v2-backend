@@ -14,14 +14,9 @@
     "baseUrl": "src",
     "paths": {
       "@/tests/*": ["../tests/*"],
-      "@/domain/*": ["./domain/*"],
-      "@/application/*": ["./application/*"],
-      "@/infra/*": ["./infra/*"],
-      "@/main/*": ["./main/*"],
-      "@/presentation/*": ["./presentation/*"],
       "@/*": ["*"]
     }
   },
   "include": ["src", "tests"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": []
 }

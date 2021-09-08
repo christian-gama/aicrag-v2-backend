@@ -5,7 +5,7 @@
   "author": "Christian Gama <christiangama.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
     "start": "node dist/main/server.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --maxWorkers=25%",
     "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",
@@ -18,8 +18,6 @@
     "@babel/cli": "^7.15.4",
     "@babel/core": "^7.15.5",
     "@babel/node": "^7.15.4",
-    "@babel/preset-env": "^7.15.4",
-    "@babel/preset-typescript": "^7.15.0",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@shelf/jest-mongodb": "^2.0.3",
@@ -32,7 +30,6 @@
     "@types/supertest": "^2.0.11",
     "@types/validator": "^13.6.3",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^7.32.0",
     "eslint-config-standard-with-typescript": "^21.0.1",
     "eslint-plugin-import": "^2.24.2",
@@ -44,7 +41,6 @@
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
-    "sucrase": "^3.20.1",
     "supertest": "^6.1.6",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.2"
@@ -55,7 +51,11 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "module-alias": "^2.2.2",
     "mongodb": "^4.1.1",
     "validator": "^13.6.0"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

@@ -1,9 +1,11 @@
+import 'module-alias/register'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import app from './config/app'
 import { env } from './config/env'
 
 MongoHelper.connect(env.MONGO_URL)
-  .then(() => {
+  .then(async () => {
+    const app = (await import('./config/app')).default
+
     app.listen(env.PORT, () => {
       console.log(`Server listening on port ${env.PORT}`)
       console.log(`http://localhost:${env.PORT}`)
