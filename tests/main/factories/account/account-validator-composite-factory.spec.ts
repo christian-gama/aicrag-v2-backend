@@ -25,8 +25,8 @@ describe('AccountValidator Factory', () => {
 
     const emailValidatorAdapter = makeEmailValidatorStub()
 
-    validations.push(new ValidateEmail(emailValidatorAdapter))
     validations.push(new ValidateName())
+    validations.push(new ValidateEmail(emailValidatorAdapter))
     validations.push(new ValidatePassword())
     validations.push(new ComparePasswords())
 
