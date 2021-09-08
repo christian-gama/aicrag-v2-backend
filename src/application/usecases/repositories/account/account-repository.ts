@@ -19,7 +19,7 @@ export class AccountRepository implements AccountRepositoryProtocol {
 
     const user: User = {
       personal: { id: id, name: account.name, email: account.email, password: hashedPassword },
-      settings: { accountActivated: false, handicap: 1, currency: 'USD' },
+      settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
       logs: {
         createdAt: dateNow,
         lastLoginAt: null,

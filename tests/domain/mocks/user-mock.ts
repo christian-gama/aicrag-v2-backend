@@ -10,7 +10,7 @@ export const makeFakeUser = (): User => {
       email: faker.internet.email(),
       password: faker.internet.password()
     },
-    settings: { accountActivated: false, handicap: 1, currency: 'USD' },
+    settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
     logs: {
       createdAt: new Date(Date.now()),
       lastLoginAt: null,

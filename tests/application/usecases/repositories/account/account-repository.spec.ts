@@ -18,7 +18,7 @@ describe('AccountRepository', () => {
       password: fakeHashedPassword
     })
 
-    expect(user.settings).toEqual({ accountActivated: false, handicap: 1, currency: 'USD' })
+    expect(user.settings).toEqual({ accountActivated: false, handicap: 1, currency: 'BRL' })
 
     // Do not test createdAt because of inconsitence of Date.now()
     expect(user.logs.lastLoginAt).toBe(null)
