@@ -23,5 +23,9 @@ describe('Authentication routes', () => {
     it('Should return 200 if all validations succeds', async () => {
       await request(app).post('/api/auth/signup').send(fakeValidAccount).expect(200)
     })
+
+    it('Should return 400 if validation fails', async () => {
+      await request(app).post('/api/auth/signup').send({}).expect(400)
+    })
   })
 })
