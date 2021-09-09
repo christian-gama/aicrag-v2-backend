@@ -20,7 +20,7 @@ export class SignUpController implements ControllerProtocol {
       return this.httpHelper.conflict(new ConflictParamError('email'))
     }
 
-    const error = this.accountValidator.validate(account)
+    const error = await this.accountValidator.validate(account)
 
     if (error) {
       return this.httpHelper.badRequest(error)

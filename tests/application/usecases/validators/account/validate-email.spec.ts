@@ -16,13 +16,13 @@ describe('ValidateEmail', () => {
     expect(value).toEqual(new InvalidParamError('email'))
   })
 
-  it('Should call emailValidator with correct value', () => {
+  it('Should call emailValidator with correct value', async () => {
     const { sut, emailValidatorStub } = makeSut()
     const isEmailSpy = jest.spyOn(emailValidatorStub, 'isEmail')
 
     const data = { email: faker.internet.email() }
 
-    sut.validate(data)
+    sut.validate(data) as unknown
 
     expect(isEmailSpy).toHaveBeenCalledWith(data.email)
   })
