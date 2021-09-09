@@ -30,4 +30,14 @@ describe('ValidateCredentials', () => {
 
     expect(error).toEqual(new UserCredentialError())
   })
+
+  it('Should call findAccountByEmail with correct value', async () => {
+    const { sut, accountDbRepositoryStub } = makeSut()
+    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+
+    await sut.validate(credentials)
+
+    expect(findAccountByEmailSpy).toHaveBeenCalledWith(credentials.email)
+  })
 })
