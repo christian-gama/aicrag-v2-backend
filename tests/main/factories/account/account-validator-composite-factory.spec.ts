@@ -1,4 +1,4 @@
-import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { makeAccountValidatorComposite } from '@/main/factories/account/account-validator/account-validator-composite-factory'
 import { makeEmailValidatorStub } from './mocks/email-validator-mock'
 import {
@@ -7,16 +7,16 @@ import {
   ValidateName,
   ValidatePassword,
   ComparePasswords,
-  AccountValidationComposite
+  ValidationComposite
 } from '@/application/usecases/validators/account'
 
-jest.mock('../../../../src/application/usecases/validators/account/account-validation-composite.ts')
+jest.mock('../../../../src/application/usecases/validators/validation-composite.ts')
 
 describe('AccountValidator Factory', () => {
   it('Should create factory with all validations', () => {
     makeAccountValidatorComposite()
 
-    const validations: AccountValidatorProtocol[] = []
+    const validations: ValidatorProtocol[] = []
 
     const fields = ['name', 'email', 'password', 'passwordConfirmation']
     for (const field of fields) {
@@ -30,6 +30,6 @@ describe('AccountValidator Factory', () => {
     validations.push(new ValidatePassword())
     validations.push(new ComparePasswords())
 
-    expect(AccountValidationComposite).toHaveBeenCalledWith(validations)
+    expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

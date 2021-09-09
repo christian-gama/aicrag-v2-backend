@@ -1,5 +1,5 @@
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
-import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { User, UserAccount } from '@/domain/user'
 import { SignUpController } from '@/presentation/controllers/signup/signup-controllers'
 import { HttpHelper } from '@/presentation/http/helper/http-helper'
@@ -20,8 +20,8 @@ const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtoco
   return new AccountDbRepositoryStub()
 }
 
-const makeAccountValidatorStub = (): AccountValidatorProtocol => {
-  class AccountValidatorStub implements AccountValidatorProtocol {
+const makeAccountValidatorStub = (): ValidatorProtocol => {
+  class AccountValidatorStub implements ValidatorProtocol {
     validate (input: any): Error | undefined {
       return undefined
     }
@@ -33,7 +33,7 @@ const makeAccountValidatorStub = (): AccountValidatorProtocol => {
 export interface SutTypes {
   sut: SignUpController
   accountDbRepositoryStub: AccountDbRepositoryProtocol
-  accountValidatorStub: AccountValidatorProtocol
+  accountValidatorStub: ValidatorProtocol
   fakeUser: User
   httpHelper: HttpHelperProtocol
   request: HttpRequest

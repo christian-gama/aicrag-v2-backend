@@ -1,7 +1,7 @@
 import { MissingParamError } from '@/application/usecases/errors'
-import { makeSut } from './mocks/account-validation-composite-mock'
+import { makeSut } from './mocks/validation-composite-mock'
 
-describe('AccountValidationCompose', () => {
+describe('ValidationCompose', () => {
   it('Should return an error if validate returns an error', () => {
     const { sut, validationStubs } = makeSut()
     jest

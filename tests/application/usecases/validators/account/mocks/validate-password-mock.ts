@@ -1,7 +1,7 @@
-import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ValidatePassword } from '@/application/usecases/validators/account'
 
-export const makeSut = (): AccountValidatorProtocol => {
+export const makeSut = (): ValidatorProtocol => {
   const sut = new ValidatePassword()
 
   return sut

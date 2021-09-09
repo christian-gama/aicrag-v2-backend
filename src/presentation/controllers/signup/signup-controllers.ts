@@ -1,5 +1,5 @@
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
-import { AccountValidatorProtocol } from '@/application/protocols/validators/account/account-validator-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ConflictParamError } from '@/application/usecases/errors/'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { ControllerProtocol } from '../protocols/controller-protocol'
@@ -7,7 +7,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 export class SignUpController implements ControllerProtocol {
   constructor (
     private readonly accountDbRepository: AccountDbRepositoryProtocol,
-    private readonly accountValidator: AccountValidatorProtocol,
+    private readonly accountValidator: ValidatorProtocol,
     private readonly httpHelper: HttpHelperProtocol
   ) {}
 
