@@ -34,4 +34,14 @@ describe('ValidateCredentials', () => {
 
     expect(result).toEqual(new UserCredentialError())
   })
+
+  it('Should call compare with correct value', async () => {
+    const { sut, comparerStub, fakeUser } = makeSut()
+    const compareSpy = jest.spyOn(comparerStub, 'compare')
+    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+
+    await sut.validate(credentials)
+
+    expect(compareSpy).toHaveBeenCalledWith(credentials.password, fakeUser.personal.password)
+  })
 })
