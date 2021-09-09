@@ -1,24 +1,8 @@
-import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 // import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
-import { Collection } from 'mongodb'
 import { UserCredentialError } from '@/application/usecases/errors'
 import { makeSut } from './mocks/validate-credentials-mock'
 
-let accountCollection: Collection
 describe('ValidateCredentials', () => {
-  beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string)
-  })
-
-  afterAll(async () => {
-    await MongoHelper.disconnect()
-  })
-
-  beforeEach(async () => {
-    accountCollection = await MongoHelper.getCollection('accounts')
-    await accountCollection.deleteMany({})
-  })
-
   it('Should return a UserCredentialError if email does not exists', async () => {
     const { sut, accountDbRepositoryStub } = makeSut()
     jest
@@ -39,5 +23,15 @@ describe('ValidateCredentials', () => {
     await sut.validate(credentials)
 
     expect(findAccountByEmailSpy).toHaveBeenCalledWith(credentials.email)
+  })
+
+  it('Should return a UserCredentialError if password does not match', async () => {
+    const { sut, comparerStub } = makeSut()
+    jest.spyOn(comparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
+    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+
+    const result = await sut.validate(credentials)
+
+    expect(result).toEqual(new UserCredentialError())
   })
 })
