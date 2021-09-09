@@ -10,4 +10,12 @@ describe('JwtAdapter', () => {
 
     expect(signSpy).toHaveBeenCalledWith({ id: 'value' }, secret)
   })
+
+  it('Should return an encrypted value', () => {
+    const { sut } = makeSut()
+
+    const value = sut.encrypt('value')
+
+    expect(value).not.toBe('value')
+  })
 })
