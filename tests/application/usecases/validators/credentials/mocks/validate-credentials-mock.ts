@@ -9,10 +9,6 @@ const fakeUser = makeFakeUser()
 
 const makeComparerStub = (): ComparerProtocol => {
   class ComparerStub implements ComparerProtocol {
-    async hash (value: any): Promise<string> {
-      return Promise.resolve(String())
-    }
-
     async compare (value: string, valueToCompare: string): Promise<boolean> {
       return Promise.resolve(true)
     }

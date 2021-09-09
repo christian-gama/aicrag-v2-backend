@@ -19,7 +19,7 @@ describe('ValidateCredentials', () => {
     await accountCollection.deleteMany({})
   })
 
-  it('Should return a UserCredentialError if credentials are invalid', async () => {
+  it('Should return a UserCredentialError if email does not exists', async () => {
     const { sut, accountDbRepositoryStub } = makeSut()
     jest
       .spyOn(accountDbRepositoryStub, 'findAccountByEmail')
