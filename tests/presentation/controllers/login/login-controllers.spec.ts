@@ -23,4 +23,13 @@ describe('LoginController', () => {
 
     expect(notFoundSpy).toHaveBeenCalledWith(error)
   })
+
+  it('Should call findAccountByEmail with the correct value', async () => {
+    const { sut, accountDbRepositoryStub, request } = makeSut()
+    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+
+    await sut.handle(request)
+
+    expect(findAccountByEmailSpy).toHaveBeenCalledWith(request.body.email)
+  })
 })
