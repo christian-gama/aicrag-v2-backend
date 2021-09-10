@@ -12,7 +12,9 @@ export class LoginController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const credentials = httpRequest.body
 
-    await this.credentialsValidator.validate(credentials)
+    const error = await this.credentialsValidator.validate(credentials)
+
+    if (error) return this.httpHelper.notFound(error)
 
     const user = makeFakeUser()
 
