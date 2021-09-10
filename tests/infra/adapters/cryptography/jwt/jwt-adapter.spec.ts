@@ -2,27 +2,41 @@ import { makeSut } from './mocks/jwt-adapter-mock'
 import jwt from 'jsonwebtoken'
 
 describe('JwtAdapter', () => {
-  it('Should call sign with correct value', () => {
-    const { sut, secret } = makeSut()
-    const signSpy = jest.spyOn(jwt, 'sign')
+  describe('Decode', () => {
+    it('Should return an id if signature is valid', async () => {
+      const { sut, token } = makeSut()
 
-    sut.encrypt('value')
+      const id = await sut.decodeId(token)
 
-    expect(signSpy).toHaveBeenCalledWith({ id: 'value' }, secret)
+      expect(id).toBe('any_id')
+    })
   })
 
-  it('Should return an encrypted value', () => {
-    const { sut } = makeSut()
+  describe('Encrypt', () => {
+    it('Should call sign with correct value', () => {
+      const { sut, secret, expires } = makeSut()
+      const signSpy = jest.spyOn(jwt, 'sign')
 
-    const value = sut.encrypt('value')
+      sut.encryptId('value')
 
-    expect(value).not.toBe('value')
-  })
+      expect(signSpy).toHaveBeenCalledWith({ id: 'value' }, secret, { expiresIn: expires })
+    })
 
-  it('Should throw if sign throws', async () => {
-    const { sut } = makeSut()
-    jest.spyOn(jwt, 'sign').mockImplementationOnce(() => { throw new Error() })
+    it('Should return an encrypted value', () => {
+      const { sut } = makeSut()
 
-    expect(sut.encrypt).toThrow()
+      const value = sut.encryptId('value')
+
+      expect(value).not.toBe('value')
+    })
+
+    it('Should throw if sign throws', async () => {
+      const { sut } = makeSut()
+      jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
+        throw new Error()
+      })
+
+      expect(sut.encryptId).toThrow()
+    })
   })
 })
