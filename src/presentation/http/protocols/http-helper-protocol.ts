@@ -30,7 +30,7 @@ export interface HttpConflictProtocol {
 }
 
 export interface HttpOkProtocol {
-  ok: (data: any) => HttpResponse
+  ok: (data: any, accessToken?: string) => HttpResponse
 }
 
 export interface HttpCreatedProtocol {

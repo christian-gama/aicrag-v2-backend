@@ -55,7 +55,9 @@ implements
     }
   }
 
-  ok (data: any): HttpResponse {
+  ok (data: any, accessToken?: string): HttpResponse {
+    if (accessToken) return { statusCode: 200, data, accessToken }
+
     return { statusCode: 200, data }
   }
 
