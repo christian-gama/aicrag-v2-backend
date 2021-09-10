@@ -59,5 +59,9 @@ describe('Authentication routes', () => {
         .send({ email: fakeUser.personal.email, password: userPassword })
         .expect(200)
     })
+
+    it('Should return 404 if validation fails', async () => {
+      await request(app).post('/api/auth/login').send({}).expect(404)
+    })
   })
 })
