@@ -1,5 +1,5 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { SignUpController } from '@/presentation/controllers/signup/signup-controllers'
+import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
 import { HttpHelper } from '@/presentation/http/helper/http-helper'
 import { makeAccountDbRepository } from '../../repositories/account-db-repository/account-db-repository-factory'
 import { makeAccountValidatorComposite } from '../../validators/account-validator/account-validator-composite-factory'

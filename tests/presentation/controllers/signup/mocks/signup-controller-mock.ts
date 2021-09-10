@@ -1,7 +1,7 @@
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { User, UserAccount } from '@/domain/user'
-import { SignUpController } from '@/presentation/controllers/signup/signup-controllers'
+import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
 import { HttpHelper } from '@/presentation/http/helper/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
