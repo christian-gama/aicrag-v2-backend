@@ -50,4 +50,12 @@ describe('LoginController', () => {
 
     expect(okSpy).toHaveBeenCalledWith({ user: fakeUser, accessToken: 'any_token' })
   })
+
+  it('Should return ok if validation succeds', async () => {
+    const { sut, request, httpHelper, fakeUser } = makeSut()
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.ok({ user: fakeUser, accessToken: 'any_token' }))
+  })
 })
