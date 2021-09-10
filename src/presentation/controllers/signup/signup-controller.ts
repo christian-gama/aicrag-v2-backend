@@ -1,3 +1,4 @@
+import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ConflictParamError } from '@/application/usecases/errors/'
@@ -8,7 +9,8 @@ export class SignUpController implements ControllerProtocol {
   constructor (
     private readonly accountDbRepository: AccountDbRepositoryProtocol,
     private readonly accountValidator: ValidatorProtocol,
-    private readonly httpHelper: HttpHelperProtocol
+    private readonly httpHelper: HttpHelperProtocol,
+    private readonly filterUserData: FilterUserDataProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -28,6 +30,8 @@ export class SignUpController implements ControllerProtocol {
 
     const user = await this.accountDbRepository.saveAccount(account)
 
-    return this.httpHelper.ok({ user })
+    const filteredUser = this.filterUserData.filter(user)
+
+    return this.httpHelper.ok({ user: filteredUser })
   }
 }

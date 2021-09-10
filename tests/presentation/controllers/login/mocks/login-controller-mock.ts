@@ -1,11 +1,13 @@
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { User, UserAccount } from '@/domain/user'
+import { PublicUser, User, UserAccount } from '@/domain/user'
 import { HttpHelper } from '@/presentation/http/helper/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 import { LoginController } from '@/presentation/controllers/login/login-controller'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
+import { makeFakePublicUser } from '@/tests/domain/mocks/public-user-mock'
 
 const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {
@@ -41,6 +43,16 @@ const makeCredentialsValidatorStub = (): ValidatorProtocol => {
   return new CredentialsValidatorStub()
 }
 
+const makeFilterUserDataStub = (fakeUser: User): FilterUserDataProtocol => {
+  class FilterUserDataStub implements FilterUserDataProtocol {
+    filter (user: User): PublicUser {
+      return makeFakePublicUser(fakeUser)
+    }
+  }
+
+  return new FilterUserDataStub()
+}
+
 export interface SutTypes {
   sut: LoginController
   accountDbRepositoryStub: AccountDbRepositoryProtocol
@@ -49,11 +61,15 @@ export interface SutTypes {
   request: HttpRequest
   fakeUser: User
   jwtAdapterStub: EncrypterProtocol
+  filterUserDataStub: FilterUserDataProtocol
+  fakePublicUser: PublicUser
 }
 
 export const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
+  const fakePublicUser = makeFakePublicUser(fakeUser)
   const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
+  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const credentialsValidatorStub = makeCredentialsValidatorStub()
   const httpHelper = new HttpHelper()
   const jwtAdapterStub = makeJwtAdapterStub()
@@ -63,7 +79,23 @@ export const makeSut = (): SutTypes => {
       password: fakeUser.personal.password
     }
   }
-  const sut = new LoginController(accountDbRepositoryStub, credentialsValidatorStub, httpHelper, jwtAdapterStub)
+  const sut = new LoginController(
+    accountDbRepositoryStub,
+    credentialsValidatorStub,
+    httpHelper,
+    jwtAdapterStub,
+    filterUserDataStub
+  )
 
-  return { sut, accountDbRepositoryStub, credentialsValidatorStub, httpHelper, request, fakeUser, jwtAdapterStub }
+  return {
+    sut,
+    accountDbRepositoryStub,
+    credentialsValidatorStub,
+    httpHelper,
+    request,
+    fakeUser,
+    jwtAdapterStub,
+    filterUserDataStub,
+    fakePublicUser
+  }
 }

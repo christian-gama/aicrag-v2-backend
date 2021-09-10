@@ -42,20 +42,29 @@ describe('LoginController', () => {
     expect(encryptIdSpy).toHaveBeenCalledWith(fakeUser.personal.id)
   })
 
+  it('Should call the filter with correct user', async () => {
+    const { sut, filterUserDataStub, request, fakeUser } = makeSut()
+    const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
+
+    await sut.handle(request)
+
+    expect(filterSpy).toHaveBeenCalledWith(fakeUser)
+  })
+
   it('Should call ok with the correct value', async () => {
-    const { sut, fakeUser, httpHelper, request } = makeSut()
+    const { sut, fakePublicUser, httpHelper, request } = makeSut()
     const okSpy = jest.spyOn(httpHelper, 'ok')
 
     await sut.handle(request)
 
-    expect(okSpy).toHaveBeenCalledWith({ user: fakeUser, accessToken: 'any_token' })
+    expect(okSpy).toHaveBeenCalledWith({ user: fakePublicUser, accessToken: 'any_token' })
   })
 
   it('Should return ok if validation succeds', async () => {
-    const { sut, request, httpHelper, fakeUser } = makeSut()
+    const { sut, request, httpHelper, fakePublicUser } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ user: fakeUser, accessToken: 'any_token' }))
+    expect(response).toEqual(httpHelper.ok({ user: fakePublicUser, accessToken: 'any_token' }))
   })
 })

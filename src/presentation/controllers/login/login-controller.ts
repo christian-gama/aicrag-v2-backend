@@ -1,4 +1,5 @@
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { User } from '@/domain/user'
@@ -10,7 +11,8 @@ export class LoginController implements ControllerProtocol {
     private readonly accountDbRepository: AccountDbRepositoryProtocol,
     private readonly credentialsValidator: ValidatorProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly jwtAdapter: EncrypterProtocol
+    private readonly jwtAdapter: EncrypterProtocol,
+    private readonly filterUserData: FilterUserDataProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -24,6 +26,8 @@ export class LoginController implements ControllerProtocol {
 
     const accessToken = this.jwtAdapter.encryptId(user.personal.id)
 
-    return this.httpHelper.ok({ user, accessToken })
+    const filteredUser = this.filterUserData.filter(user)
+
+    return this.httpHelper.ok({ user: filteredUser, accessToken })
   }
 }
