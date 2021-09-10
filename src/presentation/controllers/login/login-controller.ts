@@ -1,10 +1,11 @@
+import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class LoginController implements ControllerProtocol {
   constructor (
+    private readonly accountDbRepository: AccountDbRepositoryProtocol,
     private readonly credentialsValidator: ValidatorProtocol,
     private readonly httpHelper: HttpHelperProtocol
   ) {}
@@ -16,7 +17,7 @@ export class LoginController implements ControllerProtocol {
 
     if (error) return this.httpHelper.notFound(error)
 
-    const user = makeFakeUser()
+    const user = await this.accountDbRepository.findAccountByEmail(credentials.email)
 
     const accessToken = 'any_token'
 
