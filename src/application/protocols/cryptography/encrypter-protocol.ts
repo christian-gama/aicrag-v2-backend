@@ -1,3 +1,3 @@
 export interface EncrypterProtocol {
-  encrypt: (value: string) => string
+  encryptId: (id: string) => string
 }
