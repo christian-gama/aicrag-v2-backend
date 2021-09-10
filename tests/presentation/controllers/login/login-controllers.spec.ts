@@ -41,4 +41,13 @@ describe('LoginController', () => {
 
     expect(encryptIdSpy).toHaveBeenCalledWith(fakeUser.personal.id)
   })
+
+  it('Should call ok with the correct value', async () => {
+    const { sut, fakeUser, httpHelper, request } = makeSut()
+    const okSpy = jest.spyOn(httpHelper, 'ok')
+
+    await sut.handle(request)
+
+    expect(okSpy).toHaveBeenCalledWith({ user: fakeUser, accessToken: 'any_token' })
+  })
 })
