@@ -5,6 +5,7 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 import { LoginController } from '@/presentation/controllers/login/login-controller'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 
 const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {
@@ -18,6 +19,16 @@ const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtoco
   }
 
   return new AccountDbRepositoryStub()
+}
+
+const makeJwtAdapterStub = (): EncrypterProtocol => {
+  class JwtAdapterStub implements EncrypterProtocol {
+    encryptId (id: string): string {
+      return 'any_token'
+    }
+  }
+
+  return new JwtAdapterStub()
 }
 
 const makeCredentialsValidatorStub = (): ValidatorProtocol => {
@@ -37,6 +48,7 @@ export interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   fakeUser: User
+  jwtAdapterStub: EncrypterProtocol
 }
 
 export const makeSut = (): SutTypes => {
@@ -44,13 +56,14 @@ export const makeSut = (): SutTypes => {
   const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
   const credentialsValidatorStub = makeCredentialsValidatorStub()
   const httpHelper = new HttpHelper()
+  const jwtAdapterStub = makeJwtAdapterStub()
   const request = {
     body: {
       email: fakeUser.personal.email,
       password: fakeUser.personal.password
     }
   }
-  const sut = new LoginController(accountDbRepositoryStub, credentialsValidatorStub, httpHelper)
+  const sut = new LoginController(accountDbRepositoryStub, credentialsValidatorStub, httpHelper, jwtAdapterStub)
 
-  return { sut, accountDbRepositoryStub, credentialsValidatorStub, httpHelper, request, fakeUser }
+  return { sut, accountDbRepositoryStub, credentialsValidatorStub, httpHelper, request, fakeUser, jwtAdapterStub }
 }
