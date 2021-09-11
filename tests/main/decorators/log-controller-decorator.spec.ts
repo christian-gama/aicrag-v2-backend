@@ -9,4 +9,12 @@ describe('LogControllerDecorator', () => {
 
     expect(saveLogSpy).toHaveBeenCalledWith(error)
   })
+
+  it('Should return a serverError as http response if statusCode is 500', async () => {
+    const { sut, error, httpHelper } = makeSut()
+
+    const response = await sut.handle({})
+
+    expect(response).toEqual(httpHelper.serverError(error))
+  })
 })

@@ -5,11 +5,14 @@ import { HttpHelper } from '@/presentation/http/helper/http-helper'
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
 import { makeFakeLogError } from '@/tests/domain/log/log-error-mock'
 import { LogErrorProtocol } from '@/domain/log/log-error-protocol'
+import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
+
+const httpHelper = makeHttpHelper()
 
 const makeControllerStub = (error: Error): ControllerProtocol => {
   class ControllerStub implements ControllerProtocol {
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-      return new HttpHelper().serverError(error)
+      return httpHelper.serverError(error)
     }
   }
 
@@ -30,6 +33,7 @@ interface SutTypes {
   sut: LogControllerDecorator
   error: Error
   controllerStub: ControllerProtocol
+  httpHelper: HttpHelper
   logErrorDbRepositoryStub: LogErrorDbRepositoryProtocol
 }
 
@@ -39,5 +43,5 @@ export const makeSut = (): SutTypes => {
   const logErrorDbRepositoryStub = makeLogErrorRepositoryStub(error)
   const sut = new LogControllerDecorator(controllerStub, logErrorDbRepositoryStub)
 
-  return { sut, error, controllerStub, logErrorDbRepositoryStub }
+  return { sut, error, controllerStub, httpHelper, logErrorDbRepositoryStub }
 }
