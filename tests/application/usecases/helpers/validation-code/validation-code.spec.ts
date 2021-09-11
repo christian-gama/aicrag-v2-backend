@@ -1,5 +1,5 @@
-import { config } from '@/tests/config'
 import { makeSut } from './mocks/validation-code-mock'
+import { config } from '@/tests/config'
 
 describe('CodeGenerator', () => {
   it('Should return 5 digits', () => {

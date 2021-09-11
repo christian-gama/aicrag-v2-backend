@@ -1,10 +1,10 @@
-import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { PublicUser, User, UserAccount } from '@/domain/user'
-import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
+import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { HttpHelper } from '@/presentation/http/helper/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
 import { makeFakePublicUser } from '@/tests/domain/mocks/public-user-mock'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
@@ -46,11 +46,11 @@ export interface SutTypes {
   sut: SignUpController
   accountDbRepositoryStub: AccountDbRepositoryProtocol
   accountValidatorStub: ValidatorProtocol
-  fakeUser: User
-  httpHelper: HttpHelperProtocol
-  filterUserDataStub: FilterUserDataProtocol
-  request: HttpRequest
   fakePublicUser: PublicUser
+  fakeUser: User
+  filterUserDataStub: FilterUserDataProtocol
+  httpHelper: HttpHelperProtocol
+  request: HttpRequest
 }
 
 export const makeSut = (): SutTypes => {
@@ -71,18 +71,18 @@ export const makeSut = (): SutTypes => {
   const sut = new SignUpController(
     accountDbRepositoryStub,
     accountValidatorStub,
-    httpHelper,
-    filterUserDataStub
+    filterUserDataStub,
+    httpHelper
   )
 
   return {
     sut,
     accountDbRepositoryStub,
     accountValidatorStub,
+    fakePublicUser,
     fakeUser,
-    httpHelper,
-    request,
     filterUserDataStub,
-    fakePublicUser
+    httpHelper,
+    request
   }
 }

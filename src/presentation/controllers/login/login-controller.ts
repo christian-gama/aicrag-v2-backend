@@ -10,9 +10,9 @@ export class LoginController implements ControllerProtocol {
   constructor (
     private readonly accountDbRepository: AccountDbRepositoryProtocol,
     private readonly credentialsValidator: ValidatorProtocol,
+    private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly jwtAdapter: EncrypterProtocol,
-    private readonly filterUserData: FilterUserDataProtocol
+    private readonly jwtAdapter: EncrypterProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

@@ -12,7 +12,7 @@ describe('SignUpController', () => {
   })
 
   it('Should return conflict if email exists', async () => {
-    const { sut, accountDbRepositoryStub, httpHelper, request, fakeUser } = makeSut()
+    const { sut, accountDbRepositoryStub, fakeUser, httpHelper, request } = makeSut()
     const error = new ConflictParamError('email')
     jest
       .spyOn(accountDbRepositoryStub, 'findAccountByEmail')
@@ -42,7 +42,7 @@ describe('SignUpController', () => {
   })
 
   it('Should call badRequest with the correct value', async () => {
-    const { sut, httpHelper, accountValidatorStub, request } = makeSut()
+    const { sut, accountValidatorStub, httpHelper, request } = makeSut()
 
     const error = new Error('any_error')
     jest.spyOn(accountValidatorStub, 'validate').mockReturnValueOnce(error)
@@ -55,7 +55,7 @@ describe('SignUpController', () => {
   })
 
   it('Should return badRequest if validation fails with an error message', async () => {
-    const { sut, accountValidatorStub, request, httpHelper } = makeSut()
+    const { sut, accountValidatorStub, httpHelper, request } = makeSut()
     const error = new InvalidParamError('any_field')
     jest.spyOn(accountValidatorStub, 'validate').mockReturnValueOnce(error)
 
@@ -74,7 +74,7 @@ describe('SignUpController', () => {
   })
 
   it('Should return ok if validation succeds', async () => {
-    const { sut, request, httpHelper, fakePublicUser } = makeSut()
+    const { sut, fakePublicUser, httpHelper, request } = makeSut()
 
     const response = await sut.handle(request)
 
@@ -82,7 +82,7 @@ describe('SignUpController', () => {
   })
 
   it('Should call serverError if there is an internal error', async () => {
-    const { sut, request, httpHelper, accountValidatorStub } = makeSut()
+    const { sut, accountValidatorStub, httpHelper, request } = makeSut()
     const error = new Error()
     jest
       .spyOn(accountValidatorStub, 'validate')

@@ -1,8 +1,8 @@
-import { ComparerProtocol } from '@/application/protocols/cryptography'
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { User } from '@/domain/user'
-import { UserCredentialError } from '../../errors'
+import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { ComparerProtocol } from '@/application/protocols/cryptography'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { UserCredentialError } from '@/application/usecases/errors'
 
 export class ValidateCredentials implements ValidatorProtocol {
   constructor (

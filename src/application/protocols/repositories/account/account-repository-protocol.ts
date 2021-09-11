@@ -1,5 +1,4 @@
-import { UserAccount } from '@/domain/user/user-account-protocol'
-import { User } from '@/domain/user/user-protocol'
+import { User, UserAccount } from '@/domain/user'
 
 export interface AccountRepositoryProtocol {
   createAccount: (account: UserAccount) => Promise<User>

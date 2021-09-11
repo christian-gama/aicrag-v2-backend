@@ -1,13 +1,12 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { User, UserAccount } from '@/domain/user'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
-import { ValidateActiveAccount } from '@/application/usecases/validators/credentials/validate-active-account'
+import {
+  ValidateActiveAccount,
+  ValidatorProtocol
+} from '@/application/usecases/validators/credentials/'
+import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
-const fakeUser = makeFakeUser()
-fakeUser.settings.accountActivated = true
-
-const makeAccountDbRepositoryStub = (): AccountDbRepositoryProtocol => {
+const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {
     async saveAccount (account: UserAccount): Promise<User> {
       return Promise.resolve(fakeUser)
@@ -28,7 +27,10 @@ interface SutTypes {
 }
 
 export const makeSut = (): SutTypes => {
-  const accountDbRepositoryStub = makeAccountDbRepositoryStub()
+  const fakeUser = makeFakeUser()
+  fakeUser.settings.accountActivated = true
+
+  const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
   const sut = new ValidateActiveAccount(accountDbRepositoryStub)
 
   return { sut, accountDbRepositoryStub, fakeUser }

@@ -1,11 +1,11 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ValidationComposite } from '@/application/usecases/validators/validation-composite'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import {
+  makeComparePasswords,
   makeRequiredFields,
-  makeValidateName,
   makeValidateEmail,
-  makeValidatePassword,
-  makeComparePasswords
+  makeValidateName,
+  makeValidatePassword
 } from '.'
 
 export const makeAccountValidatorComposite = (): ValidatorProtocol => {
@@ -16,6 +16,7 @@ export const makeAccountValidatorComposite = (): ValidatorProtocol => {
     validations.push(makeRequiredFields(field))
   }
 
+  // Must have this exact validation order
   validations.push(makeValidateName())
   validations.push(makeValidateEmail())
   validations.push(makeValidatePassword())

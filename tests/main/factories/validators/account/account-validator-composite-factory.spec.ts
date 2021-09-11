@@ -1,7 +1,6 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { ValidationComposite } from '@/application/usecases/validators/validation-composite'
-import { makeAccountValidatorComposite } from '@/main/factories/validators/account-validator/account-validator-composite-factory'
+import { ValidationComposite, ValidatorProtocol } from '@/application/usecases/validators/account'
 import {
+  makeAccountValidatorComposite,
   makeRequiredFields,
   makeValidateName,
   makeValidateEmail,

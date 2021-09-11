@@ -1,3 +1,4 @@
+export * from './account-validator-composite-factory'
 export * from './compare-passwords-factory'
 export * from './required-fields-factory'
 export * from './validate-email-factory'

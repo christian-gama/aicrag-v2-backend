@@ -1,8 +1,6 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ValidationComposite } from '@/application/usecases/validators/validation-composite'
-import { makeValidateActiveAccount } from '.'
-import { makeRequiredFields, makeValidateEmail, makeValidatePassword } from '../account-validator'
-import { makeValidateCredentials } from './validate-credential-factory'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { makeValidateActiveAccount, makeValidateCredentials, makeRequiredFields, makeValidateEmail, makeValidatePassword } from '.'
 
 export const makeCredentialsValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
@@ -12,6 +10,7 @@ export const makeCredentialsValidatorComposite = (): ValidatorProtocol => {
     validations.push(makeRequiredFields(field))
   }
 
+  // Must have this exact validation order
   validations.push(makeValidateEmail())
   validations.push(makeValidatePassword())
   validations.push(makeValidateCredentials())

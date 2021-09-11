@@ -1,9 +1,11 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { EmailValidator } from '@/application/protocols/validators/email-validator/email-validator-protocol'
-import { ValidateEmail } from '@/application/usecases/validators/account'
+import {
+  ValidateEmail,
+  ValidatorProtocol,
+  EmailValidatorProtocol
+} from '@/application/usecases/validators/account'
 
-const makeEmailValidatorStub = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
+const makeEmailValidatorStub = (): EmailValidatorProtocol => {
+  class EmailValidatorStub implements EmailValidatorProtocol {
     isEmail (value: string): boolean {
       return true
     }
@@ -14,7 +16,7 @@ const makeEmailValidatorStub = (): EmailValidator => {
 
 interface SutTypes {
   sut: ValidatorProtocol
-  emailValidatorStub: EmailValidator
+  emailValidatorStub: EmailValidatorProtocol
 }
 
 export const makeSut = (): SutTypes => {

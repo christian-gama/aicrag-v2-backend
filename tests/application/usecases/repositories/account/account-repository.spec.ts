@@ -1,12 +1,12 @@
-import { fakeValidAccount } from '@/tests/domain/mocks/account-mock'
 import { makeSut } from './mocks/account-repository-mock'
+import { makeFakeValidAccount } from '@/tests/domain/mocks/account-mock'
 
 describe('AccountRepository', () => {
   it('Should return a user with correct values', async () => {
-    const { sut, validationCodeStub, hasherStub, uuidStub } = makeSut()
-    const account = fakeValidAccount
+    const { sut, activationCodeStub, hasherStub, uuidStub } = makeSut()
+    const account = makeFakeValidAccount()
+    const fakeActivationCode = activationCodeStub.generate()
     const fakeHashedPassword = await hasherStub.hash(account.password)
-    const fakeActivationCode = validationCodeStub.generate()
     const fakeId = uuidStub.generate()
 
     const user = await sut.createAccount(account)
@@ -30,7 +30,7 @@ describe('AccountRepository', () => {
 
   it('Should call hash with correct values', async () => {
     const { sut, hasherStub } = makeSut()
-    const account = fakeValidAccount
+    const account = makeFakeValidAccount()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
 
     await sut.createAccount(account)

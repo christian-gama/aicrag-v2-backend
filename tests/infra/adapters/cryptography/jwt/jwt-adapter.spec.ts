@@ -1,8 +1,9 @@
 import { makeSut } from './mocks/jwt-adapter-mock'
+
 import jwt from 'jsonwebtoken'
 
 describe('JwtAdapter', () => {
-  describe('Decode', () => {
+  describe('decode', () => {
     it('Should return an id if signature is valid', async () => {
       const { sut, token } = makeSut()
 
@@ -12,7 +13,7 @@ describe('JwtAdapter', () => {
     })
   })
 
-  describe('Encrypt', () => {
+  describe('encrypt', () => {
     it('Should call sign with correct value', () => {
       const { sut, secret, expires } = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')

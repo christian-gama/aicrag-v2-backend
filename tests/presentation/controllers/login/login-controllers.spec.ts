@@ -30,7 +30,7 @@ describe('LoginController', () => {
   })
 
   it('Should call badRequest with the correct value if it is an InvalidParamError', async () => {
-    const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
+    const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
 
     const error = new InvalidParamError('email')
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
@@ -43,7 +43,7 @@ describe('LoginController', () => {
   })
 
   it('Should call badRequest with the correct value if it is a MissingParamError', async () => {
-    const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
+    const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
 
     const error = new MissingParamError('email')
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
@@ -56,7 +56,7 @@ describe('LoginController', () => {
   })
 
   it('Should call forbidden with the correct value if it is an InactiveAccountError', async () => {
-    const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
+    const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
 
     const error = new InactiveAccountError()
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
@@ -78,7 +78,7 @@ describe('LoginController', () => {
   })
 
   it('Should call the encryptId with correct values', async () => {
-    const { sut, jwtAdapterStub, request, fakeUser } = makeSut()
+    const { sut, fakeUser, jwtAdapterStub, request } = makeSut()
     const encryptIdSpy = jest.spyOn(jwtAdapterStub, 'encryptId')
 
     await sut.handle(request)
@@ -87,7 +87,7 @@ describe('LoginController', () => {
   })
 
   it('Should call the filter with correct user', async () => {
-    const { sut, filterUserDataStub, request, fakeUser } = makeSut()
+    const { sut, fakeUser, filterUserDataStub, request } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
     await sut.handle(request)
@@ -105,7 +105,7 @@ describe('LoginController', () => {
   })
 
   it('Should return ok if validation succeds', async () => {
-    const { sut, request, httpHelper, fakePublicUser } = makeSut()
+    const { sut, fakePublicUser, httpHelper, request } = makeSut()
 
     const response = await sut.handle(request)
 
@@ -113,7 +113,7 @@ describe('LoginController', () => {
   })
 
   it('Should call serverError if there is an internal error', async () => {
-    const { sut, request, httpHelper, credentialsValidatorStub } = makeSut()
+    const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
     const error = new Error()
     jest
       .spyOn(credentialsValidatorStub, 'validate')

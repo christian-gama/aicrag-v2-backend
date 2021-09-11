@@ -1,8 +1,20 @@
+import {
+  AccountRepositoryProtocol,
+  AccountRepository
+} from '@/application/usecases/repositories/account/'
 import { HasherProtocol } from '@/application/protocols/cryptography/hasher-protocol'
-import { IUuid } from '@/application/protocols/helpers/uuid/uuid-protocol'
-import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
+import { UuidProtocol } from '@/application/protocols/helpers/uuid/uuid-protocol'
 import { ValidationCode } from '@/application/usecases/helpers/validation-code/validation-code'
-import { AccountRepository } from '@/application/usecases/repositories/account/account-repository'
+
+const makeActivationCodeStub = (): ValidationCode => {
+  class ActivationCodeStub implements ValidationCode {
+    generate (): string {
+      return 'a1b2e'
+    }
+  }
+
+  return new ActivationCodeStub()
+}
 
 const makeHasherStub = (): HasherProtocol => {
   class HasherStub implements HasherProtocol {
@@ -14,38 +26,28 @@ const makeHasherStub = (): HasherProtocol => {
   return new HasherStub()
 }
 
-const makeValidationCodeStub = (): ValidationCode => {
-  class ValidationCodeStub implements ValidationCode {
-    generate (): string {
-      return 'a1b2e'
-    }
-  }
-
-  return new ValidationCodeStub()
-}
-
-const makeUuidStub = (): IUuid => {
-  class IUuidStub implements IUuid {
+const makeUuidStub = (): UuidProtocol => {
+  class UuidProtocolStub implements UuidProtocol {
     generate (): string {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
     }
   }
 
-  return new IUuidStub()
+  return new UuidProtocolStub()
 }
 
 interface SutTypes {
   sut: AccountRepositoryProtocol
+  activationCodeStub: ValidationCode
   hasherStub: HasherProtocol
-  validationCodeStub: ValidationCode
-  uuidStub: IUuid
+  uuidStub: UuidProtocol
 }
 
 export const makeSut = (): SutTypes => {
   const hasherStub = makeHasherStub()
-  const validationCodeStub = makeValidationCodeStub()
+  const activationCodeStub = makeActivationCodeStub()
   const uuidStub = makeUuidStub()
-  const sut = new AccountRepository(hasherStub, validationCodeStub, uuidStub)
+  const sut = new AccountRepository(activationCodeStub, hasherStub, uuidStub)
 
-  return { sut, hasherStub, validationCodeStub, uuidStub }
+  return { sut, activationCodeStub, hasherStub, uuidStub }
 }

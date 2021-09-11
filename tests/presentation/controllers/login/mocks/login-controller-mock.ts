@@ -1,13 +1,13 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { PublicUser, User, UserAccount } from '@/domain/user'
-import { HttpHelper } from '@/presentation/http/helper/http-helper'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
-import { LoginController } from '@/presentation/controllers/login/login-controller'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { HttpHelper } from '@/presentation/http/helper/http-helper'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { LoginController } from '@/presentation/controllers/login/login-controller'
 import { makeFakePublicUser } from '@/tests/domain/mocks/public-user-mock'
+import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
 const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {
@@ -21,16 +21,6 @@ const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtoco
   }
 
   return new AccountDbRepositoryStub()
-}
-
-const makeJwtAdapterStub = (): EncrypterProtocol => {
-  class JwtAdapterStub implements EncrypterProtocol {
-    encryptId (id: string): string {
-      return 'any_token'
-    }
-  }
-
-  return new JwtAdapterStub()
 }
 
 const makeCredentialsValidatorStub = (): ValidatorProtocol => {
@@ -53,16 +43,26 @@ const makeFilterUserDataStub = (fakeUser: User): FilterUserDataProtocol => {
   return new FilterUserDataStub()
 }
 
+const makeJwtAdapterStub = (): EncrypterProtocol => {
+  class JwtAdapterStub implements EncrypterProtocol {
+    encryptId (id: string): string {
+      return 'any_token'
+    }
+  }
+
+  return new JwtAdapterStub()
+}
+
 export interface SutTypes {
   sut: LoginController
   accountDbRepositoryStub: AccountDbRepositoryProtocol
   credentialsValidatorStub: ValidatorProtocol
-  httpHelper: HttpHelperProtocol
-  request: HttpRequest
-  fakeUser: User
-  jwtAdapterStub: EncrypterProtocol
-  filterUserDataStub: FilterUserDataProtocol
   fakePublicUser: PublicUser
+  fakeUser: User
+  filterUserDataStub: FilterUserDataProtocol
+  httpHelper: HttpHelperProtocol
+  jwtAdapterStub: EncrypterProtocol
+  request: HttpRequest
 }
 
 export const makeSut = (): SutTypes => {
@@ -82,20 +82,20 @@ export const makeSut = (): SutTypes => {
   const sut = new LoginController(
     accountDbRepositoryStub,
     credentialsValidatorStub,
+    filterUserDataStub,
     httpHelper,
-    jwtAdapterStub,
-    filterUserDataStub
+    jwtAdapterStub
   )
 
   return {
     sut,
     accountDbRepositoryStub,
     credentialsValidatorStub,
-    httpHelper,
-    request,
+    fakePublicUser,
     fakeUser,
-    jwtAdapterStub,
     filterUserDataStub,
-    fakePublicUser
+    httpHelper,
+    jwtAdapterStub,
+    request
   }
 }

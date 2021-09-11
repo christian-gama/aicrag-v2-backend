@@ -1,5 +1,14 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { ValidationComposite } from '@/application/usecases/validators/account'
+import { ValidationComposite, ValidatorProtocol } from '@/application/usecases/validators/account'
+
+export const makeValidationStub = (): ValidatorProtocol => {
+  class ValidationStub implements ValidatorProtocol {
+    validate (input: any): Error | undefined {
+      return undefined
+    }
+  }
+
+  return new ValidationStub()
+}
 
 interface SutTypes {
   sut: ValidatorProtocol
@@ -11,14 +20,4 @@ export const makeSut = (): SutTypes => {
   const sut = new ValidationComposite(validationStubs)
 
   return { sut, validationStubs }
-}
-
-export const makeValidationStub = (): ValidatorProtocol => {
-  class ValidationStub implements ValidatorProtocol {
-    validate (input: any): Error | undefined {
-      return undefined
-    }
-  }
-
-  return new ValidationStub()
 }

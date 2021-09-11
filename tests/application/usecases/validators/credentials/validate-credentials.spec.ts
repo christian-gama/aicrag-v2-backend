@@ -1,4 +1,3 @@
-// import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 import { UserCredentialError } from '@/application/usecases/errors'
 import { makeSut } from './mocks/validate-credentials-mock'
 

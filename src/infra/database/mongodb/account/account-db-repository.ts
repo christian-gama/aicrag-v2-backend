@@ -1,7 +1,7 @@
+import { UserAccount, User } from '@/domain/user'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
-import { UserAccount, User } from '@/domain/user'
-import { MongoHelper } from '../helper/mongo-helper'
+import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 export class AccountDbRepository implements AccountDbRepositoryProtocol {
   constructor (private readonly accountRepository: AccountRepositoryProtocol) {}

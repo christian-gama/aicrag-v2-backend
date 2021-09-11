@@ -10,6 +10,9 @@ export interface HttpHelperProtocol
   HttpCreatedProtocol,
   HttpDeletedProtocol,
   HttpServerErrorProtocol {}
+
+// ****************
+// Range: 400 ~ 409
 export interface HttpBadRequestProtocol {
   badRequest: (error: Error) => HttpResponse
 }
@@ -30,6 +33,8 @@ export interface HttpConflictProtocol {
   conflict: (error: Error) => HttpResponse
 }
 
+// ****************
+// Range: 200 ~ 204
 export interface HttpOkProtocol {
   ok: (data: any, accessToken?: string) => HttpResponse
 }
@@ -42,6 +47,8 @@ export interface HttpDeletedProtocol {
   deleted: () => HttpResponse
 }
 
+// ****************
+// Range: 500
 export interface HttpServerErrorProtocol {
   serverError: (error: Error) => HttpResponse
 }

@@ -1,14 +1,14 @@
 import {
   HttpBadRequestProtocol,
-  HttpConflictProtocol,
-  HttpCreatedProtocol,
-  HttpDeletedProtocol,
+  HttpUnauthorizedProtocol,
   HttpForbiddenProtocol,
   HttpNotFoundProtocol,
+  HttpConflictProtocol,
   HttpOkProtocol,
-  HttpResponse,
-  HttpUnauthorizedProtocol,
-  HttpServerErrorProtocol
+  HttpCreatedProtocol,
+  HttpDeletedProtocol,
+  HttpServerErrorProtocol,
+  HttpResponse
 } from '../protocols'
 
 export class HttpHelper
@@ -22,8 +22,11 @@ implements
     HttpCreatedProtocol,
     HttpDeletedProtocol,
     HttpServerErrorProtocol {
+  // ****************
+  // Range: 400 ~ 409
   badRequest (error: Error): HttpResponse {
     return {
+      status: 'fail',
       statusCode: 400,
       data: { message: error.message }
     }
@@ -31,6 +34,7 @@ implements
 
   unauthorized (error: Error): HttpResponse {
     return {
+      status: 'fail',
       statusCode: 401,
       data: { message: error.message }
     }
@@ -38,6 +42,7 @@ implements
 
   forbidden (error: Error): HttpResponse {
     return {
+      status: 'fail',
       statusCode: 403,
       data: { message: error.message }
     }
@@ -45,6 +50,7 @@ implements
 
   notFound (error: Error): HttpResponse {
     return {
+      status: 'fail',
       statusCode: 404,
       data: { message: error.message }
     }
@@ -52,27 +58,33 @@ implements
 
   conflict (error: Error): HttpResponse {
     return {
+      status: 'fail',
       statusCode: 409,
       data: { message: error.message }
     }
   }
 
+  // ****************
+  // Range: 200 ~ 204
   ok (data: any, accessToken?: string): HttpResponse {
-    if (accessToken) return { statusCode: 200, data, accessToken }
+    if (accessToken) return { status: 'success', statusCode: 200, data, accessToken }
 
-    return { statusCode: 200, data }
+    return { status: 'success', statusCode: 200, data }
   }
 
   created (data: any): HttpResponse {
-    return { statusCode: 201, data }
+    return { status: 'success', statusCode: 201, data }
   }
 
   deleted (): HttpResponse {
-    return { statusCode: 204, data: { message: 'Content deleted' } }
+    return { status: 'success', statusCode: 204, data: { message: 'Content deleted' } }
   }
 
+  // ****************
+  // Range: 500
   serverError (error: Error): HttpResponse {
     return {
+      status: 'fail',
       statusCode: 500,
       data: { message: error.message }
     }

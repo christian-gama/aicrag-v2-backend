@@ -1,6 +1,7 @@
-import { env } from '@/main/config/env'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { env } from '@/main/config/env'
+
 import { Request, Response } from 'express'
 
 export const adaptRoutes = (controller: ControllerProtocol) => {
@@ -11,13 +12,18 @@ export const adaptRoutes = (controller: ControllerProtocol) => {
 
     if (httpResponse.accessToken) {
       res.cookie('jwt', httpResponse.accessToken, {
-        maxAge: +env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
+        maxAge: +env.COOKIES.EXPIRES * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: env.NODE_ENV === 'production'
+        secure: env.SERVER.NODE_ENV === 'production'
       })
     }
 
+    const jsonResponse = {
+      status: httpResponse.status,
+      data: httpResponse.data
+    }
+
     res.status(httpResponse.statusCode)
-    res.json(httpResponse.data)
+    res.json(jsonResponse)
   }
 }

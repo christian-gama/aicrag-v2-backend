@@ -1,7 +1,7 @@
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { User } from '@/domain/user'
-import { InactiveAccountError } from '../../errors'
+import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { InactiveAccountError } from '@/application/usecases/errors'
+import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 
 export class ValidateActiveAccount implements ValidatorProtocol {
   constructor (private readonly accountDbRepository: AccountDbRepositoryProtocol) {}

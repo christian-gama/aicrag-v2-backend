@@ -2,14 +2,14 @@ import { ComparerProtocol, HasherProtocol } from '@/application/protocols/crypto
 
 import bcrypt from 'bcrypt'
 
-export class BcryptAdapter implements HasherProtocol, ComparerProtocol {
+export class BcryptAdapter implements ComparerProtocol, HasherProtocol {
   constructor (private readonly salt: number) {}
-
-  async hash (value: string): Promise<string> {
-    return await bcrypt.hash(value, this.salt)
-  }
 
   async compare (value: string, valueToCompare: string): Promise<boolean> {
     return await bcrypt.compare(value, valueToCompare)
+  }
+
+  async hash (value: string): Promise<string> {
+    return await bcrypt.hash(value, this.salt)
   }
 }

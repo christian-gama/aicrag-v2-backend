@@ -1,21 +1,11 @@
+import { User, UserAccount } from '@/domain/user'
+import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ComparerProtocol } from '@/application/protocols/cryptography/'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { User, UserAccount } from '@/domain/user'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 import { ValidateCredentials } from '@/application/usecases/validators/credentials/validate-credentials'
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
 const fakeUser = makeFakeUser()
-
-const makeComparerStub = (): ComparerProtocol => {
-  class ComparerStub implements ComparerProtocol {
-    async compare (value: string, valueToCompare: string): Promise<boolean> {
-      return Promise.resolve(true)
-    }
-  }
-
-  return new ComparerStub()
-}
 
 const makeAccountDbRepositoryStub = (): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {
@@ -29,6 +19,16 @@ const makeAccountDbRepositoryStub = (): AccountDbRepositoryProtocol => {
   }
 
   return new AccountDbRepositoryStub()
+}
+
+const makeComparerStub = (): ComparerProtocol => {
+  class ComparerStub implements ComparerProtocol {
+    async compare (value: string, valueToCompare: string): Promise<boolean> {
+      return Promise.resolve(true)
+    }
+  }
+
+  return new ComparerStub()
 }
 
 interface SutTypes {

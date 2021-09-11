@@ -1,5 +1,5 @@
-import { config } from '@/tests/config'
 import { makeSut } from './mocks/uiid-mock'
+import { config } from '@/tests/config'
 
 describe('Uiid', () => {
   it('Should return an uiid with 24 digits', () => {

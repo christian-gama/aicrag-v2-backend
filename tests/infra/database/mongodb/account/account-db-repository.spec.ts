@@ -1,13 +1,15 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { fakeValidAccount } from '@/tests/domain/mocks/account-mock'
-import { Collection } from 'mongodb'
+import { env } from '@/main/config/env'
 import { makeSut } from './mocks/account-db-repository-mock'
+import { makeFakeValidAccount } from '@/tests/domain/mocks/account-mock'
 
-let accountCollection: Collection
+import { Collection } from 'mongodb'
 
 describe('AccountDbRepository', () => {
+  let accountCollection: Collection
+
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string)
+    await MongoHelper.connect(env.DB.MONGO_URL)
   })
 
   afterAll(async () => {
@@ -19,46 +21,50 @@ describe('AccountDbRepository', () => {
     await accountCollection.deleteMany({})
   })
 
-  it('Should create a user on success of saveAccount', async () => {
-    const { sut, fakeUser } = makeSut()
-    const user = await sut.saveAccount(fakeValidAccount)
+  describe('saveAccount', () => {
+    it('Should create a user on success', async () => {
+      const { sut, fakeUser } = makeSut()
+      const user = await sut.saveAccount(makeFakeValidAccount())
 
-    expect(user).toHaveProperty('_id')
-    expect(user.personal).toEqual({
-      id: fakeUser.personal.id,
-      name: fakeUser.personal.name,
-      email: fakeUser.personal.email,
-      password: fakeUser.personal.password
+      expect(user).toHaveProperty('_id')
+      expect(user.personal).toEqual({
+        id: fakeUser.personal.id,
+        name: fakeUser.personal.name,
+        email: fakeUser.personal.email,
+        password: fakeUser.personal.password
+      })
+
+      expect(user.settings).toEqual({
+        accountActivated: fakeUser.settings.accountActivated,
+        handicap: fakeUser.settings.handicap,
+        currency: fakeUser.settings.currency
+      })
+
+      expect(user.logs).toEqual({
+        createdAt: fakeUser.logs.createdAt,
+        lastLoginAt: fakeUser.logs.lastLoginAt,
+        lastSeenAt: fakeUser.logs.lastSeenAt,
+        updatedAt: fakeUser.logs.updatedAt
+      })
+
+      expect(user.temporary?.activationCode).toBe(fakeUser.temporary?.activationCode)
     })
-
-    expect(user.settings).toEqual({
-      accountActivated: fakeUser.settings.accountActivated,
-      handicap: fakeUser.settings.handicap,
-      currency: fakeUser.settings.currency
-    })
-
-    expect(user.logs).toEqual({
-      createdAt: fakeUser.logs.createdAt,
-      lastLoginAt: fakeUser.logs.lastLoginAt,
-      lastSeenAt: fakeUser.logs.lastSeenAt,
-      updatedAt: fakeUser.logs.updatedAt
-    })
-
-    expect(user.temporary?.activationCode).toBe(fakeUser.temporary?.activationCode)
   })
 
-  it('Should return a user if findAccountByEmail finds a user', async () => {
-    const { sut } = makeSut()
-    const user = await sut.saveAccount(fakeValidAccount)
-    const user2 = await sut.findAccountByEmail(user.personal.email)
+  describe('findAccountByEmail', () => {
+    it('Should return a user if findAccountByEmail finds a user', async () => {
+      const { sut } = makeSut()
+      const user = await sut.saveAccount(makeFakeValidAccount())
+      const user2 = await sut.findAccountByEmail(user.personal.email)
 
-    expect(user2).toHaveProperty('_id')
-  })
+      expect(user2).toHaveProperty('_id')
+    })
 
-  it('Should return undefined if does not findAccountByEmail finds a user', async () => {
-    const { sut } = makeSut()
-    const user = await sut.findAccountByEmail('non_existent@email.com')
+    it('Should return undefined if does not findAccountByEmail finds a user', async () => {
+      const { sut } = makeSut()
+      const user = await sut.findAccountByEmail('non_existent@email.com')
 
-    expect(user).toBe(undefined)
+      expect(user).toBe(undefined)
+    })
   })
 })

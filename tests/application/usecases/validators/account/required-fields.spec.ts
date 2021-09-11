@@ -1,5 +1,5 @@
-import { RequiredFields } from '@/application/usecases/validators/account/'
 import { MissingParamError } from '@/application/usecases/errors'
+import { RequiredFields } from '@/application/usecases/validators/account/'
 
 import faker from 'faker'
 

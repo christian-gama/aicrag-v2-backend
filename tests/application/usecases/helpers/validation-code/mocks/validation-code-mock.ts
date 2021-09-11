@@ -1,5 +1,4 @@
-import { ValidationCodeProtocol } from '@/application/protocols/helpers/validation-code/validation-code'
-import { ValidationCode } from '@/application/usecases/helpers/validation-code/validation-code'
+import { ValidationCode, ValidationCodeProtocol } from '@/application/usecases/helpers/validation-code/'
 
 export const makeSut = (): ValidationCodeProtocol => {
   const sut = new ValidationCode()

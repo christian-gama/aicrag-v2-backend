@@ -1,5 +1,6 @@
+import { bodyParser, cookieParser, cors, urlEncoded } from '../middlewares'
+
 import { Express } from 'express'
-import { bodyParser, urlEncoded, cors, cookieParser } from '../middlewares'
 
 export default (app: Express): void => {
   app.use(cookieParser)

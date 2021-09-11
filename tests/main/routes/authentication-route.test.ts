@@ -1,15 +1,16 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { fakeValidAccount } from '@/tests/domain/mocks/account-mock'
+import app from '@/main/config/app'
+import { config } from '@/tests/config'
+import { makeFakeValidAccount } from '@/tests/domain/mocks/account-mock'
 import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import app from '@/main/config/app'
 import { hash } from 'bcrypt'
-import { config } from '@/tests/config'
 
-let accountCollection: Collection
 describe('Authentication routes', () => {
+  let accountCollection: Collection
+
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
   })
@@ -23,10 +24,10 @@ describe('Authentication routes', () => {
     await accountCollection.deleteMany({})
   })
 
-  describe('SignUp', () => {
+  describe('POST /signup', () => {
     for (let i = 0; i < config.loopTimes; i++) {
       it('Should return 200 if all validations succeds', async () => {
-        await request(app).post('/api/auth/signup').send(fakeValidAccount).expect(200)
+        await request(app).post('/api/auth/signup').send(makeFakeValidAccount()).expect(200)
       })
 
       it('Should return 400 if validation fails', async () => {
@@ -48,7 +49,7 @@ describe('Authentication routes', () => {
     }
   })
 
-  describe('Login', () => {
+  describe('POST /login', () => {
     for (let i = 0; i < config.loopTimes; i++) {
       it('Should return 200 if all validations succeds', async () => {
         const fakeUser = makeFakeUser()

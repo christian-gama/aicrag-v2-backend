@@ -1,7 +1,6 @@
-import { IUuid } from '@/application/protocols/helpers/uuid/uuid-protocol'
-import { Uuid } from '@/application/usecases/helpers/uuid/uuid'
+import { Uuid, UuidProtocol } from '@/application/usecases/helpers/uuid/'
 
-export const makeSut = (): IUuid => {
+export const makeSut = (): UuidProtocol => {
   const sut = new Uuid()
 
   return sut

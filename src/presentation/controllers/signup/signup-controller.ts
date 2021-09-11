@@ -3,14 +3,14 @@ import { AccountDbRepositoryProtocol } from '@/application/protocols/repositorie
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ConflictParamError } from '@/application/usecases/errors/'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 export class SignUpController implements ControllerProtocol {
   constructor (
     private readonly accountDbRepository: AccountDbRepositoryProtocol,
     private readonly accountValidator: ValidatorProtocol,
-    private readonly httpHelper: HttpHelperProtocol,
-    private readonly filterUserData: FilterUserDataProtocol
+    private readonly filterUserData: FilterUserDataProtocol,
+    private readonly httpHelper: HttpHelperProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
