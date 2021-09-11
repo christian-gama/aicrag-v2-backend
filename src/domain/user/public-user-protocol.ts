@@ -1,5 +1,8 @@
 import { User } from './user-protocol'
 
+/**
+ * @description Interface used to create a public user, which has hidden sensitive data.
+ */
 export interface PublicUser {
   personal: {
     id: User['personal']['id']

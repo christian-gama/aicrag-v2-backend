@@ -1,3 +1,8 @@
+/**
+ * @description Contain alphanumerics inside of an array from 0-9 to a-z.
+ * @returns Returns one random alphanumeric (0-9a-z)
+ */
+
 export const randomAlphanumeric = (): string => {
   const alphanumerics = [
     '0',
