@@ -17,13 +17,13 @@ export class SignUpController implements ControllerProtocol {
     try {
       const account = httpRequest.body
 
+      const error = await this.accountValidator.validate(account)
+
       const emailExists = await this.accountDbRepository.findAccountByEmail(account.email)
 
       if (emailExists) {
         return this.httpHelper.conflict(new ConflictParamError('email'))
       }
-
-      const error = await this.accountValidator.validate(account)
 
       if (error) {
         return this.httpHelper.badRequest(error)
