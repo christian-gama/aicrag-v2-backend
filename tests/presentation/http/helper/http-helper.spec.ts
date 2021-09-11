@@ -104,7 +104,7 @@ describe('HttpHelper', () => {
       const error = new InternalError()
       const response = sut.serverError(error)
 
-      expect(response).toEqual({ status: 'fail', statusCode: 500, data: { message: error.message } })
+      expect(response).toEqual({ status: 'fail', statusCode: 500, data: { error } })
     })
   })
 })
