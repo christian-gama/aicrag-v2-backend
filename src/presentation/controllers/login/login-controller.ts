@@ -20,7 +20,24 @@ export class LoginController implements ControllerProtocol {
 
     const error = await this.credentialsValidator.validate(credentials)
 
-    if (error) return this.httpHelper.notFound(error)
+    if (error) {
+      let response: HttpResponse
+      switch (error.name) {
+        case 'InvalidParamError':
+          response = this.httpHelper.badRequest(error)
+          break
+        case 'MissingParamError':
+          response = this.httpHelper.badRequest(error)
+          break
+        case 'UserCredentialError':
+          response = this.httpHelper.notFound(error)
+          break
+        default:
+          response = this.httpHelper.forbidden(error)
+      }
+
+      return response
+    }
 
     const user = (await this.accountDbRepository.findAccountByEmail(credentials.email)) as User
 
