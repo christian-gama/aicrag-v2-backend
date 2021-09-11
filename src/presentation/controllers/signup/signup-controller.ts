@@ -14,24 +14,28 @@ export class SignUpController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const account = httpRequest.body
+    try {
+      const account = httpRequest.body
 
-    const emailExists = await this.accountDbRepository.findAccountByEmail(account.email)
+      const emailExists = await this.accountDbRepository.findAccountByEmail(account.email)
 
-    if (emailExists) {
-      return this.httpHelper.conflict(new ConflictParamError('email'))
+      if (emailExists) {
+        return this.httpHelper.conflict(new ConflictParamError('email'))
+      }
+
+      const error = await this.accountValidator.validate(account)
+
+      if (error) {
+        return this.httpHelper.badRequest(error)
+      }
+
+      const user = await this.accountDbRepository.saveAccount(account)
+
+      const filteredUser = this.filterUserData.filter(user)
+
+      return this.httpHelper.ok({ user: filteredUser })
+    } catch (error) {
+      return this.httpHelper.serverError(error)
     }
-
-    const error = await this.accountValidator.validate(account)
-
-    if (error) {
-      return this.httpHelper.badRequest(error)
-    }
-
-    const user = await this.accountDbRepository.saveAccount(account)
-
-    const filteredUser = this.filterUserData.filter(user)
-
-    return this.httpHelper.ok({ user: filteredUser })
   }
 }
