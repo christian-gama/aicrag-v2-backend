@@ -86,7 +86,7 @@ implements
     return {
       status: 'fail',
       statusCode: 500,
-      data: { error }
+      data: { error: { name: error.name, message: error.message, stack: error.stack } }
     }
   }
 }

@@ -4,18 +4,28 @@ describe('LogControllerDecorator', () => {
   it('Should call logErrorDbRepository with correct error', async () => {
     const { sut, error, logErrorDbRepositoryStub } = makeSut()
     const saveLogSpy = jest.spyOn(logErrorDbRepositoryStub, 'saveLog')
+    const errorData = {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    }
 
     await sut.handle({})
 
-    expect(saveLogSpy).toHaveBeenCalledWith(error)
+    expect(saveLogSpy).toHaveBeenCalledWith(errorData)
   })
 
   it('Should return a serverError as http response if statusCode is 500', async () => {
     const { sut, error, httpHelper } = makeSut()
+    const errorData = {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    }
 
     const response = await sut.handle({})
 
-    expect(response).toEqual(httpHelper.serverError(error))
+    expect(response).toEqual(httpHelper.serverError(errorData))
   })
 
   it('Should return any http response', async () => {
