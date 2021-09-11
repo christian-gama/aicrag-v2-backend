@@ -1,5 +1,5 @@
 import { ControllerProtocol, LoginController } from '@/presentation/controllers/login/'
-import { makeAccountDbRepository } from '@/main/factories/repositories/account-db-repository/account-db-repository-factory'
+import { makeAccountDbRepository } from '@/main/factories/repositories/account/account-db-repository/account-db-repository-factory'
 import { makeCredentialsValidatorComposite } from '@/main/factories/validators/credentials-validator/credentials-validator-composite-factory'
 import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-factory'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
