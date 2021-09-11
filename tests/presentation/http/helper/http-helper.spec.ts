@@ -1,6 +1,7 @@
 import { makeSut } from './mocks/http-helper-mock'
 
 import faker from 'faker'
+import { InternalError } from '@/application/usecases/errors'
 
 describe('HttpHelper', () => {
   it('Should return 400 and an error message when calls badRequest', () => {
@@ -81,5 +82,14 @@ describe('HttpHelper', () => {
     const response = sut.deleted()
 
     expect(response).toEqual({ statusCode: 204, data: { message: 'Content deleted' } })
+  })
+
+  it('Should return 500 when call serverError', () => {
+    const sut = makeSut()
+
+    const error = new InternalError()
+    const response = sut.serverError(error)
+
+    expect(response).toEqual({ statusCode: 500, data: { message: error.message } })
   })
 })
