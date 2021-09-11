@@ -19,4 +19,8 @@ describe('CookieParser', () => {
   it('Should save cookies', async () => {
     await agent.get('/save_cookie').expect('set-cookie', 'any_cookie=any_value; Path=/')
   })
+
+  it('Should send cookies', async () => {
+    await agent.get('/send_cookie').expect('any_value')
+  })
 })
