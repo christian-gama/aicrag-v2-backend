@@ -46,6 +46,10 @@ describe('Authentication routes', () => {
 
         await request(app).post('/api/auth/signup').send(fakeAccount).expect(409)
       })
+
+      it('Should return 400 if miss a param or param is invalid', async () => {
+        await request(app).post('/api/auth/signup').send().expect(400)
+      })
     }
   })
 
@@ -88,7 +92,7 @@ describe('Authentication routes', () => {
       })
 
       it('Should return 400 if miss a param or param is invalid', async () => {
-        await request(app).post('/api/auth/login').send({}).expect(400)
+        await request(app).post('/api/auth/login').send().expect(400)
       })
     }
   })
