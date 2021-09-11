@@ -1,3 +1,3 @@
 export const config = {
-  loopTimes: 5
+  loopTimes: +(process.env.LOOP_TIME ?? '1')
 }
