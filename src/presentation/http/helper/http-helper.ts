@@ -7,7 +7,8 @@ import {
   HttpNotFoundProtocol,
   HttpOkProtocol,
   HttpResponse,
-  HttpUnauthorizedProtocol
+  HttpUnauthorizedProtocol,
+  HttpServerErrorProtocol
 } from '../protocols'
 
 export class HttpHelper
@@ -19,7 +20,8 @@ implements
     HttpConflictProtocol,
     HttpOkProtocol,
     HttpCreatedProtocol,
-    HttpDeletedProtocol {
+    HttpDeletedProtocol,
+    HttpServerErrorProtocol {
   badRequest (error: Error): HttpResponse {
     return {
       statusCode: 400,
@@ -67,5 +69,12 @@ implements
 
   deleted (): HttpResponse {
     return { statusCode: 204, data: { message: 'Content deleted' } }
+  }
+
+  serverError (error: Error): HttpResponse {
+    return {
+      statusCode: 500,
+      data: { message: error.message }
+    }
   }
 }

@@ -8,7 +8,8 @@ export interface HttpHelperProtocol
   HttpConflictProtocol,
   HttpOkProtocol,
   HttpCreatedProtocol,
-  HttpDeletedProtocol {}
+  HttpDeletedProtocol,
+  HttpServerErrorProtocol {}
 export interface HttpBadRequestProtocol {
   badRequest: (error: Error) => HttpResponse
 }
@@ -39,4 +40,8 @@ export interface HttpCreatedProtocol {
 
 export interface HttpDeletedProtocol {
   deleted: () => HttpResponse
+}
+
+export interface HttpServerErrorProtocol {
+  serverError: (error: Error) => HttpResponse
 }
