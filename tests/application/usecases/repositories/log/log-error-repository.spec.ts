@@ -5,7 +5,7 @@ describe('LogErrorRepository', () => {
     const sut = makeSut()
     const error = new Error('any_message')
 
-    const value = sut.createError(error)
+    const value = sut.createLog(error)
 
     expect(value).toEqual({
       name: error.name,
