@@ -1,4 +1,4 @@
-import { UserCredentialError } from '@/application/usecases/errors'
+import { InactiveAccountError, InvalidParamError, MissingParamError, UserCredentialError } from '@/application/usecases/errors'
 import { makeSut } from './mocks/login-controller-mock'
 
 describe('LoginController', () => {
@@ -22,6 +22,45 @@ describe('LoginController', () => {
     await sut.handle(request)
 
     expect(notFoundSpy).toHaveBeenCalledWith(error)
+  })
+
+  it('Should call badRequest with the correct value if it is an InvalidParamError', async () => {
+    const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
+
+    const error = new InvalidParamError('email')
+    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
+
+    const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
+
+    await sut.handle(request)
+
+    expect(badRequestSpy).toHaveBeenCalledWith(error)
+  })
+
+  it('Should call badRequest with the correct value if it is a MissingParamError', async () => {
+    const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
+
+    const error = new MissingParamError('email')
+    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
+
+    const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
+
+    await sut.handle(request)
+
+    expect(badRequestSpy).toHaveBeenCalledWith(error)
+  })
+
+  it('Should call forbidden with the correct value if it is an InactiveAccountError', async () => {
+    const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
+
+    const error = new InactiveAccountError()
+    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
+
+    const forbiddenSpy = jest.spyOn(httpHelper, 'forbidden')
+
+    await sut.handle(request)
+
+    expect(forbiddenSpy).toHaveBeenCalledWith(error)
   })
 
   it('Should call findAccountByEmail with the correct value', async () => {
