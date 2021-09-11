@@ -1,4 +1,9 @@
-import { InactiveAccountError, InvalidParamError, MissingParamError, UserCredentialError } from '@/application/usecases/errors'
+import {
+  InactiveAccountError,
+  InvalidParamError,
+  MissingParamError,
+  UserCredentialError
+} from '@/application/usecases/errors'
 import { makeSut } from './mocks/login-controller-mock'
 
 describe('LoginController', () => {
@@ -105,5 +110,17 @@ describe('LoginController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.ok({ user: fakePublicUser, accessToken: 'any_token' }))
+  })
+
+  it('Should call serverError if there is an internal error', async () => {
+    const { sut, request, httpHelper, credentialsValidatorStub } = makeSut()
+    const error = new Error()
+    jest
+      .spyOn(credentialsValidatorStub, 'validate')
+      .mockImplementationOnce(async () => Promise.reject(error))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.serverError(error))
   })
 })

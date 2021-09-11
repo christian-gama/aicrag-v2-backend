@@ -80,4 +80,16 @@ describe('SignUpController', () => {
 
     expect(response).toEqual(httpHelper.ok({ user: fakePublicUser }))
   })
+
+  it('Should call serverError if there is an internal error', async () => {
+    const { sut, request, httpHelper, accountValidatorStub } = makeSut()
+    const error = new Error()
+    jest
+      .spyOn(accountValidatorStub, 'validate')
+      .mockImplementationOnce(async () => Promise.reject(error))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.serverError(error))
+  })
 })
