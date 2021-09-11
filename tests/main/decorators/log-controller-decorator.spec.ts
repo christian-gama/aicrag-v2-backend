@@ -17,4 +17,15 @@ describe('LogControllerDecorator', () => {
 
     expect(response).toEqual(httpHelper.serverError(error))
   })
+
+  it('Should return any http response', async () => {
+    const { sut, controllerStub, httpHelper } = makeSut()
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(httpHelper.ok({})))
+
+    const response = await sut.handle({})
+
+    expect(response.status).toBeTruthy()
+    expect(response.data).toBeTruthy()
+    expect(response.statusCode).toBeTruthy()
+  })
 })
