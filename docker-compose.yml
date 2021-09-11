@@ -14,7 +14,7 @@ services:
     restart: always
     volumes:
       - './dist/:/usr/workspace/aicrag-v2/dist/'
-      - './package.json:/usr/workspace/aicrag-v2/package.json'
+      - './package.json/:/usr/workspace/aicrag-v2/package.json/'
     ports:
       - '3000:3000'
       - '9222:9222'
