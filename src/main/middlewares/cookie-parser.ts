@@ -1,6 +1,4 @@
-import cookieParser from 'cookie-parser'
+import _cookieParser from 'cookie-parser'
 import { env } from '../config/env'
 
-const _cookieParser = cookieParser(env.COOKIE_SECRET)
-
-export default _cookieParser
+export const cookieParser = _cookieParser(env.COOKIE_SECRET)
