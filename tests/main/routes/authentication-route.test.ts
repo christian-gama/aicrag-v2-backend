@@ -51,6 +51,7 @@ describe('Authentication routes', () => {
       const hashedPassword = await hash(fakeUser.personal.password, 12)
       const userPassword = fakeUser.personal.password
       fakeUser.personal.password = hashedPassword
+      fakeUser.settings.accountActivated = true
 
       await accountCollection.insertOne(fakeUser)
 
@@ -61,7 +62,28 @@ describe('Authentication routes', () => {
     })
 
     it('Should return 404 if validation fails', async () => {
-      await request(app).post('/api/auth/login').send({}).expect(404)
+      await request(app)
+        .post('/api/auth/login')
+        .send({ email: 'invalid_email@email.com', password: 'invalid_password' })
+        .expect(404)
+    })
+
+    it('Should return 403 if account is not active', async () => {
+      const fakeUser = makeFakeUser()
+      const hashedPassword = await hash(fakeUser.personal.password, 12)
+      const userPassword = fakeUser.personal.password
+      fakeUser.personal.password = hashedPassword
+
+      await accountCollection.insertOne(fakeUser)
+
+      await request(app)
+        .post('/api/auth/login')
+        .send({ email: fakeUser.personal.email, password: userPassword })
+        .expect(403)
+    })
+
+    it('Should return 400 if miss a param or param is invalid', async () => {
+      await request(app).post('/api/auth/login').send({}).expect(400)
     })
   })
 })
