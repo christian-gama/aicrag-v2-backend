@@ -1,10 +1,10 @@
+import { User } from '@/domain/user'
+import { ControllerProtocol } from '.'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { User } from '@/domain/user'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
-import { ControllerProtocol } from '../../protocols/controller-protocol'
 
 export class LoginController implements ControllerProtocol {
   constructor (
