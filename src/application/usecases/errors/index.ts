@@ -1,4 +1,5 @@
 export * from './account-already-activated-error'
+export * from './code-is-expired-error'
 export * from './conflict-param-error'
 export * from './inactive-account-error'
 export * from './invalid-code-error'
