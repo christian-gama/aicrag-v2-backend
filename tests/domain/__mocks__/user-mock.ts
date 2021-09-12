@@ -18,7 +18,8 @@ export const makeFakeUser = (): User => {
       updatedAt: null
     },
     temporary: {
-      activationCode: faker.lorem.word(5)
+      activationCode: faker.lorem.word(5),
+      activationCodeExpiration: new Date(Date.now() + 10 * 60 * 1000)
     }
   }
 }

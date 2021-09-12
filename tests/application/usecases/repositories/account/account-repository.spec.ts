@@ -26,6 +26,7 @@ describe('AccountRepository', () => {
     expect(user.logs.updatedAt).toBe(null)
 
     expect(user.temporary?.activationCode).toBe(fakeActivationCode)
+    expect(typeof user.temporary?.activationCodeExpiration).toBe('object')
   })
 
   it('Should call hash with correct values', async () => {
