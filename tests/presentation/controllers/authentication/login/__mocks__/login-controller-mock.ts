@@ -1,10 +1,11 @@
 import { PublicUser, User, UserAccount } from '@/domain/user'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { HttpHelper } from '@/presentation/helper/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helper/http/protocols'
-import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
+import { LoginController } from '@/presentation/controllers/authentication/login/login-controller'
 import { makeFakePublicUser } from '@/tests/domain/__mocks__/public-user-mock'
 import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
 
@@ -15,21 +16,21 @@ const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtoco
     }
 
     async findAccountByEmail (email: string): Promise<User | undefined> {
-      return Promise.resolve(undefined)
+      return Promise.resolve(fakeUser)
     }
   }
 
   return new AccountDbRepositoryStub()
 }
 
-const makeAccountValidatorStub = (): ValidatorProtocol => {
-  class AccountValidatorStub implements ValidatorProtocol {
+const makeCredentialsValidatorStub = (): ValidatorProtocol => {
+  class CredentialsValidatorStub implements ValidatorProtocol {
     validate (input: any): Error | undefined {
       return undefined
     }
   }
 
-  return new AccountValidatorStub()
+  return new CredentialsValidatorStub()
 }
 
 const makeFilterUserDataStub = (fakeUser: User): FilterUserDataProtocol => {
@@ -42,47 +43,59 @@ const makeFilterUserDataStub = (fakeUser: User): FilterUserDataProtocol => {
   return new FilterUserDataStub()
 }
 
+const makeJwtAdapterStub = (): EncrypterProtocol => {
+  class JwtAdapterStub implements EncrypterProtocol {
+    encryptId (id: string): string {
+      return 'any_token'
+    }
+  }
+
+  return new JwtAdapterStub()
+}
+
 export interface SutTypes {
-  sut: SignUpController
+  sut: LoginController
   accountDbRepositoryStub: AccountDbRepositoryProtocol
-  accountValidatorStub: ValidatorProtocol
+  credentialsValidatorStub: ValidatorProtocol
   fakePublicUser: PublicUser
   fakeUser: User
   filterUserDataStub: FilterUserDataProtocol
   httpHelper: HttpHelperProtocol
+  jwtAdapterStub: EncrypterProtocol
   request: HttpRequest
 }
 
 export const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const fakePublicUser = makeFakePublicUser(fakeUser)
-  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
-  const accountValidatorStub = makeAccountValidatorStub()
+  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
+  const credentialsValidatorStub = makeCredentialsValidatorStub()
   const httpHelper = new HttpHelper()
+  const jwtAdapterStub = makeJwtAdapterStub()
   const request = {
     body: {
-      name: fakeUser.personal.name,
       email: fakeUser.personal.email,
-      password: fakeUser.personal.password,
-      passwordConfirmation: fakeUser.personal.password
+      password: fakeUser.personal.password
     }
   }
-  const sut = new SignUpController(
+  const sut = new LoginController(
     accountDbRepositoryStub,
-    accountValidatorStub,
+    credentialsValidatorStub,
     filterUserDataStub,
-    httpHelper
+    httpHelper,
+    jwtAdapterStub
   )
 
   return {
     sut,
     accountDbRepositoryStub,
-    accountValidatorStub,
+    credentialsValidatorStub,
     fakePublicUser,
     fakeUser,
     filterUserDataStub,
     httpHelper,
+    jwtAdapterStub,
     request
   }
 }

@@ -1,5 +1,5 @@
 import { TryCatchControllerDecorator } from '@/main/decorators/try-catch-controller-decorator'
-import { ControllerProtocol } from '@/presentation/controllers/login'
+import { ControllerProtocol } from '@/presentation/controllers/authentication/login'
 import { makeLogControllerDecorator } from './log-controller-decorator-factory'
 
 export const makeTryCatchControllerDecorator = (

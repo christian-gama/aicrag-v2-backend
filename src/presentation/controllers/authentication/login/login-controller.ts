@@ -4,7 +4,7 @@ import { AccountDbRepositoryProtocol } from '@/application/protocols/repositorie
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { User } from '@/domain/user'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { ControllerProtocol } from '../../protocols/controller-protocol'
 
 export class LoginController implements ControllerProtocol {
   constructor (

@@ -1,5 +1,5 @@
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
-import { ControllerProtocol } from '@/presentation/controllers/login'
+import { ControllerProtocol } from '@/presentation/controllers/authentication/login'
 import { makeLogErrorDbRepository } from '../repositories/log/log-error-db-repository/log-error-db-repository-factory'
 
 export const makeLogControllerDecorator = (controller: ControllerProtocol): LogControllerDecorator => {

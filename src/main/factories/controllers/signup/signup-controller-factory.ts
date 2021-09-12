@@ -1,4 +1,4 @@
-import { ControllerProtocol, SignUpController } from '@/presentation/controllers/signup/'
+import { ControllerProtocol, SignUpController } from '@/presentation/controllers/authentication/signup/'
 import { makeAccountDbRepository } from '@/main/factories/repositories/account/account-db-repository/account-db-repository-factory'
 import { makeAccountValidatorComposite } from '@/main/factories/validators/account-validator/account-validator-composite-factory'
 import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-factory'

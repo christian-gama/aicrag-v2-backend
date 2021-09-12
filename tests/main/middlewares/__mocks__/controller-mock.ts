@@ -1,4 +1,4 @@
-import { ControllerProtocol } from '@/presentation/controllers/login'
+import { ControllerProtocol } from '@/presentation/controllers/authentication/login'
 import { HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
 
 export const error = new Error('any_message')
