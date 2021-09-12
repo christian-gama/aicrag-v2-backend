@@ -16,39 +16,35 @@ export class LoginController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    try {
-      const credentials = httpRequest.body
+    const credentials = httpRequest.body
 
-      const error = await this.credentialsValidator.validate(credentials)
+    const error = await this.credentialsValidator.validate(credentials)
 
-      if (error) {
-        let response: HttpResponse
-        switch (error.name) {
-          case 'InvalidParamError':
-            response = this.httpHelper.badRequest(error)
-            break
-          case 'MissingParamError':
-            response = this.httpHelper.badRequest(error)
-            break
-          case 'UserCredentialError':
-            response = this.httpHelper.notFound(error)
-            break
-          default:
-            response = this.httpHelper.forbidden(error)
-        }
-
-        return response
+    if (error) {
+      let response: HttpResponse
+      switch (error.name) {
+        case 'InvalidParamError':
+          response = this.httpHelper.badRequest(error)
+          break
+        case 'MissingParamError':
+          response = this.httpHelper.badRequest(error)
+          break
+        case 'UserCredentialError':
+          response = this.httpHelper.notFound(error)
+          break
+        default:
+          response = this.httpHelper.forbidden(error)
       }
 
-      const user = (await this.accountDbRepository.findAccountByEmail(credentials.email)) as User
-
-      const accessToken = this.jwtAdapter.encryptId(user.personal.id)
-
-      const filteredUser = this.filterUserData.filter(user)
-
-      return this.httpHelper.ok({ user: filteredUser, accessToken })
-    } catch (error) {
-      return this.httpHelper.serverError(error)
+      return response
     }
+
+    const user = (await this.accountDbRepository.findAccountByEmail(credentials.email)) as User
+
+    const accessToken = this.jwtAdapter.encryptId(user.personal.id)
+
+    const filteredUser = this.filterUserData.filter(user)
+
+    return this.httpHelper.ok({ user: filteredUser, accessToken })
   }
 }

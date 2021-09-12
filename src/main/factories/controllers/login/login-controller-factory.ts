@@ -4,7 +4,7 @@ import { makeCredentialsValidatorComposite } from '@/main/factories/validators/c
 import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-factory'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { makeJwtAdapter } from '@/main/factories/cryptography/jwt-adapter-factory'
-import { makeLogControllerDecorator } from '@/main/factories/decorators/log-controller-decorator-factory'
+import { makeTryCatchControllerDecorator } from '../../decorators/try-catch-controller-decorator-factory'
 
 export const makeLoginController = (): ControllerProtocol => {
   const accountDbRepository = makeAccountDbRepository()
@@ -21,5 +21,5 @@ export const makeLoginController = (): ControllerProtocol => {
     jwtAdapter
   )
 
-  return makeLogControllerDecorator(loginController)
+  return makeTryCatchControllerDecorator(loginController)
 }

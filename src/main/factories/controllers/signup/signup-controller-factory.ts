@@ -3,7 +3,7 @@ import { makeAccountDbRepository } from '@/main/factories/repositories/account/a
 import { makeAccountValidatorComposite } from '@/main/factories/validators/account-validator/account-validator-composite-factory'
 import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-factory'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
-import { makeLogControllerDecorator } from '@/main/factories/decorators/log-controller-decorator-factory'
+import { makeTryCatchControllerDecorator } from '../../decorators/try-catch-controller-decorator-factory'
 
 export const makeSignUpController = (): ControllerProtocol => {
   const accountDbRepository = makeAccountDbRepository()
@@ -18,5 +18,5 @@ export const makeSignUpController = (): ControllerProtocol => {
     httpHelper
   )
 
-  return makeLogControllerDecorator(signUpController)
+  return makeTryCatchControllerDecorator(signUpController)
 }
