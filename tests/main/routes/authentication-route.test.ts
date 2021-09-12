@@ -76,11 +76,11 @@ describe('Authentication routes', () => {
           .expect(200)
       })
 
-      it('Should return 404 if validation fails', async () => {
+      it('Should return 401 if credentials are invalid', async () => {
         await request(app)
           .post('/api/auth/login')
           .send({ email: 'invalid_email@email.com', password: 'invalid_password' })
-          .expect(404)
+          .expect(401)
       })
 
       it('Should return 403 if account is not active', async () => {

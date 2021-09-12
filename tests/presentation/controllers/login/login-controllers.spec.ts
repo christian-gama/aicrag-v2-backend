@@ -16,17 +16,17 @@ describe('LoginController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('Should call notFound with the correct value', async () => {
+  it('Should call unauthorized with the correct value', async () => {
     const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
 
     const error = new UserCredentialError()
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
 
-    const notFoundSpy = jest.spyOn(httpHelper, 'notFound')
+    const unauthorizedSpy = jest.spyOn(httpHelper, 'unauthorized')
 
     await sut.handle(request)
 
-    expect(notFoundSpy).toHaveBeenCalledWith(error)
+    expect(unauthorizedSpy).toHaveBeenCalledWith(error)
   })
 
   it('Should call badRequest with the correct value if it is an InvalidParamError', async () => {

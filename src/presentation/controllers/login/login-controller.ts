@@ -30,7 +30,7 @@ export class LoginController implements ControllerProtocol {
           response = this.httpHelper.badRequest(error)
           break
         case 'UserCredentialError':
-          response = this.httpHelper.notFound(error)
+          response = this.httpHelper.unauthorized(error)
           break
         default:
           response = this.httpHelper.forbidden(error)
