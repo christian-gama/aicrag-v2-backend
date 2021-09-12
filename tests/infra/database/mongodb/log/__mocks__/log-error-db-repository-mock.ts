@@ -1,7 +1,7 @@
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-repository-protocol'
 import { LogErrorProtocol } from '@/domain/log/log-error-protocol'
 import { LogErrorDbRepository } from '@/infra/database/mongodb/log/log-error-db-repository'
-import { makeFakeLogError } from '@/tests/domain/log/log-error-mock'
+import { makeFakeLogError } from '@/tests/domain/__mocks__/log-error-mock'
 
 const makeLogErrorRepositoryStub = (fakeLogError: LogErrorProtocol): LogErrorRepositoryProtocol => {
   class LogErrorRepositoryStub implements LogErrorRepositoryProtocol {

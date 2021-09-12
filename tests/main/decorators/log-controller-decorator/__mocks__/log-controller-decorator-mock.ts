@@ -3,7 +3,7 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
 import { HttpHelper } from '@/presentation/helper/http-helper'
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
-import { makeFakeLogError } from '@/tests/domain/log/log-error-mock'
+import { makeFakeLogError } from '@/tests/domain/__mocks__/log-error-mock'
 import { LogErrorProtocol } from '@/domain/log/log-error-protocol'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 
