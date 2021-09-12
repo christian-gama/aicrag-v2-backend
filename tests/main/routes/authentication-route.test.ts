@@ -7,12 +7,18 @@ import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 import { hash } from 'bcrypt'
+import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
+import { makeSignUpController } from '@/main/factories/controllers/signup/signup-controller-factory'
+import { makeLoginController } from '@/main/factories/controllers/login/login-controller-factory'
 
 describe('Authentication routes', () => {
   let accountCollection: Collection
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
+
+    app.use('/api/auth/signup', adaptRoutes(makeSignUpController()))
+    app.use('/api/auth/login', adaptRoutes(makeLoginController()))
   })
 
   afterAll(async () => {
