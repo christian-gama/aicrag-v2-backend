@@ -1,3 +1,4 @@
+import { InvalidCodeError } from '@/application/usecases/errors'
 import { makeSut } from './__mocks__/codes/validate-activation-code-mock'
 
 describe('ValidateActivationCode', () => {
@@ -9,5 +10,14 @@ describe('ValidateActivationCode', () => {
     await sut.validate(fakeData)
 
     expect(findAccountByEmailSpy).toHaveBeenCalledWith(fakeData.email)
+  })
+
+  it('Should return an InvalidCodeError if activation code is not valid', async () => {
+    const { sut, fakeUser } = makeSut()
+    const fakeData = { email: fakeUser.personal.email, activationCode: 'invalid_code' }
+
+    const value = await sut.validate(fakeData)
+
+    expect(value).toEqual(new InvalidCodeError())
   })
 })
