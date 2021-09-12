@@ -2,7 +2,7 @@ import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-u
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ConflictParamError } from '@/application/usecases/errors/'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 export class SignUpController implements ControllerProtocol {

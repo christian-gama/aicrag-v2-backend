@@ -1,6 +1,6 @@
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
 
 export class LogControllerDecorator implements ControllerProtocol {
   constructor (

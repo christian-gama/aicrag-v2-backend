@@ -1,5 +1,5 @@
 import { ControllerProtocol } from '@/presentation/controllers/login'
-import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
 
 export const error = new Error('any_message')
 export const makeControllerStub = (): ControllerProtocol => {

@@ -1,4 +1,4 @@
-import { HttpHelper } from '@/presentation/http/helper/http-helper'
+import { HttpHelper } from '@/presentation/helper/http-helper'
 
 export const makeSut = (): HttpHelper => {
   const sut = new HttpHelper()

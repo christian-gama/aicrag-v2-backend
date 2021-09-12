@@ -9,7 +9,7 @@ import {
   HttpDeletedProtocol,
   HttpServerErrorProtocol,
   HttpResponse
-} from '../protocols'
+} from './http/protocols'
 
 export class HttpHelper
 implements

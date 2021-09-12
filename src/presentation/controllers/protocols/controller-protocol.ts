@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
 
 export interface ControllerProtocol {
   /**
