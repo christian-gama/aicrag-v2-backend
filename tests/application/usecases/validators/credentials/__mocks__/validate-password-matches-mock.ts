@@ -1,8 +1,7 @@
 import { User, UserAccount } from '@/domain/user'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ComparerProtocol } from '@/application/protocols/cryptography/'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { ValidateCredentials } from '@/application/usecases/validators/credentials/validate-credentials'
+import { ValidatePasswordMatches } from '@/application/usecases/validators/credentials/'
 import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
 
 const fakeUser = makeFakeUser()
@@ -32,7 +31,7 @@ const makeComparerStub = (): ComparerProtocol => {
 }
 
 interface SutTypes {
-  sut: ValidatorProtocol
+  sut: ValidatePasswordMatches
   accountDbRepositoryStub: AccountDbRepositoryProtocol
   comparerStub: ComparerProtocol
   fakeUser: User
@@ -41,7 +40,7 @@ interface SutTypes {
 export const makeSut = (): SutTypes => {
   const accountDbRepositoryStub = makeAccountDbRepositoryStub()
   const comparerStub = makeComparerStub()
-  const sut = new ValidateCredentials(accountDbRepositoryStub, comparerStub)
+  const sut = new ValidatePasswordMatches(accountDbRepositoryStub, comparerStub)
 
   return { sut, accountDbRepositoryStub, comparerStub, fakeUser }
 }

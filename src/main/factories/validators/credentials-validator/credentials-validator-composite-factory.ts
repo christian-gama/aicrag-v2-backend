@@ -1,6 +1,6 @@
 import { ValidationComposite } from '@/application/usecases/validators/validation-composite'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { makeValidateActiveAccount, makeValidateCredentials, makeRequiredFields, makeValidateEmail, makeValidatePassword } from '.'
+import { makeRequiredFields, makeValidateEmail, makeValidatePassword, makeValidateEmailExists, makeValidatePasswordMatches, makeValidateActiveAccount } from '.'
 
 export const makeCredentialsValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
@@ -13,7 +13,8 @@ export const makeCredentialsValidatorComposite = (): ValidatorProtocol => {
   // Must have this exact validation order
   validations.push(makeValidateEmail())
   validations.push(makeValidatePassword())
-  validations.push(makeValidateCredentials())
+  validations.push(makeValidateEmailExists())
+  validations.push(makeValidatePasswordMatches())
   validations.push(makeValidateActiveAccount())
 
   const credentialsValidationComposite = new ValidationComposite(validations)

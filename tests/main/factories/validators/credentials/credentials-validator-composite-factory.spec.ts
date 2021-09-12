@@ -4,11 +4,12 @@ import {
 } from '@/application/usecases/validators/credentials'
 import {
   makeCredentialsValidatorComposite,
-  makeValidateCredentials,
-  makeValidateActiveAccount,
   makeRequiredFields,
   makeValidateEmail,
-  makeValidatePassword
+  makeValidatePassword,
+  makeValidateEmailExists,
+  makeValidatePasswordMatches,
+  makeValidateActiveAccount
 } from '@/main/factories/validators/credentials-validator'
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
@@ -26,7 +27,8 @@ describe('CredentialsValidator Factory', () => {
 
     validations.push(makeValidateEmail())
     validations.push(makeValidatePassword())
-    validations.push(makeValidateCredentials())
+    validations.push(makeValidateEmailExists())
+    validations.push(makeValidatePasswordMatches())
     validations.push(makeValidateActiveAccount())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)

@@ -1,10 +1,10 @@
-import { ValidateCredentials } from '@/application/usecases/validators/credentials/validate-credentials'
+import { ValidatePasswordMatches } from '@/application/usecases/validators/credentials'
 import { makeAccountDbRepository } from '@/main/factories/repositories/account/account-db-repository/account-db-repository-factory'
 import { makeBcryptAdapter } from '@/main/factories/cryptography/hasher-factory'
 
-export const makeValidateCredentials = (): ValidateCredentials => {
+export const makeValidatePasswordMatches = (): ValidatePasswordMatches => {
   const accountDbRepository = makeAccountDbRepository()
   const hasher = makeBcryptAdapter()
 
-  return new ValidateCredentials(accountDbRepository, hasher)
+  return new ValidatePasswordMatches(accountDbRepository, hasher)
 }
