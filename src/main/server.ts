@@ -10,6 +10,7 @@ MongoHelper.connect(env.DB.MONGO_URL)
     app.listen(env.SERVER.PORT, () => {
       const now = Date.now() - 3 * 60 * 60 * 1000
 
+      console.log(`Environment: ${env.SERVER.NODE_ENV}`)
       console.log(`Server started at ${new Date(now).toLocaleTimeString()}, UTC -3:00`)
       console.log(`Server listening on port ${env.SERVER.PORT}`)
       console.log(`http://localhost:${env.SERVER.PORT}`)
