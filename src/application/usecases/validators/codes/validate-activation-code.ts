@@ -4,9 +4,11 @@ import { ValidatorProtocol } from '@/application/protocols/validators/validator-
 export class ValidateActivationCode implements ValidatorProtocol {
   constructor (private readonly accountDbRepository: AccountDbRepositoryProtocol) {}
 
-  async validate (email: any): Promise<Error | undefined> {
+  async validate (input: any): Promise<Error | undefined> {
+    const { email } = input
+
     await this.accountDbRepository.findAccountByEmail(email)
 
-    return Promise.resolve(undefined)
+    return undefined
   }
 }
