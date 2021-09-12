@@ -1,4 +1,8 @@
-import { AccountAlreadyActivatedError, InvalidCodeError } from '@/application/usecases/errors'
+import {
+  AccountAlreadyActivatedError,
+  CodeIsExpiredError,
+  InvalidCodeError
+} from '@/application/usecases/errors'
 import { makeSut } from './__mocks__/codes/validate-activation-code-mock'
 
 describe('ValidateActivationCode', () => {
@@ -21,17 +25,6 @@ describe('ValidateActivationCode', () => {
     expect(value).toEqual(new InvalidCodeError())
   })
 
-  it('Should return an InvalidCodeError if there is no temporary', async () => {
-    const { sut, fakeUser } = makeSut()
-    fakeUser.temporary = undefined
-
-    const fakeData = { email: fakeUser.personal.email, activationCode: 'any_code' }
-
-    const value = await sut.validate(fakeData)
-
-    expect(value).toEqual(new InvalidCodeError())
-  })
-
   it('Should return an AccountAlreadyActivated if account is already activated', async () => {
     const { sut, fakeUser } = makeSut()
     fakeUser.settings.accountActivated = true
@@ -41,5 +34,33 @@ describe('ValidateActivationCode', () => {
     const value = await sut.validate(fakeData)
 
     expect(value).toEqual(new AccountAlreadyActivatedError())
+  })
+
+  it('Should return a CodeIsExpiredError if activation code is expired', async () => {
+    const { sut, fakeUser } = makeSut()
+    const expirationDate = new Date(Date.now() - 1000)
+    fakeUser.settings.accountActivated = false
+
+    if (fakeUser.temporary) fakeUser.temporary.activationCodeExpiration = expirationDate
+
+    const fakeData = {
+      email: fakeUser.personal.email,
+      activationCode: fakeUser.temporary?.activationCode
+    }
+
+    const value = await sut.validate(fakeData)
+
+    expect(value).toEqual(new CodeIsExpiredError())
+  })
+
+  it('Should return an InvalidCodeError if there is no temporary', async () => {
+    const { sut, fakeUser } = makeSut()
+    fakeUser.temporary = undefined
+
+    const fakeData = { email: fakeUser.personal.email, activationCode: 'any_code' }
+
+    const value = await sut.validate(fakeData)
+
+    expect(value).toEqual(new InvalidCodeError())
   })
 })
