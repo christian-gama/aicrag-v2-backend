@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/email-validator-mock'
+import { makeSut } from './__mocks__/email-validator-mock'
 
 import faker from 'faker'
 

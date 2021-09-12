@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/bcrypt-adapter-mock'
+import { makeSut } from './__mocks__/bcrypt-adapter-mock'
 
 import bcrypt from 'bcrypt'
 

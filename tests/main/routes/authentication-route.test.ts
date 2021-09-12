@@ -1,8 +1,8 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import app from '@/main/config/app'
 import { config } from '@/tests/config'
-import { makeFakeValidAccount } from '@/tests/domain/mocks/account-mock'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
+import { makeFakeValidAccount } from '@/tests/domain/__mocks__/account-mock'
+import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'

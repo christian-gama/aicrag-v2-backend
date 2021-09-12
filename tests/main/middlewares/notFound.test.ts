@@ -1,6 +1,6 @@
 import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
 import app from '@/main/config/app'
-import { makeControllerStub } from './mocks/controller-mock'
+import { makeControllerStub } from './__mocks__/controller-mock'
 import { notFound } from '@/main/middlewares/not-found'
 
 import request from 'supertest'

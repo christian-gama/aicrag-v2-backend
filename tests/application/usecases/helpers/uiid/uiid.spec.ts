@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/uiid-mock'
+import { makeSut } from './__mocks__/uiid-mock'
 import { config } from '@/tests/config'
 
 describe('Uiid', () => {

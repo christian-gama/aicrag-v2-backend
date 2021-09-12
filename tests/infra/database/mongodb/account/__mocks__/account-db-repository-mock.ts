@@ -1,7 +1,7 @@
 import { User, UserAccount } from '@/domain/user'
 import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
 import { AccountDbRepository } from '@/infra/database/mongodb/account/account-db-repository'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
+import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
 
 const makeAccountRepositoryStub = (fakeUser: User): AccountRepositoryProtocol => {
   class AccountRepositoryStub implements AccountRepositoryProtocol {

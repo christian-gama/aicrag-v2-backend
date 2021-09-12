@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/try-catch-controller-decorator-mock'
+import { makeSut } from './__mocks__/try-catch-controller-decorator-mock'
 
 describe('LogControllerDecorator', () => {
   it('Should call handle witch correct value', async () => {

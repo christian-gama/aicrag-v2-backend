@@ -1,5 +1,5 @@
 import { ConflictParamError, InvalidParamError } from '@/application/usecases/errors'
-import { makeSut } from './mocks/signup-controller-mock'
+import { makeSut } from './__mocks__/signup-controller-mock'
 
 describe('SignUpController', () => {
   it('Should call findAccountByEmail with the correct value', async () => {

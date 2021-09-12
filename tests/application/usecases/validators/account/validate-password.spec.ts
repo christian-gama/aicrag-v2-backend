@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/application/usecases/errors'
-import { makeSut } from './mocks/validate-password-mock'
+import { makeSut } from './__mocks__/validate-password-mock'
 
 import faker from 'faker'
 

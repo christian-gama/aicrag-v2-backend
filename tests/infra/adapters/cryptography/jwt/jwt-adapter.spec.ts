@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/jwt-adapter-mock'
+import { makeSut } from './__mocks__/jwt-adapter-mock'
 
 import jwt from 'jsonwebtoken'
 

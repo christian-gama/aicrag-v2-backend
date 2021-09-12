@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/log-controller-decorator-mock'
+import { makeSut } from './__mocks__/log-controller-decorator-mock'
 
 describe('LogControllerDecorator', () => {
   it('Should call logErrorDbRepository with correct error', async () => {

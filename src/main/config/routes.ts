@@ -1,8 +1,8 @@
 import authenticationRoutes from '../routes/authentication-routes'
-
-import { Express } from 'express'
 import { errorHandler } from '../middlewares/error-handler'
 import { notFound } from '../middlewares/not-found'
+
+import { Express } from 'express'
 
 export default (app: Express): void => {
   if (process.env.NODE_ENV !== 'test') {

@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/http-helper-mock'
+import { makeSut } from './__mocks__/http-helper-mock'
 
 import faker from 'faker'
 

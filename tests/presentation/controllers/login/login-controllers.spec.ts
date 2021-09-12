@@ -4,7 +4,7 @@ import {
   MissingParamError,
   UserCredentialError
 } from '@/application/usecases/errors'
-import { makeSut } from './mocks/login-controller-mock'
+import { makeSut } from './__mocks__/login-controller-mock'
 
 describe('LoginController', () => {
   it('Should call validate with correct values', async () => {

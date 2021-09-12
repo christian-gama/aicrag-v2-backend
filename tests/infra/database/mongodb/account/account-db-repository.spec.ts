@@ -1,7 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { env } from '@/main/config/env'
-import { makeSut } from './mocks/account-db-repository-mock'
-import { makeFakeValidAccount } from '@/tests/domain/mocks/account-mock'
+import { makeSut } from './__mocks__/account-db-repository-mock'
+import { makeFakeValidAccount } from '@/tests/domain/__mocks__/account-mock'
 
 import { Collection } from 'mongodb'
 

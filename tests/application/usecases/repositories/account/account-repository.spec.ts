@@ -1,5 +1,5 @@
-import { makeSut } from './mocks/account-repository-mock'
-import { makeFakeValidAccount } from '@/tests/domain/mocks/account-mock'
+import { makeSut } from './__mocks__/account-repository-mock'
+import { makeFakeValidAccount } from '@/tests/domain/__mocks__/account-mock'
 
 describe('AccountRepository', () => {
   it('Should return a user with correct values', async () => {

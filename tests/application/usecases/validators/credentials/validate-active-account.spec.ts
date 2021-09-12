@@ -1,5 +1,5 @@
 import { InactiveAccountError } from '@/application/usecases/errors'
-import { makeSut } from './mocks/validate-active-account-mock'
+import { makeSut } from './__mocks__/validate-active-account-mock'
 
 describe('ValidateCredentials', () => {
   it('Should return a InactiveAccountError if user account is inactive', async () => {

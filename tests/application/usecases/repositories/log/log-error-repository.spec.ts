@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/log-error-repository-mock'
+import { makeSut } from './__mocks__/log-error-repository-mock'
 
 describe('LogErrorRepository', () => {
   it('Should return a LogError', () => {

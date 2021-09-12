@@ -5,8 +5,8 @@ import { ValidatorProtocol } from '@/application/protocols/validators/validator-
 import { HttpHelper } from '@/presentation/http/helper/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
-import { makeFakePublicUser } from '@/tests/domain/mocks/public-user-mock'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
+import { makeFakePublicUser } from '@/tests/domain/__mocks__/public-user-mock'
+import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
 
 const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {

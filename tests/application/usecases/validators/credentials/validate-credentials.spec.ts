@@ -1,5 +1,5 @@
 import { UserCredentialError } from '@/application/usecases/errors'
-import { makeSut } from './mocks/validate-credentials-mock'
+import { makeSut } from './__mocks__/validate-credentials-mock'
 
 describe('ValidateCredentials', () => {
   it('Should return a UserCredentialError if email does not exists', async () => {

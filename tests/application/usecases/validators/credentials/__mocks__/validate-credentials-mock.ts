@@ -3,7 +3,7 @@ import { AccountDbRepositoryProtocol } from '@/application/protocols/repositorie
 import { ComparerProtocol } from '@/application/protocols/cryptography/'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ValidateCredentials } from '@/application/usecases/validators/credentials/validate-credentials'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
+import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
 
 const fakeUser = makeFakeUser()
 

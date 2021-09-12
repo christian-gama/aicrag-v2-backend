@@ -4,7 +4,7 @@ import {
   ValidateActiveAccount,
   ValidatorProtocol
 } from '@/application/usecases/validators/credentials/'
-import { makeFakeUser } from '@/tests/domain/mocks/user-mock'
+import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
 
 const makeAccountDbRepositoryStub = (fakeUser: User): AccountDbRepositoryProtocol => {
   class AccountDbRepositoryStub implements AccountDbRepositoryProtocol {

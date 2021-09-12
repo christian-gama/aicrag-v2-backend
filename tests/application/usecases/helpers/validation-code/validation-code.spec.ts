@@ -1,4 +1,4 @@
-import { makeSut } from './mocks/validation-code-mock'
+import { makeSut } from './__mocks__/validation-code-mock'
 import { config } from '@/tests/config'
 
 describe('CodeGenerator', () => {
