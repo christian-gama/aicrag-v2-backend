@@ -1,4 +1,3 @@
-import { InternalError } from '@/application/usecases/errors'
 import { makeSut } from './mocks/http-helper-mock'
 
 import faker from 'faker'
@@ -100,8 +99,8 @@ describe('HttpHelper', () => {
   describe('StatusCode: 500', () => {
     it('Should return 500 when call serverError', () => {
       const sut = makeSut()
+      const error = new Error('any_message')
 
-      const error = new InternalError()
       const response = sut.serverError(error)
 
       expect(response).toEqual({
