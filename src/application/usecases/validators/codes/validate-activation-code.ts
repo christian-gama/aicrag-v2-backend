@@ -7,7 +7,6 @@ export class ValidateActivationCode implements ValidatorProtocol {
 
   async validate (input: any): Promise<Error | undefined> {
     const { email, activationCode } = input
-
     const user = await this.accountDbRepository.findAccountByEmail(email)
 
     if (!user) return new InvalidCodeError()
