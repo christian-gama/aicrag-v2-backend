@@ -10,6 +10,6 @@ describe('InactiveAccountError', () => {
   it('Should return a message with the field name', () => {
     const sut = new InactiveAccountError()
 
-    expect(sut.message).toBe('Inactive account: activate to get access')
+    expect(sut.message).toBe('Account is not activated')
   })
 })
