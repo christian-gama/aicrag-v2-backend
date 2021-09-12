@@ -1,6 +1,6 @@
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { AccountAlreadyActivatedError, InvalidCodeError } from '../../errors'
+import { AccountAlreadyActivatedError, CodeIsExpiredError, InvalidCodeError } from '../../errors'
 
 export class ValidateActivationCode implements ValidatorProtocol {
   constructor (private readonly accountDbRepository: AccountDbRepositoryProtocol) {}
@@ -13,6 +13,10 @@ export class ValidateActivationCode implements ValidatorProtocol {
 
     if (user.settings.accountActivated) return new AccountAlreadyActivatedError()
 
-    if (!user.temporary || activationCode !== user.temporary.activationCode) return new InvalidCodeError()
+    if (!user.temporary || !user.temporary.activationCodeExpiration) return new InvalidCodeError()
+
+    if (user.temporary.activationCodeExpiration.getTime() < Date.now()) return new CodeIsExpiredError()
+
+    if (activationCode !== user.temporary.activationCode) return new InvalidCodeError()
   }
 }
