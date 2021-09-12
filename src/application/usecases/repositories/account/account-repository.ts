@@ -17,6 +17,8 @@ export class AccountRepository implements AccountRepositoryProtocol {
     const hashedPassword = await this.hasher.hash(account.password)
     const id = this.uuid.generate()
 
+    const activationCodeExpirationMinutes = 10 * 60 * 1000
+
     const user: User = {
       personal: { id: id, name: account.name, email: account.email, password: hashedPassword },
       settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
@@ -27,7 +29,8 @@ export class AccountRepository implements AccountRepositoryProtocol {
         updatedAt: null
       },
       temporary: {
-        activationCode: activationCode
+        activationCode: activationCode,
+        activationCodeExpiration: new Date(Date.now() + activationCodeExpirationMinutes)
       }
     }
 

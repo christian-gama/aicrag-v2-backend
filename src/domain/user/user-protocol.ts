@@ -23,7 +23,10 @@ export interface User {
   }
   temporary?: {
     activationCode?: string
+    activationCodeExpiration?: Date
     temporaryEmail?: string
+    temporaryEmailExpiration?: Date
     resetCode?: string
+    resetCodeExpiration?: Date
   }
 }
