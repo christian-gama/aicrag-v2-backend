@@ -21,6 +21,17 @@ describe('ValidateActivationCode', () => {
     expect(value).toEqual(new InvalidCodeError())
   })
 
+  it('Should return an InvalidCodeError if there is no temporary', async () => {
+    const { sut, fakeUser } = makeSut()
+    fakeUser.temporary = undefined
+
+    const fakeData = { email: fakeUser.personal.email, activationCode: 'any_code' }
+
+    const value = await sut.validate(fakeData)
+
+    expect(value).toEqual(new InvalidCodeError())
+  })
+
   it('Should return an AccountAlreadyActivated if account is already activated', async () => {
     const { sut, fakeUser } = makeSut()
     fakeUser.settings.accountActivated = true
