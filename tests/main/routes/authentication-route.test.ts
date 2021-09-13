@@ -135,6 +135,22 @@ describe('Authentication routes', () => {
           .send({ email: fakeUser.personal.email, activationCode: 'invalid_code' })
           .expect(401)
       })
+
+      it('Should return 401 if code is expired', async () => {
+        const fakeUser = makeFakeUser()
+        const hashedPassword = await hash(fakeUser.personal.password, 12)
+        const activationCode = fakeUser.temporary?.activationCode
+        if (fakeUser.temporary) fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
+        fakeUser.settings.accountActivated = false
+        fakeUser.personal.password = hashedPassword
+
+        await accountCollection.insertOne(fakeUser)
+
+        await request(app)
+          .post('/api/auth/activate-account')
+          .send({ email: fakeUser.personal.email, activationCode: activationCode })
+          .expect(401)
+      })
     }
   })
 })
