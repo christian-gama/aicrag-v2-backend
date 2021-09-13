@@ -1,5 +1,6 @@
 import { User } from '@/domain/user'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
@@ -10,7 +11,8 @@ export class ActivateAccountController implements ControllerProtocol {
     private readonly accountDbRepository: AccountDbRepositoryProtocol,
     private readonly activateAccountValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
-    private readonly httpHelper: HttpHelperProtocol
+    private readonly httpHelper: HttpHelperProtocol,
+    private readonly jwtAdapter: EncrypterProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -21,6 +23,8 @@ export class ActivateAccountController implements ControllerProtocol {
     if (error) return this.httpHelper.unauthorized(error)
 
     const user = (await this.accountDbRepository.findAccountByEmail(account.email)) as User
+
+    this.jwtAdapter.encryptId(user.personal.id)
 
     this.filterUserData.filter(user)
 
