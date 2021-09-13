@@ -27,6 +27,12 @@ export class ActivateAccountController implements ControllerProtocol {
 
     const filteredUser = this.filterUserData.filter(user)
 
+    this.activateAccount(user)
+
     return this.httpHelper.ok({ user: filteredUser }, accessToken)
+  }
+
+  private activateAccount (user: User): void {
+    user.settings.accountActivated = true
   }
 }
