@@ -1,4 +1,5 @@
 import { InvalidCodeError } from '@/application/usecases/errors'
+import { makeFakePublicUser } from '@/tests/domain/__mocks__/public-user-mock'
 import { makeSut } from './__mocks__/activate-account-controller-mock'
 
 describe('LoginController', () => {
@@ -46,5 +47,15 @@ describe('LoginController', () => {
     await sut.handle(request)
 
     expect(encryptIdSpy).toHaveBeenCalledWith(fakeUser.personal.id)
+  })
+
+  it('Should call ok with correct values', async () => {
+    const { sut, fakeUser, httpHelper, request } = makeSut()
+    const filteredUser = makeFakePublicUser(fakeUser)
+    const okSpy = jest.spyOn(httpHelper, 'ok')
+
+    await sut.handle(request)
+
+    expect(okSpy).toHaveBeenCalledWith({ user: filteredUser }, 'any_token')
   })
 })
