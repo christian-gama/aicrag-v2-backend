@@ -34,15 +34,13 @@ export class ActivateAccountController implements ControllerProtocol {
   }
 
   private async clearTemporary (user: User): Promise<void> {
-    if (user.temporary) {
-      user.temporary.activationCode = undefined
-      user.temporary.activationCodeExpiration = undefined
+    user.temporary.activationCode = null
+    user.temporary.activationCodeExpiration = null
 
-      await this.accountDbRepository.updateUser(user, {
-        'temporary.activationCode': user.temporary.activationCode,
-        'temporary.activationCodeExpiration': user.temporary.activationCode
-      })
-    }
+    await this.accountDbRepository.updateUser(user, {
+      'temporary.activationCode': user.temporary.activationCode,
+      'temporary.activationCodeExpiration': user.temporary.activationCode
+    })
   }
 
   private async activateAccount (user: User): Promise<void> {

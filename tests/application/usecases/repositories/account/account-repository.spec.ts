@@ -11,6 +11,7 @@ describe('AccountRepository', () => {
 
     const user = await sut.createAccount(account)
 
+    expect(Object.keys(user.personal).length).toBe(4)
     expect(user.personal).toEqual({
       id: fakeId,
       name: account.name,
@@ -18,15 +19,22 @@ describe('AccountRepository', () => {
       password: fakeHashedPassword
     })
 
+    expect(Object.keys(user.settings).length).toBe(3)
     expect(user.settings).toEqual({ accountActivated: false, handicap: 1, currency: 'BRL' })
 
-    // Do not test createdAt because of inconsitence of Date.now()
+    expect(Object.keys(user.logs).length).toBe(4)
+    expect(typeof user.logs.createdAt).toBe('object')
     expect(user.logs.lastLoginAt).toBe(null)
     expect(user.logs.lastSeenAt).toBe(null)
     expect(user.logs.updatedAt).toBe(null)
 
-    expect(user.temporary?.activationCode).toBe(fakeActivationCode)
-    expect(typeof user.temporary?.activationCodeExpiration).toBe('object')
+    expect(Object.keys(user.temporary).length).toBe(6)
+    expect(user.temporary.activationCode).toBe(fakeActivationCode)
+    expect(typeof user.temporary.activationCodeExpiration).toBe('object')
+    expect(user.temporary.resetCode).toBe(null)
+    expect(user.temporary.resetCodeExpiration).toBe(null)
+    expect(user.temporary.temporaryEmail).toBe(null)
+    expect(user.temporary.temporaryEmailExpiration).toBe(null)
   })
 
   it('Should call hash with correct values', async () => {

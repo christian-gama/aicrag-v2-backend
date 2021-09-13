@@ -28,6 +28,8 @@ describe('AccountDbRepository', () => {
       const user = await sut.saveAccount(makeFakeValidAccount())
 
       expect(user).toHaveProperty('_id')
+
+      expect(Object.keys(user.personal).length).toBe(4)
       expect(user.personal).toEqual({
         id: fakeUser.personal.id,
         name: fakeUser.personal.name,
@@ -35,12 +37,14 @@ describe('AccountDbRepository', () => {
         password: fakeUser.personal.password
       })
 
+      expect(Object.keys(user.settings).length).toBe(3)
       expect(user.settings).toEqual({
         accountActivated: fakeUser.settings.accountActivated,
         handicap: fakeUser.settings.handicap,
         currency: fakeUser.settings.currency
       })
 
+      expect(Object.keys(user.logs).length).toBe(4)
       expect(user.logs).toEqual({
         createdAt: fakeUser.logs.createdAt,
         lastLoginAt: fakeUser.logs.lastLoginAt,
@@ -48,7 +52,15 @@ describe('AccountDbRepository', () => {
         updatedAt: fakeUser.logs.updatedAt
       })
 
-      expect(user.temporary?.activationCode).toBe(fakeUser.temporary?.activationCode)
+      expect(Object.keys(user.temporary).length).toBe(6)
+      expect(user.temporary).toEqual({
+        activationCode: fakeUser.temporary.activationCode,
+        activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
+        temporaryEmail: fakeUser.temporary.temporaryEmail,
+        temporaryEmailExpiration: fakeUser.temporary.temporaryEmailExpiration,
+        resetCode: fakeUser.temporary.resetCode,
+        resetCodeExpiration: fakeUser.temporary.resetCodeExpiration
+      })
     })
   })
 

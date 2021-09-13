@@ -81,7 +81,7 @@ export const makeSut = (): SutTypes => {
   const request = {
     body: {
       email: fakeUser.personal.email,
-      activationCode: fakeUser.temporary?.activationCode
+      activationCode: fakeUser.temporary.activationCode
     }
   }
   const sut = new ActivateAccountController(

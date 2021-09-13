@@ -72,8 +72,8 @@ describe('LoginController', () => {
 
     await sut.handle(request)
 
-    expect(fakeUser.temporary?.activationCode).toBe(undefined)
-    expect(fakeUser.temporary?.activationCodeExpiration).toBe(undefined)
+    expect(fakeUser.temporary.activationCode).toBe(null)
+    expect(fakeUser.temporary.activationCodeExpiration).toBe(null)
   })
 
   it('Should call updateUser twice', async () => {

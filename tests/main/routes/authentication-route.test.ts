@@ -110,7 +110,7 @@ describe('Authentication routes', () => {
       it('Should return 200 if all validations succeds', async () => {
         const fakeUser = makeFakeUser()
         const hashedPassword = await hash(fakeUser.personal.password, 12)
-        const activationCode = fakeUser.temporary?.activationCode
+        const activationCode = fakeUser.temporary.activationCode
         fakeUser.settings.accountActivated = false
         fakeUser.personal.password = hashedPassword
 
@@ -139,7 +139,7 @@ describe('Authentication routes', () => {
       it('Should return 401 if code is expired', async () => {
         const fakeUser = makeFakeUser()
         const hashedPassword = await hash(fakeUser.personal.password, 12)
-        const activationCode = fakeUser.temporary?.activationCode
+        const activationCode = fakeUser.temporary.activationCode
         if (fakeUser.temporary) { fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000) }
         fakeUser.settings.accountActivated = false
         fakeUser.personal.password = hashedPassword
@@ -155,7 +155,7 @@ describe('Authentication routes', () => {
       it('Should return 401 if account is already activated', async () => {
         const fakeUser = makeFakeUser()
         const hashedPassword = await hash(fakeUser.personal.password, 12)
-        const activationCode = fakeUser.temporary?.activationCode
+        const activationCode = fakeUser.temporary.activationCode
         fakeUser.settings.accountActivated = true
         fakeUser.personal.password = hashedPassword
 

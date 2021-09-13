@@ -45,7 +45,7 @@ describe('ValidateActivationCode', () => {
 
     const fakeData = {
       email: fakeUser.personal.email,
-      activationCode: fakeUser.temporary?.activationCode
+      activationCode: fakeUser.temporary.activationCode
     }
 
     const value = await sut.validate(fakeData)
@@ -53,9 +53,9 @@ describe('ValidateActivationCode', () => {
     expect(value).toEqual(new CodeIsExpiredError())
   })
 
-  it('Should return an InvalidCodeError if there is no temporary', async () => {
+  it('Should return an InvalidCodeError if there is no activationCodeExpiration', async () => {
     const { sut, fakeUser } = makeSut()
-    fakeUser.temporary = undefined
+    fakeUser.temporary.activationCodeExpiration = null
 
     const fakeData = { email: fakeUser.personal.email, activationCode: 'any_code' }
 

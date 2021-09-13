@@ -30,7 +30,11 @@ export class AccountRepository implements AccountRepositoryProtocol {
       },
       temporary: {
         activationCode: activationCode,
-        activationCodeExpiration: new Date(Date.now() + activationCodeExpirationMinutes)
+        activationCodeExpiration: new Date(Date.now() + activationCodeExpirationMinutes),
+        resetCode: null,
+        resetCodeExpiration: null,
+        temporaryEmail: null,
+        temporaryEmailExpiration: null
       }
     }
 

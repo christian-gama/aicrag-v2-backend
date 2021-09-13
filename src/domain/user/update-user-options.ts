@@ -1,16 +1,18 @@
 import { User } from '.'
 
-export interface UpdateUserOptions {
-  'personal.id'?: User['personal']['id']
-  'personal.email'?: User['personal']['email']
-  'personal.name'?: User['personal']['name']
-  'personal.password'?: User['personal']['password']
-  'settings.accountActivated'?: User['settings']['accountActivated']
-  'settings.currency'?: User['settings']['currency']
-  'temporary.activationCode'?: string
-  'temporary.activationCodeExpiration'?: Date
-  'temporary.temporaryEmail'?: string
-  'temporary.temporaryEmailExpiration'?: Date
-  'temporary.resetCode'?: string
-  'temporary.resetCodeExpiration'?: Date
+type Personal = {
+  [Property in keyof Partial<User['personal']> as `personal.${string &
+  Property}`]: User['personal'][Property]
 }
+
+type Settings = {
+  [Property in keyof Pick<Partial<User['settings']>, 'accountActivated'> as `settings.${string &
+  Property}`]: User['settings'][Property]
+}
+
+type Temporary = {
+  [Property in keyof Partial<User['temporary']> as `temporary.${string &
+  Property}`]: User['temporary'][Property]
+}
+
+export type UpdateUserOptions = Personal | Settings | Temporary
