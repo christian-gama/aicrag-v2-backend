@@ -29,4 +29,13 @@ describe('LoginController', () => {
 
     expect(findAccountByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
+
+  it('Should call the filter with correct user', async () => {
+    const { sut, fakeUser, filterUserDataStub, request } = makeSut()
+    const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
+
+    await sut.handle(request)
+
+    expect(filterSpy).toHaveBeenCalledWith(fakeUser)
+  })
 })
