@@ -83,7 +83,8 @@ export const makeSut = (): SutTypes => {
     accountDbRepositoryStub,
     activateAccountValidatorStub,
     filterUserDataStub,
-    httpHelper
+    httpHelper,
+    jwtAdapterStub
   )
 
   return {
