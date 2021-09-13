@@ -19,7 +19,6 @@ export class ActivateAccountController implements ControllerProtocol {
     const account = httpRequest.body
 
     const error = await this.activateAccountValidator.validate(account)
-
     if (error) return this.httpHelper.unauthorized(error)
 
     const user = (await this.accountDbRepository.findAccountByEmail(account.email)) as User
