@@ -10,6 +10,7 @@ import { hash } from 'bcrypt'
 import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
 import { makeSignUpController } from '@/main/factories/controllers/authentication/signup/signup-controller-factory'
 import { makeLoginController } from '@/main/factories/controllers/authentication/login/login-controller-factory'
+import { makeActivateAccountController } from '@/main/factories/controllers/authentication/activate-account/activate-account-controller-factory'
 
 describe('Authentication routes', () => {
   let accountCollection: Collection
@@ -17,6 +18,7 @@ describe('Authentication routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
+    app.use('/api/auth/activate-account', adaptRoutes(makeActivateAccountController()))
     app.use('/api/auth/signup', adaptRoutes(makeSignUpController()))
     app.use('/api/auth/login', adaptRoutes(makeLoginController()))
   })
@@ -99,6 +101,25 @@ describe('Authentication routes', () => {
 
       it('Should return 400 if miss a param or param is invalid', async () => {
         await request(app).post('/api/auth/login').send().expect(400)
+      })
+    }
+  })
+
+  describe('POST /activate-account', () => {
+    for (let i = 0; i < config.loopTimes; i++) {
+      it('Should return 200 if all validations succeds', async () => {
+        const fakeUser = makeFakeUser()
+        const hashedPassword = await hash(fakeUser.personal.password, 12)
+        const activationCode = fakeUser.temporary?.activationCode
+        fakeUser.settings.accountActivated = false
+        fakeUser.personal.password = hashedPassword
+
+        await accountCollection.insertOne(fakeUser)
+
+        await request(app)
+          .post('/api/auth/activate-account')
+          .send({ email: fakeUser.personal.email, activationCode: activationCode })
+          .expect(200)
       })
     }
   })
