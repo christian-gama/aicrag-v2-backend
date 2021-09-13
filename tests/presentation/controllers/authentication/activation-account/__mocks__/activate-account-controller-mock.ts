@@ -66,7 +66,7 @@ export const makeSut = (): SutTypes => {
       activationCode: fakeUser.temporary?.activationCode
     }
   }
-  const sut = new ActivateAccountController(activateAccountValidatorStub, httpHelper)
+  const sut = new ActivateAccountController(accountDbRepositoryStub, activateAccountValidatorStub, httpHelper)
 
   return {
     sut,

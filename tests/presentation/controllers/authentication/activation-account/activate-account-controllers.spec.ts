@@ -20,4 +20,13 @@ describe('LoginController', () => {
 
     expect(response).toEqual(httpHelper.unauthorized(error))
   })
+
+  it('Should call findAccountByEmail with correct email', async () => {
+    const { sut, accountDbRepositoryStub, request } = makeSut()
+    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+
+    await sut.handle(request)
+
+    expect(findAccountByEmailSpy).toHaveBeenCalledWith(request.body.email)
+  })
 })
