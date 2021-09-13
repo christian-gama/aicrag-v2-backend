@@ -8,8 +8,8 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 import { hash } from 'bcrypt'
 import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
-import { makeSignUpController } from '@/main/factories/controllers/signup/signup-controller-factory'
-import { makeLoginController } from '@/main/factories/controllers/login/login-controller-factory'
+import { makeSignUpController } from '@/main/factories/controllers/authentication/signup/signup-controller-factory'
+import { makeLoginController } from '@/main/factories/controllers/authentication/login/login-controller-factory'
 
 describe('Authentication routes', () => {
   let accountCollection: Collection
@@ -17,6 +17,7 @@ describe('Authentication routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
+    app.use('/api/auth/activate-account', adaptRoutes(makeLoginController()))
     app.use('/api/auth/signup', adaptRoutes(makeSignUpController()))
     app.use('/api/auth/login', adaptRoutes(makeLoginController()))
   })
@@ -60,6 +61,50 @@ describe('Authentication routes', () => {
   })
 
   describe('POST /login', () => {
+    for (let i = 0; i < config.loopTimes; i++) {
+      it('Should return 200 if all validations succeds', async () => {
+        const fakeUser = makeFakeUser()
+        const hashedPassword = await hash(fakeUser.personal.password, 12)
+        const userPassword = fakeUser.personal.password
+        fakeUser.personal.password = hashedPassword
+        fakeUser.settings.accountActivated = true
+
+        await accountCollection.insertOne(fakeUser)
+
+        await request(app)
+          .post('/api/auth/login')
+          .send({ email: fakeUser.personal.email, password: userPassword })
+          .expect(200)
+      })
+
+      it('Should return 401 if credentials are invalid', async () => {
+        await request(app)
+          .post('/api/auth/login')
+          .send({ email: 'invalid_email@email.com', password: 'invalid_password' })
+          .expect(401)
+      })
+
+      it('Should return 403 if account is not active', async () => {
+        const fakeUser = makeFakeUser()
+        const hashedPassword = await hash(fakeUser.personal.password, 12)
+        const userPassword = fakeUser.personal.password
+        fakeUser.personal.password = hashedPassword
+
+        await accountCollection.insertOne(fakeUser)
+
+        await request(app)
+          .post('/api/auth/login')
+          .send({ email: fakeUser.personal.email, password: userPassword })
+          .expect(403)
+      })
+
+      it('Should return 400 if miss a param or param is invalid', async () => {
+        await request(app).post('/api/auth/login').send().expect(400)
+      })
+    }
+  })
+
+  describe('POST /activate-account', () => {
     for (let i = 0; i < config.loopTimes; i++) {
       it('Should return 200 if all validations succeds', async () => {
         const fakeUser = makeFakeUser()
