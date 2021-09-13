@@ -1,7 +1,7 @@
 import { PublicUser, User, UserAccount } from '@/domain/user'
-import { UpdateUserOptions } from '@/domain/user/update-user-options'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
+import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/update-user-options'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { HttpHelper } from '@/presentation/helper/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helper/http/protocols'

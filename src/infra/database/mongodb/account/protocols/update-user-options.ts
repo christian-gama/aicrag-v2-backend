@@ -1,4 +1,4 @@
-import { User } from '.'
+import { User } from '@/domain/user'
 
 type Personal<T extends keyof User> = {
   [Property in keyof Partial<User['personal']> as `${T}.${Property}`]: User['personal'][Property]

@@ -1,5 +1,5 @@
 import { User, UserAccount } from '@/domain/user'
-import { UpdateUserOptions } from '@/domain/user/update-user-options'
+import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/update-user-options'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidateEmailExists } from '@/application/usecases/validators/credentials/'
 import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'

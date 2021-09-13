@@ -4,7 +4,7 @@ import { makeSut } from './__mocks__/account-db-repository-mock'
 import { makeFakeValidAccount } from '@/tests/domain/__mocks__/account-mock'
 
 import { Collection } from 'mongodb'
-import { UpdateUserOptions } from '@/domain/user/update-user-options'
+import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/update-user-options'
 
 describe('AccountDbRepository', () => {
   let accountCollection: Collection

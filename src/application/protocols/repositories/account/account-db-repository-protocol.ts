@@ -1,5 +1,5 @@
 import { UserAccount, User } from '@/domain/user'
-import { UpdateUserOptions } from '@/domain/user/update-user-options'
+import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/update-user-options'
 
 /**
  * @description Generic account database repository.

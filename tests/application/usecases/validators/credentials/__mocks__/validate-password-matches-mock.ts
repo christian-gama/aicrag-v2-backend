@@ -1,5 +1,5 @@
 import { User, UserAccount } from '@/domain/user'
-import { UpdateUserOptions } from '@/domain/user/update-user-options'
+import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/update-user-options'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ComparerProtocol } from '@/application/protocols/cryptography/'
 import { ValidatePasswordMatches } from '@/application/usecases/validators/credentials/'
