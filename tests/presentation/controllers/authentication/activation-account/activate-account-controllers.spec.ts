@@ -75,4 +75,13 @@ describe('LoginController', () => {
     expect(fakeUser.temporary?.activationCode).toBe(undefined)
     expect(fakeUser.temporary?.activationCodeExpiration).toBe(undefined)
   })
+
+  it('Should call updateUser twice', async () => {
+    const { sut, accountDbRepositoryStub, request } = makeSut()
+    const updateUserSpy = jest.spyOn(accountDbRepositoryStub, 'updateUser')
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledTimes(2)
+  })
 })
