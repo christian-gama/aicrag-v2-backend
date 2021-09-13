@@ -6,8 +6,12 @@ type Personal = {
 }
 
 type Settings = {
-  [Property in keyof Pick<Partial<User['settings']>, 'accountActivated'> as `settings.${string &
+  [Property in keyof Partial<User['settings']> as `settings.${string &
   Property}`]: User['settings'][Property]
+}
+
+type Logs = {
+  [Property in keyof Partial<User['logs']> as `logs.${string & Property}`]: User['logs'][Property]
 }
 
 type Temporary = {
@@ -15,4 +19,4 @@ type Temporary = {
   Property}`]: User['temporary'][Property]
 }
 
-export type UpdateUserOptions = Personal | Settings | Temporary
+export type UpdateUserOptions = Personal | Settings | Logs | Temporary
