@@ -27,20 +27,29 @@ export class ActivateAccountController implements ControllerProtocol {
 
     const filteredUser = this.filterUserData.filter(user)
 
-    this.clearTemporary(user)
-    this.activateAccount(user)
+    await this.clearTemporary(user)
+    await this.activateAccount(user)
 
     return this.httpHelper.ok({ user: filteredUser }, accessToken)
   }
 
-  private clearTemporary (user: User): void {
+  private async clearTemporary (user: User): Promise<void> {
     if (user.temporary) {
       user.temporary.activationCode = undefined
       user.temporary.activationCodeExpiration = undefined
+
+      await this.accountDbRepository.updateUser(user, {
+        'temporary.activationCode': user.temporary.activationCode,
+        'temporary.activationCodeExpiration': user.temporary.activationCode
+      })
     }
   }
 
-  private activateAccount (user: User): void {
+  private async activateAccount (user: User): Promise<void> {
     user.settings.accountActivated = true
+
+    await this.accountDbRepository.updateUser(user, {
+      'settings.accountActivated': user.settings.accountActivated
+    })
   }
 }
