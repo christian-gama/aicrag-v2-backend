@@ -121,6 +121,20 @@ describe('Authentication routes', () => {
           .send({ email: fakeUser.personal.email, activationCode: activationCode })
           .expect(200)
       })
+
+      it('Should return 401 if code is invalid', async () => {
+        const fakeUser = makeFakeUser()
+        const hashedPassword = await hash(fakeUser.personal.password, 12)
+        fakeUser.settings.accountActivated = false
+        fakeUser.personal.password = hashedPassword
+
+        await accountCollection.insertOne(fakeUser)
+
+        await request(app)
+          .post('/api/auth/activate-account')
+          .send({ email: fakeUser.personal.email, activationCode: 'invalid_code' })
+          .expect(401)
+      })
     }
   })
 })
