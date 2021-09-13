@@ -4,6 +4,7 @@ import { makeSut } from './__mocks__/account-db-repository-mock'
 import { makeFakeValidAccount } from '@/tests/domain/__mocks__/account-mock'
 
 import { Collection } from 'mongodb'
+import { UpdateUserOptions } from '@/domain/user/update-user-options'
 
 describe('AccountDbRepository', () => {
   let accountCollection: Collection
@@ -63,6 +64,51 @@ describe('AccountDbRepository', () => {
     it('Should return undefined if does not findAccountByEmail finds a user', async () => {
       const { sut } = makeSut()
       const user = await sut.findAccountByEmail('non_existent@email.com')
+
+      expect(user).toBe(undefined)
+    })
+  })
+
+  describe('updateUser', () => {
+    it('Should return a user if updateUser finds a user', async () => {
+      const { sut } = makeSut()
+      const user = await sut.saveAccount(makeFakeValidAccount())
+
+      const update: UpdateUserOptions = { 'personal.name': 'changed_name' }
+      const user2 = await sut.updateUser(user, update)
+
+      expect(user2).toHaveProperty('_id')
+    })
+
+    it('Should return a user with updated values', async () => {
+      const { sut } = makeSut()
+      const user = await sut.saveAccount(makeFakeValidAccount())
+
+      const update: UpdateUserOptions = { 'personal.name': 'changed_name' }
+      const user2 = await sut.updateUser(user, update)
+
+      expect(user2?.personal.name).toBe('changed_name')
+    })
+
+    it('Should return a user if pass multiple update properties', async () => {
+      const { sut } = makeSut()
+      const user = await sut.saveAccount(makeFakeValidAccount())
+
+      const update: UpdateUserOptions = {
+        'personal.name': 'changed_name',
+        'personal.email': 'changed_email'
+      }
+      const user2 = await sut.updateUser(user, update)
+
+      expect(user2?.personal.name).toBe('changed_name')
+      expect(user2?.personal.email).toBe('changed_email')
+    })
+
+    it('Should return undefined if does not updateUser finds a user', async () => {
+      const { sut, fakeUser } = makeSut()
+
+      const update: UpdateUserOptions = { 'personal.name': 'any_name' }
+      const user = await sut.updateUser(fakeUser, update)
 
       expect(user).toBe(undefined)
     })
