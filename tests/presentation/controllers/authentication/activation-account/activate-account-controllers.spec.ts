@@ -66,4 +66,13 @@ describe('LoginController', () => {
 
     expect(fakeUser.settings.accountActivated).toBe(true)
   })
+
+  it('Should clear temporaries if validation succeds', async () => {
+    const { sut, fakeUser, request } = makeSut()
+
+    await sut.handle(request)
+
+    expect(fakeUser.temporary?.activationCode).toBe(undefined)
+    expect(fakeUser.temporary?.activationCodeExpiration).toBe(undefined)
+  })
 })
