@@ -12,26 +12,32 @@ export const adaptRoutes = (controller: ControllerProtocol) => {
 
       const httpResponse: HttpResponse = await controller.handle(httpRequest)
 
+      res.status(httpResponse.statusCode)
+
       if (httpResponse.accessToken) {
         res.cookie('jwt', httpResponse.accessToken, {
           maxAge: +env.COOKIES.EXPIRES * 24 * 60 * 60 * 1000,
           httpOnly: true,
           secure: env.SERVER.NODE_ENV === 'production'
         })
-      }
 
-      res.status(httpResponse.statusCode)
-
-      if (httpResponse.statusCode === 500 && env.SERVER.NODE_ENV === 'production') {
         res.json({
           status: httpResponse.status,
-          data: { message: new InternalError().message }
+          data: httpResponse.data,
+          accessToken: httpResponse.accessToken
         })
       } else {
-        res.json({
-          status: httpResponse.status,
-          data: httpResponse.data
-        })
+        if (httpResponse.statusCode === 500 && env.SERVER.NODE_ENV === 'production') {
+          res.json({
+            status: httpResponse.status,
+            data: { message: new InternalError().message }
+          })
+        } else {
+          res.json({
+            status: httpResponse.status,
+            data: httpResponse.data
+          })
+        }
       }
     } catch (error) {
       next(error)
