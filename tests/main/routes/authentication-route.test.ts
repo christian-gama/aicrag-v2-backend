@@ -140,7 +140,7 @@ describe('Authentication routes', () => {
         const fakeUser = makeFakeUser()
         const hashedPassword = await hash(fakeUser.personal.password, 12)
         const activationCode = fakeUser.temporary?.activationCode
-        if (fakeUser.temporary) fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
+        if (fakeUser.temporary) { fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000) }
         fakeUser.settings.accountActivated = false
         fakeUser.personal.password = hashedPassword
 
@@ -165,6 +165,16 @@ describe('Authentication routes', () => {
           .post('/api/auth/activate-account')
           .send({ email: fakeUser.personal.email, activationCode: activationCode })
           .expect(401)
+      })
+
+      it('Should return 401 if misses any field', async () => {
+        const fakeUser = makeFakeUser()
+        const hashedPassword = await hash(fakeUser.personal.password, 12)
+        fakeUser.personal.password = hashedPassword
+
+        await accountCollection.insertOne(fakeUser)
+
+        await request(app).post('/api/auth/activate-account').send().expect(401)
       })
     }
   })
