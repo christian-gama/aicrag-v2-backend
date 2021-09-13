@@ -151,6 +151,21 @@ describe('Authentication routes', () => {
           .send({ email: fakeUser.personal.email, activationCode: activationCode })
           .expect(401)
       })
+
+      it('Should return 401 if account is already activated', async () => {
+        const fakeUser = makeFakeUser()
+        const hashedPassword = await hash(fakeUser.personal.password, 12)
+        const activationCode = fakeUser.temporary?.activationCode
+        fakeUser.settings.accountActivated = true
+        fakeUser.personal.password = hashedPassword
+
+        await accountCollection.insertOne(fakeUser)
+
+        await request(app)
+          .post('/api/auth/activate-account')
+          .send({ email: fakeUser.personal.email, activationCode: activationCode })
+          .expect(401)
+      })
     }
   })
 })
