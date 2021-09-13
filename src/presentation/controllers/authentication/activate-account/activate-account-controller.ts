@@ -24,10 +24,10 @@ export class ActivateAccountController implements ControllerProtocol {
 
     const user = (await this.accountDbRepository.findAccountByEmail(account.email)) as User
 
-    this.jwtAdapter.encryptId(user.personal.id)
+    const accessToken = this.jwtAdapter.encryptId(user.personal.id)
 
-    this.filterUserData.filter(user)
+    const filteredUser = this.filterUserData.filter(user)
 
-    return Promise.resolve({ status: 'success', statusCode: 200, data: {} })
+    return this.httpHelper.ok({ user: filteredUser }, accessToken)
   }
 }
