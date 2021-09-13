@@ -58,4 +58,12 @@ describe('LoginController', () => {
 
     expect(okSpy).toHaveBeenCalledWith({ user: filteredUser }, 'any_token')
   })
+
+  it('Should activate account if validation succeds', async () => {
+    const { sut, fakeUser, request } = makeSut()
+
+    await sut.handle(request)
+
+    expect(fakeUser.settings.accountActivated).toBe(true)
+  })
 })
