@@ -1,4 +1,5 @@
 import { UserAccount, User } from '@/domain/user'
+import { UpdateUserOptions } from '@/domain/user/update-user-options'
 
 /**
  * @description Generic account database repository.
@@ -19,4 +20,13 @@ export interface AccountDbRepositoryProtocol {
    * @returns Return a user if finds it or undefined if does not.
    */
   findAccountByEmail: (email: string) => Promise<User | undefined>
+
+  /**
+   * @async Asynchronous method.
+   * @description Receive a user and tries to update it.
+   * @param user The user that will be updated.
+   * @param update Object that contains the changes to be updated.
+   * @returns Return a user if updates it or undefined if does not.
+   */
+  updateUser: (user: User, update: UpdateUserOptions) => Promise<User | undefined>
 }

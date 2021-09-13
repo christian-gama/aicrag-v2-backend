@@ -1,4 +1,5 @@
 import { User, UserAccount } from '@/domain/user'
+import { UpdateUserOptions } from '@/domain/user/update-user-options'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ComparerProtocol } from '@/application/protocols/cryptography/'
 import { ValidatePasswordMatches } from '@/application/usecases/validators/credentials/'
@@ -13,6 +14,10 @@ const makeAccountDbRepositoryStub = (): AccountDbRepositoryProtocol => {
     }
 
     async findAccountByEmail (email: string): Promise<User | undefined> {
+      return Promise.resolve(fakeUser)
+    }
+
+    async updateUser (user: User, update: UpdateUserOptions): Promise<User | undefined> {
       return Promise.resolve(fakeUser)
     }
   }
