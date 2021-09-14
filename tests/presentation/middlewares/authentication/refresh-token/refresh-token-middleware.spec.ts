@@ -57,4 +57,19 @@ describe('RefreshTokenMiddleware', () => {
 
     expect(saveRefreshTokenSpy).toHaveBeenCalledWith('any_id')
   })
+
+  it('Should call deleteRefreshTokenById with correct user id if refresh token has expired', async () => {
+    const { sut, fakeRefreshToken, refreshTokenDbRepositoryStub, request } = makeSut()
+    fakeRefreshToken.expiresIn = new Date(Date.now() - 1000)
+
+    jest
+      .spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenByUserId')
+      .mockReturnValueOnce(Promise.resolve(fakeRefreshToken))
+
+    const saveRefreshTokenSpy = jest.spyOn(refreshTokenDbRepositoryStub, 'deleteRefreshTokenById')
+
+    await sut.handle(request)
+
+    expect(saveRefreshTokenSpy).toHaveBeenCalledWith(fakeRefreshToken.userId)
+  })
 })
