@@ -9,7 +9,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryProtocol {
   createRefreshToken (user: User): RefreshToken {
     return {
       id: this.uuid.generate(),
-      expiresIn: new Date(),
+      expiresIn: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
       user: user,
       userId: user.personal.id
     }
