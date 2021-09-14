@@ -16,7 +16,7 @@ type Temporary<T extends keyof User> = {
   [Property in keyof Partial<User['temporary']> as `${T}.${Property}`]: User['temporary'][Property]
 }
 
-export type UpdateUserOptions =
+export type UserDbFilter =
   | Personal<'personal'>
   | Settings<'settings'>
   | Logs<'logs'>

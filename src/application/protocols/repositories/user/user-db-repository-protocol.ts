@@ -1,5 +1,5 @@
 import { SignUpUserCredentials, User } from '@/domain/user'
-import { UpdateUserOptions } from '@/infra/database/mongodb/user/protocols/update-user-options'
+import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 /**
  * @description Generic user database repository.
@@ -37,5 +37,5 @@ export interface UpdateUserDbProtocol {
    * @param update Object that contains the changes to be updated.
    * @returns Return a user if updates it or undefined if does not.
    */
-  updateUser: (user: User, update: UpdateUserOptions) => Promise<User | undefined>
+  updateUser: (user: User, update: UserDbFilter) => Promise<User | undefined>
 }

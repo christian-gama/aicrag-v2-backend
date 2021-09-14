@@ -4,7 +4,7 @@ import { makeSut } from './user-db-repository-sut'
 import { makeFakeSignUpUserCredentials } from '@/tests/__mocks__/domain/mock-signup-user-credentials'
 
 import { Collection } from 'mongodb'
-import { UpdateUserOptions } from '@/infra/database/mongodb/user/protocols/update-user-options'
+import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 describe('UserDbRepository', () => {
   let userCollection: Collection
@@ -86,7 +86,7 @@ describe('UserDbRepository', () => {
       const { sut } = makeSut()
       const user = await sut.saveUser(makeFakeSignUpUserCredentials())
 
-      const update: UpdateUserOptions = { 'personal.name': 'changed_name' }
+      const update: UserDbFilter = { 'personal.name': 'changed_name' }
       const user2 = await sut.updateUser(user, update)
 
       expect(user2).toHaveProperty('_id')
@@ -96,7 +96,7 @@ describe('UserDbRepository', () => {
       const { sut } = makeSut()
       const user = await sut.saveUser(makeFakeSignUpUserCredentials())
 
-      const update: UpdateUserOptions = { 'personal.name': 'changed_name' }
+      const update: UserDbFilter = { 'personal.name': 'changed_name' }
       const user2 = await sut.updateUser(user, update)
 
       expect(user2?.personal.name).toBe('changed_name')
@@ -106,7 +106,7 @@ describe('UserDbRepository', () => {
       const { sut } = makeSut()
       const user = await sut.saveUser(makeFakeSignUpUserCredentials())
 
-      const update: UpdateUserOptions = {
+      const update: UserDbFilter = {
         'personal.name': 'changed_name',
         'personal.email': 'changed_email'
       }
@@ -119,7 +119,7 @@ describe('UserDbRepository', () => {
     it('Should return undefined if does not updateUser finds a user', async () => {
       const { sut, fakeUser } = makeSut()
 
-      const update: UpdateUserOptions = { 'personal.name': 'any_name' }
+      const update: UserDbFilter = { 'personal.name': 'any_name' }
       const user = await sut.updateUser(fakeUser, update)
 
       expect(user).toBe(undefined)

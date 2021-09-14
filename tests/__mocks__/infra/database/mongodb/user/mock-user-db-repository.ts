@@ -1,6 +1,6 @@
 import { SignUpUserCredentials, User } from '@/domain/user'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
-import { UpdateUserOptions } from '@/infra/database/mongodb/user/protocols/update-user-options'
+import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 export const makeUserDbRepositoryStub = (fakeUser: User): UserDbRepositoryProtocol => {
   class UserDbRepositoryStub implements UserDbRepositoryProtocol {
@@ -12,7 +12,7 @@ export const makeUserDbRepositoryStub = (fakeUser: User): UserDbRepositoryProtoc
       return Promise.resolve(fakeUser)
     }
 
-    async updateUser (user: User, update: UpdateUserOptions): Promise<User | undefined> {
+    async updateUser (user: User, update: UserDbFilter): Promise<User | undefined> {
       return Promise.resolve(fakeUser)
     }
   }

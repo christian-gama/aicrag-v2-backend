@@ -2,7 +2,7 @@ import { SignUpUserCredentials, User } from '@/domain/user'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { UserRepositoryProtocol } from '@/application/protocols/repositories/user/user-repository-protocol'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { UpdateUserOptions } from '@/infra/database/mongodb/user/protocols/update-user-options'
+import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 export class UserDbRepository implements UserDbRepositoryProtocol {
   constructor (private readonly userRepository: UserRepositoryProtocol) {}
@@ -18,16 +18,16 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
 
   async findUserByEmail (email: string): Promise<User | undefined> {
     const userCollection = await MongoHelper.getCollection('users')
-    const filter: UpdateUserOptions = { 'personal.email': email }
+    const filter: UserDbFilter = { 'personal.email': email }
 
     const user = (await userCollection.findOne(filter)) as User
 
     if (user) return user
   }
 
-  async updateUser (user: User, update: UpdateUserOptions): Promise<User | undefined> {
+  async updateUser (user: User, update: UserDbFilter): Promise<User | undefined> {
     const userCollection = await MongoHelper.getCollection('users')
-    const filter: UpdateUserOptions = { 'personal.id': user.personal.id }
+    const filter: UserDbFilter = { 'personal.id': user.personal.id }
 
     await userCollection.updateOne(filter, { $set: update })
 
