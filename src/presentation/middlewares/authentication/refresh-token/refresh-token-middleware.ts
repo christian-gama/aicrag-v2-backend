@@ -1,4 +1,5 @@
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
+import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
 import { TokenMissingError } from '@/application/usecases/errors'
 import {
   HttpHelperProtocol,
@@ -10,7 +11,8 @@ import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middlew
 export class RefreshTokenMiddleware implements MiddlewareProtocol {
   constructor (
     private readonly decoder: DecoderProtocol,
-    private readonly httpHelper: HttpHelperProtocol
+    private readonly httpHelper: HttpHelperProtocol,
+    private readonly refreshTokenDbRepository: RefreshTokenDbRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequestToken): Promise<HttpResponse> {
@@ -20,7 +22,9 @@ export class RefreshTokenMiddleware implements MiddlewareProtocol {
       return this.httpHelper.unauthorized(new TokenMissingError())
     }
 
-    await this.decoder.decodeId(token)
+    const userId = await this.decoder.decodeId(token)
+
+    await this.refreshTokenDbRepository.findRefreshTokenByUserId(userId)
 
     return { statusCode: 200, status: 'success', data: '' }
   }
