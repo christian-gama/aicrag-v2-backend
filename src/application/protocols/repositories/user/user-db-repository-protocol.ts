@@ -4,7 +4,12 @@ import { UpdateUserOptions } from '@/infra/database/mongodb/user/protocols/updat
 /**
  * @description Generic user database repository.
  */
-export interface UserDbRepositoryProtocol {
+export interface UserDbRepositoryProtocol
+  extends SaveUserDbProtocol,
+  UpdateUserDbProtocol,
+  FindUserByEmailDbProtocol {}
+
+export interface SaveUserDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an user and then save a user on database.
@@ -12,7 +17,9 @@ export interface UserDbRepositoryProtocol {
    * @returns Return a user from database.
    */
   saveUser: (user: SignUpUserCredentials) => Promise<User>
+}
 
+export interface FindUserByEmailDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an email and tries to find it on database.
@@ -20,7 +27,9 @@ export interface UserDbRepositoryProtocol {
    * @returns Return a user if finds it or undefined if does not.
    */
   findUserByEmail: (email: string) => Promise<User | undefined>
+}
 
+export interface UpdateUserDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a user and tries to update it.
