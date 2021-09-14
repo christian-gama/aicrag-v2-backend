@@ -1,4 +1,5 @@
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
+import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
 import { TokenMissingError } from '@/application/usecases/errors'
 import {
@@ -11,6 +12,7 @@ import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middlew
 export class RefreshTokenMiddleware implements MiddlewareProtocol {
   constructor (
     private readonly decoder: DecoderProtocol,
+    private readonly encrypter: EncrypterProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly refreshTokenDbRepository: RefreshTokenDbRepositoryProtocol
   ) {}
@@ -27,9 +29,10 @@ export class RefreshTokenMiddleware implements MiddlewareProtocol {
     const refreshToken = await this.refreshTokenDbRepository.findRefreshTokenByUserId(userId)
 
     if (!refreshToken || refreshToken.expiresIn.getTime() < Date.now()) {
+      refreshToken && await this.refreshTokenDbRepository.deleteRefreshTokenById(refreshToken.userId)
       await this.refreshTokenDbRepository.saveRefreshToken(userId)
     }
 
-    return { statusCode: 200, status: 'success', data: '' }
+    return this.httpHelper.ok({})
   }
 }
