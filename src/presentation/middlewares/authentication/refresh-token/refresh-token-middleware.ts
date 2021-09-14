@@ -24,7 +24,11 @@ export class RefreshTokenMiddleware implements MiddlewareProtocol {
 
     const userId = await this.decoder.decodeId(token)
 
-    await this.refreshTokenDbRepository.findRefreshTokenByUserId(userId)
+    const refreshToken = await this.refreshTokenDbRepository.findRefreshTokenByUserId(userId)
+
+    if (!refreshToken || refreshToken.expiresIn.getTime() < Date.now()) {
+      await this.refreshTokenDbRepository.saveRefreshToken(userId)
+    }
 
     return { statusCode: 200, status: 'success', data: '' }
   }
