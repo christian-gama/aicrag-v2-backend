@@ -1,3 +1,4 @@
+import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { TokenMissingError } from '@/application/usecases/errors'
 import {
   HttpHelperProtocol,
@@ -8,6 +9,7 @@ import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middlew
 
 export class RefreshTokenMiddleware implements MiddlewareProtocol {
   constructor (
+    private readonly decoder: DecoderProtocol,
     private readonly httpHelper: HttpHelperProtocol
   ) {}
 
@@ -17,6 +19,8 @@ export class RefreshTokenMiddleware implements MiddlewareProtocol {
     if (!token) {
       return this.httpHelper.unauthorized(new TokenMissingError())
     }
+
+    await this.decoder.decodeId(token)
 
     return { statusCode: 200, status: 'success', data: '' }
   }
