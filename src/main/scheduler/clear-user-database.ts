@@ -8,7 +8,7 @@ export class ClearUserDatabase {
 
     const filter: UserDbFilter | FindOptions = {
       'settings.accountActivated': false,
-      'logs.createdAt': { $lt: new Date(Date.now() - 24 * 60 * 60 * 1000) } as any
+      'logs.createdAt': { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) } as any
     }
 
     const deleted = await userCollection.deleteMany(filter)
