@@ -3,10 +3,10 @@ import { makeSut } from './validate-active-account-sut'
 
 describe('ValidateCredentials', () => {
   it('Should return a InactiveAccountError if user account is inactive', async () => {
-    const { sut, accountDbRepositoryStub, fakeUser } = makeSut()
+    const { sut, userDbRepositoryStub, fakeUser } = makeSut()
     fakeUser.settings.accountActivated = false
     jest
-      .spyOn(accountDbRepositoryStub, 'saveAccount')
+      .spyOn(userDbRepositoryStub, 'saveUser')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const result = await sut.validate(fakeUser)
@@ -14,14 +14,14 @@ describe('ValidateCredentials', () => {
     expect(result).toEqual(new InactiveAccountError())
   })
 
-  it('Should call findAccountByEmail with correct value', async () => {
-    const { sut, accountDbRepositoryStub } = makeSut()
-    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+  it('Should call findUserByEmail with correct value', async () => {
+    const { sut, userDbRepositoryStub } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
 
     await sut.validate(credentials)
 
-    expect(findAccountByEmailSpy).toHaveBeenCalledWith(credentials.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
   })
 
   it('Should return nothing if succeds', async () => {

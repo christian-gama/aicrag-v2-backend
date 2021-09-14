@@ -1,8 +1,8 @@
-import { ValidateActiveAccount } from '@/application/usecases/validators/credentials/validate-active-account'
-import { makeAccountDbRepository } from '@/main/factories/repositories/account/account-db-repository/account-db-repository-factory'
+import { ValidateActiveAccount } from '@/application/usecases/validators/credentials-validator/validate-active-account'
+import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
 
 export const makeValidateActiveAccount = (): ValidateActiveAccount => {
-  const accountDbRepository = makeAccountDbRepository()
+  const userDbRepository = makeUserDbRepository()
 
-  return new ValidateActiveAccount(accountDbRepository)
+  return new ValidateActiveAccount(userDbRepository)
 }

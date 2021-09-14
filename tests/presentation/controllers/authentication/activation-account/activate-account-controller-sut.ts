@@ -1,12 +1,12 @@
 import { PublicUser, User } from '@/domain/user'
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ActivateAccountController } from '@/presentation/controllers/authentication/activate-account/activate-account-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
-import { makeAccountDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/account/mock-account-db-repository'
+import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
 import { makeEncrypterStub } from '@/tests/__mocks__/infra/adapters/cryptography/mock-jwt-adapter'
 import { makeFakePublicUser } from '@/tests/__mocks__/domain/mock-public-user'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
@@ -15,7 +15,7 @@ import { makeValidatorStub } from '@/tests/__mocks__/application/validators/mock
 
 export interface SutTypes {
   sut: ActivateAccountController
-  accountDbRepositoryStub: AccountDbRepositoryProtocol
+  userDbRepositoryStub: UserDbRepositoryProtocol
   activateAccountValidatorStub: ValidatorProtocol
   fakePublicUser: PublicUser
   fakeUser: User
@@ -28,7 +28,7 @@ export interface SutTypes {
 export const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const fakePublicUser = makeFakePublicUser(fakeUser)
-  const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   const activateAccountValidatorStub = makeValidatorStub()
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const httpHelper = makeHttpHelper()
@@ -40,7 +40,7 @@ export const makeSut = (): SutTypes => {
     }
   }
   const sut = new ActivateAccountController(
-    accountDbRepositoryStub,
+    userDbRepositoryStub,
     activateAccountValidatorStub,
     filterUserDataStub,
     httpHelper,
@@ -49,7 +49,7 @@ export const makeSut = (): SutTypes => {
 
   return {
     sut,
-    accountDbRepositoryStub,
+    userDbRepositoryStub,
     activateAccountValidatorStub,
     fakePublicUser,
     fakeUser,

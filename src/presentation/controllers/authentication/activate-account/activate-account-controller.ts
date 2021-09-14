@@ -1,5 +1,5 @@
 import { User } from '@/domain/user'
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
@@ -8,7 +8,7 @@ import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/he
 
 export class ActivateAccountController implements ControllerProtocol {
   constructor (
-    private readonly accountDbRepository: AccountDbRepositoryProtocol,
+    private readonly userDbRepository: UserDbRepositoryProtocol,
     private readonly activateAccountValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
@@ -16,12 +16,12 @@ export class ActivateAccountController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const account = httpRequest.body
+    const credentials = httpRequest.body
 
-    const error = await this.activateAccountValidator.validate(account)
+    const error = await this.activateAccountValidator.validate(credentials)
     if (error) return this.httpHelper.unauthorized(error)
 
-    const user = (await this.accountDbRepository.findAccountByEmail(account.email)) as User
+    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as User
 
     const accessToken = this.jwtAdapter.encryptId(user.personal.id)
 
@@ -37,7 +37,7 @@ export class ActivateAccountController implements ControllerProtocol {
     user.temporary.activationCode = null
     user.temporary.activationCodeExpiration = null
 
-    await this.accountDbRepository.updateUser(user, {
+    await this.userDbRepository.updateUser(user, {
       'temporary.activationCode': user.temporary.activationCode,
       'temporary.activationCodeExpiration': user.temporary.activationCode
     })
@@ -46,7 +46,7 @@ export class ActivateAccountController implements ControllerProtocol {
   private async activateAccount (user: User): Promise<void> {
     user.settings.accountActivated = true
 
-    await this.accountDbRepository.updateUser(user, {
+    await this.userDbRepository.updateUser(user, {
       'settings.accountActivated': user.settings.accountActivated
     })
   }

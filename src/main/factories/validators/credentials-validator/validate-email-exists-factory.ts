@@ -1,8 +1,8 @@
-import { ValidateEmailExists } from '@/application/usecases/validators/credentials/'
-import { makeAccountDbRepository } from '@/main/factories/repositories/account/account-db-repository/account-db-repository-factory'
+import { ValidateEmailExists } from '@/application/usecases/validators/credentials-validator'
+import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
 
 export const makeValidateEmailExists = (): ValidateEmailExists => {
-  const accountDbRepository = makeAccountDbRepository()
+  const userDbRepository = makeUserDbRepository()
 
-  return new ValidateEmailExists(accountDbRepository)
+  return new ValidateEmailExists(userDbRepository)
 }

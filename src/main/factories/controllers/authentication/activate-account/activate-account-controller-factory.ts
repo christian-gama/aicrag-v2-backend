@@ -1,5 +1,5 @@
 import { ControllerProtocol } from '@/presentation/controllers/authentication/login'
-import { makeAccountDbRepository } from '@/main/factories/repositories/account/account-db-repository/account-db-repository-factory'
+import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
 import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-factory'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { makeJwtAdapter } from '@/main/factories/cryptography/jwt-adapter-factory'
@@ -8,19 +8,19 @@ import { ActivateAccountController } from '@/presentation/controllers/authentica
 import { makeActivateAccountValidatorComposite } from '@/main/factories/validators/activate-account-validator'
 
 export const makeActivateAccountController = (): ControllerProtocol => {
-  const accountDbRepository = makeAccountDbRepository()
+  const userDbRepository = makeUserDbRepository()
   const activateAccountValidator = makeActivateAccountValidatorComposite()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
   const jwtAdapter = makeJwtAdapter()
 
-  const activateAccountController = new ActivateAccountController(
-    accountDbRepository,
+  const activateUserController = new ActivateAccountController(
+    userDbRepository,
     activateAccountValidator,
     filterUserData,
     httpHelper,
     jwtAdapter
   )
 
-  return makeTryCatchControllerDecorator(activateAccountController)
+  return makeTryCatchControllerDecorator(activateUserController)
 }

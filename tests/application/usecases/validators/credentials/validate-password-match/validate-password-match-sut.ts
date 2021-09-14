@@ -1,23 +1,23 @@
 import { User } from '@/domain/user'
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ComparerProtocol } from '@/application/protocols/cryptography/'
-import { ValidatePasswordMatch } from '@/application/usecases/validators/credentials/'
-import { makeAccountDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/account/mock-account-db-repository'
+import { ValidatePasswordMatch } from '@/application/usecases/validators/credentials-validator'
+import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
 import { makeComparerStub } from '@/tests/__mocks__/infra/adapters/cryptography/mock-bcrypt-adapter'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 
 interface SutTypes {
   sut: ValidatePasswordMatch
-  accountDbRepositoryStub: AccountDbRepositoryProtocol
+  userDbRepositoryStub: UserDbRepositoryProtocol
   comparerStub: ComparerProtocol
   fakeUser: User
 }
 
 export const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const accountDbRepositoryStub = makeAccountDbRepositoryStub(fakeUser)
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   const comparerStub = makeComparerStub()
-  const sut = new ValidatePasswordMatch(accountDbRepositoryStub, comparerStub)
+  const sut = new ValidatePasswordMatch(userDbRepositoryStub, comparerStub)
 
-  return { sut, accountDbRepositoryStub, comparerStub, fakeUser }
+  return { sut, userDbRepositoryStub, comparerStub, fakeUser }
 }

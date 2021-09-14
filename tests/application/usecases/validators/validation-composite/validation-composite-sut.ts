@@ -1,4 +1,4 @@
-import { ValidationComposite, ValidatorProtocol } from '@/application/usecases/validators/account'
+import { ValidationComposite, ValidatorProtocol } from '@/application/usecases/validators/user-validator'
 import { makeValidatorStub } from '@/tests/__mocks__/application/validators/mock-validator'
 
 interface SutTypes {

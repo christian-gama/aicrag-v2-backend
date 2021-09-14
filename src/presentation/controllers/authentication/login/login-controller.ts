@@ -2,13 +2,13 @@ import { User } from '@/domain/user'
 import { ControllerProtocol } from '.'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
-import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
 export class LoginController implements ControllerProtocol {
   constructor (
-    private readonly accountDbRepository: AccountDbRepositoryProtocol,
+    private readonly userDbRepository: UserDbRepositoryProtocol,
     private readonly credentialsValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
@@ -39,7 +39,7 @@ export class LoginController implements ControllerProtocol {
       return response
     }
 
-    const user = (await this.accountDbRepository.findAccountByEmail(credentials.email)) as User
+    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as User
 
     const accessToken = this.jwtAdapter.encryptId(user.personal.id)
 

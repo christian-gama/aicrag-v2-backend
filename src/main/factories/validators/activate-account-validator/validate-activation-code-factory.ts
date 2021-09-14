@@ -1,8 +1,8 @@
-import { ValidateActivationCode } from '@/application/usecases/validators/codes/validate-activation-code'
-import { makeAccountDbRepository } from '../../repositories/account/account-db-repository/account-db-repository-factory'
+import { ValidateActivationCode } from '@/application/usecases/validators/codes-validator/validate-activation-code'
+import { makeUserDbRepository } from '../../repositories/user/user-db-repository/user-db-repository-factory'
 
 export const makeValidateActivationCode = (): ValidateActivationCode => {
-  const accountDbRepository = makeAccountDbRepository()
+  const userDbRepository = makeUserDbRepository()
 
-  return new ValidateActivationCode(accountDbRepository)
+  return new ValidateActivationCode(userDbRepository)
 }

@@ -1,4 +1,4 @@
-import { ValidateRequiredFields } from '@/application/usecases/validators/account/'
+import { ValidateRequiredFields } from '@/application/usecases/validators/user-validator'
 
 import faker from 'faker'
 

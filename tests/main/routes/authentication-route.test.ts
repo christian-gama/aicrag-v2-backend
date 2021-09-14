@@ -6,14 +6,14 @@ import { makeLoginController } from '@/main/factories/controllers/authentication
 import { makeActivateAccountController } from '@/main/factories/controllers/authentication/activate-account/activate-account-controller-factory'
 import { config } from '@/tests/config'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
-import { makeFakeValidAccount } from '@/tests/__mocks__/domain/mock-account'
+import { makeFakeSignUpUserCredentials } from '@/tests/__mocks__/domain/mock-signup-user-credentials'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
 import { hash } from 'bcrypt'
 
 describe('Authentication routes', () => {
-  let accountCollection: Collection
+  let userCollection: Collection
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
@@ -28,14 +28,14 @@ describe('Authentication routes', () => {
   })
 
   beforeEach(async () => {
-    accountCollection = await MongoHelper.getCollection('accounts')
-    await accountCollection.deleteMany({})
+    userCollection = await MongoHelper.getCollection('users')
+    await userCollection.deleteMany({})
   })
 
   describe('POST /signup', () => {
     for (let i = 0; i < config.loopTimes; i++) {
       it('Should return 200 if all validations succeds', async () => {
-        await request(app).post('/api/auth/signup').send(makeFakeValidAccount()).expect(200)
+        await request(app).post('/api/auth/signup').send(makeFakeSignUpUserCredentials()).expect(200)
       })
 
       it('Should return 400 if validation fails', async () => {
@@ -44,15 +44,15 @@ describe('Authentication routes', () => {
 
       it('Should return 409 if email already exists', async () => {
         const fakeUser = makeFakeUser()
-        const fakeAccount = {
+        const fakeSignUpUserCredentials = {
           name: fakeUser.personal.name,
           email: fakeUser.personal.email,
           password: fakeUser.personal.password,
           passwordConfirmation: fakeUser.personal.password
         }
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
-        await request(app).post('/api/auth/signup').send(fakeAccount).expect(409)
+        await request(app).post('/api/auth/signup').send(fakeSignUpUserCredentials).expect(409)
       })
 
       it('Should return 400 if miss a param or param is invalid', async () => {
@@ -70,7 +70,7 @@ describe('Authentication routes', () => {
         fakeUser.personal.password = hashedPassword
         fakeUser.settings.accountActivated = true
 
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
         await request(app)
           .post('/api/auth/login')
@@ -85,13 +85,13 @@ describe('Authentication routes', () => {
           .expect(401)
       })
 
-      it('Should return 403 if account is not active', async () => {
+      it('Should return 403 if account is not activated', async () => {
         const fakeUser = makeFakeUser()
         const hashedPassword = await hash(fakeUser.personal.password, 12)
         const userPassword = fakeUser.personal.password
         fakeUser.personal.password = hashedPassword
 
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
         await request(app)
           .post('/api/auth/login')
@@ -114,7 +114,7 @@ describe('Authentication routes', () => {
         fakeUser.settings.accountActivated = false
         fakeUser.personal.password = hashedPassword
 
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
         await request(app)
           .post('/api/auth/activate-account')
@@ -128,7 +128,7 @@ describe('Authentication routes', () => {
         fakeUser.settings.accountActivated = false
         fakeUser.personal.password = hashedPassword
 
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
         await request(app)
           .post('/api/auth/activate-account')
@@ -144,7 +144,7 @@ describe('Authentication routes', () => {
         fakeUser.settings.accountActivated = false
         fakeUser.personal.password = hashedPassword
 
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
         await request(app)
           .post('/api/auth/activate-account')
@@ -159,7 +159,7 @@ describe('Authentication routes', () => {
         fakeUser.settings.accountActivated = true
         fakeUser.personal.password = hashedPassword
 
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
         await request(app)
           .post('/api/auth/activate-account')
@@ -172,7 +172,7 @@ describe('Authentication routes', () => {
         const hashedPassword = await hash(fakeUser.personal.password, 12)
         fakeUser.personal.password = hashedPassword
 
-        await accountCollection.insertOne(fakeUser)
+        await userCollection.insertOne(fakeUser)
 
         await request(app).post('/api/auth/activate-account').send().expect(401)
       })

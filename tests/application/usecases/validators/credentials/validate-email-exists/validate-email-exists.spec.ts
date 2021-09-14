@@ -3,9 +3,9 @@ import { makeSut } from './validate-email-exists-sut'
 
 describe('ValidateCredentials', () => {
   it('Should return a UserCredentialError if email does not exists', async () => {
-    const { sut, accountDbRepositoryStub } = makeSut()
+    const { sut, userDbRepositoryStub } = makeSut()
     jest
-      .spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+      .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
 
@@ -14,13 +14,13 @@ describe('ValidateCredentials', () => {
     expect(error).toEqual(new UserCredentialError())
   })
 
-  it('Should call findAccountByEmail with correct value', async () => {
-    const { sut, accountDbRepositoryStub } = makeSut()
-    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+  it('Should call findUserByEmail with correct value', async () => {
+    const { sut, userDbRepositoryStub } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
 
     await sut.validate(credentials)
 
-    expect(findAccountByEmailSpy).toHaveBeenCalledWith(credentials.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
   })
 })

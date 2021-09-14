@@ -1,4 +1,4 @@
-import { ValidatePasswordComparasion, ValidatorProtocol } from '@/application/usecases/validators/account'
+import { ValidatePasswordComparasion, ValidatorProtocol } from '@/application/usecases/validators/user-validator'
 
 interface SutTypes {
   sut: ValidatorProtocol

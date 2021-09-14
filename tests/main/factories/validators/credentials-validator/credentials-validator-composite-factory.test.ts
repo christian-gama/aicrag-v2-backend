@@ -1,7 +1,7 @@
 import {
   ValidationComposite,
   ValidatorProtocol
-} from '@/application/usecases/validators/credentials'
+} from '@/application/usecases/validators/credentials-validator'
 import {
   makeCredentialsValidatorComposite,
   makeRequiredFields,

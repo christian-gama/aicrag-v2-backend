@@ -1,4 +1,4 @@
-import { EmailValidatorProtocol } from '@/application/usecases/validators/account'
+import { EmailValidatorProtocol } from '@/application/usecases/validators/user-validator'
 
 export const makeEmailValidatorStub = (): EmailValidatorProtocol => {
   class EmailValidatorStub implements EmailValidatorProtocol {

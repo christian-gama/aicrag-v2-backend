@@ -68,13 +68,13 @@ describe('LoginController', () => {
     expect(forbiddenSpy).toHaveBeenCalledWith(error)
   })
 
-  it('Should call findAccountByEmail with the correct value', async () => {
-    const { sut, accountDbRepositoryStub, request } = makeSut()
-    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+  it('Should call findUserByEmail with the correct value', async () => {
+    const { sut, userDbRepositoryStub, request } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
 
-    expect(findAccountByEmailSpy).toHaveBeenCalledWith(request.body.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
   it('Should call the encryptId with correct values', async () => {

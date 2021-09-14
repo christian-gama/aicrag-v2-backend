@@ -1,19 +1,19 @@
 import { ControllerProtocol, SignUpController } from '@/presentation/controllers/authentication/signup/'
-import { makeAccountDbRepository } from '@/main/factories/repositories/account/account-db-repository/account-db-repository-factory'
-import { makeAccountValidatorComposite } from '@/main/factories/validators/account-validator/account-validator-composite-factory'
+import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
+import { makeUserValidatorComposite } from '@/main/factories/validators/user-validator/user-validator-composite-factory'
 import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-factory'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { makeTryCatchControllerDecorator } from '@/main/factories/decorators/try-catch-controller-decorator-factory'
 
 export const makeSignUpController = (): ControllerProtocol => {
-  const accountDbRepository = makeAccountDbRepository()
-  const accountValidator = makeAccountValidatorComposite()
+  const userDbRepository = makeUserDbRepository()
+  const userValidator = makeUserValidatorComposite()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
 
   const signUpController = new SignUpController(
-    accountDbRepository,
-    accountValidator,
+    userDbRepository,
+    userValidator,
     filterUserData,
     httpHelper
   )

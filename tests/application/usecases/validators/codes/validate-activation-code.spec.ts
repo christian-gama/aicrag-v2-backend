@@ -6,14 +6,14 @@ import {
 import { makeSut } from './validate-activation-code-sut'
 
 describe('ValidateActivationCode', () => {
-  it('Should call findAccountByEmail with correct email', async () => {
-    const { sut, accountDbRepositoryStub, fakeUser } = makeSut()
-    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+  it('Should call findUserByEmail with correct email', async () => {
+    const { sut, userDbRepositoryStub, fakeUser } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
     const fakeData = { email: fakeUser.personal.email, activationCode: 'any_code' }
 
     await sut.validate(fakeData)
 
-    expect(findAccountByEmailSpy).toHaveBeenCalledWith(fakeData.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(fakeData.email)
   })
 
   it('Should return an InvalidCodeError if activation code is not valid', async () => {
@@ -65,8 +65,8 @@ describe('ValidateActivationCode', () => {
   })
 
   it('Should return an InvalidCodeError if there is no user', async () => {
-    const { sut, accountDbRepositoryStub } = makeSut()
-    jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail').mockReturnValueOnce(Promise.resolve(undefined))
+    const { sut, userDbRepositoryStub } = makeSut()
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(undefined))
 
     const fakeData = { email: 'non_existent@email.com', activationCode: 'any_code' }
 

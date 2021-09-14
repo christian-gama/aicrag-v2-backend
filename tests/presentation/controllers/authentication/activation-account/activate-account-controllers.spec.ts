@@ -22,13 +22,13 @@ describe('LoginController', () => {
     expect(response).toEqual(httpHelper.unauthorized(error))
   })
 
-  it('Should call findAccountByEmail with correct email', async () => {
-    const { sut, accountDbRepositoryStub, request } = makeSut()
-    const findAccountByEmailSpy = jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail')
+  it('Should call findUserByEmail with correct email', async () => {
+    const { sut, userDbRepositoryStub, request } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
 
-    expect(findAccountByEmailSpy).toHaveBeenCalledWith(request.body.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
   it('Should call filter with correct user', async () => {
@@ -77,8 +77,8 @@ describe('LoginController', () => {
   })
 
   it('Should call updateUser twice', async () => {
-    const { sut, accountDbRepositoryStub, request } = makeSut()
-    const updateUserSpy = jest.spyOn(accountDbRepositoryStub, 'updateUser')
+    const { sut, userDbRepositoryStub, request } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 
