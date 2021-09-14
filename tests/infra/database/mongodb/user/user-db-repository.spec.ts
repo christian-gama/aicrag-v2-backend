@@ -67,15 +67,32 @@ describe('UserDbRepository', () => {
   describe('findUserByEmail', () => {
     it('Should return a user if findUserByEmail finds a user', async () => {
       const { sut } = makeSut()
-      const user = await sut.saveUser(makeFakeSignUpUserCredentials())
-      const user2 = await sut.findUserByEmail(user.personal.email)
+      const savedUser = await sut.saveUser(makeFakeSignUpUserCredentials())
+      const user = await sut.findUserByEmail(savedUser.personal.email)
 
-      expect(user2).toHaveProperty('_id')
+      expect(user).toHaveProperty('_id')
     })
 
     it('Should return undefined if does not findUserByEmail finds a user', async () => {
       const { sut } = makeSut()
       const user = await sut.findUserByEmail('non_existent@email.com')
+
+      expect(user).toBe(undefined)
+    })
+  })
+
+  describe('findUserById', () => {
+    it('Should return a user if findUserById finds a user', async () => {
+      const { sut } = makeSut()
+      const savedUser = await sut.saveUser(makeFakeSignUpUserCredentials())
+      const user = await sut.findUserById(savedUser.personal.id)
+
+      expect(user).toHaveProperty('_id')
+    })
+
+    it('Should return undefined if does not findUserById finds a user', async () => {
+      const { sut } = makeSut()
+      const user = await sut.findUserById('invalid_id')
 
       expect(user).toBe(undefined)
     })
