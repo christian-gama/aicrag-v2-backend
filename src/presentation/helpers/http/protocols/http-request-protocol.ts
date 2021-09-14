@@ -8,3 +8,10 @@ export interface HttpRequest {
    */
   body?: any
 }
+
+export interface HttpRequestToken {
+  /**
+   * @description Token that comes from request.
+   */
+  token?: string
+}
