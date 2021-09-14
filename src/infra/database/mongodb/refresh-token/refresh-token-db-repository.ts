@@ -23,4 +23,12 @@ export class RefreshTokenDbRepository implements RefreshTokenDbRepositoryProtoco
 
     if (refreshToken) return refreshToken
   }
+
+  async deleteRefreshTokenById (userId: string): Promise<number> {
+    const refreshTokenCollection = await MongoHelper.getCollection('refresh_tokens')
+
+    const deleted = await refreshTokenCollection.deleteMany({ userId })
+
+    return deleted.deletedCount
+  }
 }
