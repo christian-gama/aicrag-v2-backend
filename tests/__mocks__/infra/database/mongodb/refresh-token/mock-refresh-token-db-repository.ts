@@ -5,11 +5,15 @@ import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-toke
 export const makeRefreshTokenDbRepositoryStub = (): RefreshTokenDbRepositoryProtocol => {
   class RefreshTokenDbRepositoryStub implements RefreshTokenDbRepositoryProtocol {
     async saveRefreshToken (userId: string): Promise<RefreshToken> {
-      return makeFakeRefreshToken()
+      return Promise.resolve(makeFakeRefreshToken())
     }
 
     async findRefreshTokenByUserId (userId: string): Promise<RefreshToken> {
-      return makeFakeRefreshToken()
+      return Promise.resolve(makeFakeRefreshToken())
+    }
+
+    async deleteRefreshTokenById (userId: string): Promise<number> {
+      return Promise.resolve(0)
     }
   }
 

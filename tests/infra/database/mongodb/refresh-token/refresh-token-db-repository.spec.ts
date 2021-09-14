@@ -66,4 +66,32 @@ describe('RefreshTokenDbRepository', () => {
       expect(refreshToken).toBe(undefined)
     })
   })
+
+  describe('DeleteRefreshTokenById', () => {
+    it('Should return deleted count 0 if does not find any refresh token', async () => {
+      const { sut } = makeSut()
+      const fakeRefreshToken = makeFakeRefreshToken()
+
+      const fakeUserId = fakeRefreshToken.userId
+      const deletedCount = await sut.deleteRefreshTokenById(fakeUserId)
+
+      expect(deletedCount).toBe(0)
+    })
+
+    it('Should return count 2 if finds two deleted refresh tokens', async () => {
+      const { sut } = makeSut()
+      const fakeRefreshToken1 = makeFakeRefreshToken()
+
+      const fakeUserId = fakeRefreshToken1.userId
+      await refreshTokenCollection.insertOne(fakeRefreshToken1)
+
+      const fakeRefreshToken2 = makeFakeRefreshToken()
+
+      fakeRefreshToken2.userId = fakeUserId
+      await refreshTokenCollection.insertOne(fakeRefreshToken2)
+      const deletedCount = await sut.deleteRefreshTokenById(fakeUserId)
+
+      expect(deletedCount).toBe(2)
+    })
+  })
 })
