@@ -24,17 +24,12 @@ describe('ClearUserDatabase', () => {
   it('Should delete a inactive that has createad an account more than 24 hours ago', async () => {
     const { sut } = makeSut()
     const fakeUser1 = makeFakeUser()
-    fakeUser1.logs.createdAt = new Date(Date.now() - 24.1 * 60 * 60 * 1000)
+    fakeUser1.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
     await userCollection.insertOne(fakeUser1)
 
     const fakeUser2 = makeFakeUser()
-    fakeUser2.logs.createdAt = new Date(Date.now() - 48.5 * 60 * 60 * 1000)
+    fakeUser2.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
     await userCollection.insertOne(fakeUser2)
-
-    // Should not delete this one
-    const fakeUser3 = makeFakeUser()
-    fakeUser3.logs.createdAt = new Date(Date.now() - 18.5 * 60 * 60 * 1000)
-    await userCollection.insertOne(fakeUser3)
 
     const count = await sut.deleteInactiveUsers()
 
@@ -44,24 +39,26 @@ describe('ClearUserDatabase', () => {
   it('Should not delete users that are active', async () => {
     const { sut } = makeSut()
 
-    const fakeUser1 = makeFakeUser()
-    fakeUser1.settings.accountActivated = true
-    fakeUser1.logs.createdAt = new Date(Date.now() - 24.5 * 60 * 60 * 1000)
-    await userCollection.insertOne(fakeUser1)
-
-    const fakeUser2 = makeFakeUser()
-    fakeUser2.settings.accountActivated = true
-    fakeUser2.logs.createdAt = new Date(Date.now() + 1 * 60 * 60 * 1000)
-    await userCollection.insertOne(fakeUser2)
-
-    // Should delete this one
-    const fakeUser3 = makeFakeUser()
-    fakeUser3.settings.accountActivated = false
-    fakeUser3.logs.createdAt = new Date(Date.now() - 24.1 * 60 * 60 * 1000)
-    await userCollection.insertOne(fakeUser3)
+    const fakeUser = makeFakeUser()
+    fakeUser.settings.accountActivated = true
+    fakeUser.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
+    await userCollection.insertOne(fakeUser)
 
     const count = await sut.deleteInactiveUsers()
 
-    expect(count).toBe(1)
+    expect(count).toBe(0)
+  })
+
+  it('Should not delete users that are inactive and account creation did is lower than 24 hours', async () => {
+    const { sut } = makeSut()
+
+    const fakeUser = makeFakeUser()
+    fakeUser.settings.accountActivated = false
+    fakeUser.logs.createdAt = new Date(Date.now() - 23 * 60 * 60 * 1000)
+    await userCollection.insertOne(fakeUser)
+
+    const count = await sut.deleteInactiveUsers()
+
+    expect(count).toBe(0)
   })
 })
