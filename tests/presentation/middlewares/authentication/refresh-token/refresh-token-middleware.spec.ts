@@ -9,4 +9,13 @@ describe('RefreshTokenMiddleware', () => {
 
     expect(response).toEqual(httpHelper.unauthorized(new TokenMissingError()))
   })
+
+  it('Should call decodeId with correct token', async () => {
+    const { sut, decoder, request } = makeSut()
+    const decodeIdSpy = jest.spyOn(decoder, 'decodeId')
+
+    await sut.handle(request)
+
+    expect(decodeIdSpy).toHaveBeenCalledWith(request.token)
+  })
 })
