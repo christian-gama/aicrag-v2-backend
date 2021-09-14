@@ -3,6 +3,7 @@ import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { makeSut } from './refresh-token-db-repository-sut'
 
 import { Collection } from 'mongodb'
+import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-token'
 
 describe('RefreshTokenDbRepository', () => {
   let refreshTokenCollection: Collection
@@ -16,28 +17,53 @@ describe('RefreshTokenDbRepository', () => {
   })
 
   beforeEach(async () => {
-    refreshTokenCollection = await MongoHelper.getCollection('users')
+    refreshTokenCollection = await MongoHelper.getCollection('refresh_tokens')
     await refreshTokenCollection.deleteMany({})
   })
 
-  it('Should call createRefreshToken with correct user', async () => {
-    const { sut, fakeUser, refreshTokenRepositoryStub } = makeSut()
-    const createRefreshTokenSpy = jest.spyOn(refreshTokenRepositoryStub, 'createRefreshToken')
+  describe('SaveRefreshToken', () => {
+    it('Should call createRefreshToken with correct user', async () => {
+      const { sut, fakeUser, refreshTokenRepositoryStub } = makeSut()
+      const createRefreshTokenSpy = jest.spyOn(refreshTokenRepositoryStub, 'createRefreshToken')
 
-    await sut.saveRefreshToken(fakeUser)
+      await sut.saveRefreshToken(fakeUser.personal.id)
 
-    expect(createRefreshTokenSpy).toHaveBeenCalledWith(fakeUser)
+      expect(createRefreshTokenSpy).toHaveBeenCalledWith(fakeUser.personal.id)
+    })
+
+    it('Should save RefreshToken on database', async () => {
+      const { sut, fakeUser } = makeSut()
+
+      const refreshToken = await sut.saveRefreshToken(fakeUser.personal.id)
+
+      expect(refreshToken).toHaveProperty('_id')
+      expect(refreshToken).toHaveProperty('id')
+      expect(refreshToken).toHaveProperty('expiresIn')
+      expect(refreshToken).toHaveProperty('userId')
+    })
   })
 
-  it('Should save RefreshToken on database', async () => {
-    const { sut, fakeUser } = makeSut()
+  describe('FindRefreshTokenByUserId', () => {
+    it('Should find return a RefreshToken if finds it', async () => {
+      const { sut } = makeSut()
+      const fakeRefreshToken = makeFakeRefreshToken()
 
-    const refreshToken = await sut.saveRefreshToken(fakeUser)
+      const fakeUserId = fakeRefreshToken.userId
+      await refreshTokenCollection.insertOne(fakeRefreshToken)
+      const refreshToken = await sut.findRefreshTokenByUserId(fakeUserId)
 
-    expect(refreshToken).toHaveProperty('_id')
-    expect(refreshToken).toHaveProperty('id')
-    expect(refreshToken).toHaveProperty('expiresIn')
-    expect(refreshToken).toHaveProperty('user')
-    expect(refreshToken).toHaveProperty('userId')
+      expect(refreshToken).toHaveProperty('_id')
+      expect(refreshToken).toHaveProperty('id')
+      expect(refreshToken).toHaveProperty('expiresIn')
+      expect(refreshToken).toHaveProperty('userId')
+    })
+
+    it('Should return undefined if does not find a RefreshToken', async () => {
+      const { sut, fakeUser } = makeSut()
+
+      const refreshToken = await sut.findRefreshTokenByUserId(fakeUser.personal.id)
+
+      expect(refreshToken).toBe(undefined)
+    })
   })
 })
