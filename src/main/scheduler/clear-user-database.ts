@@ -9,7 +9,7 @@ export class ClearUserDatabase {
 
   async deleteInactiveUsers (): Promise<number | LogErrorProtocol> {
     try {
-      console.log('ClearUserDatabase: Looking for inactive users...')
+      console.log(`[${new Date(Date.now()).toLocaleString()}] ClearUserDatabase: Looking for inactive users...`)
 
       const userCollection = await MongoHelper.getCollection('users')
 
@@ -21,7 +21,7 @@ export class ClearUserDatabase {
       const deleted = await userCollection.deleteMany(filter)
 
       if (deleted.deletedCount > 0) {
-        console.log(`ClearUserDatabase: ${deleted.deletedCount} inactive users were deleted.`)
+        console.log(`[${new Date(Date.now()).toLocaleString()}] ClearUserDatabase: ${deleted.deletedCount} inactive users were deleted.`)
       }
 
       return deleted.deletedCount
