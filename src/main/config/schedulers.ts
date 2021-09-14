@@ -5,5 +5,5 @@ export default (): void => {
 
   setInterval(async () => {
     await clearUserDatabase.deleteInactiveUsers()
-  }, 3000)
+  }, 12 * 60 * 60 * 1000)
 }
