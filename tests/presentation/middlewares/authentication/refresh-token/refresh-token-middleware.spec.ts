@@ -21,7 +21,10 @@ describe('RefreshTokenMiddleware', () => {
 
   it('Should call findRefreshTokenByUserId with correct user id', async () => {
     const { sut, refreshTokenDbRepositoryStub, request } = makeSut()
-    const findRefreshTokenByUserIdSpy = jest.spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenByUserId')
+    const findRefreshTokenByUserIdSpy = jest.spyOn(
+      refreshTokenDbRepositoryStub,
+      'findRefreshTokenByUserId'
+    )
 
     await sut.handle(request)
 
@@ -33,6 +36,21 @@ describe('RefreshTokenMiddleware', () => {
     jest
       .spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenByUserId')
       .mockReturnValueOnce(Promise.resolve(undefined))
+    const saveRefreshTokenSpy = jest.spyOn(refreshTokenDbRepositoryStub, 'saveRefreshToken')
+
+    await sut.handle(request)
+
+    expect(saveRefreshTokenSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  it('Should call saveRefreshToken with correct user id if refresh token has expired', async () => {
+    const { sut, fakeRefreshToken, refreshTokenDbRepositoryStub, request } = makeSut()
+    fakeRefreshToken.expiresIn = new Date(Date.now() - 1000)
+
+    jest
+      .spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenByUserId')
+      .mockReturnValueOnce(Promise.resolve(fakeRefreshToken))
+
     const saveRefreshTokenSpy = jest.spyOn(refreshTokenDbRepositoryStub, 'saveRefreshToken')
 
     await sut.handle(request)
