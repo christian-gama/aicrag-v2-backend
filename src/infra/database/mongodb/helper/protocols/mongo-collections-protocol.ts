@@ -1,1 +1,1 @@
-export type Collections = 'users' | 'logs'
+export type Collections = 'users' | 'logs' | 'refresh_tokens'
