@@ -7,7 +7,8 @@ import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-use
 export interface UserDbRepositoryProtocol
   extends SaveUserDbProtocol,
   UpdateUserDbProtocol,
-  FindUserByEmailDbProtocol {}
+  FindUserByEmailDbProtocol,
+  FindUserByIdDbProtocol {}
 
 export interface SaveUserDbProtocol {
   /**
@@ -23,10 +24,20 @@ export interface FindUserByEmailDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an email and tries to find it on database.
-   * @param email The first value that will be compared to the second value.
+   * @param email The email that will be searched for.
    * @returns Return a user if finds it or undefined if does not.
    */
   findUserByEmail: (email: string) => Promise<User | undefined>
+}
+
+export interface FindUserByIdDbProtocol {
+  /**
+   * @async Asynchronous method.
+   * @description Receive an email and tries to find it on database.
+   * @param id The id that will be searched for.
+   * @returns Return a user if finds it or undefined if does not.
+   */
+  findUserById: (id: string) => Promise<User | undefined>
 }
 
 export interface UpdateUserDbProtocol {
