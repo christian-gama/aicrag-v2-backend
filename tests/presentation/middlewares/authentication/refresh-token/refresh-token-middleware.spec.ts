@@ -27,4 +27,16 @@ describe('RefreshTokenMiddleware', () => {
 
     expect(findRefreshTokenByUserIdSpy).toHaveBeenCalledWith('any_id')
   })
+
+  it('Should call saveRefreshToken with correct user id if there is no refresh token', async () => {
+    const { sut, refreshTokenDbRepositoryStub, request } = makeSut()
+    jest
+      .spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenByUserId')
+      .mockReturnValueOnce(Promise.resolve(undefined))
+    const saveRefreshTokenSpy = jest.spyOn(refreshTokenDbRepositoryStub, 'saveRefreshToken')
+
+    await sut.handle(request)
+
+    expect(saveRefreshTokenSpy).toHaveBeenCalledWith('any_id')
+  })
 })
