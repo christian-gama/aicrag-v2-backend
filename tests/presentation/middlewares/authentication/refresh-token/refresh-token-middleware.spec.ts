@@ -18,4 +18,13 @@ describe('RefreshTokenMiddleware', () => {
 
     expect(decodeIdSpy).toHaveBeenCalledWith(request.token)
   })
+
+  it('Should call findRefreshTokenByUserId with correct user id', async () => {
+    const { sut, refreshTokenDbRepositoryStub, request } = makeSut()
+    const findRefreshTokenByUserIdSpy = jest.spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenByUserId')
+
+    await sut.handle(request)
+
+    expect(findRefreshTokenByUserIdSpy).toHaveBeenCalledWith('any_id')
+  })
 })
