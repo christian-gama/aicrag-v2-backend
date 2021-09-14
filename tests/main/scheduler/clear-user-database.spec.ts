@@ -61,4 +61,14 @@ describe('ClearUserDatabase', () => {
 
     expect(count).toBe(0)
   })
+
+  it('Should call saveLog if throws', async () => {
+    const { sut, error, logErrorDbRepositoryStub } = makeSut()
+    const saveLogSpy = jest.spyOn(logErrorDbRepositoryStub, 'saveLog')
+    jest.spyOn(MongoHelper, 'getCollection').mockReturnValueOnce(Promise.reject(error))
+
+    await sut.deleteInactiveUsers()
+
+    expect(saveLogSpy).toHaveBeenCalledWith(error)
+  })
 })
