@@ -1,4 +1,4 @@
-import { UserAccount, User } from '@/domain/user'
+import { SignUpUserCredentials, User } from '@/domain/user'
 import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/update-user-options'
 
 /**
@@ -11,7 +11,7 @@ export interface AccountDbRepositoryProtocol {
    * @param account Account that will be saved as a user.
    * @returns Return a user from database.
    */
-  saveAccount: (account: UserAccount) => Promise<User>
+  saveAccount: (account: SignUpUserCredentials) => Promise<User>
 
   /**
    * @async Asynchronous method.

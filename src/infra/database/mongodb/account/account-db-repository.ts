@@ -1,4 +1,4 @@
-import { UserAccount, User } from '@/domain/user'
+import { SignUpUserCredentials, User } from '@/domain/user'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { AccountRepositoryProtocol } from '@/application/protocols/repositories/account/account-repository-protocol'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
@@ -7,7 +7,7 @@ import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/up
 export class AccountDbRepository implements AccountDbRepositoryProtocol {
   constructor (private readonly accountRepository: AccountRepositoryProtocol) {}
 
-  async saveAccount (account: UserAccount): Promise<User> {
+  async saveAccount (account: SignUpUserCredentials): Promise<User> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const user = await this.accountRepository.createAccount(account)
 

@@ -1,4 +1,4 @@
-import { User, UserAccount } from '@/domain/user'
+import { User, SignUpUserCredentials } from '@/domain/user'
 
 export interface AccountRepositoryProtocol {
   /**
@@ -7,5 +7,5 @@ export interface AccountRepositoryProtocol {
    * @param account Account that will serve the necessary data to create a user.
    * @returns Return a user.
    */
-  createAccount: (account: UserAccount) => Promise<User>
+  createAccount: (account: SignUpUserCredentials) => Promise<User>
 }

@@ -1,4 +1,4 @@
-import { User, UserAccount } from '@/domain/user'
+import { User, SignUpUserCredentials } from '@/domain/user'
 import { AccountRepositoryProtocol } from '@/application/usecases/repositories/account/'
 import { HasherProtocol } from '@/application/protocols/cryptography/hasher-protocol'
 import { UuidProtocol } from '@/application/protocols/helpers/uuid/uuid-protocol'
@@ -11,7 +11,7 @@ export class AccountRepository implements AccountRepositoryProtocol {
     private readonly uuid: UuidProtocol
   ) {}
 
-  async createAccount (account: UserAccount): Promise<User> {
+  async createAccount (account: SignUpUserCredentials): Promise<User> {
     const activationCode = this.activationCode.generate()
     const dateNow = new Date(Date.now())
     const hashedPassword = await this.hasher.hash(account.password)
