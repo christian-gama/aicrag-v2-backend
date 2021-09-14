@@ -1,4 +1,5 @@
 import { Collection, MongoClient } from 'mongodb'
+import { Collections } from './protocols/mongo-collections-protocol'
 
 export const MongoHelper = {
   async connect (url: string): Promise<void> {
@@ -13,7 +14,7 @@ export const MongoHelper = {
     this.client = null
   },
 
-  async getCollection (name: string): Promise<Collection> {
+  async getCollection (name: Collections): Promise<Collection> {
     await this.connect(this.url)
 
     return this.client.db().collection(name)
