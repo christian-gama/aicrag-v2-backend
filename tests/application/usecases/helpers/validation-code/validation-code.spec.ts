@@ -1,9 +1,9 @@
-import { makeSut } from './__mocks__/validation-code-mock'
+import { makeSut } from './validation-code-sut'
 import { config } from '@/tests/config'
 
 describe('CodeGenerator', () => {
   it('Should return 5 digits', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     let error = 0
     for (let i = 0; i < config.loopTimes; i++) {
@@ -16,7 +16,7 @@ describe('CodeGenerator', () => {
   })
 
   it('Should return random digits', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const values: Partial<string[]> = []
     for (let i = 0; i < config.loopTimes; i++) {
@@ -30,7 +30,7 @@ describe('CodeGenerator', () => {
   })
 
   it('Should return a string', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const value = sut.generate()
 
@@ -38,7 +38,7 @@ describe('CodeGenerator', () => {
   })
 
   it('Should contain only alphanumerics', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const value = sut.generate()
 

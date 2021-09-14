@@ -3,7 +3,7 @@ import {
   CodeIsExpiredError,
   InvalidCodeError
 } from '@/application/usecases/errors'
-import { makeSut } from './__mocks__/codes/validate-activation-code-mock'
+import { makeSut } from './validate-activation-code-sut'
 
 describe('ValidateActivationCode', () => {
   it('Should call findAccountByEmail with correct email', async () => {
@@ -58,6 +58,17 @@ describe('ValidateActivationCode', () => {
     fakeUser.temporary.activationCodeExpiration = null
 
     const fakeData = { email: fakeUser.personal.email, activationCode: 'any_code' }
+
+    const value = await sut.validate(fakeData)
+
+    expect(value).toEqual(new InvalidCodeError())
+  })
+
+  it('Should return an InvalidCodeError if there is no user', async () => {
+    const { sut, accountDbRepositoryStub } = makeSut()
+    jest.spyOn(accountDbRepositoryStub, 'findAccountByEmail').mockReturnValueOnce(Promise.resolve(undefined))
+
+    const fakeData = { email: 'non_existent@email.com', activationCode: 'any_code' }
 
     const value = await sut.validate(fakeData)
 

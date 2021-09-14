@@ -8,7 +8,7 @@ import {
   makeValidateEmail,
   makeValidatePassword,
   makeValidateEmailExists,
-  makeValidatePasswordMatches,
+  makeValidatePasswordMatch,
   makeValidateActiveAccount
 } from '@/main/factories/validators/credentials-validator'
 
@@ -28,7 +28,7 @@ describe('CredentialsValidator Factory', () => {
     validations.push(makeValidateEmail())
     validations.push(makeValidatePassword())
     validations.push(makeValidateEmailExists())
-    validations.push(makeValidatePasswordMatches())
+    validations.push(makeValidatePasswordMatch())
     validations.push(makeValidateActiveAccount())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)

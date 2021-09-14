@@ -4,7 +4,7 @@ import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypte
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { AccountDbRepositoryProtocol } from '@/application/protocols/repositories/account/account-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
 export class LoginController implements ControllerProtocol {
   constructor (

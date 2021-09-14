@@ -4,7 +4,7 @@ import {
   MissingParamError,
   UserCredentialError
 } from '@/application/usecases/errors'
-import { makeSut } from './__mocks__/login-controller-mock'
+import { makeSut } from './login-controller-sut'
 
 describe('LoginController', () => {
   it('Should call validate with correct values', async () => {
@@ -78,8 +78,8 @@ describe('LoginController', () => {
   })
 
   it('Should call the encryptId with correct values', async () => {
-    const { sut, fakeUser, jwtAdapterStub, request } = makeSut()
-    const encryptIdSpy = jest.spyOn(jwtAdapterStub, 'encryptId')
+    const { sut, fakeUser, encrypterStub, request } = makeSut()
+    const encryptIdSpy = jest.spyOn(encrypterStub, 'encryptId')
 
     await sut.handle(request)
 

@@ -1,4 +1,4 @@
-import { makeSut } from './__mocks__/filter-user-data-mock'
+import { makeSut } from './filter-user-data-sut'
 
 describe('FilterUserData', () => {
   it('Should return a public user', () => {

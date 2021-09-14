@@ -1,5 +1,5 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
+import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 import { makeHttpHelper } from '../factories/helpers/http-helper-factory'
 
 export class TryCatchControllerDecorator implements ControllerProtocol {

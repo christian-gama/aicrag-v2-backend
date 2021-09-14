@@ -1,5 +1,5 @@
 import { MissingParamError } from '@/application/usecases/errors'
-import { makeSut } from './__mocks__/validation-composite-mock'
+import { makeSut } from './validation-composite-sut'
 
 describe('ValidationCompose', () => {
   it('Should return an error if validate returns an error', async () => {

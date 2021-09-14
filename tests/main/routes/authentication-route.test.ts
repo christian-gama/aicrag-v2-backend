@@ -1,16 +1,16 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import app from '@/main/config/app'
-import { config } from '@/tests/config'
-import { makeFakeValidAccount } from '@/tests/domain/__mocks__/account-mock'
-import { makeFakeUser } from '@/tests/domain/__mocks__/user-mock'
-
-import { Collection } from 'mongodb'
-import request from 'supertest'
-import { hash } from 'bcrypt'
 import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
 import { makeSignUpController } from '@/main/factories/controllers/authentication/signup/signup-controller-factory'
 import { makeLoginController } from '@/main/factories/controllers/authentication/login/login-controller-factory'
 import { makeActivateAccountController } from '@/main/factories/controllers/authentication/activate-account/activate-account-controller-factory'
+import { config } from '@/tests/config'
+import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
+import { makeFakeValidAccount } from '@/tests/__mocks__/domain/mock-account'
+
+import { Collection } from 'mongodb'
+import request from 'supertest'
+import { hash } from 'bcrypt'
 
 describe('Authentication routes', () => {
   let accountCollection: Collection

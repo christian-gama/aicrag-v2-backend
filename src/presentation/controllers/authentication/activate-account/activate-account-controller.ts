@@ -4,7 +4,7 @@ import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypte
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helper/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
 export class ActivateAccountController implements ControllerProtocol {
   constructor (

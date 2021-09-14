@@ -1,6 +1,6 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { env } from '@/main/config/env'
-import { makeSut } from './__mocks__/log-error-db-repository-mock'
+import { makeSut } from './log-error-db-repository-sut'
 
 import { Collection } from 'mongodb'
 

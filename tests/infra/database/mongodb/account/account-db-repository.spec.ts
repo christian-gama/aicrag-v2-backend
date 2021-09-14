@@ -1,7 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { env } from '@/main/config/env'
-import { makeSut } from './__mocks__/account-db-repository-mock'
-import { makeFakeValidAccount } from '@/tests/domain/__mocks__/account-mock'
+import { makeSut } from './account-db-repository-sut'
+import { makeFakeValidAccount } from '@/tests/__mocks__/domain/mock-account'
 
 import { Collection } from 'mongodb'
 import { UpdateUserOptions } from '@/infra/database/mongodb/account/protocols/update-user-options'

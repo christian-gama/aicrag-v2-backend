@@ -1,9 +1,9 @@
-import { makeSut } from './__mocks__/uiid-mock'
+import { makeSut } from './uiid-sut'
 import { config } from '@/tests/config'
 
 describe('Uiid', () => {
   it('Should return an uiid with 24 digits', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const value = sut.generate()
 
@@ -11,7 +11,7 @@ describe('Uiid', () => {
   })
 
   it('Should return a string', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const value = sut.generate()
 
@@ -19,7 +19,7 @@ describe('Uiid', () => {
   })
 
   it('Should return an unique id', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
 
     const values: Partial<string[]> = []
     for (let i = 0; i < config.loopTimes; i++) {

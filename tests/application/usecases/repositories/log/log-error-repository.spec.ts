@@ -1,8 +1,8 @@
-import { makeSut } from './__mocks__/log-error-repository-mock'
+import { makeSut } from './log-error-repository-sut'
 
 describe('LogErrorRepository', () => {
   it('Should return a LogError', () => {
-    const sut = makeSut()
+    const { sut } = makeSut()
     const error = new Error('any_message')
 
     const value = sut.createLog(error)

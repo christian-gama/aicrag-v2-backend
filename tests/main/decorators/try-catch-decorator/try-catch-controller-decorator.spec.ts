@@ -1,7 +1,7 @@
-import { makeSut } from './__mocks__/try-catch-controller-decorator-mock'
+import { makeSut } from './try-catch-controller-decorator-sut'
 
 describe('LogControllerDecorator', () => {
-  it('Should call handle witch correct value', async () => {
+  it('Should call handle with correct value', async () => {
     const { sut, controllerStub } = makeSut()
     const handleSpy = jest.spyOn(controllerStub, 'handle')
     const request = {}
@@ -24,5 +24,13 @@ describe('LogControllerDecorator', () => {
     const promise = await sut.handle({})
 
     expect(promise).toEqual(httpHelper.serverError(errorData))
+  })
+
+  it('Should return a http response if succeds', async () => {
+    const { sut, httpHelper } = makeSut()
+
+    const promise = await sut.handle({})
+
+    expect(promise).toEqual(httpHelper.ok({}))
   })
 })

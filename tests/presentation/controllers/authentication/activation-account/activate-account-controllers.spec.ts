@@ -1,6 +1,6 @@
 import { InvalidCodeError } from '@/application/usecases/errors'
-import { makeFakePublicUser } from '@/tests/domain/__mocks__/public-user-mock'
-import { makeSut } from './__mocks__/activate-account-controller-mock'
+import { makeFakePublicUser } from '@/tests/__mocks__/domain/mock-public-user'
+import { makeSut } from './activate-account-controller-sut'
 
 describe('LoginController', () => {
   it('Should call validate with correct values', async () => {
@@ -41,8 +41,8 @@ describe('LoginController', () => {
   })
 
   it('Should call encryptId with correct id', async () => {
-    const { sut, fakeUser, jwtAdapterStub, request } = makeSut()
-    const encryptIdSpy = jest.spyOn(jwtAdapterStub, 'encryptId')
+    const { sut, fakeUser, encrypterStub, request } = makeSut()
+    const encryptIdSpy = jest.spyOn(encrypterStub, 'encryptId')
 
     await sut.handle(request)
 

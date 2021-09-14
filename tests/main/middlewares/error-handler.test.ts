@@ -1,15 +1,27 @@
+import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
 import app from '@/main/config/app'
+import { env } from '@/main/config/env'
 import { errorHandler } from '@/main/middlewares/error-handler'
-import { error, makeControllerStub } from './__mocks__/controller-mock'
 
 import request from 'supertest'
-import { env } from '@/main/config/env'
 
 const agent = request.agent(app)
 
+const error = new Error('any_message')
+const makeControllerStub = (): ControllerProtocol => {
+  class ControllerStub implements ControllerProtocol {
+    async handle (httpRequest: any): Promise<any> {
+      throw error
+    }
+  }
+
+  return new ControllerStub()
+}
+
 describe('ErrorHandler', () => {
   const environment = process.env.NODE_ENV as 'production' | 'development'
+
   afterAll(() => {
     env.SERVER.NODE_ENV = environment
   })
