@@ -1,8 +1,7 @@
+import { RefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
 import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
 import { RefreshTokenRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-repository-protocol'
-import { RefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
 import { MongoHelper } from '../helper/mongo-helper'
-
 export class RefreshTokenDbRepository implements RefreshTokenDbRepositoryProtocol {
   constructor (private readonly refreshTokenRepository: RefreshTokenRepositoryProtocol) {}
 
@@ -16,18 +15,18 @@ export class RefreshTokenDbRepository implements RefreshTokenDbRepositoryProtoco
     return (await refreshTokenCollection.findOne({ _id: result.insertedId })) as RefreshToken
   }
 
-  async findRefreshTokenByUserId (userId: string): Promise<RefreshToken | undefined> {
+  async findRefreshTokenById (id: string): Promise<RefreshToken | undefined> {
     const refreshTokenCollection = await MongoHelper.getCollection('refresh_tokens')
 
-    const refreshToken = (await refreshTokenCollection.findOne({ userId })) as RefreshToken
+    const refreshToken = (await refreshTokenCollection.findOne({ id })) as RefreshToken
 
     if (refreshToken) return refreshToken
   }
 
-  async deleteRefreshTokenById (userId: string): Promise<number> {
+  async deleteRefreshTokenById (id: string): Promise<number> {
     const refreshTokenCollection = await MongoHelper.getCollection('refresh_tokens')
 
-    const deleted = await refreshTokenCollection.deleteMany({ userId })
+    const deleted = await refreshTokenCollection.deleteMany({ id })
 
     return deleted.deletedCount
   }

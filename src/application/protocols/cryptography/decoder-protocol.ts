@@ -1,8 +1,8 @@
 /**
  * @description Interface that contains an ID obtained from a decoded token.
  */
-export interface DecodedIdProtocol {
-  id: string
+export interface DecodedProtocol {
+  [key: string]: string
 }
 
 export interface DecoderProtocol {
@@ -12,5 +12,5 @@ export interface DecoderProtocol {
    * @param token Token that will be verified and decoded.
    * @returns Return an ID if signature is valid.
    */
-  decodeId: (token: string) => Promise<string>
+  decode: (token: string) => Promise<DecodedProtocol>
 }

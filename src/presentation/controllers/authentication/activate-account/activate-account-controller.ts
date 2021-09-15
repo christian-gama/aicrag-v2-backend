@@ -1,18 +1,21 @@
 import { User } from '@/domain/user'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
+import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
 export class ActivateAccountController implements ControllerProtocol {
   constructor (
-    private readonly userDbRepository: UserDbRepositoryProtocol,
     private readonly activateAccountValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly jwtAdapter: EncrypterProtocol
+    private readonly jwtAccessToken: EncrypterProtocol,
+    private readonly jwtRefreshToken: EncrypterProtocol,
+    private readonly refreshTokenDbRepository: RefreshTokenDbRepositoryProtocol,
+    private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -23,14 +26,18 @@ export class ActivateAccountController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as User
 
-    const accessToken = this.jwtAdapter.encryptId(user.personal.id)
+    const accessToken = this.jwtAccessToken.encrypt('id', user.personal.id)
 
     const filteredUser = this.filterUserData.filter(user)
 
     await this.clearTemporary(user)
     await this.activateAccount(user)
 
-    return this.httpHelper.ok({ user: filteredUser }, accessToken)
+    const refreshTokenDb = await this.refreshTokenDbRepository.saveRefreshToken(user.personal.id)
+
+    const refreshToken = this.jwtRefreshToken.encrypt('id', refreshTokenDb.id)
+
+    return this.httpHelper.ok({ user: filteredUser, refreshToken, accessToken })
   }
 
   private async clearTemporary (user: User): Promise<void> {

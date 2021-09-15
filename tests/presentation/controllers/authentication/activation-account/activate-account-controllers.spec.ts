@@ -1,5 +1,6 @@
 import { InvalidCodeError } from '@/application/usecases/errors'
 import { makeFakePublicUser } from '@/tests/__mocks__/domain/mock-public-user'
+import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-token'
 import { makeSut } from './activate-account-controller-sut'
 
 describe('LoginController', () => {
@@ -40,13 +41,27 @@ describe('LoginController', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should call encryptId with correct id', async () => {
-    const { sut, fakeUser, encrypterStub, request } = makeSut()
-    const encryptIdSpy = jest.spyOn(encrypterStub, 'encryptId')
+  it('Should call jwtAccessToken.encrypt with correct values', async () => {
+    const { sut, fakeUser, jwtAccessToken, request } = makeSut()
+
+    const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
 
     await sut.handle(request)
 
-    expect(encryptIdSpy).toHaveBeenCalledWith(fakeUser.personal.id)
+    expect(encryptSpy).toHaveBeenCalledWith('id', fakeUser.personal.id)
+  })
+
+  it('Should call jwtRefreshToken.encrypt with correct values', async () => {
+    const { sut, jwtRefreshToken, refreshTokenDbRepositoryStub, request } = makeSut()
+    const fakeRefreshToken = makeFakeRefreshToken()
+    jest
+      .spyOn(refreshTokenDbRepositoryStub, 'saveRefreshToken')
+      .mockReturnValueOnce(Promise.resolve(fakeRefreshToken))
+    const encryptSpy = jest.spyOn(jwtRefreshToken, 'encrypt')
+
+    await sut.handle(request)
+
+    expect(encryptSpy).toHaveBeenCalledWith('id', fakeRefreshToken.id)
   })
 
   it('Should call ok with correct values', async () => {
@@ -56,7 +71,11 @@ describe('LoginController', () => {
 
     await sut.handle(request)
 
-    expect(okSpy).toHaveBeenCalledWith({ user: filteredUser }, 'any_token')
+    expect(okSpy).toHaveBeenCalledWith({
+      user: filteredUser,
+      refreshToken: 'any_token',
+      accessToken: 'any_token'
+    })
   })
 
   it('Should activate account if validation succeds', async () => {

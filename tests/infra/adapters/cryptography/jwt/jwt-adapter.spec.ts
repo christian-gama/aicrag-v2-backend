@@ -7,9 +7,9 @@ describe('JwtAdapter', () => {
     it('Should return an id if signature is valid', async () => {
       const { sut, token } = makeSut()
 
-      const id = await sut.decodeId(token)
+      const decodedToken = await sut.decode(token)
 
-      expect(id).toBe('any_id')
+      expect(decodedToken.id).toBe('any_id')
     })
   })
 
@@ -18,15 +18,15 @@ describe('JwtAdapter', () => {
       const { sut, secret, expires } = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')
 
-      sut.encryptId('value')
+      sut.encrypt('name', 'value')
 
-      expect(signSpy).toHaveBeenCalledWith({ id: 'value' }, secret, { expiresIn: expires })
+      expect(signSpy).toHaveBeenCalledWith({ name: 'value' }, secret, { expiresIn: expires })
     })
 
     it('Should return an encrypted value', () => {
       const { sut } = makeSut()
 
-      const value = sut.encryptId('value')
+      const value = sut.encrypt('name', 'value')
 
       expect(value).not.toBe('value')
     })
@@ -37,7 +37,7 @@ describe('JwtAdapter', () => {
         throw new Error()
       })
 
-      expect(sut.encryptId).toThrow()
+      expect(sut.encrypt).toThrow()
     })
   })
 })

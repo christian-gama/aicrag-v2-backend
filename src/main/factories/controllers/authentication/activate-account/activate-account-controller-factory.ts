@@ -1,25 +1,31 @@
+import { ActivateAccountController } from '@/presentation/controllers/authentication/activate-account/activate-account-controller'
 import { ControllerProtocol } from '@/presentation/controllers/authentication/login'
-import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
+import { makeActivateAccountValidatorComposite } from '@/main/factories/validators/activate-account-validator'
 import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-factory'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
-import { makeJwtAdapter } from '@/main/factories/cryptography/jwt-adapter-factory'
-import { makeTryCatchControllerDecorator } from '../../../decorators/try-catch-controller-decorator-factory'
-import { ActivateAccountController } from '@/presentation/controllers/authentication/activate-account/activate-account-controller'
-import { makeActivateAccountValidatorComposite } from '@/main/factories/validators/activate-account-validator'
+import { makeJwtAccessToken } from '@/main/factories/cryptography/jwt-access-token-factory'
+import { makeJwtRefreshToken } from '@/main/factories/cryptography/jwt-refresh-token-factory'
+import { makeRefreshTokenDbRepository } from '@/main/factories/repositories/refresh-token/refresh-token-db-repository/refresh-token-db-repository-factory'
+import { makeTryCatchControllerDecorator } from '@/main/factories/decorators/try-catch-controller-decorator-factory'
+import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
 
 export const makeActivateAccountController = (): ControllerProtocol => {
-  const userDbRepository = makeUserDbRepository()
   const activateAccountValidator = makeActivateAccountValidatorComposite()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
-  const jwtAdapter = makeJwtAdapter()
+  const jwtAccessToken = makeJwtAccessToken()
+  const jwtRefreshToken = makeJwtRefreshToken()
+  const refreshTokenDbRepository = makeRefreshTokenDbRepository()
+  const userDbRepository = makeUserDbRepository()
 
   const activateUserController = new ActivateAccountController(
-    userDbRepository,
     activateAccountValidator,
     filterUserData,
     httpHelper,
-    jwtAdapter
+    jwtAccessToken,
+    jwtRefreshToken,
+    refreshTokenDbRepository,
+    userDbRepository
   )
 
   return makeTryCatchControllerDecorator(activateUserController)

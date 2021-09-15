@@ -1,5 +1,5 @@
-import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
 import { RefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
+import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
 import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-token'
 
 export const makeRefreshTokenDbRepositoryStub = (): RefreshTokenDbRepositoryProtocol => {
@@ -8,11 +8,11 @@ export const makeRefreshTokenDbRepositoryStub = (): RefreshTokenDbRepositoryProt
       return Promise.resolve(makeFakeRefreshToken())
     }
 
-    async findRefreshTokenByUserId (userId: string): Promise<RefreshToken> {
+    async findRefreshTokenById (id: string): Promise<RefreshToken> {
       return Promise.resolve(makeFakeRefreshToken())
     }
 
-    async deleteRefreshTokenById (userId: string): Promise<number> {
+    async deleteRefreshTokenById (id: string): Promise<number> {
       return Promise.resolve(0)
     }
   }

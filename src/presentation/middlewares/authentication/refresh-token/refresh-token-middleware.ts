@@ -8,31 +8,37 @@ import {
   HttpResponse
 } from '@/presentation/helpers/http/protocols'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
-
 export class RefreshTokenMiddleware implements MiddlewareProtocol {
   constructor (
-    private readonly decoder: DecoderProtocol,
-    private readonly encrypter: EncrypterProtocol,
     private readonly httpHelper: HttpHelperProtocol,
+    private readonly jwtAccessToken: EncrypterProtocol,
+    private readonly jwtRefreshToken: DecoderProtocol,
     private readonly refreshTokenDbRepository: RefreshTokenDbRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequestToken): Promise<HttpResponse> {
-    const { token } = httpRequest
+    const { refreshToken } = httpRequest
 
-    if (!token) {
+    if (!refreshToken) {
       return this.httpHelper.unauthorized(new TokenMissingError())
     }
 
-    const userId = await this.decoder.decodeId(token)
+    const decodedRefreshToken = await this.jwtRefreshToken.decode(refreshToken)
 
-    const refreshToken = await this.refreshTokenDbRepository.findRefreshTokenByUserId(userId)
+    const existentRefreshToken = await this.refreshTokenDbRepository.findRefreshTokenById(
+      decodedRefreshToken.id
+    )
 
-    if (!refreshToken || refreshToken.expiresIn.getTime() < Date.now()) {
-      refreshToken && await this.refreshTokenDbRepository.deleteRefreshTokenById(refreshToken.userId)
-      await this.refreshTokenDbRepository.saveRefreshToken(userId)
+    if (!existentRefreshToken) return this.httpHelper.unauthorized(new TokenMissingError())
+
+    if (existentRefreshToken.expiresIn.getTime() < Date.now()) {
+      await this.refreshTokenDbRepository.deleteRefreshTokenById(existentRefreshToken.userId)
+
+      return this.httpHelper.unauthorized(new TokenMissingError())
     }
 
-    return this.httpHelper.ok({})
+    const accessToken = this.jwtAccessToken.encrypt('id', existentRefreshToken.userId)
+
+    return this.httpHelper.ok({ refreshToken, accessToken })
   }
 }

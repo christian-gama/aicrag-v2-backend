@@ -1,46 +1,40 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 import { env } from '@/main/config/env'
+import {
+  accessTokenResponse,
+  defaultResponse,
+  productionErrorResponse,
+  refreshTokenResponse
+} from './express-responses'
 
 import { NextFunction, Request, Response } from 'express'
-import { InternalError } from '@/application/usecases/errors'
 
 export const adaptRoutes = (controller: ControllerProtocol) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: AdaptHttpRequest, res: AdaptHttpResponse, next: NextFunction) => {
     try {
-      const httpRequest: HttpRequest = req
+      const httpResponseData = await controller.handle(req)
 
-      const httpResponse: HttpResponse = await controller.handle(httpRequest)
+      res.status(httpResponseData.statusCode)
 
-      res.status(httpResponse.statusCode)
-
-      if (httpResponse.accessToken) {
-        res.cookie('jwt', httpResponse.accessToken, {
-          maxAge: +env.COOKIES.EXPIRES * 24 * 60 * 60 * 1000,
-          httpOnly: true,
-          secure: env.SERVER.NODE_ENV === 'production'
-        })
-
-        res.json({
-          status: httpResponse.status,
-          data: httpResponse.data,
-          accessToken: httpResponse.accessToken
-        })
-      } else {
-        if (httpResponse.statusCode === 500 && env.SERVER.NODE_ENV === 'production') {
-          res.json({
-            status: httpResponse.status,
-            data: { message: new InternalError().message }
-          })
-        } else {
-          res.json({
-            status: httpResponse.status,
-            data: httpResponse.data
-          })
-        }
+      if (httpResponseData.data.refreshToken) {
+        return refreshTokenResponse(res, httpResponseData)
       }
+
+      if (httpResponseData.data.accessToken) {
+        return accessTokenResponse(res, httpResponseData)
+      }
+
+      if (httpResponseData.statusCode === 500 && env.SERVER.NODE_ENV === 'production') {
+        return productionErrorResponse(res, httpResponseData)
+      }
+
+      return defaultResponse(res, httpResponseData)
     } catch (error) {
       next(error)
     }
   }
 }
+
+type AdaptHttpRequest = HttpRequest & Request
+type AdaptHttpResponse = HttpResponse & Response

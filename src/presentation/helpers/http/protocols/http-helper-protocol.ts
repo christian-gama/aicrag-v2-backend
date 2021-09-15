@@ -67,7 +67,7 @@ export interface HttpOkProtocol {
    * @param accessToken Optional. Token that will be used as authentication.
    * @returns Return a generic http response.
    */
-  ok: (data: any, accessToken?: string) => HttpResponse
+  ok: (data: { [key: string]: any, accessToken?: string }) => HttpResponse
 }
 
 export interface HttpCreatedProtocol {

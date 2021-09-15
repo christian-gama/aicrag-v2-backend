@@ -1,11 +1,11 @@
-import { makeSut } from './__mocks__/http-helper-mock'
+import { makeSut } from './http-helper-sut'
 
 import faker from 'faker'
 
 describe('HttpHelper', () => {
   describe('StatusCode: 400 ~ 409', () => {
     it('Should return 400 and an error message when calls badRequest', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
       const response = sut.badRequest(new Error(errorMessage))
@@ -14,7 +14,7 @@ describe('HttpHelper', () => {
     })
 
     it('Should return 401 and an error message when calls unauthorized', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
       const response = sut.unauthorized(new Error(errorMessage))
@@ -23,7 +23,7 @@ describe('HttpHelper', () => {
     })
 
     it('Should return 403 and an error message when calls forbidden', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
       const response = sut.forbidden(new Error(errorMessage))
@@ -32,7 +32,7 @@ describe('HttpHelper', () => {
     })
 
     it('Should return 404 and an error message when calls notFound', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
       const response = sut.notFound(new Error(errorMessage))
@@ -41,7 +41,7 @@ describe('HttpHelper', () => {
     })
 
     it('Should return 409 and an error message when calls conflict', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
       const response = sut.conflict(new Error(errorMessage))
@@ -52,7 +52,7 @@ describe('HttpHelper', () => {
 
   describe('StatusCode: 200 ~ 204', () => {
     it('Should return 200 and a data when calls ok', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }
 
       const response = sut.ok(fakeData)
@@ -61,21 +61,20 @@ describe('HttpHelper', () => {
     })
 
     it('Should return 200 a data and an accessToken if one is passed when calls ok', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }
 
-      const response = sut.ok(fakeData, 'any_token')
+      const response = sut.ok({ fakeData, accessToken: 'any_token' })
 
       expect(response).toEqual({
         status: 'success',
         statusCode: 200,
-        data: fakeData,
-        accessToken: 'any_token'
+        data: { fakeData, accessToken: 'any_token' }
       })
     })
 
     it('Should return 201 and a data when calls created', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }
 
       const response = sut.created(fakeData)
@@ -84,7 +83,7 @@ describe('HttpHelper', () => {
     })
 
     it('Should return 204 and a data when calls deleted', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
 
       const response = sut.deleted()
 
@@ -98,7 +97,7 @@ describe('HttpHelper', () => {
 
   describe('StatusCode: 500', () => {
     it('Should return 500 when call serverError', () => {
-      const sut = makeSut()
+      const { sut } = makeSut()
       const error = new Error('any_message')
 
       const response = sut.serverError(error)

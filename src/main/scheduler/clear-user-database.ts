@@ -1,9 +1,9 @@
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
 import { LogErrorProtocol } from '@/domain/log/log-error-protocol'
+import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
-import { FindOptions } from 'mongodb'
 
+import { FindOptions } from 'mongodb'
 export class ClearUserDatabase {
   constructor (private readonly logErrorDbRepository: LogErrorDbRepositoryProtocol) {}
 

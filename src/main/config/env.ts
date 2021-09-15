@@ -1,6 +1,6 @@
 /* Node modules */
-import path from 'path'
 import dotenv from 'dotenv'
+import path from 'path'
 
 dotenv.config({ path: path.resolve(__dirname, '../../../config.env') })
 
@@ -13,8 +13,10 @@ export const env = {
     MONGO_URL: process.env.MONGO_URL?.trim() ?? 'mongodb://mongo/aicrag'
   },
   JWT: {
-    EXPIRES: process.env.JWT_EXPIRES?.trim() ?? '30d',
-    SECRET: process.env.JWT_SECRET?.trim() ?? 'Ql818uILlkG8a8sdklajlm112Ac4yuuX'
+    ACCESS_EXPIRES: process.env.JWT_EXPIRES?.trim() ?? '10min',
+    ACCESS_SECRET: process.env.JWT_SECRET?.trim() ?? 'Ql818uILlkG8a8sdklajlm112Ac4yuuX',
+    REFRESH_SECRET: process.env.JWT_REFRESH_SECRET?.trim() ?? '2Z34YWnfoplk8a8sds1Elajlm81c431x',
+    REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES?.trim() ?? '30d'
   },
   SERVER: {
     NODE_ENV: (process.env.NODE_ENV?.trim() as 'development' | 'production') ?? 'production',

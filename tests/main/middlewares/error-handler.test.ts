@@ -1,8 +1,8 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
 import app from '@/main/config/app'
+import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
 import { env } from '@/main/config/env'
-import { errorHandler } from '@/main/middlewares/error-handler'
+import { errorRequestHandler } from '@/main/middlewares/error-request-handler'
 
 import request from 'supertest'
 
@@ -19,7 +19,7 @@ const makeControllerStub = (): ControllerProtocol => {
   return new ControllerStub()
 }
 
-describe('ErrorHandler', () => {
+describe('ErrorRequestHandler', () => {
   const environment = process.env.NODE_ENV as 'production' | 'development'
 
   afterAll(() => {
@@ -28,7 +28,7 @@ describe('ErrorHandler', () => {
 
   beforeEach(() => {
     app.post('/error_handler', adaptRoutes(makeControllerStub()))
-    app.use(errorHandler)
+    app.use(errorRequestHandler)
   })
 
   it('Should return statusCode 500', async () => {

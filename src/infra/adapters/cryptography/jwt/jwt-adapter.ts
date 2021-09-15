@@ -1,5 +1,5 @@
 import {
-  DecodedIdProtocol,
+  DecodedProtocol,
   DecoderProtocol
 } from '@/application/protocols/cryptography/decoder-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
@@ -10,16 +10,11 @@ import { promisify } from 'util'
 export class JwtAdapter implements EncrypterProtocol, DecoderProtocol {
   constructor (private readonly expires: string, private readonly secret: string) {}
 
-  encryptId (id: string): string {
-    return jwt.sign({ id }, this.secret, { expiresIn: this.expires })
+  async decode (token: string): Promise<DecodedProtocol> {
+    return await promisify<string, string, DecodedProtocol>(jwt.verify)(token, this.secret)
   }
 
-  async decodeId (token: string): Promise<string> {
-    const decoded = await promisify<string, string, DecodedIdProtocol>(jwt.verify)(
-      token,
-      this.secret
-    )
-
-    return decoded.id
+  encrypt (payloadName: string, value: string): string {
+    return jwt.sign({ [payloadName]: value }, this.secret, { expiresIn: this.expires })
   }
 }

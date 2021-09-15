@@ -2,8 +2,9 @@ export interface EncrypterProtocol {
   /**
    *
    * @description Get an ID and encrypt it based on a secret key.
-   * @param id The first value that will be compared to the second value.
+   * @param payloadName The payload name that contains a value.
+   * @param value The value that will be encrypted.
    * @returns Return an encrypted token that contains an ID.
    */
-  encryptId: (id: string) => string
+  encrypt: (payloadName: string, value: string) => string
 }
