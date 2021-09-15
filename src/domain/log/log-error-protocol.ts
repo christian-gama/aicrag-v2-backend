@@ -1,4 +1,7 @@
-export interface LogErrorProtocol {
+/**
+ * @description Interface used to create a log error.
+ */
+export interface LogError {
   name: string
   date: string
   message: string

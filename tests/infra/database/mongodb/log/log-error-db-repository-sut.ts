@@ -1,5 +1,5 @@
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-repository-protocol'
-import { LogErrorProtocol } from '@/domain/log/log-error-protocol'
+import { LogError } from '@/domain/log/log-error-protocol'
 import { LogErrorDbRepository } from '@/infra/database/mongodb/log/log-error-db-repository'
 import { makeFakeLogError } from '@/tests/__mocks__/domain/mock-log-error'
 import { makeLogErrorRepositoryStub } from '@/tests/__mocks__/application/repositories/log/mock-log-error-repository'
@@ -7,7 +7,7 @@ import { makeLogErrorRepositoryStub } from '@/tests/__mocks__/application/reposi
 interface SutTypes {
   sut: LogErrorDbRepository
   error: Error
-  fakeLogError: LogErrorProtocol
+  fakeLogError: LogError
   logErrorRepositoryStub: LogErrorRepositoryProtocol
 }
 
