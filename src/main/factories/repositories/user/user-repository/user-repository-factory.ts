@@ -1,5 +1,5 @@
 import { UserRepository } from '@/application/usecases/repositories/user'
-import { makeBcryptAdapter } from '@/main/factories/cryptography/hasher-factory'
+import { makeBcryptAdapter } from '@/main/factories/cryptography/bcrypt-adapter-factory'
 import { makeUuid } from '@/main/factories/helpers/uuid-factory'
 import { makeValidationCode } from '@/main/factories/helpers/validation-code-factory'
 
