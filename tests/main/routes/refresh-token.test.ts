@@ -31,6 +31,10 @@ describe('RefreshToken middleware', () => {
 
       res.send()
     })
+
+    app.get('/valid-refresh-token', refreshTokenMiddleware, (req, res) => {
+      res.send()
+    })
   })
 
   afterAll(async () => {
@@ -48,5 +52,9 @@ describe('RefreshToken middleware', () => {
 
   it('Should save cookies', async () => {
     await agent.get('/save_cookie').expect('set-cookie', `refreshToken=${encryptedRefreshToken}; Path=/`)
+  })
+
+  it('Should return 200 if there is a refresh token', async () => {
+    await agent.get('/valid-refresh-token').expect(200)
   })
 })
