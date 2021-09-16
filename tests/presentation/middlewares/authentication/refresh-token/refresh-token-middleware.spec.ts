@@ -12,10 +12,10 @@ describe('RefreshTokenMiddleware', () => {
   })
 
   it('Should return unauthorized if there is no refreshToken on database', async () => {
-    const { sut, httpHelper, refreshTokenDbRepositoryStub } = makeSut()
+    const { sut, httpHelper, refreshTokenDbRepositoryStub, request } = makeSut()
     jest.spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenById').mockReturnValueOnce(Promise.resolve(undefined))
 
-    const response = await sut.handle({})
+    const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.unauthorized(new TokenMissingError()))
   })
