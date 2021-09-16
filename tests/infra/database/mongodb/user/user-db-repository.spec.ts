@@ -82,6 +82,24 @@ describe('UserDbRepository', () => {
     })
   })
 
+  describe('findUserByRefreshToken', () => {
+    it('Should return a user if findUserByRefreshToken finds a user', async () => {
+      const { sut } = makeSut()
+      const savedUser = await sut.saveUser(makeFakeSignUpUserCredentials())
+
+      const user = await sut.findUserByRefreshToken(savedUser.temporary.refreshToken as string)
+
+      expect(user).toHaveProperty('_id')
+    })
+
+    it('Should return undefined if does not findUserByRefreshToken finds a user', async () => {
+      const { sut } = makeSut()
+      const user = await sut.findUserByRefreshToken('invalid_refresh_token')
+
+      expect(user).toBe(undefined)
+    })
+  })
+
   describe('findUserById', () => {
     it('Should return a user if findUserById finds a user', async () => {
       const { sut } = makeSut()

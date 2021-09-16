@@ -6,8 +6,8 @@ import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 
 interface SutTypes {
   sut: UserDbRepository
-  userRepositoryStub: UserRepositoryProtocol
   fakeUser: User
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 export const makeSut = (): SutTypes => {
@@ -15,5 +15,5 @@ export const makeSut = (): SutTypes => {
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const sut = new UserDbRepository(userRepositoryStub)
 
-  return { sut, userRepositoryStub, fakeUser }
+  return { sut, fakeUser, userRepositoryStub }
 }
