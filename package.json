@@ -15,7 +15,7 @@
     "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:secure": "set LOOP_TIME=10&& jest --clearCache && jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:unit": "yarn test --watch --onlyChanged -c jest-unit-config.js",
-    "test:integration": "yarn test --watch -c jest-integration-config.js",
+    "test:integration": "yarn test:verbose --watch -c jest-integration-config.js",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "jest --clearCache && yarn test:secure --coverage"
   },
