@@ -3,10 +3,12 @@ import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/reposi
 import { RefreshTokenRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-repository-protocol'
 import { MongoHelper } from '../helper/mongo-helper'
 export class RefreshTokenDbRepository implements RefreshTokenDbRepositoryProtocol {
-  constructor (private readonly refreshTokenRepository: RefreshTokenRepositoryProtocol) {}
+  constructor (
+    private readonly refreshTokenRepository: RefreshTokenRepositoryProtocol
+  ) {}
 
   async saveRefreshToken (userId: string): Promise<RefreshToken> {
-    const refreshToken = this.refreshTokenRepository.createRefreshToken(userId)
+    const refreshToken = await this.refreshTokenRepository.createRefreshToken(userId)
 
     const refreshTokenCollection = await MongoHelper.getCollection('refresh_tokens')
 

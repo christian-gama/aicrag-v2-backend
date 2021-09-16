@@ -6,5 +6,5 @@ export interface RefreshTokenRepositoryProtocol {
    * @param userId The user id that will be used to create a refresh token.
    * @returns Return a refresh token.
    */
-  createRefreshToken: (userId: string) => RefreshToken
+  createRefreshToken: (userId: string) => Promise<RefreshToken>
 }
