@@ -4,8 +4,8 @@ import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-toke
 
 export const makeRefreshTokenRepositoryStub = (): RefreshTokenRepositoryProtocol => {
   class RefreshTokenRepositoryStub implements RefreshTokenRepositoryProtocol {
-    createRefreshToken (userId: string): RefreshToken {
-      return makeFakeRefreshToken()
+    async createRefreshToken (userId: string): Promise<RefreshToken> {
+      return Promise.resolve(makeFakeRefreshToken())
     }
   }
 
