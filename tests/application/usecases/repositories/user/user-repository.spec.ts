@@ -28,9 +28,10 @@ describe('UserRepository', () => {
     expect(user.logs.lastSeenAt).toBe(null)
     expect(user.logs.updatedAt).toBe(null)
 
-    expect(Object.keys(user.temporary).length).toBe(6)
+    expect(Object.keys(user.temporary).length).toBe(7)
     expect(user.temporary.activationCode).toBe(fakeActivationCode)
     expect(typeof user.temporary.activationCodeExpiration).toBe('object')
+    expect(user.temporary.refreshToken).toBe(null)
     expect(user.temporary.resetCode).toBe(null)
     expect(user.temporary.resetCodeExpiration).toBe(null)
     expect(user.temporary.temporaryEmail).toBe(null)

@@ -52,14 +52,15 @@ describe('UserDbRepository', () => {
         updatedAt: fakeUser.logs.updatedAt
       })
 
-      expect(Object.keys(user.temporary).length).toBe(6)
+      expect(Object.keys(user.temporary).length).toBe(7)
       expect(user.temporary).toEqual({
         activationCode: fakeUser.temporary.activationCode,
         activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
-        temporaryEmail: fakeUser.temporary.temporaryEmail,
-        temporaryEmailExpiration: fakeUser.temporary.temporaryEmailExpiration,
+        refreshToken: fakeUser.temporary.refreshToken,
         resetCode: fakeUser.temporary.resetCode,
-        resetCodeExpiration: fakeUser.temporary.resetCodeExpiration
+        resetCodeExpiration: fakeUser.temporary.resetCodeExpiration,
+        temporaryEmail: fakeUser.temporary.temporaryEmail,
+        temporaryEmailExpiration: fakeUser.temporary.temporaryEmailExpiration
       })
     })
   })
