@@ -27,8 +27,17 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
 
   async findUserById (id: string): Promise<User | undefined> {
     const userCollection = await MongoHelper.getCollection('users')
-    const filter: UserDbFilter = { 'personal.id': id }
 
+    const filter: UserDbFilter = { 'personal.id': id }
+    const user = (await userCollection.findOne(filter)) as User
+
+    if (user) return user
+  }
+
+  async findUserByRefreshToken (id: string): Promise<User | undefined> {
+    const userCollection = await MongoHelper.getCollection('users')
+
+    const filter: UserDbFilter = { 'temporary.refreshToken': id }
     const user = (await userCollection.findOne(filter)) as User
 
     if (user) return user
@@ -36,8 +45,8 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
 
   async updateUser (user: User, update: UserDbFilter): Promise<User | undefined> {
     const userCollection = await MongoHelper.getCollection('users')
-    const filter: UserDbFilter = { 'personal.id': user.personal.id }
 
+    const filter: UserDbFilter = { 'personal.id': user.personal.id }
     await userCollection.updateOne(filter, { $set: update })
 
     const updatedUser = (await userCollection.findOne(filter)) as User

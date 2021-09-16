@@ -8,7 +8,8 @@ export interface UserDbRepositoryProtocol
   extends SaveUserDbProtocol,
   UpdateUserDbProtocol,
   FindUserByEmailDbProtocol,
-  FindUserByIdDbProtocol {}
+  FindUserByIdDbProtocol,
+  FindUserByRefreshTokenDbProtocol {}
 
 export interface SaveUserDbProtocol {
   /**
@@ -30,11 +31,20 @@ export interface FindUserByEmailDbProtocol {
   findUserByEmail: (email: string) => Promise<User | undefined>
 }
 
+export interface FindUserByRefreshTokenDbProtocol {
+  /**
+   * @async Asynchronous method.
+   * @description Receive a refresh token id and tries to find it on database.
+   * @param id The refresh token id that will be searched for.
+   * @returns Return a user if finds it or undefined if does not.
+   */
+  findUserByRefreshToken: (id: string) => Promise<User | undefined>
+}
 export interface FindUserByIdDbProtocol {
   /**
    * @async Asynchronous method.
-   * @description Receive an email and tries to find it on database.
-   * @param id The id that will be searched for.
+   * @description Receive an user id and tries to find it on database.
+   * @param id The user id that will be searched for.
    * @returns Return a user if finds it or undefined if does not.
    */
   findUserById: (id: string) => Promise<User | undefined>
