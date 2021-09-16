@@ -7,8 +7,8 @@
   "scripts": {
     "tsc:watch": "tsc -w -p tsconfig.build.json",
     "tsc:build": "rimraf dist && tsc -p tsconfig.build.json",
-    "start": "node dist/main/server.js",
-    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
+    "start": "node dist/main/vendors/express/server.js",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/vendors/express/server.js",
     "up": "yarn tsc:build && docker-compose up -d",
     "down": "docker-compose down",
     "test": "jest --passWithNoTests --silent --noStackTrace --maxWorkers=25%",

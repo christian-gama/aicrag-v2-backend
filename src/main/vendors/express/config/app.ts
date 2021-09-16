@@ -1,7 +1,7 @@
 
 import middlewares from './middlewares'
 import routes from './routes'
-import schedulers from './schedulers'
+import schedulers from '@/main/config/schedulers'
 
 import express from 'express'
 

@@ -6,11 +6,11 @@ import {
   defaultResponse,
   productionErrorResponse,
   refreshTokenResponse
-} from './express-responses'
+} from '@/main/vendors/express/helpers/express-responses'
 
 import { NextFunction, Request, Response } from 'express'
 
-export const adaptRoutes = (controller: ControllerProtocol) => {
+export const routeAdapter = (controller: ControllerProtocol) => {
   return async (req: AdaptHttpRequest, res: AdaptHttpResponse, next: NextFunction) => {
     try {
       const httpResponseData = await controller.handle(req)

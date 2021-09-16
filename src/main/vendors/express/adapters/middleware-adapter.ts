@@ -4,7 +4,7 @@ import { env } from '@/main/config/env'
 
 import { Request, Response, NextFunction } from 'express'
 
-export const adaptMiddlewares = (middleware: MiddlewareProtocol) => {
+export const middlewareAdapter = (middleware: MiddlewareProtocol) => {
   return async (req: AdaptHttpRequest, res: Response, next: NextFunction) => {
     try {
       const httpRequest: HttpRequestToken = {

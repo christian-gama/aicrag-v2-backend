@@ -1,6 +1,6 @@
-import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
-import app from '@/main/config/app'
-import { notFound } from '@/main/middlewares/not-found'
+import { routeAdapter } from '@/main/vendors/express/adapters/route-adapter'
+import app from '@/main/vendors/express/config/app'
+import { notFound } from '@/main/vendors/express/middlewares/not-found'
 import { makeControllerStub } from '@/tests/__mocks__/presentation/controllers/mock-controller'
 
 import request from 'supertest'
@@ -10,7 +10,7 @@ const agent = request.agent(app)
 describe('ErrorHandler', () => {
   beforeEach(() => {
     app.all('*', notFound)
-    app.post('/notFound', adaptRoutes(makeControllerStub()))
+    app.post('/notFound', routeAdapter(makeControllerStub()))
   })
 
   it('Should return 404', async () => {

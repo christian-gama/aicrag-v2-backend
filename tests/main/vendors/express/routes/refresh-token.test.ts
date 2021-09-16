@@ -1,6 +1,6 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { adaptMiddlewares } from '@/main/adapters/express/adapt-middlewares'
-import app from '@/main/config/app'
+import { middlewareAdapter } from '@/main/vendors/express/adapters/middleware-adapter'
+import app from '@/main/vendors/express/config/app'
 import { makeJwtRefreshToken } from '@/main/factories/cryptography/jwt-refresh-token-factory'
 import { makeRefreshTokenMiddleware } from '@/main/factories/middlewares/authentication/refresh-token-middleware-factory'
 import { makeRefreshTokenDbRepository } from '@/main/factories/repositories/refresh-token/refresh-token-db-repository/refresh-token-db-repository-factory'
@@ -16,7 +16,7 @@ describe('RefreshToken middleware', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
-    const refreshTokenMiddleware = adaptMiddlewares(makeRefreshTokenMiddleware())
+    const refreshTokenMiddleware = middlewareAdapter(makeRefreshTokenMiddleware())
 
     app.get('/invalid-refresh-token', refreshTokenMiddleware, (req, res) => {
       res.send()

@@ -1,4 +1,4 @@
-import { env } from '../config/env'
+import { env } from '../../../config/env'
 import { errorHandler } from '../helpers/error-handler'
 
 import { ErrorRequestHandler } from 'express'

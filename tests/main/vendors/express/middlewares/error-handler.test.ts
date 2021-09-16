@@ -1,8 +1,8 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import app from '@/main/config/app'
-import { adaptRoutes } from '@/main/adapters/express/adapt-routes'
+import app from '@/main/vendors/express/config/app'
+import { routeAdapter } from '@/main/vendors/express/adapters/route-adapter'
 import { env } from '@/main/config/env'
-import { errorRequestHandler } from '@/main/middlewares/error-request-handler'
+import { errorRequestHandler } from '@/main/vendors/express/middlewares/error-request-handler'
 
 import request from 'supertest'
 
@@ -27,7 +27,7 @@ describe('ErrorRequestHandler', () => {
   })
 
   beforeEach(() => {
-    app.post('/error_handler', adaptRoutes(makeControllerStub()))
+    app.post('/error_handler', routeAdapter(makeControllerStub()))
     app.use(errorRequestHandler)
   })
 
