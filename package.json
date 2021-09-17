@@ -13,7 +13,7 @@
     "down": "docker-compose down",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",
-    "test:secure": "set LOOP_TIME=10&& jest --clearCache && jest --passWithNoTests --runInBand --detectOpenHandles",
+    "test:secure": "set LOOP_TIME=10&& jest --clearCache && yarn test:verbose",
     "test:unit": "yarn test --watch --onlyChanged -c jest-unit-config.js",
     "test:integration": "yarn test:verbose --watch -c jest-integration-config.js",
     "test:staged": "yarn test --findRelatedTests",
