@@ -11,13 +11,13 @@
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/vendors/express/server.js",
     "up": "yarn tsc:build && docker-compose up -d",
     "down": "docker-compose down",
-    "test": "jest --passWithNoTests --silent --noStackTrace --maxWorkers=25%",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:secure": "set LOOP_TIME=10&& jest --clearCache && jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:unit": "yarn test --watch --onlyChanged -c jest-unit-config.js",
     "test:integration": "yarn test:verbose --watch -c jest-integration-config.js",
     "test:staged": "yarn test --findRelatedTests",
-    "test:ci": "jest --clearCache && yarn test:secure --coverage"
+    "test:ci": "yarn test:secure --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
