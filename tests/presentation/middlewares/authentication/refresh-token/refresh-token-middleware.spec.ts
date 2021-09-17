@@ -1,4 +1,4 @@
-import { TokenMissingError } from '@/application/usecases/errors'
+import { InvalidTokenError, TokenMissingError } from '@/application/usecases/errors'
 import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-token'
 import { makeSut } from './refresh-token-middleware-sut'
 
@@ -31,6 +31,17 @@ describe('RefreshTokenMiddleware', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.unauthorized(new TokenMissingError()))
+  })
+
+  it('Should return unauthorized if comparer returns false', async () => {
+    const { sut, comparerStub, httpHelper, request } = makeSut()
+    jest
+      .spyOn(comparerStub, 'compare')
+      .mockReturnValueOnce(Promise.resolve(false))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
   it('Should call jwtRefreshToken.decode with correct token', async () => {
