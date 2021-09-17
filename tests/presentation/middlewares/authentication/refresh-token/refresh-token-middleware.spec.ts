@@ -13,7 +13,20 @@ describe('RefreshTokenMiddleware', () => {
 
   it('Should return unauthorized if there is no refreshToken on database', async () => {
     const { sut, httpHelper, refreshTokenDbRepositoryStub, request } = makeSut()
-    jest.spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenById').mockReturnValueOnce(Promise.resolve(undefined))
+    jest
+      .spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenById')
+      .mockReturnValueOnce(Promise.resolve(undefined))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.unauthorized(new TokenMissingError()))
+  })
+
+  it("Should return unauthorized if user's id does not match user's id from refresh token", async () => {
+    const { sut, httpHelper, request, userDbRepositoryStub } = makeSut()
+    jest
+      .spyOn(userDbRepositoryStub, 'findUserByRefreshToken')
+      .mockReturnValueOnce(Promise.resolve(undefined))
 
     const response = await sut.handle(request)
 
@@ -32,7 +45,9 @@ describe('RefreshTokenMiddleware', () => {
   it('Should call jwtAccessToken.encrypt with correct token', async () => {
     const { sut, jwtAccessToken, refreshTokenDbRepositoryStub, request } = makeSut()
     const fakeRefreshToken = makeFakeRefreshToken()
-    jest.spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenById').mockReturnValueOnce(Promise.resolve(fakeRefreshToken))
+    jest
+      .spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenById')
+      .mockReturnValueOnce(Promise.resolve(fakeRefreshToken))
     const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
 
     await sut.handle(request)
@@ -42,14 +57,24 @@ describe('RefreshTokenMiddleware', () => {
 
   it('Should call findRefreshTokenById with correct user id', async () => {
     const { sut, refreshTokenDbRepositoryStub, request } = makeSut()
-    const findRefreshTokenByIdSpy = jest.spyOn(
-      refreshTokenDbRepositoryStub,
-      'findRefreshTokenById'
-    )
+    const findRefreshTokenByIdSpy = jest.spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenById')
 
     await sut.handle(request)
 
     expect(findRefreshTokenByIdSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  it('Should call findUserByRefreshToken with correct refresh token', async () => {
+    const { sut, userDbRepositoryStub, refreshTokenDbRepositoryStub, request } = makeSut()
+    const fakeRefreshToken = makeFakeRefreshToken()
+    jest
+      .spyOn(refreshTokenDbRepositoryStub, 'findRefreshTokenById')
+      .mockReturnValueOnce(Promise.resolve(fakeRefreshToken))
+    const findUserByRefreshTokenSpy = jest.spyOn(userDbRepositoryStub, 'findUserByRefreshToken')
+
+    await sut.handle(request)
+
+    expect(findUserByRefreshTokenSpy).toHaveBeenCalledWith(fakeRefreshToken.id)
   })
 
   it('Should call deleteRefreshTokenById with correct id if refresh token has expired', async () => {

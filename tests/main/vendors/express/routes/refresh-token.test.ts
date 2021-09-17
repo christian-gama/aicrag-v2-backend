@@ -11,6 +11,7 @@ import request from 'supertest'
 
 describe('RefreshToken middleware', () => {
   let refreshTokenCollection: Collection
+  let userCollection: Collection
   let encryptedRefreshToken: string = ''
 
   beforeAll(async () => {
@@ -26,6 +27,10 @@ describe('RefreshToken middleware', () => {
     const refreshToken = await makeRefreshTokenDbRepository().saveRefreshToken(fakeUser.personal.id)
     encryptedRefreshToken = makeJwtRefreshToken().encrypt('id', refreshToken.id)
 
+    userCollection = await MongoHelper.getCollection('users')
+    fakeUser.temporary.refreshToken = refreshToken.id
+    await userCollection.insertOne(fakeUser)
+
     app.get('/save_cookie', (req, res) => {
       res.cookie('refreshToken', encryptedRefreshToken)
 
@@ -40,6 +45,7 @@ describe('RefreshToken middleware', () => {
   afterAll(async () => {
     refreshTokenCollection = await MongoHelper.getCollection('refresh_tokens')
     await refreshTokenCollection.deleteMany({})
+    await userCollection.deleteMany({})
 
     await MongoHelper.disconnect()
   })
@@ -51,7 +57,9 @@ describe('RefreshToken middleware', () => {
   })
 
   it('Should save cookies', async () => {
-    await agent.get('/save_cookie').expect('set-cookie', `refreshToken=${encryptedRefreshToken}; Path=/`)
+    await agent
+      .get('/save_cookie')
+      .expect('set-cookie', `refreshToken=${encryptedRefreshToken}; Path=/`)
   })
 
   it('Should return 200 if there is a refresh token', async () => {
