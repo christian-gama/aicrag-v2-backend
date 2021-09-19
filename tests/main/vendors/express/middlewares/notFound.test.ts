@@ -1,4 +1,4 @@
-import { routeAdapter } from '@/main/vendors/express/adapters/route-adapter'
+import { controllerAdapter } from '@/main/vendors/express/adapters/controller-adapter'
 import app from '@/main/vendors/express/config/app'
 import { notFound } from '@/main/vendors/express/middlewares/not-found'
 import { makeControllerStub } from '@/tests/__mocks__/presentation/controllers/mock-controller'
@@ -10,7 +10,7 @@ const agent = request.agent(app)
 describe('ErrorHandler', () => {
   beforeEach(() => {
     app.all('*', notFound)
-    app.post('/notFound', routeAdapter(makeControllerStub()))
+    app.post('/notFound', controllerAdapter(makeControllerStub()))
   })
 
   it('Should return 404', async () => {

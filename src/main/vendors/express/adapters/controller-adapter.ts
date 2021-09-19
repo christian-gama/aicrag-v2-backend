@@ -10,7 +10,7 @@ import {
 
 import { NextFunction, Request, Response } from 'express'
 
-export const routeAdapter = (controller: ControllerProtocol) => {
+export const controllerAdapter = (controller: ControllerProtocol) => {
   return async (req: AdaptHttpRequest, res: AdaptHttpResponse, next: NextFunction) => {
     try {
       const httpResponseData = await controller.handle(req)

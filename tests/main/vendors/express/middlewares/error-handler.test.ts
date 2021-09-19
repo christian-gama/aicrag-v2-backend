@@ -1,6 +1,6 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import app from '@/main/vendors/express/config/app'
-import { routeAdapter } from '@/main/vendors/express/adapters/route-adapter'
+import { controllerAdapter } from '@/main/vendors/express/adapters/controller-adapter'
 import { env } from '@/main/config/env'
 import { errorRequestHandler } from '@/main/vendors/express/middlewares/error-request-handler'
 
@@ -27,7 +27,7 @@ describe('ErrorRequestHandler', () => {
   })
 
   beforeEach(() => {
-    app.post('/error_handler', routeAdapter(makeControllerStub()))
+    app.post('/error_handler', controllerAdapter(makeControllerStub()))
     app.use(errorRequestHandler)
   })
 
