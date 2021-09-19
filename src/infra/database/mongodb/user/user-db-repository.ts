@@ -1,4 +1,4 @@
-import { SignUpUserCredentials, IUser } from '@/domain/user/index'
+import { ISignUpUserCredentials, IUser } from '@/domain/user/index'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { UserRepositoryProtocol } from '@/application/protocols/repositories/user/user-repository-protocol'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
@@ -7,7 +7,7 @@ import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-use
 export class UserDbRepository implements UserDbRepositoryProtocol {
   constructor (private readonly userRepository: UserRepositoryProtocol) {}
 
-  async saveUser (signUpUserCredentials: SignUpUserCredentials): Promise<IUser> {
+  async saveUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
     const userCollection = await MongoHelper.getCollection('users')
     const user = await this.userRepository.createUser(signUpUserCredentials)
 

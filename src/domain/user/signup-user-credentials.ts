@@ -1,7 +1,7 @@
 /**
  * @description Interface used to create a new account.
  */
-export interface SignUpUserCredentials {
+export interface ISignUpUserCredentials {
   name: string
   email: string
   password: string

@@ -1,10 +1,10 @@
-import { SignUpUserCredentials, IUser } from '@/domain/user/index'
+import { ISignUpUserCredentials, IUser } from '@/domain/user/index'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 export const makeUserDbRepositoryStub = (fakeUser: IUser): UserDbRepositoryProtocol => {
   class UserDbRepositoryStub implements UserDbRepositoryProtocol {
-    async saveUser (signUpUserCredentials: SignUpUserCredentials): Promise<IUser> {
+    async saveUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
       return Promise.resolve(fakeUser)
     }
 

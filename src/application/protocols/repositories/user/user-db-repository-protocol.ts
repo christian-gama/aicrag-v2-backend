@@ -1,4 +1,4 @@
-import { SignUpUserCredentials, IUser } from '@/domain/user/index'
+import { ISignUpUserCredentials, IUser } from '@/domain/user/index'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 /**
@@ -17,7 +17,7 @@ export interface SaveUserDbProtocol {
    * @param user User that will be saved as a user.
    * @returns Return a user from database.
    */
-  saveUser: (user: SignUpUserCredentials) => Promise<IUser>
+  saveUser: (user: ISignUpUserCredentials) => Promise<IUser>
 }
 
 export interface FindUserByEmailDbProtocol {
