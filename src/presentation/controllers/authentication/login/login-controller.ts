@@ -2,13 +2,14 @@ import { User } from '@/domain/user'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { MustLogoutError } from '@/application/usecases/errors'
+import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
 } from '@/presentation/helpers/http/protocols'
 import { ControllerProtocol } from '.'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 
 export class LoginController implements ControllerProtocol {
   constructor (
@@ -22,6 +23,8 @@ export class LoginController implements ControllerProtocol {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const credentials = httpRequest.body
+
+    if (httpRequest.user) return this.httpHelper.badRequest(new MustLogoutError())
 
     const error = await this.credentialsValidator.validate(credentials)
 
