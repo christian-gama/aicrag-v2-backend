@@ -1,7 +1,7 @@
 import { makeSut } from './log-error-repository-sut'
 
 describe('LogErrorRepository', () => {
-  it('Should return a LogError', () => {
+  it('Should return a ILogError', () => {
     const { sut } = makeSut()
     const error = new Error('any_message')
 

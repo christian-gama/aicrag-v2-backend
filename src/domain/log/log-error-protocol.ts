@@ -1,7 +1,7 @@
 /**
  * @description Interface used to create a log error.
  */
-export interface LogError {
+export interface ILogError {
   name: string
   date: string
   message: string

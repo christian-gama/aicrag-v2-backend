@@ -1,6 +1,6 @@
-import { LogError } from '@/domain/log/log-error-protocol'
+import { ILogError } from '@/domain/log/log-error-protocol'
 
-export const makeFakeLogError = (error: Error): LogError => {
+export const makeFakeLogError = (error: Error): ILogError => {
   return {
     name: error.name,
     date: new Date(Date.now()).toLocaleString(),

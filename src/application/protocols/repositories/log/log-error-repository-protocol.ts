@@ -1,5 +1,5 @@
-import { LogError } from '@/domain/log/log-error-protocol'
+import { ILogError } from '@/domain/log/log-error-protocol'
 
 export interface LogErrorRepositoryProtocol {
-  createLog: (error: Error) => LogError
+  createLog: (error: Error) => ILogError
 }
