@@ -11,7 +11,7 @@ import {
 import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-token'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeVerifyTokenStub } from '@/tests/__mocks__/infra/providers/mock-verify-token'
-import { VerifyTokenProtocol } from '@/infra/providers/token/protocols/verify-token-protocol'
+import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
 interface SutTypes {
   sut: RefreshToken
   fakeRefreshToken: IRefreshToken

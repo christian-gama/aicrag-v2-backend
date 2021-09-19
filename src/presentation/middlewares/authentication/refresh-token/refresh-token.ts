@@ -1,6 +1,6 @@
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
-import { VerifyTokenProtocol } from '@/infra/providers/token/protocols/verify-token-protocol'
+import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
 import {
   HttpHelperProtocol,
   HttpRequestToken,
