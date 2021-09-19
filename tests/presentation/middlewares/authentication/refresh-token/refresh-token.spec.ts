@@ -1,4 +1,4 @@
-import { makeSut } from './verify-refresh-token-sut'
+import { makeSut } from './refresh-token-sut'
 
 describe('RefreshToken', () => {
   it('Should call verify with token', async () => {
