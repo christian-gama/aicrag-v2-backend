@@ -2,24 +2,22 @@ import { controllerAdapter } from '@/main/vendors/express/adapters/controller-ad
 import { makeActivateAccountController } from '@/main/factories/controllers/authentication/activate-account/activate-account-controller-factory'
 import { makeLoginController } from '@/main/factories/controllers/authentication/login/login-controller-factory'
 import { makeSignUpController } from '@/main/factories/controllers/authentication/signup/signup-controller-factory'
+import { makeVerifyRefreshToken } from '@/main/factories/providers/token/verify-refresh-token-factory'
+import { isLoggedInMiddlewareAdapter } from '../adapters/is-logged-in-middleware-adapter'
 
 import { Router } from 'express'
-import { tokenMiddlewareAdapter } from '../adapters/token-middleware-adapter'
-import { makeRefreshToken } from '@/main/factories/middlewares/authentication/refresh-token'
-import { makeAccessToken } from '@/main/factories/middlewares/authentication/access-token'
-import { isLoggedInMiddlewareAdapter } from '../adapters/is-logged-in-middleware-adapter'
-import { makeVerifyRefreshToken } from '@/main/factories/providers/token/verify-refresh-token-factory'
 
 const router = Router()
 
-router.use(isLoggedInMiddlewareAdapter(makeVerifyRefreshToken()))
+const activateAccountController = controllerAdapter(makeActivateAccountController())
+const loginController = controllerAdapter(makeLoginController())
+const signUpController = controllerAdapter(makeSignUpController())
+const isLoggedIn = isLoggedInMiddlewareAdapter(makeVerifyRefreshToken())
 
-router.post('/activate-account', controllerAdapter(makeActivateAccountController()))
-router.post('/login', controllerAdapter(makeLoginController()))
-router.post('/signup', controllerAdapter(makeSignUpController()))
+router.use(isLoggedIn)
 
-router.get('/teste', tokenMiddlewareAdapter(makeRefreshToken()), tokenMiddlewareAdapter(makeAccessToken()), (req, res) => {
-  res.json({ message: 'uhu' })
-})
+router.post('/activate-account', activateAccountController)
+router.post('/login', loginController)
+router.post('/signup', signUpController)
 
 export default router
