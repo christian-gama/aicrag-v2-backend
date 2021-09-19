@@ -6,7 +6,7 @@ import { makeSignUpController } from '@/main/factories/controllers/authenticatio
 import { Router } from 'express'
 import { middlewareAdapter } from '../adapters/middleware-adapter'
 import { makeRefreshToken } from '@/main/factories/middlewares/authentication/refresh-token'
-import { makeVerifyAccessToken } from '@/main/factories/middlewares/authentication/verify-access-token'
+import { makeAccessToken } from '@/main/factories/middlewares/authentication/access-token'
 
 const router = Router()
 
@@ -14,7 +14,7 @@ router.post('/activate-account', controllerAdapter(makeActivateAccountController
 router.post('/login', controllerAdapter(makeLoginController()))
 router.post('/signup', controllerAdapter(makeSignUpController()))
 
-router.get('/teste', middlewareAdapter(makeRefreshToken()), middlewareAdapter(makeVerifyAccessToken()), (req, res) => {
+router.get('/teste', middlewareAdapter(makeRefreshToken()), middlewareAdapter(makeAccessToken()), (req, res) => {
   res.json({ message: 'uhu' })
 })
 
