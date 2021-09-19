@@ -1,4 +1,4 @@
-import { ConflictParamError, InvalidParamError } from '@/application/usecases/errors'
+import { ConflictParamError, InvalidParamError, MustLogoutError } from '@/application/usecases/errors'
 import { makeSut } from './signup-controller-sut'
 
 describe('SignUpController', () => {
@@ -75,6 +75,15 @@ describe('SignUpController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(error))
+  })
+
+  it('Should return badRequest if user is already logged in', async () => {
+    const { sut, fakeUser, httpHelper, request } = makeSut()
+    request.user = fakeUser
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.badRequest(new MustLogoutError()))
   })
 
   it('Should call ok with the correct value', async () => {
