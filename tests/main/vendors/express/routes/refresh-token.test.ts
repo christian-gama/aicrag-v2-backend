@@ -1,5 +1,5 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { middlewareAdapter } from '@/main/vendors/express/adapters/middleware-adapter'
+import { tokenMiddlewareAdapter } from '@/main/vendors/express/adapters/token-middleware-adapter'
 import app from '@/main/vendors/express/config/app'
 import { makeAccessToken } from '@/main/factories/middlewares/authentication/access-token'
 import { makeRefreshToken } from '@/main/factories/middlewares/authentication/refresh-token'
@@ -18,8 +18,8 @@ describe('RefreshToken middleware', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
-    const verifyAccessToken = middlewareAdapter(makeAccessToken())
-    const verifyRefreshToken = middlewareAdapter(makeRefreshToken())
+    const verifyAccessToken = tokenMiddlewareAdapter(makeAccessToken())
+    const verifyRefreshToken = tokenMiddlewareAdapter(makeRefreshToken())
 
     app.get('/invalid-refresh-token', verifyRefreshToken, (req, res) => {
       res.send()

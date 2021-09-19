@@ -4,7 +4,7 @@ import { env } from '@/main/config/env'
 
 import { Request, Response, NextFunction } from 'express'
 
-export const middlewareAdapter = (middleware: MiddlewareProtocol) => {
+export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
   return async (req: AdaptHttpRequest, res: Response, next: NextFunction) => {
     try {
       const httpRequest: HttpRequestToken = {
@@ -21,8 +21,6 @@ export const middlewareAdapter = (middleware: MiddlewareProtocol) => {
         })
 
         req.cookies.accessToken = httpResponse.data.accessToken
-
-        req.userId = httpResponse.data.userId
 
         return next()
       }

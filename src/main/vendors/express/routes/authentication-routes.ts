@@ -4,7 +4,7 @@ import { makeLoginController } from '@/main/factories/controllers/authentication
 import { makeSignUpController } from '@/main/factories/controllers/authentication/signup/signup-controller-factory'
 
 import { Router } from 'express'
-import { middlewareAdapter } from '../adapters/middleware-adapter'
+import { tokenMiddlewareAdapter } from '../adapters/token-middleware-adapter'
 import { makeRefreshToken } from '@/main/factories/middlewares/authentication/refresh-token'
 import { makeAccessToken } from '@/main/factories/middlewares/authentication/access-token'
 
@@ -14,7 +14,7 @@ router.post('/activate-account', controllerAdapter(makeActivateAccountController
 router.post('/login', controllerAdapter(makeLoginController()))
 router.post('/signup', controllerAdapter(makeSignUpController()))
 
-router.get('/teste', middlewareAdapter(makeRefreshToken()), middlewareAdapter(makeAccessToken()), (req, res) => {
+router.get('/teste', tokenMiddlewareAdapter(makeRefreshToken()), tokenMiddlewareAdapter(makeAccessToken()), (req, res) => {
   res.json({ message: 'uhu' })
 })
 
