@@ -60,19 +60,6 @@ describe('HttpHelper', () => {
       expect(response).toEqual({ status: 'success', statusCode: 200, data: fakeData })
     })
 
-    it('Should return 200 a data and an accessToken if one is passed when calls ok', () => {
-      const { sut } = makeSut()
-      const fakeData = { [faker.random.word()]: faker.random.word() }
-
-      const response = sut.ok({ fakeData, accessToken: 'any_token' })
-
-      expect(response).toEqual({
-        status: 'success',
-        statusCode: 200,
-        data: { fakeData, accessToken: 'any_token' }
-      })
-    })
-
     it('Should return 201 and a data when calls created', () => {
       const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }

@@ -66,9 +66,7 @@ implements
 
   // ****************
   // Range: 200 ~ 204
-  ok (data: { [key: string]: any, acessToken?: string }): HttpResponse {
-    if (data.accessToken) return { status: 'success', statusCode: 200, data, accessToken: data.acessToken }
-
+  ok (data: { [key: string]: any }): HttpResponse {
     return { status: 'success', statusCode: 200, data }
   }
 
