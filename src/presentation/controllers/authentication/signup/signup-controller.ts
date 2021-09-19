@@ -2,7 +2,7 @@ import { ControllerProtocol } from '.'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { ConflictParamError } from '@/application/usecases/errors/'
+import { ConflictParamError, MustLogoutError } from '@/application/usecases/errors/'
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
 export class SignUpController implements ControllerProtocol {
@@ -15,6 +15,8 @@ export class SignUpController implements ControllerProtocol {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const signUpUserCredentials = httpRequest.body
+
+    if (httpRequest.user) return this.httpHelper.badRequest(new MustLogoutError())
 
     const error = await this.userValidator.validate(signUpUserCredentials)
 
