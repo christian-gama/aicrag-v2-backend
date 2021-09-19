@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { ValidateActivationCode } from '@/application/usecases/validators/codes-validator/validate-activation-code'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
 import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
@@ -7,7 +7,7 @@ import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 interface SutTypes {
   sut: ValidateActivationCode
   userDbRepositoryStub: UserDbRepositoryProtocol
-  fakeUser: User
+  fakeUser: IUser
 }
 
 export const makeSut = (): SutTypes => {

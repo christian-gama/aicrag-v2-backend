@@ -1,6 +1,6 @@
-import { PublicUser, User } from '@/domain/user'
+import { PublicUser, IUser } from '@/domain/user/index'
 
-export const makeFakePublicUser = (user: User): PublicUser => {
+export const makeFakePublicUser = (user: IUser): PublicUser => {
   const { personal, settings } = user
 
   return {

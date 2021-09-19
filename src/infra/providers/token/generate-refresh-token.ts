@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
@@ -10,7 +10,7 @@ export class GenerateRefreshToken implements GenerateTokenProtocol {
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
-  async generate (user: User): Promise<string> {
+  async generate (user: IUser): Promise<string> {
     const userUpdate: UserDbFilter = { tokenVersion: ++user.tokenVersion }
     await this.userDbRepository.updateUser(user, userUpdate)
 

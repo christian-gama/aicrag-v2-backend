@@ -1,7 +1,7 @@
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { InvalidTokenError, TokenMissingError } from '@/application/usecases/errors'
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { VerifyTokenProtocol } from './protocols/verify-token-protocol'
 
 export class VerifyRefreshToken implements VerifyTokenProtocol {
@@ -10,7 +10,7 @@ export class VerifyRefreshToken implements VerifyTokenProtocol {
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
-  async verify (token: string | undefined): Promise<Error | User> {
+  async verify (token: string | undefined): Promise<Error | IUser> {
     if (!token) {
       return new TokenMissingError()
     }

@@ -1,4 +1,4 @@
-import { PublicUser, User } from '@/domain/user'
+import { PublicUser, IUser } from '@/domain/user/index'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
@@ -16,7 +16,7 @@ export interface SutTypes {
   sut: LoginController
   credentialsValidatorStub: ValidatorProtocol
   fakePublicUser: PublicUser
-  fakeUser: User
+  fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
   httpHelper: HttpHelperProtocol
   generateAccessTokenStub: GenerateTokenProtocol

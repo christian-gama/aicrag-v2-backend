@@ -1,15 +1,15 @@
-import { User } from './user-protocol'
+import { IUser } from './user-protocol'
 
 /**
  * @description Interface used to create a public user, which has hidden sensitive data.
  */
 export interface PublicUser {
   personal: {
-    id: User['personal']['id']
-    name: User['personal']['name']
-    email: User['personal']['email']
+    id: IUser['personal']['id']
+    name: IUser['personal']['name']
+    email: IUser['personal']['email']
   }
   settings: {
-    currency: User['settings']['currency']
+    currency: IUser['settings']['currency']
   }
 }

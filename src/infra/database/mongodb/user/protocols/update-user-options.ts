@@ -1,23 +1,23 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 
-type Personal<T extends keyof User> = {
-  [Property in keyof Partial<User['personal']> as `${T}.${Property}`]: User['personal'][Property]
+type Personal<T extends keyof IUser> = {
+  [Property in keyof Partial<IUser['personal']> as `${T}.${Property}`]: IUser['personal'][Property]
 }
 
-type Settings<T extends keyof User> = {
-  [Property in keyof Partial<User['settings']> as `${T}.${Property}`]: User['settings'][Property]
+type Settings<T extends keyof IUser> = {
+  [Property in keyof Partial<IUser['settings']> as `${T}.${Property}`]: IUser['settings'][Property]
 }
 
-type Logs<T extends keyof User> = {
-  [Property in keyof Partial<User['logs']> as `${T}.${Property}`]: User['logs'][Property]
+type Logs<T extends keyof IUser> = {
+  [Property in keyof Partial<IUser['logs']> as `${T}.${Property}`]: IUser['logs'][Property]
 }
 
-type Temporary<T extends keyof User> = {
-  [Property in keyof Partial<User['temporary']> as `${T}.${Property}`]: User['temporary'][Property]
+type Temporary<T extends keyof IUser> = {
+  [Property in keyof Partial<IUser['temporary']> as `${T}.${Property}`]: IUser['temporary'][Property]
 }
 
-type TokenVersion<T extends keyof User> = {
-  [Property in keyof Partial<User['tokenVersion']> as `${T}`]: User['tokenVersion']
+type TokenVersion<T extends keyof IUser> = {
+  [Property in keyof Partial<IUser['tokenVersion']> as `${T}`]: IUser['tokenVersion']
 }
 
 export type UserDbFilter =

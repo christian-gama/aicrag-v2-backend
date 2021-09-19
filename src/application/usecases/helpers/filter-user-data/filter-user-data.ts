@@ -1,8 +1,8 @@
-import { PublicUser, User } from '@/domain/user'
+import { PublicUser, IUser } from '@/domain/user/index'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 
 export class FilterUserData implements FilterUserDataProtocol {
-  filter (user: User): PublicUser {
+  filter (user: IUser): PublicUser {
     return {
       personal: {
         id: user.personal.id,

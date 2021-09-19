@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
@@ -47,7 +47,7 @@ export class LoginController implements ControllerProtocol {
       return response
     }
 
-    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as User
+    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

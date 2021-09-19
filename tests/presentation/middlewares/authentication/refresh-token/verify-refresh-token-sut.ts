@@ -1,4 +1,4 @@
-import { User } from '@/domain/user/'
+import { IUser } from '@/domain/user/index'
 import { IRefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
@@ -15,7 +15,7 @@ import { VerifyTokenProtocol } from '@/infra/providers/token/protocols/verify-to
 interface SutTypes {
   sut: RefreshToken
   fakeRefreshToken: IRefreshToken
-  fakeUser: User
+  fakeUser: IUser
   httpHelper: HttpHelperProtocol
   jwtAccessToken: EncrypterProtocol & DecoderProtocol
   request: HttpRequestToken

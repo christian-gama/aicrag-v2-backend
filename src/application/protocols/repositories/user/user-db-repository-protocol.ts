@@ -1,4 +1,4 @@
-import { SignUpUserCredentials, User } from '@/domain/user'
+import { SignUpUserCredentials, IUser } from '@/domain/user/index'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 /**
@@ -17,7 +17,7 @@ export interface SaveUserDbProtocol {
    * @param user User that will be saved as a user.
    * @returns Return a user from database.
    */
-  saveUser: (user: SignUpUserCredentials) => Promise<User>
+  saveUser: (user: SignUpUserCredentials) => Promise<IUser>
 }
 
 export interface FindUserByEmailDbProtocol {
@@ -27,7 +27,7 @@ export interface FindUserByEmailDbProtocol {
    * @param email The email that will be searched for.
    * @returns Return a user if finds it or undefined if does not.
    */
-  findUserByEmail: (email: string) => Promise<User | undefined>
+  findUserByEmail: (email: string) => Promise<IUser | undefined>
 }
 
 export interface FindUserByIdDbProtocol {
@@ -37,7 +37,7 @@ export interface FindUserByIdDbProtocol {
    * @param id The user id that will be searched for.
    * @returns Return a user if finds it or undefined if does not.
    */
-  findUserById: (id: string) => Promise<User | undefined>
+  findUserById: (id: string) => Promise<IUser | undefined>
 }
 
 export interface UpdateUserDbProtocol {
@@ -48,5 +48,5 @@ export interface UpdateUserDbProtocol {
    * @param update Object that contains the changes to be updated.
    * @returns Return a user if updates it or undefined if does not.
    */
-  updateUser: (user: User, update: UserDbFilter) => Promise<User | undefined>
+  updateUser: (user: IUser, update: UserDbFilter) => Promise<IUser | undefined>
 }

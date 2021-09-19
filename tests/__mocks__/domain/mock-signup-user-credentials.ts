@@ -1,4 +1,4 @@
-import { SignUpUserCredentials } from '../../domain/user'
+import { SignUpUserCredentials } from '../../domain/user/index'
 
 import faker from 'faker'
 

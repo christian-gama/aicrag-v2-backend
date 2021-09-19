@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { UserRepositoryProtocol } from '@/application/protocols/repositories/user/user-repository-protocol'
 import { UserDbRepository } from '@/infra/database/mongodb/user/user-db-repository'
 import { makeUserRepositoryStub } from '@/tests/__mocks__/application/repositories/user/mock-user-repository'
@@ -6,7 +6,7 @@ import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 
 interface SutTypes {
   sut: UserDbRepository
-  fakeUser: User
+  fakeUser: IUser
   userRepositoryStub: UserRepositoryProtocol
 }
 

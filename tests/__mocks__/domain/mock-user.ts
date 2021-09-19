@@ -1,8 +1,8 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 
 import faker from 'faker'
 
-export const makeFakeUser = (): User => {
+export const makeFakeUser = (): IUser => {
   return {
     personal: {
       id: faker.datatype.uuid(),

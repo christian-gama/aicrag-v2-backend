@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { InactiveAccountError } from '@/application/usecases/errors'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
@@ -9,7 +9,7 @@ export class ValidateActiveAccount implements ValidatorProtocol {
   async validate (input: any): Promise<Error | undefined> {
     const { email } = input
 
-    const user = (await this.userDbRepository.findUserByEmail(email)) as User
+    const user = (await this.userDbRepository.findUserByEmail(email)) as IUser
 
     if (!user.settings.accountActivated) return new InactiveAccountError()
   }

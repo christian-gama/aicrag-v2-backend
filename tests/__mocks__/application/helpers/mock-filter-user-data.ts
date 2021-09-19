@@ -1,10 +1,10 @@
-import { User, PublicUser } from '@/domain/user'
+import { IUser, PublicUser } from '@/domain/user/index'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 import { makeFakePublicUser } from '../../domain/mock-public-user'
 
-export const makeFilterUserDataStub = (fakeUser: User): FilterUserDataProtocol => {
+export const makeFilterUserDataStub = (fakeUser: IUser): FilterUserDataProtocol => {
   class FilterUserDataStub implements FilterUserDataProtocol {
-    filter (user: User): PublicUser {
+    filter (user: IUser): PublicUser {
       return makeFakePublicUser(fakeUser)
     }
   }

@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
@@ -26,7 +26,7 @@ export class ActivateAccountController implements ControllerProtocol {
     const error = await this.activateAccountValidator.validate(credentials)
     if (error) return this.httpHelper.unauthorized(error)
 
-    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as User
+    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
     await this.clearTemporary(user)
     await this.activateAccount(user)
@@ -44,7 +44,7 @@ export class ActivateAccountController implements ControllerProtocol {
     })
   }
 
-  private async clearTemporary (user: User): Promise<void> {
+  private async clearTemporary (user: IUser): Promise<void> {
     user.temporary.activationCode = null
     user.temporary.activationCodeExpiration = null
 
@@ -54,7 +54,7 @@ export class ActivateAccountController implements ControllerProtocol {
     })
   }
 
-  private async activateAccount (user: User): Promise<void> {
+  private async activateAccount (user: IUser): Promise<void> {
     user.settings.accountActivated = true
 
     await this.userDbRepository.updateUser(user, {

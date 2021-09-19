@@ -1,5 +1,5 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 
 export interface VerifyTokenProtocol {
-  verify: (token: string | undefined) => Promise<Error | User>
+  verify: (token: string | undefined) => Promise<Error | IUser>
 }

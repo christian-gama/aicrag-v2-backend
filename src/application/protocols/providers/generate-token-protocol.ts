@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 
 export interface GenerateTokenProtocol {
   /**
@@ -6,5 +6,5 @@ export interface GenerateTokenProtocol {
    * @param user The user that will be used to create a token.
    * @returns Return a token.
    */
-  generate: (user: User) => string | Promise<string>
+  generate: (user: IUser) => string | Promise<string>
 }

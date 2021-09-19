@@ -1,4 +1,4 @@
-import { User, SignUpUserCredentials } from '@/domain/user'
+import { IUser, SignUpUserCredentials } from '@/domain/user/index'
 
 export interface UserRepositoryProtocol {
   /**
@@ -7,5 +7,5 @@ export interface UserRepositoryProtocol {
    * @param user User that will serve the necessary data to create a user.
    * @returns Return a user.
    */
-  createUser: (signUpUserCredentials: SignUpUserCredentials) => Promise<User>
+  createUser: (signUpUserCredentials: SignUpUserCredentials) => Promise<IUser>
 }

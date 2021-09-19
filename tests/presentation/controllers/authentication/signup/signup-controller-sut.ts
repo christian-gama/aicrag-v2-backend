@@ -1,4 +1,4 @@
-import { PublicUser, User } from '@/domain/user'
+import { PublicUser, IUser } from '@/domain/user/index'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
@@ -16,7 +16,7 @@ export interface SutTypes {
   userDbRepositoryStub: UserDbRepositoryProtocol
   userValidatorStub: ValidatorProtocol
   fakePublicUser: PublicUser
-  fakeUser: User
+  fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest

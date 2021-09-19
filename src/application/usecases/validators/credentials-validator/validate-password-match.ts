@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ComparerProtocol } from '@/application/protocols/cryptography'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
@@ -13,7 +13,7 @@ export class ValidatePasswordMatch implements ValidatorProtocol {
   async validate (input: any): Promise<Error | undefined> {
     const { email, password } = input
 
-    const user = (await this.userDbRepository.findUserByEmail(email)) as User
+    const user = (await this.userDbRepository.findUserByEmail(email)) as IUser
     if (!user) return new UserCredentialError()
 
     const isSamePassword = await this.hasher.compare(password, user.personal.password)

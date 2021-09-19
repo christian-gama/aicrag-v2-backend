@@ -1,4 +1,4 @@
-import { PublicUser, User } from '@/domain/user'
+import { PublicUser, IUser } from '@/domain/user/index'
 
 export interface FilterUserDataProtocol {
   /**
@@ -6,5 +6,5 @@ export interface FilterUserDataProtocol {
    * @param user The user that will be filtered.
    * @returns Return a public user that has a filter sensitive information hidden.
    */
-  filter: (user: User) => PublicUser
+  filter: (user: IUser) => PublicUser
 }

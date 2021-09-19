@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ComparerProtocol } from '@/application/protocols/cryptography/'
 import { ValidatePasswordMatch } from '@/application/usecases/validators/credentials-validator'
@@ -10,7 +10,7 @@ interface SutTypes {
   sut: ValidatePasswordMatch
   userDbRepositoryStub: UserDbRepositoryProtocol
   comparerStub: ComparerProtocol
-  fakeUser: User
+  fakeUser: IUser
 }
 
 export const makeSut = (): SutTypes => {

@@ -1,4 +1,4 @@
-import { User } from '@/domain/user'
+import { IUser } from '@/domain/user/index'
 
 /**
  * @description A generic http request that contains an optional body and user.
@@ -8,7 +8,7 @@ export interface HttpRequest {
    * @description Body that comes from request.
    */
   body?: any
-  user?: User
+  user?: IUser
 }
 
 export interface HttpRequestToken {
