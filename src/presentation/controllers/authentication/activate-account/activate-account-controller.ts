@@ -1,20 +1,22 @@
 import { User } from '@/domain/user'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
-import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
+import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import {
+  HttpHelperProtocol,
+  HttpRequest,
+  HttpResponse
+} from '@/presentation/helpers/http/protocols'
 
 export class ActivateAccountController implements ControllerProtocol {
   constructor (
     private readonly activateAccountValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly jwtAccessToken: EncrypterProtocol,
-    private readonly jwtRefreshToken: EncrypterProtocol,
-    private readonly refreshTokenDbRepository: RefreshTokenDbRepositoryProtocol,
+    private readonly generateAccessToken: GenerateTokenProtocol,
+    private readonly generateRefreshToken: GenerateTokenProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
@@ -26,18 +28,20 @@ export class ActivateAccountController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as User
 
-    const accessToken = this.jwtAccessToken.encrypt('id', user.personal.id)
-
-    const filteredUser = this.filterUserData.filter(user)
-
     await this.clearTemporary(user)
     await this.activateAccount(user)
 
-    const refreshTokenDb = await this.refreshTokenDbRepository.saveRefreshToken(user.personal.id)
+    const accessToken = this.generateAccessToken.generate(user) as string
 
-    const refreshToken = this.jwtRefreshToken.encrypt('id', refreshTokenDb.id)
+    const refreshToken = await this.generateRefreshToken.generate(user)
 
-    return this.httpHelper.ok({ user: filteredUser, refreshToken, accessToken })
+    const filteredUser = this.filterUserData.filter(user)
+
+    return this.httpHelper.ok({
+      user: filteredUser,
+      refreshToken,
+      accessToken
+    })
   }
 
   private async clearTemporary (user: User): Promise<void> {

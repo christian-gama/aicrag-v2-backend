@@ -36,12 +36,12 @@ export class UserRepository implements UserRepositoryProtocol {
       temporary: {
         activationCode: activationCode,
         activationCodeExpiration: new Date(Date.now() + activationCodeExpirationMinutes),
-        refreshToken: null,
         resetCode: null,
         resetCodeExpiration: null,
         temporaryEmail: null,
         temporaryEmailExpiration: null
-      }
+      },
+      tokenVersion: 0
     }
 
     return user

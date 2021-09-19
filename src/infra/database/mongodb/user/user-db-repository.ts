@@ -34,15 +34,6 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
     if (user) return user
   }
 
-  async findUserByRefreshToken (id: string): Promise<User | undefined> {
-    const userCollection = await MongoHelper.getCollection('users')
-
-    const filter: UserDbFilter = { 'temporary.refreshToken': id }
-    const user = (await userCollection.findOne(filter)) as User
-
-    if (user) return user
-  }
-
   async updateUser (user: User, update: UserDbFilter): Promise<User | undefined> {
     const userCollection = await MongoHelper.getCollection('users')
 

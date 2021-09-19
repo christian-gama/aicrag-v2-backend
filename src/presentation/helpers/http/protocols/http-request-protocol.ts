@@ -14,4 +14,5 @@ export interface HttpRequestToken {
    * @description Token that comes from request.
    */
   refreshToken?: string
+  accessToken?: string
 }

@@ -8,16 +8,19 @@ export const middlewareAdapter = (middleware: MiddlewareProtocol) => {
   return async (req: AdaptHttpRequest, res: Response, next: NextFunction) => {
     try {
       const httpRequest: HttpRequestToken = {
+        accessToken: req.cookies?.accessToken,
         refreshToken: req.cookies?.refreshToken
       }
 
       const httpResponse: HttpResponse = await middleware.handle(httpRequest)
 
       if (String(httpResponse.statusCode).startsWith('2')) {
-        res.cookie('jwt', httpResponse.data.accessToken, {
+        res.cookie('accessToken', httpResponse.data.accessToken, {
           httpOnly: true,
           secure: env.SERVER.NODE_ENV === 'production'
         })
+
+        req.cookies.accessToken = httpResponse.data.accessToken
 
         req.userId = httpResponse.data.userId
 

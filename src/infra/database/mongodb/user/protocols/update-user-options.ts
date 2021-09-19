@@ -16,8 +16,13 @@ type Temporary<T extends keyof User> = {
   [Property in keyof Partial<User['temporary']> as `${T}.${Property}`]: User['temporary'][Property]
 }
 
+type TokenVersion<T extends keyof User> = {
+  [Property in keyof Partial<User['tokenVersion']> as `${T}`]: User['tokenVersion']
+}
+
 export type UserDbFilter =
   | Personal<'personal'>
   | Settings<'settings'>
   | Logs<'logs'>
   | Temporary<'temporary'>
+  | TokenVersion<'tokenVersion'>

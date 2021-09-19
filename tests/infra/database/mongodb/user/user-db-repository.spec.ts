@@ -52,16 +52,17 @@ describe('UserDbRepository', () => {
         updatedAt: fakeUser.logs.updatedAt
       })
 
-      expect(Object.keys(user.temporary).length).toBe(7)
+      expect(Object.keys(user.temporary).length).toBe(6)
       expect(user.temporary).toEqual({
         activationCode: fakeUser.temporary.activationCode,
         activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
-        refreshToken: fakeUser.temporary.refreshToken,
         resetCode: fakeUser.temporary.resetCode,
         resetCodeExpiration: fakeUser.temporary.resetCodeExpiration,
         temporaryEmail: fakeUser.temporary.temporaryEmail,
         temporaryEmailExpiration: fakeUser.temporary.temporaryEmailExpiration
       })
+
+      expect(user.tokenVersion).toBe(0)
     })
   })
 
@@ -77,24 +78,6 @@ describe('UserDbRepository', () => {
     it('Should return undefined if does not findUserByEmail finds a user', async () => {
       const { sut } = makeSut()
       const user = await sut.findUserByEmail('non_existent@email.com')
-
-      expect(user).toBe(undefined)
-    })
-  })
-
-  describe('findUserByRefreshToken', () => {
-    it('Should return a user if findUserByRefreshToken finds a user', async () => {
-      const { sut } = makeSut()
-      const savedUser = await sut.saveUser(makeFakeSignUpUserCredentials())
-
-      const user = await sut.findUserByRefreshToken(savedUser.temporary.refreshToken as string)
-
-      expect(user).toHaveProperty('_id')
-    })
-
-    it('Should return undefined if does not findUserByRefreshToken finds a user', async () => {
-      const { sut } = makeSut()
-      const user = await sut.findUserByRefreshToken('invalid_refresh_token')
 
       expect(user).toBe(undefined)
     })

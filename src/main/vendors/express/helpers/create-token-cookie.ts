@@ -17,7 +17,7 @@ export const createAccessTokenCookie = (
   expressResponse: Response,
   httpResponse: HttpResponse
 ): Response<any, Record<any, string>> => {
-  return expressResponse.cookie('jwt', httpResponse.data.accessToken, {
+  return expressResponse.cookie('accessToken', httpResponse.data.accessToken, {
     httpOnly: true,
     secure: env.SERVER.NODE_ENV === 'production'
   })

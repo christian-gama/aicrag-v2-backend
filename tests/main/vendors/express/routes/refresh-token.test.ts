@@ -1,50 +1,51 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { middlewareAdapter } from '@/main/vendors/express/adapters/middleware-adapter'
 import app from '@/main/vendors/express/config/app'
-import { makeJwtRefreshToken } from '@/main/factories/cryptography/jwt-refresh-token-factory'
-import { makeRefreshTokenMiddleware } from '@/main/factories/middlewares/authentication/refresh-token-middleware-factory'
-import { makeRefreshTokenDbRepository } from '@/main/factories/repositories/refresh-token/refresh-token-db-repository/refresh-token-db-repository-factory'
+import { makeVerifyAccessToken } from '@/main/factories/middlewares/authentication/verify-access-token'
+import { makeVerifyRefreshToken } from '@/main/factories/middlewares/authentication/verify-refresh-token'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
+import { makeGenerateRefreshToken } from '@/main/factories/providers/generate-refresh-token-factory'
+import { makeGenerateAccessToken } from '@/main/factories/providers/generate-access-token-factory'
 
 describe('RefreshToken middleware', () => {
-  let refreshTokenCollection: Collection
+  let accessToken: string
+  let refreshToken: string
   let userCollection: Collection
-  let encryptedRefreshToken: string = ''
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
-    const refreshTokenMiddleware = middlewareAdapter(makeRefreshTokenMiddleware())
+    const verifyAccessToken = middlewareAdapter(makeVerifyAccessToken())
+    const verifyRefreshToken = middlewareAdapter(makeVerifyRefreshToken())
 
-    app.get('/invalid-refresh-token', refreshTokenMiddleware, (req, res) => {
+    app.get('/invalid-refresh-token', verifyRefreshToken, (req, res) => {
       res.send()
     })
 
     const fakeUser = makeFakeUser()
-    const refreshToken = await makeRefreshTokenDbRepository().saveRefreshToken(fakeUser.personal.id)
-    encryptedRefreshToken = makeJwtRefreshToken().encrypt('id', refreshToken.id)
 
     userCollection = await MongoHelper.getCollection('users')
-    fakeUser.temporary.refreshToken = refreshToken.id
     await userCollection.insertOne(fakeUser)
 
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
+    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+
     app.get('/save_cookie', (req, res) => {
-      res.cookie('refreshToken', encryptedRefreshToken)
+      res.cookie('accessToken', accessToken)
+      res.cookie('refreshToken', refreshToken)
 
       res.send()
     })
 
-    app.get('/valid-refresh-token', refreshTokenMiddleware, (req, res) => {
+    app.get('/valid-refresh-token', verifyRefreshToken, verifyAccessToken, (req, res) => {
       res.send()
     })
   })
 
   afterAll(async () => {
-    refreshTokenCollection = await MongoHelper.getCollection('refresh_tokens')
-    await refreshTokenCollection.deleteMany({})
     await userCollection.deleteMany({})
 
     await MongoHelper.disconnect()
@@ -52,17 +53,20 @@ describe('RefreshToken middleware', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 401 if there is no refresh token', async () => {
+  it('Should return 401 if there is an invalid refresh token', async () => {
     await agent.get('/invalid-refresh-token').expect(401)
   })
 
   it('Should save cookies', async () => {
     await agent
       .get('/save_cookie')
-      .expect('set-cookie', `refreshToken=${encryptedRefreshToken}; Path=/`)
+      .expect(
+        'set-cookie',
+        `accessToken=${accessToken}; Path=/,refreshToken=${refreshToken}; Path=/`
+      )
   })
 
-  it('Should return 200 if there is a refresh token', async () => {
+  it('Should return 200 if there is a valid refresh token', async () => {
     await agent.get('/valid-refresh-token').expect(200)
   })
 })

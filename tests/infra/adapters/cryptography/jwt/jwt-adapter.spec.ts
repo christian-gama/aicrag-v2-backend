@@ -18,7 +18,7 @@ describe('JwtAdapter', () => {
       const { sut, secret, expires } = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')
 
-      sut.encrypt('name', 'value')
+      sut.encrypt({ name: 'value' })
 
       expect(signSpy).toHaveBeenCalledWith({ name: 'value' }, secret, { expiresIn: expires })
     })
@@ -26,7 +26,7 @@ describe('JwtAdapter', () => {
     it('Should return an encrypted value', () => {
       const { sut } = makeSut()
 
-      const value = sut.encrypt('name', 'value')
+      const value = sut.encrypt({ name: 'value' })
 
       expect(value).not.toBe('value')
     })

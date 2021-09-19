@@ -1,7 +1,5 @@
 import { User } from '@/domain/user'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
-import { RefreshTokenDbRepositoryProtocol } from '@/application/protocols/repositories/refresh-token/refresh-token-db-repository-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import {
@@ -10,15 +8,15 @@ import {
   HttpResponse
 } from '@/presentation/helpers/http/protocols'
 import { ControllerProtocol } from '.'
+import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 
 export class LoginController implements ControllerProtocol {
   constructor (
     private readonly credentialsValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly jwtAccessToken: EncrypterProtocol,
-    private readonly jwtRefreshToken: EncrypterProtocol,
-    private readonly refreshTokenDbRepository: RefreshTokenDbRepositoryProtocol,
+    private readonly generateAccessToken: GenerateTokenProtocol,
+    private readonly generateRefreshToken: GenerateTokenProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
@@ -48,14 +46,16 @@ export class LoginController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as User
 
-    const accessToken = this.jwtAccessToken.encrypt('id', user.personal.id)
+    const accessToken = this.generateAccessToken.generate(user) as string
 
-    const refreshTokenDb = await this.refreshTokenDbRepository.saveRefreshToken(user.personal.id)
-
-    const refreshToken = this.jwtRefreshToken.encrypt('id', refreshTokenDb.id)
+    const refreshToken = await this.generateRefreshToken.generate(user)
 
     const filteredUser = this.filterUserData.filter(user)
 
-    return this.httpHelper.ok({ user: filteredUser, refreshToken, accessToken })
+    return this.httpHelper.ok({
+      user: filteredUser,
+      refreshToken,
+      accessToken
+    })
   }
 }

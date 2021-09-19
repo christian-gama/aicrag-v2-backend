@@ -14,7 +14,7 @@ export class JwtAdapter implements EncrypterProtocol, DecoderProtocol {
     return await promisify<string, string, DecodedProtocol>(jwt.verify)(token, this.secret)
   }
 
-  encrypt (payloadName: string, value: string): string {
-    return jwt.sign({ [payloadName]: value }, this.secret, { expiresIn: this.expires })
+  encrypt (subject: Record<any, string>): string {
+    return jwt.sign(subject, this.secret, { expiresIn: this.expires })
   }
 }

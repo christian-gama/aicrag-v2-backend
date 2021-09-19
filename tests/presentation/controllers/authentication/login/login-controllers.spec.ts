@@ -4,7 +4,6 @@ import {
   MissingParamError,
   UserCredentialError
 } from '@/application/usecases/errors'
-import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-token'
 import { makeSut } from './login-controller-sut'
 
 describe('LoginController', () => {
@@ -78,26 +77,22 @@ describe('LoginController', () => {
     expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
-  it('Should call jwtAccessToken.encrypt with correct values', async () => {
-    const { sut, fakeUser, jwtAccessToken, request } = makeSut()
-    const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
+  it('Should call generateAccessToken.generate with correct values', async () => {
+    const { sut, fakeUser, generateAccessTokenStub, request } = makeSut()
+    const encryptSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
     await sut.handle(request)
 
-    expect(encryptSpy).toHaveBeenCalledWith('id', fakeUser.personal.id)
+    expect(encryptSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should call jwtRefreshToken.encrypt with correct values', async () => {
-    const { sut, refreshTokenDbRepositoryStub, jwtRefreshToken, request } = makeSut()
-    const fakeRefreshToken = makeFakeRefreshToken()
-    jest
-      .spyOn(refreshTokenDbRepositoryStub, 'saveRefreshToken')
-      .mockReturnValueOnce(Promise.resolve(fakeRefreshToken))
-    const encryptSpy = jest.spyOn(jwtRefreshToken, 'encrypt')
+  it('Should call generateRefreshToken.generate with correct values', async () => {
+    const { sut, fakeUser, generateRefreshTokenStub, request } = makeSut()
+    const encryptSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
 
     await sut.handle(request)
 
-    expect(encryptSpy).toHaveBeenCalledWith('id', fakeRefreshToken.id)
+    expect(encryptSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('Should call the filter with correct user', async () => {

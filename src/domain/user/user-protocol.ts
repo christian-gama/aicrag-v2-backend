@@ -24,10 +24,10 @@ export interface User {
   temporary: {
     activationCode: string | null
     activationCodeExpiration: Date | null
-    refreshToken: string | null
     resetCode: string | null
     resetCodeExpiration: Date | null
     temporaryEmail: string | null
     temporaryEmailExpiration: Date | null
   }
+  tokenVersion: number
 }
