@@ -3,9 +3,8 @@ import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import app from '@/main/vendors/express/config/app'
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'
 import { makeGenerateAccessToken } from '@/main/factories/providers/token/generate-access-token-factory'
-import { makeVerifyRefreshToken } from '@/main/factories/providers/token/verify-refresh-token-factory'
-import { isLoggedInMiddlewareAdapter } from '@/main/vendors/express/adapters/is-logged-in-middleware-adapter'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
+import { isLoggedInMiddleware } from '@/main/vendors/express/routes/.'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
@@ -21,9 +20,7 @@ describe('RefreshToken middleware', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
-    const isLoggedIn = isLoggedInMiddlewareAdapter(makeVerifyRefreshToken())
-
-    app.get('/is-logged-out', isLoggedIn, (req: RequestUser, res) => {
+    app.get('/is-logged-out', isLoggedInMiddleware, (req: RequestUser, res) => {
       res.send(!!req.user)
     })
 
@@ -42,7 +39,7 @@ describe('RefreshToken middleware', () => {
       res.send()
     })
 
-    app.get('/is-logged-in', isLoggedIn, (req: RequestUser, res) => {
+    app.get('/is-logged-in', isLoggedInMiddleware, (req: RequestUser, res) => {
       res.send(!!req.user)
     })
   })

@@ -1,14 +1,12 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { tokenMiddlewareAdapter } from '@/main/vendors/express/adapters/token-middleware-adapter'
+import { accessTokenMiddleware, refreshTokenMiddleware } from '@/main/vendors/express/routes/.'
 import app from '@/main/vendors/express/config/app'
-import { makeAccessToken } from '@/main/factories/middlewares/authentication/access-token'
-import { makeRefreshToken } from '@/main/factories/middlewares/authentication/refresh-token'
+import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'
+import { makeGenerateAccessToken } from '@/main/factories/providers/token/generate-access-token-factory'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'
-import { makeGenerateAccessToken } from '@/main/factories/providers/token/generate-access-token-factory'
 
 describe('RefreshToken middleware', () => {
   let accessToken: string
@@ -18,10 +16,7 @@ describe('RefreshToken middleware', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
-    const verifyAccessToken = tokenMiddlewareAdapter(makeAccessToken())
-    const verifyRefreshToken = tokenMiddlewareAdapter(makeRefreshToken())
-
-    app.get('/invalid-refresh-token', verifyRefreshToken, (req, res) => {
+    app.get('/invalid-refresh-token', refreshTokenMiddleware, (req, res) => {
       res.send()
     })
 
@@ -40,7 +35,7 @@ describe('RefreshToken middleware', () => {
       res.send()
     })
 
-    app.get('/valid-refresh-token', verifyRefreshToken, verifyAccessToken, (req, res) => {
+    app.get('/valid-refresh-token', refreshTokenMiddleware, accessTokenMiddleware, (req, res) => {
       res.send()
     })
   })

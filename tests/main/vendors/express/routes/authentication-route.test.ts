@@ -1,9 +1,6 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+import { activateAccountController, loginController, signUpController } from '@/main/vendors/express/routes/.'
 import app from '@/main/vendors/express/config/app'
-import { controllerAdapter } from '@/main/vendors/express/adapters/controller-adapter'
-import { makeSignUpController } from '@/main/factories/controllers/authentication/signup/signup-controller-factory'
-import { makeLoginController } from '@/main/factories/controllers/authentication/login/login-controller-factory'
-import { makeActivateAccountController } from '@/main/factories/controllers/authentication/activate-account/activate-account-controller-factory'
 import { config } from '@/tests/config'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeFakeSignUpUserCredentials } from '@/tests/__mocks__/domain/mock-signup-user-credentials'
@@ -18,9 +15,9 @@ describe('Authentication routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
 
-    app.use('/api/auth/activate-account', controllerAdapter(makeActivateAccountController()))
-    app.use('/api/auth/signup', controllerAdapter(makeSignUpController()))
-    app.use('/api/auth/login', controllerAdapter(makeLoginController()))
+    app.use('/api/auth/activate-account', activateAccountController)
+    app.use('/api/auth/signup', signUpController)
+    app.use('/api/auth/login', loginController)
   })
 
   afterAll(async () => {
