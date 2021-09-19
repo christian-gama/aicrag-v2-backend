@@ -3,7 +3,7 @@ import { IUser } from './user-protocol'
 /**
  * @description Interface used to create a public user, which has hidden sensitive data.
  */
-export interface PublicUser {
+export interface IPublicUser {
   personal: {
     id: IUser['personal']['id']
     name: IUser['personal']['name']

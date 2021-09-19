@@ -1,4 +1,4 @@
-import { PublicUser, IUser } from '@/domain/user/index'
+import { IPublicUser, IUser } from '@/domain/user/index'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
@@ -15,7 +15,7 @@ import { makeGenerateTokenStub } from '@/tests/__mocks__/infra/providers/mock-ge
 export interface SutTypes {
   sut: LoginController
   credentialsValidatorStub: ValidatorProtocol
-  fakePublicUser: PublicUser
+  fakePublicUser: IPublicUser
   fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
   httpHelper: HttpHelperProtocol
