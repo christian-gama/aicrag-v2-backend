@@ -7,8 +7,12 @@ import { Router } from 'express'
 import { tokenMiddlewareAdapter } from '../adapters/token-middleware-adapter'
 import { makeRefreshToken } from '@/main/factories/middlewares/authentication/refresh-token'
 import { makeAccessToken } from '@/main/factories/middlewares/authentication/access-token'
+import { isLoggedInMiddlewareAdapter } from '../adapters/is-logged-in-middleware-adapter'
+import { makeVerifyRefreshToken } from '@/main/factories/providers/token/verify-refresh-token-factory'
 
 const router = Router()
+
+router.use(isLoggedInMiddlewareAdapter(makeVerifyRefreshToken()))
 
 router.post('/activate-account', controllerAdapter(makeActivateAccountController()))
 router.post('/login', controllerAdapter(makeLoginController()))
