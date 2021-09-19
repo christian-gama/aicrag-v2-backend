@@ -1,5 +1,5 @@
 import { User } from '@/domain/user/'
-import { RefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
+import { IRefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { HttpHelperProtocol, HttpRequestToken } from '@/presentation/helpers/http/protocols'
@@ -14,7 +14,7 @@ import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongo
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
 interface SutTypes {
   sut: VerifyAccessToken
-  fakeRefreshToken: RefreshToken
+  fakeRefreshToken: IRefreshToken
   fakeUser: User
   httpHelper: HttpHelperProtocol
   jwtAccessToken: EncrypterProtocol & DecoderProtocol

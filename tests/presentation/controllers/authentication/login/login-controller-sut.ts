@@ -11,7 +11,7 @@ import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeFilterUserDataStub } from '@/tests/__mocks__/application/helpers/mock-filter-user-data'
 import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
 import { makeValidatorStub } from '@/tests/__mocks__/application/validators/mock-validator'
-import { makeGenerateTokenStub } from '@/tests/__mocks__/application/providers/mock-generate-token'
+import { makeGenerateTokenStub } from '@/tests/__mocks__/infra/providers/mock-generate-token'
 export interface SutTypes {
   sut: LoginController
   credentialsValidatorStub: ValidatorProtocol

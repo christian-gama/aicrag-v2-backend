@@ -5,8 +5,8 @@ import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-fa
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { makeTryCatchControllerDecorator } from '@/main/factories/decorators/try-catch-controller-decorator-factory'
 import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
-import { makeGenerateAccessToken } from '@/main/factories/providers/generate-access-token-factory'
-import { makeGenerateRefreshToken } from '@/main/factories/providers/generate-refresh-token-factory'
+import { makeGenerateAccessToken } from '@/main/factories/providers/token/generate-access-token-factory'
+import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'
 
 export const makeActivateAccountController = (): ControllerProtocol => {
   const activateAccountValidator = makeActivateAccountValidatorComposite()

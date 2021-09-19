@@ -2,7 +2,7 @@ import { User } from '@/domain/user'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
-import { UserDbFilter } from '../database/mongodb/user/protocols/update-user-options'
+import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 export class GenerateRefreshToken implements GenerateTokenProtocol {
   constructor (

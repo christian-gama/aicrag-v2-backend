@@ -1,7 +1,7 @@
 import faker from 'faker'
-import { RefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
+import { IRefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
 
-export const makeFakeRefreshToken = (): RefreshToken => {
+export const makeFakeRefreshToken = (): IRefreshToken => {
   return {
     userId: faker.datatype.uuid(),
     version: 1

@@ -1,2 +1,2 @@
 export * from '../../protocols/middleware-protocol'
-export * from './verify-refresh-token'
+export * from './refresh-token'
