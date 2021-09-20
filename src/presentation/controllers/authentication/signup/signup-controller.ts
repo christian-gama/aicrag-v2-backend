@@ -3,14 +3,20 @@ import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-u
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { ConflictParamError, MustLogoutError } from '@/application/usecases/errors/'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import {
+  HttpHelperProtocol,
+  HttpRequest,
+  HttpResponse
+} from '@/presentation/helpers/http/protocols'
+import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 
 export class SignUpController implements ControllerProtocol {
   constructor (
-    private readonly userDbRepository: UserDbRepositoryProtocol,
-    private readonly userValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
-    private readonly httpHelper: HttpHelperProtocol
+    private readonly generateAccessToken: GenerateTokenProtocol,
+    private readonly httpHelper: HttpHelperProtocol,
+    private readonly userDbRepository: UserDbRepositoryProtocol,
+    private readonly userValidator: ValidatorProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -32,8 +38,10 @@ export class SignUpController implements ControllerProtocol {
 
     const user = await this.userDbRepository.saveUser(signUpUserCredentials)
 
+    const accessToken = this.generateAccessToken.generate(user) as string
+
     const filteredUser = this.filterUserData.filter(user)
 
-    return this.httpHelper.ok({ user: filteredUser })
+    return this.httpHelper.ok({ user: filteredUser, accessToken })
   }
 }

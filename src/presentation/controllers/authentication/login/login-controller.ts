@@ -28,28 +28,20 @@ export class LoginController implements ControllerProtocol {
 
     const error = await this.credentialsValidator.validate(credentials)
 
-    if (error) {
-      let response: HttpResponse
-      switch (error.name) {
-        case 'InvalidParamError':
-          response = this.httpHelper.badRequest(error)
-          break
-        case 'MissingParamError':
-          response = this.httpHelper.badRequest(error)
-          break
-        case 'UserCredentialError':
-          response = this.httpHelper.unauthorized(error)
-          break
-        default:
-          response = this.httpHelper.forbidden(error)
-      }
-
-      return response
-    }
+    if (error?.name === 'InvalidParamError') return this.httpHelper.badRequest(error)
+    if (error?.name === 'MissingParamError') return this.httpHelper.badRequest(error)
+    if (error?.name === 'UserCredentialError') return this.httpHelper.unauthorized(error)
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
     const accessToken = this.generateAccessToken.generate(user) as string
+
+    if (error?.name === 'InactiveAccountError') {
+      return this.httpHelper.ok({
+        message: error.message,
+        accessToken
+      })
+    }
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 

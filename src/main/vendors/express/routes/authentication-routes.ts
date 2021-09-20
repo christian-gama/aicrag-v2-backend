@@ -1,11 +1,17 @@
 import { Router } from 'express'
-import { isLoggedInMiddleware, activateAccountController, loginController, signUpController } from '.'
+import {
+  accessTokenMiddleware,
+  activateAccountController,
+  isLoggedInMiddleware,
+  loginController,
+  signUpController
+} from '.'
 
 const router = Router()
 
 router.use(isLoggedInMiddleware)
 
-router.post('/activate-account', activateAccountController)
+router.post('/activate-account', accessTokenMiddleware, activateAccountController)
 router.post('/login', loginController)
 router.post('/signup', signUpController)
 
