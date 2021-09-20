@@ -2,7 +2,6 @@ import { IUser } from '@/domain/user'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import app from '@/main/vendors/express/config/app'
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'
-import { makeGenerateAccessToken } from '@/main/factories/providers/token/generate-access-token-factory'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { isLoggedInMiddleware } from '@/main/vendors/express/routes/.'
 
@@ -13,7 +12,6 @@ import { Request } from 'express'
 type RequestUser = Request & { user: IUser }
 
 describe('IsLoggedInMiddleware', () => {
-  let accessToken: string
   let refreshToken: string
   let userCollection: Collection
 
@@ -29,15 +27,7 @@ describe('IsLoggedInMiddleware', () => {
     userCollection = await MongoHelper.getCollection('users')
     await userCollection.insertOne(fakeUser)
 
-    accessToken = makeGenerateAccessToken().generate(fakeUser)
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
-
-    app.get('/save_cookie', (req, res) => {
-      res.cookie('accessToken', accessToken)
-      res.cookie('refreshToken', refreshToken)
-
-      res.send()
-    })
 
     app.get('/is-logged-in', isLoggedInMiddleware, (req: RequestUser, res) => {
       res.send(!!req.user)
@@ -46,7 +36,6 @@ describe('IsLoggedInMiddleware', () => {
 
   afterAll(async () => {
     await userCollection.deleteMany({})
-
     await MongoHelper.disconnect()
   })
 
@@ -56,16 +45,7 @@ describe('IsLoggedInMiddleware', () => {
     await agent.get('/is-logged-out').expect('false')
   })
 
-  it('Should save cookies', async () => {
-    await agent
-      .get('/save_cookie')
-      .expect(
-        'set-cookie',
-        `accessToken=${accessToken}; Path=/,refreshToken=${refreshToken}; Path=/`
-      )
-  })
-
   it('Should return true if user is logged in', async () => {
-    await agent.get('/is-logged-in').expect('true')
+    await agent.get('/is-logged-in').set('Cookie', `refreshToken=${refreshToken}`).expect('true')
   })
 })
