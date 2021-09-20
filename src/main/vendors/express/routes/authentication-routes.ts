@@ -4,6 +4,7 @@ import {
   activateAccountController,
   isLoggedInMiddleware,
   loginController,
+  logoutController,
   signUpController
 } from '.'
 
@@ -13,6 +14,7 @@ router.use(isLoggedInMiddleware)
 
 router.post('/activate-account', accessTokenMiddleware, activateAccountController)
 router.post('/login', loginController)
+router.get('/logout', logoutController)
 router.post('/signup', signUpController)
 
 export default router
