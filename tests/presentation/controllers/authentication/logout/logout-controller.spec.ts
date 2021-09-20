@@ -10,4 +10,13 @@ describe('LogoutController', () => {
 
     expect(response).toEqual(httpHelper.forbidden(new MustLoginError()))
   })
+
+  it('Should call updateUser with correct values', async () => {
+    const { sut, fakeUser, request, userDbRepositoryStub } = makeSut()
+    const updateUser = jest.spyOn(userDbRepositoryStub, 'updateUser')
+
+    await sut.handle(request)
+
+    expect(updateUser).toHaveBeenCalledWith(fakeUser, { tokenVersion: fakeUser.tokenVersion })
+  })
 })
