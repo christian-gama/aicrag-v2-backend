@@ -23,6 +23,6 @@ export class LogoutController implements ControllerProtocol {
     const updateFilter: UserDbFilter = { tokenVersion: user.tokenVersion }
     await this.userDbRepository.updateUser(user, updateFilter)
 
-    return this.httpHelper.ok({})
+    return this.httpHelper.ok({ message: "You've been logged out" })
   }
 }
