@@ -19,4 +19,12 @@ describe('LogoutController', () => {
 
     expect(updateUser).toHaveBeenCalledWith(fakeUser, { tokenVersion: fakeUser.tokenVersion })
   })
+
+  it('Should return ok if succeds', async () => {
+    const { sut, request, httpHelper } = makeSut()
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.ok({ message: "You've been logged out" }))
+  })
 })
