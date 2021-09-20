@@ -82,7 +82,7 @@ describe('Authentication routes', () => {
           .expect(401)
       })
 
-      it('Should return 403 if account is not activated', async () => {
+      it('Should return 200 if account is not activated', async () => {
         const fakeUser = makeFakeUser()
         const hashedPassword = await hash(fakeUser.personal.password, 12)
         const userPassword = fakeUser.personal.password
@@ -93,7 +93,7 @@ describe('Authentication routes', () => {
         await request(app)
           .post('/api/auth/login')
           .send({ email: fakeUser.personal.email, password: userPassword })
-          .expect(403)
+          .expect(200)
       })
 
       it('Should return 400 if miss a param or param is invalid', async () => {

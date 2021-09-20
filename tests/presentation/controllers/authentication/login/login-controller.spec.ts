@@ -56,17 +56,25 @@ describe('LoginController', () => {
     expect(badRequestSpy).toHaveBeenCalledWith(error)
   })
 
-  it('Should call forbidden with the correct value if it is an InactiveAccountError', async () => {
+  it('Should return ok with accessToken only if account is not activated with the correct value if it is an InactiveAccountError', async () => {
     const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
 
     const error = new InactiveAccountError()
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
 
-    const forbiddenSpy = jest.spyOn(httpHelper, 'forbidden')
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.ok({ message: error.message, accessToken: 'any_token' }))
+  })
+
+  it('Should call generate with correct user', async () => {
+    const { sut, fakeUser, generateAccessTokenStub, request } = makeSut()
+
+    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
     await sut.handle(request)
 
-    expect(forbiddenSpy).toHaveBeenCalledWith(error)
+    expect(generateSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('Should call findUserByEmail with the correct value', async () => {

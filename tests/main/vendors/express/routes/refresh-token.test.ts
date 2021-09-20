@@ -8,7 +8,7 @@ import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('RefreshToken middleware', () => {
+describe('RefreshTokenMiddleware', () => {
   let accessToken: string
   let refreshToken: string
   let userCollection: Collection

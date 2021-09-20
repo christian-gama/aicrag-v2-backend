@@ -1,4 +1,8 @@
-import { ConflictParamError, InvalidParamError, MustLogoutError } from '@/application/usecases/errors'
+import {
+  ConflictParamError,
+  InvalidParamError,
+  MustLogoutError
+} from '@/application/usecases/errors'
 import { makeSut } from './signup-controller-sut'
 
 describe('SignUpController', () => {
@@ -33,6 +37,18 @@ describe('SignUpController', () => {
     await sut.handle(request)
 
     expect(saveUserSpy).toHaveBeenCalledWith(request.body)
+  })
+
+  it('Should call generate with the correct user', async () => {
+    const { sut, fakeUser, generateAccessTokenStub, request, userDbRepositoryStub } = makeSut()
+
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(undefined))
+
+    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
+
+    await sut.handle(request)
+
+    expect(generateSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('Should call validate with correct values', async () => {
@@ -95,17 +111,17 @@ describe('SignUpController', () => {
 
     await sut.handle(request)
 
-    expect(okSpy).toHaveBeenCalledWith({ user: fakePublicUser })
+    expect(okSpy).toHaveBeenCalledWith({ user: fakePublicUser, accessToken: 'any_token' })
   })
 
   it('Should return ok if validation succeds', async () => {
-    const { sut, userDbRepositoryStub, fakePublicUser, httpHelper, request } = makeSut()
+    const { sut, fakePublicUser, httpHelper, request, userDbRepositoryStub } = makeSut()
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ user: fakePublicUser }))
+    expect(response).toEqual(httpHelper.ok({ user: fakePublicUser, accessToken: 'any_token' }))
   })
 })

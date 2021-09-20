@@ -12,7 +12,7 @@ import { Request } from 'express'
 
 type RequestUser = Request & { user: IUser }
 
-describe('RefreshToken middleware', () => {
+describe('IsLoggedInMiddleware', () => {
   let accessToken: string
   let refreshToken: string
   let userCollection: Collection
