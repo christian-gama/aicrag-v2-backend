@@ -21,5 +21,19 @@ export const env = {
   SERVER: {
     NODE_ENV: (process.env.NODE_ENV?.trim() as 'development' | 'production') ?? 'production',
     PORT: process.env.PORT?.trim() ?? 3000
+  },
+  MAILER: {
+    SENDGRID: {
+      APIKEY: process.env.SENDGRID_APIKEY?.trim()
+    },
+    MAILTRAP: {
+      HOST: process.env.MAILTRAP_HOST?.trim() ?? 'smtp.mailtrap.io',
+      PORT: process.env.MAILTRAP_PORT?.trim() ?? '2525',
+      USER: process.env.MAILTRAP_USER?.trim(),
+      PASSWORD: process.env.MAILTRAP_PASSWORD?.trim()
+    },
+    SETTINGS: {
+      FROM: 'Aicrag <aicrag.team@gmail.com>'
+    }
   }
 }

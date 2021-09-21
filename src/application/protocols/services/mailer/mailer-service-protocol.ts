@@ -7,10 +7,4 @@ export interface MailerServiceProtocol {
    * @returns Return the mailer settings.
    */
   send: (settings: MailerSettingsProtocol) => Promise<true | Error>
-
-  /**
-   * @description Create the mailer transport.
-   * @returns Return any mailer transport.
-   */
-  transporter: () => unknown
 }
