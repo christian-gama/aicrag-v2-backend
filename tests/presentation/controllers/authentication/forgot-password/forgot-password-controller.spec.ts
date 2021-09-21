@@ -21,13 +21,13 @@ describe('Forgot Password', () => {
     expect(response).toEqual(httpHelper.badRequest(new Error()))
   })
 
-  it('Should call encrypt with correct email', async () => {
-    const { sut, jwtAccessTokenStub, request } = makeSut()
+  it('Should call encrypt with correct values', async () => {
+    const { sut, fakeUser, jwtAccessTokenStub, request } = makeSut()
     const encryptSpy = jest.spyOn(jwtAccessTokenStub, 'encrypt')
 
     await sut.handle(request)
 
-    expect(encryptSpy).toHaveBeenCalledWith({ email: request.body.email })
+    expect(encryptSpy).toHaveBeenCalledWith({ email: fakeUser.personal.email, id: fakeUser.personal.id })
   })
 
   it('Should call findUserByEmail with correct email', async () => {
