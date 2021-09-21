@@ -16,10 +16,6 @@ export const makeUserDbRepositoryStub = (fakeUser: IUser): UserDbRepositoryProto
       return Promise.resolve(fakeUser)
     }
 
-    async findUserByRefreshToken (id: string): Promise<IUser | undefined> {
-      return Promise.resolve(fakeUser)
-    }
-
     async updateUser (user: IUser, update: UserDbFilter): Promise<IUser | undefined> {
       return Promise.resolve(fakeUser)
     }
