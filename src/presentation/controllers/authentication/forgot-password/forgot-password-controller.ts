@@ -15,7 +15,9 @@ export class ForgotPasswordController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const { email } = httpRequest.body
 
-    await this.forgotPasswordValidator.validate(email)
+    const error = await this.forgotPasswordValidator.validate(email)
+
+    if (error) return this.httpHelper.badRequest(error)
 
     return this.httpHelper.ok({})
   }
