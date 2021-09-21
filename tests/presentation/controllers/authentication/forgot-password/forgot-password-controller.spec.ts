@@ -12,10 +12,21 @@ describe('Forgot Password', () => {
 
   it('Should return badRequest if validation fails', async () => {
     const { sut, forgotPasswordValidatorStub, httpHelper, request } = makeSut()
-    jest.spyOn(forgotPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
+    jest
+      .spyOn(forgotPasswordValidatorStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('Should call encrypt with correct email', async () => {
+    const { sut, jwtAccessTokenStub, request } = makeSut()
+    const encryptSpy = jest.spyOn(jwtAccessTokenStub, 'encrypt')
+
+    await sut.handle(request)
+
+    expect(encryptSpy).toHaveBeenCalledWith({ email: request.body.email })
   })
 })
