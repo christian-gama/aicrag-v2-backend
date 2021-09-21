@@ -1,3 +1,4 @@
+import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import {
   HttpHelperProtocol,
@@ -9,7 +10,8 @@ import { ControllerProtocol } from '../login'
 export class ForgotPasswordController implements ControllerProtocol {
   constructor (
     private readonly forgotPasswordValidator: ValidatorProtocol,
-    private readonly httpHelper: HttpHelperProtocol
+    private readonly httpHelper: HttpHelperProtocol,
+    private readonly jwtAccessToken: EncrypterProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -18,6 +20,8 @@ export class ForgotPasswordController implements ControllerProtocol {
     const error = await this.forgotPasswordValidator.validate(email)
 
     if (error) return this.httpHelper.badRequest(error)
+
+    this.jwtAccessToken.encrypt({ email })
 
     return this.httpHelper.ok({})
   }
