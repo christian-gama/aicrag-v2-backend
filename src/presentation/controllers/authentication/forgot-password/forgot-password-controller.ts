@@ -28,6 +28,9 @@ export class ForgotPasswordController implements ControllerProtocol {
 
     this.jwtAccessToken.encrypt({ email: user.personal.email, id: user.personal.id })
 
+    // TODO: Should update user temporary resetPasswordToken with the encrypted token
+    // TODO: Should send an email to the user with the encrypted token
+
     return this.httpHelper.ok({})
   }
 }
