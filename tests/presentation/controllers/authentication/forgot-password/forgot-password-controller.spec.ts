@@ -29,4 +29,13 @@ describe('Forgot Password', () => {
 
     expect(encryptSpy).toHaveBeenCalledWith({ email: request.body.email })
   })
+
+  it('Should call findUserByEmail with correct email', async () => {
+    const { sut, userDbRepositoryStub, request } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
+
+    await sut.handle(request)
+
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
+  })
 })

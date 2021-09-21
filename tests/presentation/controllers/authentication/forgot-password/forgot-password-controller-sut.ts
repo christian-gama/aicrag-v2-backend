@@ -7,6 +7,8 @@ import { makeValidatorStub } from '@/tests/__mocks__/application/validators/mock
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import { makeJwtAdapterStub } from '@/tests/__mocks__/infra/adapters/cryptography/mock-jwt-adapter'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
+import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
+import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
 
 interface SutTypes {
   sut: ForgotPasswordController
@@ -15,6 +17,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   jwtAccessTokenStub: EncrypterProtocol
   request: HttpRequest
+  userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 export const makeSut = (): SutTypes => {
@@ -23,8 +26,9 @@ export const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const jwtAccessTokenStub = makeJwtAdapterStub()
   const request = { body: { email: fakeUser.personal.email } }
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new ForgotPasswordController(forgotPasswordValidatorStub, httpHelper, jwtAccessTokenStub)
+  const sut = new ForgotPasswordController(forgotPasswordValidatorStub, httpHelper, jwtAccessTokenStub, userDbRepositoryStub)
 
-  return { sut, fakeUser, forgotPasswordValidatorStub, httpHelper, jwtAccessTokenStub, request }
+  return { sut, fakeUser, forgotPasswordValidatorStub, httpHelper, jwtAccessTokenStub, request, userDbRepositoryStub }
 }
