@@ -61,4 +61,15 @@ describe('Forgot Password', () => {
 
     expect(sendSpy).toHaveBeenCalledWith(fakeUser)
   })
+
+  it('Should call ok with correct message', async () => {
+    const { sut, fakeUser, httpHelper, request } = makeSut()
+    const okSpy = jest.spyOn(httpHelper, 'ok')
+
+    await sut.handle(request)
+
+    expect(okSpy).toHaveBeenCalledWith({
+      message: `Instructions to reset your password were sent to ${fakeUser.personal.email}`
+    })
+  })
 })
