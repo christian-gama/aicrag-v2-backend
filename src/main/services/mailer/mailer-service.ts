@@ -6,7 +6,7 @@ import * as nodemailer from 'nodemailer'
 import sendgrid from 'nodemailer-sendgrid'
 
 export abstract class MailerService {
-  protected async sendEmail (settings: MailerSettingsProtocol): Promise<true | Error> {
+  protected async sendEmail (settings: MailerSettingsProtocol): Promise<true | MailerServiceError> {
     try {
       await this.transporter.sendMail({
         from: env.MAILER.SETTINGS.FROM,
