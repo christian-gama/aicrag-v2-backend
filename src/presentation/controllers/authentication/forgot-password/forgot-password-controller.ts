@@ -8,9 +8,11 @@ import {
   HttpResponse
 } from '@/presentation/helpers/http/protocols'
 import { ControllerProtocol } from '../login'
+import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
 
 export class ForgotPasswordController implements ControllerProtocol {
   constructor (
+    private readonly forgotPasswordEmail: MailerServiceProtocol,
     private readonly forgotPasswordValidator: ValidatorProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly jwtAccessToken: EncrypterProtocol,
@@ -31,7 +33,11 @@ export class ForgotPasswordController implements ControllerProtocol {
       id: user.personal.id
     })
 
-    await this.userDbRepository.updateUser(user, { 'temporary.resetPasswordToken': resetPasswordToken })
+    await this.userDbRepository.updateUser(user, {
+      'temporary.resetPasswordToken': resetPasswordToken
+    })
+
+    await this.forgotPasswordEmail.send(user)
 
     return this.httpHelper.ok({})
   }
