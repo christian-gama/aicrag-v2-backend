@@ -10,7 +10,7 @@ describe('HttpHelper', () => {
 
       const response = sut.badRequest(new Error(errorMessage))
 
-      expect(response).toEqual({ status: 'fail', statusCode: 400, data: { message: errorMessage } })
+      expect(response).toEqual({ status: false, statusCode: 400, data: { message: errorMessage } })
     })
 
     it('Should return 401 and an error message when calls unauthorized', () => {
@@ -19,7 +19,7 @@ describe('HttpHelper', () => {
 
       const response = sut.unauthorized(new Error(errorMessage))
 
-      expect(response).toEqual({ status: 'fail', statusCode: 401, data: { message: errorMessage } })
+      expect(response).toEqual({ status: false, statusCode: 401, data: { message: errorMessage } })
     })
 
     it('Should return 403 and an error message when calls forbidden', () => {
@@ -28,7 +28,7 @@ describe('HttpHelper', () => {
 
       const response = sut.forbidden(new Error(errorMessage))
 
-      expect(response).toEqual({ status: 'fail', statusCode: 403, data: { message: errorMessage } })
+      expect(response).toEqual({ status: false, statusCode: 403, data: { message: errorMessage } })
     })
 
     it('Should return 404 and an error message when calls notFound', () => {
@@ -37,7 +37,7 @@ describe('HttpHelper', () => {
 
       const response = sut.notFound(new Error(errorMessage))
 
-      expect(response).toEqual({ status: 'fail', statusCode: 404, data: { message: errorMessage } })
+      expect(response).toEqual({ status: false, statusCode: 404, data: { message: errorMessage } })
     })
 
     it('Should return 409 and an error message when calls conflict', () => {
@@ -46,7 +46,7 @@ describe('HttpHelper', () => {
 
       const response = sut.conflict(new Error(errorMessage))
 
-      expect(response).toEqual({ status: 'fail', statusCode: 409, data: { message: errorMessage } })
+      expect(response).toEqual({ status: false, statusCode: 409, data: { message: errorMessage } })
     })
   })
 
@@ -57,7 +57,7 @@ describe('HttpHelper', () => {
 
       const response = sut.ok(fakeData)
 
-      expect(response).toEqual({ status: 'success', statusCode: 200, data: fakeData })
+      expect(response).toEqual({ status: true, statusCode: 200, data: fakeData })
     })
 
     it('Should return 201 and a data when calls created', () => {
@@ -66,7 +66,7 @@ describe('HttpHelper', () => {
 
       const response = sut.created(fakeData)
 
-      expect(response).toEqual({ status: 'success', statusCode: 201, data: fakeData })
+      expect(response).toEqual({ status: true, statusCode: 201, data: fakeData })
     })
 
     it('Should return 204 and a data when calls deleted', () => {
@@ -75,7 +75,7 @@ describe('HttpHelper', () => {
       const response = sut.deleted()
 
       expect(response).toEqual({
-        status: 'success',
+        status: true,
         statusCode: 204,
         data: { message: 'Content deleted' }
       })
@@ -90,7 +90,7 @@ describe('HttpHelper', () => {
       const response = sut.serverError(error)
 
       expect(response).toEqual({
-        status: 'fail',
+        status: false,
         statusCode: 500,
         data: { error: { name: error.name, message: error.message, stack: error.stack } }
       })

@@ -9,7 +9,7 @@ export interface HttpResponse {
   /**
    * @description The current status from the response.
    */
-  status: 'fail' | 'success'
+  status: boolean
   /**
    * @description Any data that will be sent on the response.
    */
