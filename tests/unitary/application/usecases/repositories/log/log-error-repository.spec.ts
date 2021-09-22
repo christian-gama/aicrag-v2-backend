@@ -7,11 +7,9 @@ describe('LogErrorRepository', () => {
 
     const value = sut.createLog(error)
 
-    expect(value).toEqual({
-      name: error.name,
-      date: new Date(Date.now()).toLocaleString(),
-      message: error.message,
-      stack: error.stack
-    })
+    expect(value.name).toBe(error.name)
+    expect(new Date(value.date).getTime()).not.toBe(NaN)
+    expect(value.message).toBe(error.message)
+    expect(value.stack).toBe(error.stack)
   })
 })
