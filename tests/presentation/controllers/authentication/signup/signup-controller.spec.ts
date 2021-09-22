@@ -1,6 +1,7 @@
 import {
   ConflictParamError,
   InvalidParamError,
+  MailerServiceError,
   MustLogoutError
 } from '@/application/usecases/errors'
 import { makeSut } from './signup-controller-sut'
@@ -42,7 +43,9 @@ describe('SignUpController', () => {
   it('Should call generate with the correct user', async () => {
     const { sut, fakeUser, generateAccessTokenStub, request, userDbRepositoryStub } = makeSut()
 
-    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(undefined))
+    jest
+      .spyOn(userDbRepositoryStub, 'findUserByEmail')
+      .mockReturnValueOnce(Promise.resolve(undefined))
 
     const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
@@ -100,6 +103,34 @@ describe('SignUpController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(new MustLogoutError()))
+  })
+
+  it('Should return serverError if mailer service throws', async () => {
+    const { sut, httpHelper, request, userDbRepositoryStub, welcomeEmailStub } = makeSut()
+    const error = new MailerServiceError()
+    jest
+      .spyOn(userDbRepositoryStub, 'findUserByEmail')
+      .mockReturnValueOnce(Promise.resolve(undefined))
+
+    jest
+      .spyOn(welcomeEmailStub, 'send')
+      .mockReturnValueOnce(Promise.resolve(error))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.serverError(error))
+  })
+
+  it('Should call send with the correct user', async () => {
+    const { sut, fakeUser, userDbRepositoryStub, request, welcomeEmailStub } = makeSut()
+    const sendSpy = jest.spyOn(welcomeEmailStub, 'send')
+    jest
+      .spyOn(userDbRepositoryStub, 'findUserByEmail')
+      .mockReturnValueOnce(Promise.resolve(undefined))
+
+    await sut.handle(request)
+
+    expect(sendSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('Should call ok with the correct value', async () => {
