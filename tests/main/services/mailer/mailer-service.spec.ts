@@ -10,28 +10,28 @@ const nodemailer = require('nodemailer')
 const sendMailMock = jest.fn().mockReturnValueOnce('ok')
 nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock })
 
-describe('', () => {
+describe('MailerService', () => {
   beforeEach(() => {
     sendMailMock.mockClear()
     nodemailer.createTransport.mockClear()
   })
 
   it('Should return true if email is sent', async () => {
-    const { sut, options } = makeSut()
+    const { sut, settings } = makeSut()
 
-    const result = await sut.send(options)
+    const result = await sut.send(settings)
 
     expect(result).toEqual(true)
   })
 
-  it('Should call sendMail with correct options for production environment', async () => {
+  it('Should call sendMail with correct settings for production environment', async () => {
     env.SERVER.NODE_ENV = 'production'
 
-    const { sut, options } = makeSut()
+    const { sut, settings } = makeSut()
 
     const createTransportSpy = jest.spyOn(nodemailer, 'createTransport')
 
-    await sut.send(options)
+    await sut.send(settings)
 
     expect(createTransportSpy).toHaveBeenCalledWith({
       name: 'nodemailer-sendgrid',
@@ -42,14 +42,14 @@ describe('', () => {
     })
   })
 
-  it('Should call sendMail with correct options for development environment', async () => {
+  it('Should call sendMail with correct settings for development environment', async () => {
     env.SERVER.NODE_ENV = 'development'
 
-    const { sut, options } = makeSut()
+    const { sut, settings } = makeSut()
 
     const createTransportSpy = jest.spyOn(nodemailer, 'createTransport')
 
-    await sut.send(options)
+    await sut.send(settings)
 
     expect(createTransportSpy).toHaveBeenCalledWith({
       auth: {
@@ -62,11 +62,11 @@ describe('', () => {
   })
 
   it('Should return an error if email is not sent', async () => {
-    const { sut, options } = makeSut()
+    const { sut, settings } = makeSut()
     sendMailMock.mockImplementationOnce(() => {
       throw new Error()
     })
-    const result = await sut.send(options)
+    const result = await sut.send(settings)
 
     expect(result).toBeInstanceOf(MailerServiceError)
   })
