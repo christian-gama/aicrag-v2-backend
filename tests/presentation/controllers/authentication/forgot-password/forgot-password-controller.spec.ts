@@ -27,7 +27,10 @@ describe('Forgot Password', () => {
 
     await sut.handle(request)
 
-    expect(encryptSpy).toHaveBeenCalledWith({ email: fakeUser.personal.email, id: fakeUser.personal.id })
+    expect(encryptSpy).toHaveBeenCalledWith({
+      email: fakeUser.personal.email,
+      id: fakeUser.personal.id
+    })
   })
 
   it('Should call findUserByEmail with correct email', async () => {
@@ -37,5 +40,16 @@ describe('Forgot Password', () => {
     await sut.handle(request)
 
     expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
+  })
+
+  it('Should call updateUser with correct email', async () => {
+    const { sut, fakeUser, userDbRepositoryStub, request } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'temporary.resetPasswordToken': 'any_token'
+    })
   })
 })
