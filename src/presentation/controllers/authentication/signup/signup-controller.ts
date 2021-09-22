@@ -1,14 +1,19 @@
-import { ControllerProtocol } from '.'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { ConflictParamError, MustLogoutError } from '@/application/usecases/errors/'
+import {
+  ConflictParamError,
+  MailerServiceError,
+  MustLogoutError
+} from '@/application/usecases/errors/'
+import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
+import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
 } from '@/presentation/helpers/http/protocols'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
+import { ControllerProtocol } from '.'
 
 export class SignUpController implements ControllerProtocol {
   constructor (
@@ -16,7 +21,8 @@ export class SignUpController implements ControllerProtocol {
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol,
-    private readonly userValidator: ValidatorProtocol
+    private readonly userValidator: ValidatorProtocol,
+    private readonly welcomeEmail: MailerServiceProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -39,6 +45,12 @@ export class SignUpController implements ControllerProtocol {
     const user = await this.userDbRepository.saveUser(signUpUserCredentials)
 
     const accessToken = this.generateAccessToken.generate(user) as string
+
+    const mailerResponse = await this.welcomeEmail.send(user)
+
+    if (mailerResponse instanceof MailerServiceError) {
+      return this.httpHelper.serverError(mailerResponse)
+    }
 
     const filteredUser = this.filterUserData.filter(user)
 

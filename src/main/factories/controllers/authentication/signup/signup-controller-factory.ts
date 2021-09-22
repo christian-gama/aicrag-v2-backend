@@ -5,6 +5,7 @@ import { makeFilterUserData } from '@/main/factories/helpers/fitler-user-data-fa
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { makeTryCatchControllerDecorator } from '@/main/factories/decorators/try-catch-controller-decorator-factory'
 import { makeGenerateAccessToken } from '@/main/factories/providers/token/generate-access-token-factory'
+import { makeWelcomeEmail } from '@/main/factories/services/mailer/welcome-email-factory'
 
 export const makeSignUpController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()
@@ -12,13 +13,15 @@ export const makeSignUpController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
   const userDbRepository = makeUserDbRepository()
   const userValidator = makeUserValidatorComposite()
+  const welcomeEmail = makeWelcomeEmail()
 
   const signUpController = new SignUpController(
     filterUserData,
     generateAccessToken,
     httpHelper,
     userDbRepository,
-    userValidator
+    userValidator,
+    welcomeEmail
   )
 
   return makeTryCatchControllerDecorator(signUpController)
