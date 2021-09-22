@@ -52,4 +52,13 @@ describe('Forgot Password', () => {
       'temporary.resetPasswordToken': 'any_token'
     })
   })
+
+  it('Should call send with correct email', async () => {
+    const { sut, fakeUser, forgotPasswordEmailStub, request } = makeSut()
+    const sendSpy = jest.spyOn(forgotPasswordEmailStub, 'send')
+
+    await sut.handle(request)
+
+    expect(sendSpy).toHaveBeenCalledWith(fakeUser)
+  })
 })

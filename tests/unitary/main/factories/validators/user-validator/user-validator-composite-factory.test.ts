@@ -8,7 +8,7 @@ import {
   makeValidatePasswordComparasion
 } from '@/main/factories/validators/user-validator'
 
-jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
+jest.mock('../../../../../../src/application/usecases/validators/validation-composite.ts')
 
 describe('UserValidator Factory', () => {
   it('Should create factory with all validations', () => {

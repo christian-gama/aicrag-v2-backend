@@ -12,7 +12,7 @@ import {
   makeValidateActiveAccount
 } from '@/main/factories/validators/credentials-validator'
 
-jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
+jest.mock('../../../../../../src/application/usecases/validators/validation-composite.ts')
 
 describe('CredentialsValidator Factory', () => {
   it('Should create factory with all validations', () => {
