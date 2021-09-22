@@ -36,10 +36,10 @@ export class UserRepository implements UserRepositoryProtocol {
       temporary: {
         activationCode: activationCode,
         activationCodeExpiration: new Date(Date.now() + activationCodeExpirationMinutes),
-        resetCode: null,
-        resetCodeExpiration: null,
-        temporaryEmail: null,
-        temporaryEmailExpiration: null
+        resetPasswordToken: null,
+        tempEmail: null,
+        tempEmailCode: null,
+        tempEmailCodeExpiration: null
       },
       tokenVersion: 0
     }

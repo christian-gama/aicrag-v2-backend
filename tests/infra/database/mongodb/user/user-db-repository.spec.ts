@@ -56,10 +56,10 @@ describe('UserDbRepository', () => {
       expect(user.temporary).toEqual({
         activationCode: fakeUser.temporary.activationCode,
         activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
-        resetCode: fakeUser.temporary.resetCode,
-        resetCodeExpiration: fakeUser.temporary.resetCodeExpiration,
-        temporaryEmail: fakeUser.temporary.temporaryEmail,
-        temporaryEmailExpiration: fakeUser.temporary.temporaryEmailExpiration
+        resetPasswordToken: fakeUser.temporary.resetPasswordToken,
+        tempEmail: fakeUser.temporary.tempEmail,
+        tempEmailCode: fakeUser.temporary.tempEmailCode,
+        tempEmailCodeExpiration: fakeUser.temporary.tempEmailCodeExpiration
       })
 
       expect(user.tokenVersion).toBe(0)

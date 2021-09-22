@@ -24,10 +24,10 @@ export interface IUser {
   temporary: {
     activationCode: string | null
     activationCodeExpiration: Date | null
-    resetCode: string | null
-    resetCodeExpiration: Date | null
-    temporaryEmail: string | null
-    temporaryEmailExpiration: Date | null
+    resetPasswordToken: string | null
+    tempEmail: string | null
+    tempEmailCode: string | null
+    tempEmailCodeExpiration: Date | null
   }
   tokenVersion: number
 }

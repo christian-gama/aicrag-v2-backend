@@ -20,10 +20,10 @@ export const makeFakeUser = (): IUser => {
     temporary: {
       activationCode: faker.lorem.word(5),
       activationCodeExpiration: new Date(Date.now() + 10 * 60 * 1000),
-      resetCode: null,
-      resetCodeExpiration: null,
-      temporaryEmail: null,
-      temporaryEmailExpiration: null
+      resetPasswordToken: null,
+      tempEmail: null,
+      tempEmailCode: null,
+      tempEmailCodeExpiration: null
     },
     tokenVersion: 0
   }
