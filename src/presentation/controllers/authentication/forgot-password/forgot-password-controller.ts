@@ -39,6 +39,8 @@ export class ForgotPasswordController implements ControllerProtocol {
 
     await this.forgotPasswordEmail.send(user)
 
-    return this.httpHelper.ok({})
+    return this.httpHelper.ok({
+      message: `Instructions to reset your password were sent to ${user.personal.email}`
+    })
   }
 }
