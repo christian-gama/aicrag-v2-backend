@@ -10,7 +10,7 @@
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/vendors/express/server.js",
     "copy-assets": "copyfiles -u 1 src/**/*.pug dist/",
     "tsc:watch": "tsc -w -p tsconfig.build.json && yarn copy-assets",
-    "up": "yarn tsc:build && docker-compose up -d",
+    "up": "yarn build && docker-compose up -d",
     "down": "docker-compose down",
     "test": "yarn test:unit && yarn test:integration",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
