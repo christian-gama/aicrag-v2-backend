@@ -1,5 +1,4 @@
 import { IUser } from '@/domain/user'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
@@ -8,9 +7,10 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/pro
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeValidatorStub } from '@/tests/__mocks__/application/validators/mock-validator'
-import { makeJwtAdapterStub } from '@/tests/__mocks__/infra/adapters/cryptography/mock-jwt-adapter'
 import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
 import { makeMailerServiceStub } from '@/tests/__mocks__/main/services/mailer/mock-mailer-service'
+import { makeGenerateTokenStub } from '@/tests/__mocks__/infra/providers/mock-generate-token'
+import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 
 interface SutTypes {
   sut: ForgotPasswordController
@@ -18,7 +18,7 @@ interface SutTypes {
   forgotPasswordValidatorStub: ValidatorProtocol
   forgotPasswordEmailStub: MailerServiceProtocol
   httpHelper: HttpHelperProtocol
-  jwtAccessTokenStub: EncrypterProtocol
+  generateTokenStub: GenerateTokenProtocol
   request: HttpRequest
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
@@ -28,11 +28,11 @@ export const makeSut = (): SutTypes => {
   const forgotPasswordEmailStub = makeMailerServiceStub()
   const forgotPasswordValidatorStub = makeValidatorStub()
   const httpHelper = makeHttpHelper()
-  const jwtAccessTokenStub = makeJwtAdapterStub()
+  const generateTokenStub = makeGenerateTokenStub()
   const request = { body: { email: fakeUser.personal.email } }
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new ForgotPasswordController(forgotPasswordEmailStub, forgotPasswordValidatorStub, httpHelper, jwtAccessTokenStub, userDbRepositoryStub)
+  const sut = new ForgotPasswordController(forgotPasswordEmailStub, forgotPasswordValidatorStub, httpHelper, generateTokenStub, userDbRepositoryStub)
 
-  return { sut, fakeUser, forgotPasswordEmailStub, forgotPasswordValidatorStub, httpHelper, jwtAccessTokenStub, request, userDbRepositoryStub }
+  return { sut, fakeUser, forgotPasswordEmailStub, forgotPasswordValidatorStub, httpHelper, generateTokenStub, request, userDbRepositoryStub }
 }

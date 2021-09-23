@@ -1,13 +1,13 @@
 import { makeSut } from './forgot-password-controller-sut'
 
 describe('Forgot Password', () => {
-  it('Should call validate with correct email', async () => {
+  it('Should call validate with correct value', async () => {
     const { sut, forgotPasswordValidatorStub, request } = makeSut()
     const validateSpy = jest.spyOn(forgotPasswordValidatorStub, 'validate')
 
     await sut.handle(request)
 
-    expect(validateSpy).toHaveBeenCalledWith(request.body.email)
+    expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
   it('Should return badRequest if validation fails', async () => {
@@ -22,15 +22,12 @@ describe('Forgot Password', () => {
   })
 
   it('Should call encrypt with correct values', async () => {
-    const { sut, fakeUser, jwtAccessTokenStub, request } = makeSut()
-    const encryptSpy = jest.spyOn(jwtAccessTokenStub, 'encrypt')
+    const { sut, fakeUser, generateTokenStub, request } = makeSut()
+    const encryptSpy = jest.spyOn(generateTokenStub, 'generate')
 
     await sut.handle(request)
 
-    expect(encryptSpy).toHaveBeenCalledWith({
-      email: fakeUser.personal.email,
-      id: fakeUser.personal.id
-    })
+    expect(encryptSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('Should call findUserByEmail with correct email', async () => {
