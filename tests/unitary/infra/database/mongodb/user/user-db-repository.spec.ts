@@ -1,5 +1,4 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { env } from '@/main/config/env'
 import { makeSut } from './user-db-repository-sut'
 import { makeFakeSignUpUserCredentials } from '@/tests/__mocks__/domain/mock-signup-user-credentials'
 
@@ -10,7 +9,7 @@ describe('UserDbRepository', () => {
   let userCollection: Collection
 
   beforeAll(async () => {
-    await MongoHelper.connect(env.DB.MONGO_URL)
+    await MongoHelper.connect(global.__MONGO_URI__)
   })
 
   afterAll(async () => {
