@@ -7,6 +7,8 @@ export interface HttpRequest {
   /**
    * @description Body that comes from request.
    */
+  query?: any
+  param?: any
   body?: any
   user?: IUser
 }
