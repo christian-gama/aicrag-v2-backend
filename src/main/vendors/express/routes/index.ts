@@ -1,6 +1,5 @@
+import { makeActivateAccountController, makeForgotPasswordController } from '@/main/factories/controllers/account'
 import {
-  makeActivateAccountController,
-  makeForgotPasswordController,
   makeLoginController,
   makeLogoutController,
   makeSignUpController
@@ -13,11 +12,13 @@ import { tokenMiddlewareAdapter } from '../adapters/token-middleware-adapter'
 
 /* ******* Controllers ******* */
 // Authentication Routes
-export const activateAccountController = controllerAdapter(makeActivateAccountController())
-export const forgotPasswordController = controllerAdapter(makeForgotPasswordController())
 export const loginController = controllerAdapter(makeLoginController())
 export const logoutController = controllerAdapter(makeLogoutController())
 export const signUpController = controllerAdapter(makeSignUpController())
+
+// Account Routes
+export const activateAccountController = controllerAdapter(makeActivateAccountController())
+export const forgotPasswordController = controllerAdapter(makeForgotPasswordController())
 /* **** End of Controllers **** */
 
 /* ********** Middlewares *********** */

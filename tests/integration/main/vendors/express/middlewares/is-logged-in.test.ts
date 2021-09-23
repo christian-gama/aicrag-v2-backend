@@ -1,4 +1,3 @@
-
 import { IUser } from '@/domain'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'

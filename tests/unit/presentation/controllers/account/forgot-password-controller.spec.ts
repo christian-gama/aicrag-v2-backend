@@ -4,7 +4,7 @@ import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
-import { ForgotPasswordController } from '@/presentation/controllers/authentication'
+import { ForgotPasswordController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { makeFakeUser, makeMailerServiceStub, makeValidatorStub, makeGenerateTokenStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
