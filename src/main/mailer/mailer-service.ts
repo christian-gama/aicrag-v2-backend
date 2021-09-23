@@ -1,6 +1,6 @@
 import { MailerSettingsProtocol } from '@/application/protocols/mailer'
 import { MailerServiceError } from '@/application/usecases/errors/mailer-service-error'
-import { env } from '../../config/env'
+import { env } from '../config/env'
 
 import * as nodemailer from 'nodemailer'
 import sendgrid from 'nodemailer-sendgrid'
