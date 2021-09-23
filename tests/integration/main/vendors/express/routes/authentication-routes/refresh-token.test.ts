@@ -12,9 +12,9 @@ describe('RefreshTokenMiddleware', () => {
   let userCollection: Collection
 
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string)
+    await MongoHelper.connect(global.__MONGO_URI__)
 
-    userCollection = await MongoHelper.getCollection('users')
+    userCollection = MongoHelper.getCollection('users')
 
     app.get('/invalid-refresh-token', refreshTokenMiddleware, (req, res) => {
       res.send()

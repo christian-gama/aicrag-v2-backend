@@ -1,5 +1,4 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { env } from '@/main/config/env'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeSut } from './clear-user-database-sut'
 
@@ -9,7 +8,7 @@ describe('ClearUserDatabase', () => {
   let userCollection: Collection
 
   beforeAll(async () => {
-    await MongoHelper.connect(env.DB.MONGO_URL)
+    await MongoHelper.connect(global.__MONGO_URI__)
   })
 
   afterAll(async () => {
@@ -17,7 +16,7 @@ describe('ClearUserDatabase', () => {
   })
 
   beforeEach(async () => {
-    userCollection = await MongoHelper.getCollection('users')
+    userCollection = MongoHelper.getCollection('users')
     await userCollection.deleteMany({})
   })
 
@@ -65,7 +64,9 @@ describe('ClearUserDatabase', () => {
   it('Should call saveLog if throws', async () => {
     const { sut, error, logErrorDbRepositoryStub } = makeSut()
     const saveLogSpy = jest.spyOn(logErrorDbRepositoryStub, 'saveLog')
-    jest.spyOn(MongoHelper, 'getCollection').mockReturnValueOnce(Promise.reject(error))
+    jest.spyOn(MongoHelper, 'getCollection').mockImplementationOnce(() => {
+      throw error
+    })
 
     await sut.deleteInactiveUsers()
 

@@ -11,7 +11,7 @@ export class ClearUserDatabase {
     try {
       console.log(`[${new Date(Date.now()).toLocaleString()}] ClearUserDatabase: Looking for inactive users...`)
 
-      const userCollection = await MongoHelper.getCollection('users')
+      const userCollection = MongoHelper.getCollection('users')
 
       const filter: UserDbFilter | FindOptions = {
         'settings.accountActivated': false,

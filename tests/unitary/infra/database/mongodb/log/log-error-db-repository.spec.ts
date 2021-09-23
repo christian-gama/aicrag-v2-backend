@@ -1,5 +1,4 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { env } from '@/main/config/env'
 import { makeSut } from './log-error-db-repository-sut'
 
 import { Collection } from 'mongodb'
@@ -8,7 +7,7 @@ describe('LogErrorDbRepository', () => {
   let logCollection: Collection
 
   beforeAll(async () => {
-    await MongoHelper.connect(env.DB.MONGO_URL)
+    await MongoHelper.connect(global.__MONGO_URI__)
   })
 
   afterAll(async () => {
@@ -16,7 +15,7 @@ describe('LogErrorDbRepository', () => {
   })
 
   beforeEach(async () => {
-    logCollection = await MongoHelper.getCollection('logs')
+    logCollection = MongoHelper.getCollection('logs')
     await logCollection.deleteMany({})
   })
 

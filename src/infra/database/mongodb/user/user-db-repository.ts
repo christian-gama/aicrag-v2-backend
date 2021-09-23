@@ -8,7 +8,7 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
   constructor (private readonly userRepository: UserRepositoryProtocol) {}
 
   async saveUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
-    const userCollection = await MongoHelper.getCollection('users')
+    const userCollection = MongoHelper.getCollection('users')
     const user = await this.userRepository.createUser(signUpUserCredentials)
 
     const insertedResult = await userCollection.insertOne(user)
@@ -17,7 +17,7 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
   }
 
   async findUserByEmail (email: string): Promise<IUser | undefined> {
-    const userCollection = await MongoHelper.getCollection('users')
+    const userCollection = MongoHelper.getCollection('users')
     const filter: UserDbFilter = { 'personal.email': email }
 
     const user = (await userCollection.findOne(filter)) as IUser
@@ -26,7 +26,7 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
   }
 
   async findUserById (id: string): Promise<IUser | undefined> {
-    const userCollection = await MongoHelper.getCollection('users')
+    const userCollection = MongoHelper.getCollection('users')
 
     const filter: UserDbFilter = { 'personal.id': id }
     const user = (await userCollection.findOne(filter)) as IUser
@@ -35,7 +35,7 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
   }
 
   async updateUser (user: IUser, update: UserDbFilter): Promise<IUser | undefined> {
-    const userCollection = await MongoHelper.getCollection('users')
+    const userCollection = MongoHelper.getCollection('users')
 
     const filter: UserDbFilter = { 'personal.id': user.personal.id }
     await userCollection.updateOne(filter, { $set: update })

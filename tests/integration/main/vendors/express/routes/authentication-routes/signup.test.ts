@@ -11,9 +11,9 @@ describe('POST /signup', () => {
   let userCollection: Collection
 
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string)
+    await MongoHelper.connect(global.__MONGO_URI__)
 
-    userCollection = await MongoHelper.getCollection('users')
+    userCollection = MongoHelper.getCollection('users')
 
     app.post('/api/auth/signup', signUpController)
   })

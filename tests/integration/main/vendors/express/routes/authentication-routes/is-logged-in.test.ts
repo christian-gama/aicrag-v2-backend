@@ -16,7 +16,7 @@ describe('IsLoggedInMiddleware', () => {
   let userCollection: Collection
 
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string)
+    await MongoHelper.connect(global.__MONGO_URI__)
 
     app.get('/is-logged-out', isLoggedInMiddleware, (req: RequestUser, res) => {
       res.send(!!req.user)
@@ -24,7 +24,7 @@ describe('IsLoggedInMiddleware', () => {
 
     const fakeUser = makeFakeUser()
 
-    userCollection = await MongoHelper.getCollection('users')
+    userCollection = MongoHelper.getCollection('users')
     await userCollection.insertOne(fakeUser)
 
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)

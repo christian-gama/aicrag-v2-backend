@@ -9,7 +9,7 @@ export class LogErrorDbRepository implements LogErrorDbRepositoryProtocol {
   async saveLog (error: Error): Promise<ILogError> {
     const log = this.logErrorRepository.createLog(error)
 
-    const logCollection = await MongoHelper.getCollection('logs')
+    const logCollection = MongoHelper.getCollection('logs')
 
     const insertedResult = await logCollection.insertOne(log)
 

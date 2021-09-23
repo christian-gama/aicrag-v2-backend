@@ -18,7 +18,7 @@ describe('UserDbRepository', () => {
   })
 
   beforeEach(async () => {
-    userCollection = await MongoHelper.getCollection('users')
+    userCollection = MongoHelper.getCollection('users')
     await userCollection.deleteMany({})
   })
 
