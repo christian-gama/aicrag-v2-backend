@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 

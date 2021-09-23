@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { IRefreshToken } from '@/application/protocols/providers/refresh-token-protocol'
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'

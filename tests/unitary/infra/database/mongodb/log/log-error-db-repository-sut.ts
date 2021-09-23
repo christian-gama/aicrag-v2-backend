@@ -1,5 +1,5 @@
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-repository-protocol'
-import { ILogError } from '@/domain/log/log-error-protocol'
+import { ILogError } from '@/domain'
 import { LogErrorDbRepository } from '@/infra/database/mongodb/log/log-error-db-repository'
 import { makeFakeLogError } from '@/tests/__mocks__/domain/mock-log-error'
 import { makeLogErrorRepositoryStub } from '@/tests/__mocks__/application/repositories/log/mock-log-error-repository'

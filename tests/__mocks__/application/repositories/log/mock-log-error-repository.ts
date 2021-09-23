@@ -1,4 +1,4 @@
-import { ILogError } from '@/domain/log/log-error-protocol'
+import { ILogError } from '@/domain'
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-repository-protocol'
 
 export const makeLogErrorRepositoryStub = (fakeLogError: ILogError): LogErrorRepositoryProtocol => {

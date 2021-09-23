@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { InactiveAccountError } from '@/application/usecases/errors'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'

@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user'
+import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'

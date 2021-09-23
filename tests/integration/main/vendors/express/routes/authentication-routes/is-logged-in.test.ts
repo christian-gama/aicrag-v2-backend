@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user'
+import { IUser } from '@/domain'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import app from '@/main/vendors/express/config/app'
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'

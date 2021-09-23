@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user'
+import { IUser } from '@/domain'
 import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
 
 import { Request, Response, NextFunction } from 'express'

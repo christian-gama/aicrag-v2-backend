@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 
 export interface GenerateTokenProtocol {
   /**

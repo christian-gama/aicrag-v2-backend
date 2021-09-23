@@ -1,4 +1,4 @@
-import { ILogError } from '@/domain/log/log-error-protocol'
+import { ILogError } from '@/domain'
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'

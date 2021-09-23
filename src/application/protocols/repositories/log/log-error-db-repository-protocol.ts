@@ -1,4 +1,4 @@
-import { ILogError } from '@/domain/log/log-error-protocol'
+import { ILogError } from '@/domain'
 
 export interface LogErrorDbRepositoryProtocol {
   saveLog: (log: ILogError) => Promise<ILogError>

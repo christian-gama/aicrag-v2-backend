@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 
 /**
  * @description A generic http request that contains an optional body and user.

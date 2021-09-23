@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
 import { AccessToken } from '@/presentation/middlewares/authentication/access-token/'
 import { HttpHelperProtocol, HttpRequestToken } from '@/presentation/helpers/http/protocols'

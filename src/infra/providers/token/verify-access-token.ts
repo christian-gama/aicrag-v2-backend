@@ -1,7 +1,7 @@
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { InvalidTokenError, TokenMissingError } from '@/application/usecases/errors'
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { VerifyTokenProtocol } from '../../../application/protocols/providers/verify-token-protocol'
 
 export class VerifyAccessToken implements VerifyTokenProtocol {

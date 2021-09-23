@@ -1,4 +1,4 @@
-import { IPublicUser, IUser } from '@/domain/user/index'
+import { IPublicUser, IUser } from '@/domain'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'

@@ -1,4 +1,4 @@
-import { ILogError } from '@/domain/log/log-error-protocol'
+import { ILogError } from '@/domain'
 
 export interface LogErrorRepositoryProtocol {
   createLog: (error: Error) => ILogError

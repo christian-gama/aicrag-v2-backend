@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 
 type Personal<T extends keyof IUser> = {
   [Property in keyof Partial<IUser['personal']> as `${T}.${Property}`]: IUser['personal'][Property]

@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user'
+import { IUser } from '@/domain'
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { VerifyAccessToken } from '@/infra/providers/token/verify-access-token'

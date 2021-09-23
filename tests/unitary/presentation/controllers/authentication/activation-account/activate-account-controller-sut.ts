@@ -1,4 +1,4 @@
-import { IPublicUser, IUser } from '@/domain/user/index'
+import { IPublicUser, IUser } from '@/domain'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'

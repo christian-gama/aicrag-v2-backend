@@ -1,4 +1,4 @@
-import { IPublicUser, IUser } from '@/domain/user/index'
+import { IPublicUser, IUser } from '@/domain'
 
 export interface FilterUserDataProtocol {
   /**

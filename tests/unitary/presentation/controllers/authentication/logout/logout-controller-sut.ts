@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user'
+import { IUser } from '@/domain'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { LogoutController } from '@/presentation/controllers/authentication/logout/logout-controller'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'

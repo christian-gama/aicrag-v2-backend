@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user'
+import { IUser } from '@/domain'
 import { MailerSettingsProtocol } from '@/application/protocols/services/mailer/mailer-settings-protocol'
 import { MailerService } from './mailer-service'
 

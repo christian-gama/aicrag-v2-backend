@@ -1,5 +1,5 @@
 import { IRefreshToken } from '@/application/protocols/providers/refresh-token-protocol'
-import { IUser } from '@/domain/user'
+import { IUser } from '@/domain'
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { VerifyRefreshToken } from '@/infra/providers/token/verify-refresh-token'

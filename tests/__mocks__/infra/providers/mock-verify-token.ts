@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
 import { makeFakeUser } from '../../domain/mock-user'
 

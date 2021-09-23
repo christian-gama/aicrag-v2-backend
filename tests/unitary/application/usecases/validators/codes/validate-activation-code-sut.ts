@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { ValidateActivationCode } from '@/application/usecases/validators/codes-validator/validate-activation-code'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
 import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'

@@ -1,4 +1,4 @@
-import { IUser } from '@/domain/user/index'
+import { IUser } from '@/domain'
 import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
 import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
