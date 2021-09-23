@@ -1,6 +1,6 @@
-import { ISignUpUserCredentials, IUser } from '@/domain/user/index'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
-import { UserRepositoryProtocol } from '@/application/protocols/repositories/user/user-repository-protocol'
+import { ISignUpUserCredentials, IUser } from '@/domain/user'
+import { UserDbRepositoryProtocol, UserRepositoryProtocol } from '@/application/protocols/repositories'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 

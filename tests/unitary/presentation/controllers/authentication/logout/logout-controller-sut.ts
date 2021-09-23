@@ -4,7 +4,7 @@ import { LogoutController } from '@/presentation/controllers/authentication/logo
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 
 interface SutTypes {
   sut: LogoutController

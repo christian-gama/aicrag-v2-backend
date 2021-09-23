@@ -1,4 +1,4 @@
-import { IUser, ISignUpUserCredentials } from '@/domain/user/index'
+import { IUser, ISignUpUserCredentials } from '@/domain/user'
 
 export interface UserRepositoryProtocol {
   /**

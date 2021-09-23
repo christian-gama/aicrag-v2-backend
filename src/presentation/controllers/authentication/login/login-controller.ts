@@ -1,9 +1,9 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MustLogoutError } from '@/application/usecases/errors'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import {
   HttpHelperProtocol,
   HttpRequest,

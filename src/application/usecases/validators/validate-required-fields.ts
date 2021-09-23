@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MissingParamError } from '@/application/usecases/errors'
 
 export class ValidateRequiredFields implements ValidatorProtocol {

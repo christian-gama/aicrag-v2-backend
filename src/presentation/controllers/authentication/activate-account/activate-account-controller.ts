@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/application/usecases/helpers/filter-user-data'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
+import { ValidatorProtocol } from '@/application/protocols/validators'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import {
   HttpHelperProtocol,

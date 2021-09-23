@@ -1,5 +1,5 @@
 import { ILogError } from '@/domain'
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
+import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { makeFakeLogError } from '@/tests/__mocks__/domain/mock-log-error'
 
 export const makeLogErrorDbRepositoryStub = (error: Error): LogErrorDbRepositoryProtocol => {

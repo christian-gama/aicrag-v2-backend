@@ -1,13 +1,13 @@
-import { FilterUserDataProtocol } from '@/application/protocols/helpers/filter-user-data/filter-user-data-protocol'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 import {
   ConflictParamError,
   MailerServiceError,
   MustLogoutError
 } from '@/application/usecases/errors/'
-import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
+import { MailerServiceProtocol } from '@/application/protocols/mailer'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import {
   HttpHelperProtocol,
   HttpRequest,

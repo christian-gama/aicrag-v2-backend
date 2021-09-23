@@ -1,4 +1,4 @@
-import { ValidationCode } from '@/application/usecases/helpers/validation-code/validation-code'
+import { ValidationCode } from '@/application/usecases/helpers/validation-code'
 
 export const makeValidationCode = (): ValidationCode => {
   return new ValidationCode()

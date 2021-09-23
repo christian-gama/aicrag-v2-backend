@@ -1,4 +1,4 @@
-import { MailerSettingsProtocol } from '@/application/protocols/services/mailer/mailer-settings-protocol'
+import { MailerSettingsProtocol } from '@/application/protocols/mailer'
 import { MailerService } from '@/main/services/mailer/mailer-service'
 interface SutTypes {
   sut: DummyService

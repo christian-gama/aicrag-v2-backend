@@ -1,8 +1,8 @@
 import {
   DecodedProtocol,
   DecoderProtocol
-} from '@/application/protocols/cryptography/decoder-protocol'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
+  , EncrypterProtocol
+} from '@/application/protocols/cryptography'
 
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'

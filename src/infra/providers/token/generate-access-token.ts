@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
+import { EncrypterProtocol } from '@/application/protocols/cryptography'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
 
 export class GenerateAccessToken implements GenerateTokenProtocol {
   constructor (private readonly jwtAccessToken: EncrypterProtocol) {}

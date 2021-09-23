@@ -1,4 +1,4 @@
-import { ValidationCodeProtocol } from '@/application/protocols/helpers/validation-code/validation-code-protocol'
+import { ValidationCodeProtocol } from '@/application/protocols/helpers'
 
 export const makeValidationCodeStub = (): ValidationCodeProtocol => {
   class ValidationCode implements ValidationCodeProtocol {

@@ -1,4 +1,4 @@
-import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-repository-protocol'
+import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories'
 import { ILogError } from '@/domain'
 import { LogErrorDbRepository } from '@/infra/database/mongodb/log/log-error-db-repository'
 import { makeFakeLogError } from '@/tests/__mocks__/domain/mock-log-error'

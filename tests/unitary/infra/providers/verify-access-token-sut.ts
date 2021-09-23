@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
-import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
+import { DecoderProtocol } from '@/application/protocols/cryptography'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { VerifyAccessToken } from '@/infra/providers/token/verify-access-token'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeDecoderStub } from '@/tests/__mocks__/infra/adapters/cryptography/mock-jwt-adapter'

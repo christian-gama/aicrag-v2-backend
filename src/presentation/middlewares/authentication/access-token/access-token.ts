@@ -1,4 +1,4 @@
-import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import {
   HttpHelperProtocol,
   HttpRequestToken,

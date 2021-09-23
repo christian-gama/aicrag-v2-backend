@@ -1,7 +1,6 @@
 import { IUser } from '@/domain'
-import { IRefreshToken } from '@/application/protocols/providers/refresh-token-protocol'
-import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
+import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
+import { DecoderProtocol, EncrypterProtocol } from '@/application/protocols/cryptography'
 import { HttpHelperProtocol, HttpRequestToken } from '@/presentation/helpers/http/protocols'
 import { RefreshToken } from '@/presentation/middlewares/authentication/refresh-token/'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
@@ -11,7 +10,6 @@ import {
 import { makeFakeRefreshToken } from '@/tests/__mocks__/domain/mock-refresh-token'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
 import { makeVerifyTokenStub } from '@/tests/__mocks__/infra/providers/mock-verify-token'
-import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
 interface SutTypes {
   sut: RefreshToken
   fakeRefreshToken: IRefreshToken

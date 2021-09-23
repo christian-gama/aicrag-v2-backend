@@ -1,6 +1,6 @@
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { UserCredentialError } from '../../errors'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { ValidatorProtocol } from '@/application/protocols/validators'
+import { UserCredentialError } from '../errors'
 
 export class ValidateEmailExists implements ValidatorProtocol {
   constructor (private readonly userDbRepository: UserDbRepositoryProtocol) {}

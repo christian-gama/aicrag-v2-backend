@@ -1,4 +1,4 @@
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
 
 export const makeGenerateTokenStub = (): GenerateTokenProtocol => {
   class GenerateTokenStub implements GenerateTokenProtocol {

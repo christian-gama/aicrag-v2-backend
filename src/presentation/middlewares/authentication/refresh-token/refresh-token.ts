@@ -1,6 +1,5 @@
-import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
-import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
+import { DecoderProtocol, EncrypterProtocol } from '@/application/protocols/cryptography'
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import {
   HttpHelperProtocol,
   HttpRequestToken,

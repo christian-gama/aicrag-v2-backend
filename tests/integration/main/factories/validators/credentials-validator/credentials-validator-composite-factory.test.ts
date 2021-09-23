@@ -1,16 +1,8 @@
-import {
-  ValidationComposite,
-  ValidatorProtocol
-} from '@/application/usecases/validators/credentials-validator'
-import {
-  makeCredentialsValidatorComposite,
-  makeRequiredFields,
-  makeValidateEmail,
-  makeValidatePassword,
-  makeValidateEmailExists,
-  makeValidatePasswordMatch,
-  makeValidateActiveAccount
-} from '@/main/factories/validators/credentials-validator'
+import { ValidatorProtocol } from '@/application/protocols/validators'
+import { ValidationComposite } from '@/application/usecases/validators'
+import { makeRequiredFields } from '@/main/factories/validators/activate-account-validator'
+import { makeCredentialsValidatorComposite, makeValidatePassword, makeValidatePasswordMatch } from '@/main/factories/validators/credentials-validator'
+import { makeValidateEmail, makeValidateEmailExists, makeValidateActiveAccount } from '@/main/factories/validators/forgot-password-validator'
 
 jest.mock('../../../../../../src/application/usecases/validators/validation-composite.ts')
 

@@ -1,4 +1,4 @@
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
+import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 import { makeLogErrorDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/log/mock-log-error-db-repository'
 

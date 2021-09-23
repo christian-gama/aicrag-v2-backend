@@ -1,4 +1,5 @@
-import { Uuid, UuidProtocol } from '@/application/usecases/helpers/uuid/'
+import { UuidProtocol } from '@/application/protocols/helpers'
+import { Uuid } from '@/application/usecases/helpers'
 
 interface SutTypes {
   sut: UuidProtocol

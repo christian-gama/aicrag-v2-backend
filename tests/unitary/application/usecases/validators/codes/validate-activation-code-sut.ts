@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { ValidateActivationCode } from '@/application/usecases/validators/codes-validator/validate-activation-code'
+import { ValidateActivationCode } from '@/application/usecases/validators'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
 import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
 import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'

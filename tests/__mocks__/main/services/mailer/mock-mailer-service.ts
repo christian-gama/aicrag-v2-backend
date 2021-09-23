@@ -1,4 +1,4 @@
-import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
+import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { MailerServiceError } from '@/application/usecases/errors'
 import { IUser } from '@/domain'
 

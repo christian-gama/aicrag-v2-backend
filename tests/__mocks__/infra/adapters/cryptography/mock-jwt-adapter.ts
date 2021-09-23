@@ -1,8 +1,8 @@
 import {
   DecodedProtocol,
   DecoderProtocol
-} from '@/application/protocols/cryptography/decoder-protocol'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
+  , EncrypterProtocol
+} from '@/application/protocols/cryptography'
 
 export const makeDecoderStub = (): DecoderProtocol => {
   class DecoderStub implements DecoderProtocol {

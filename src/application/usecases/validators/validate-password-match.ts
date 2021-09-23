@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ComparerProtocol } from '@/application/protocols/cryptography'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { UserCredentialError } from '../../errors'
+import { ValidatorProtocol } from '@/application/protocols/validators'
+import { UserCredentialError } from '../errors'
 
 export class ValidatePasswordMatch implements ValidatorProtocol {
   constructor (

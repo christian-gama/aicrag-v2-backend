@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
-import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
+import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { UserDbRepositoryProtocol } from '@/infra/database/mongodb/user'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 import { ForgotPasswordController } from '@/presentation/controllers/authentication/forgot-password/forgot-password-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
@@ -10,7 +10,7 @@ import { makeValidatorStub } from '@/tests/__mocks__/application/validators/mock
 import { makeUserDbRepositoryStub } from '@/tests/__mocks__/infra/database/mongodb/user/mock-user-db-repository'
 import { makeMailerServiceStub } from '@/tests/__mocks__/main/services/mailer/mock-mailer-service'
 import { makeGenerateTokenStub } from '@/tests/__mocks__/infra/providers/mock-generate-token'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
 
 interface SutTypes {
   sut: ForgotPasswordController

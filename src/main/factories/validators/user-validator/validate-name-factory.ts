@@ -1,4 +1,4 @@
-import { ValidateName } from '@/application/usecases/validators/user-validator'
+import { ValidateName } from '@/application/usecases/validators'
 
 export const makeValidateName = (): ValidateName => {
   return new ValidateName()

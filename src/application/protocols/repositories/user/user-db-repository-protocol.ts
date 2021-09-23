@@ -1,4 +1,4 @@
-import { ISignUpUserCredentials, IUser } from '@/domain/user/index'
+import { ISignUpUserCredentials, IUser } from '@/domain/user'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 
 /**

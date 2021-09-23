@@ -1,5 +1,5 @@
-import { IUser, ISignUpUserCredentials } from '@/domain/user/index'
-import { UserRepositoryProtocol } from '@/application/usecases/repositories/user'
+import { IUser, ISignUpUserCredentials } from '@/domain/user'
+import { UserRepositoryProtocol } from '@/application/protocols/repositories'
 
 export const makeUserRepositoryStub = (fakeUser: IUser): UserRepositoryProtocol => {
   class UserRepositoryStub implements UserRepositoryProtocol {

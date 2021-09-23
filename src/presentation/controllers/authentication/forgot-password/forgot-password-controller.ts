@@ -1,14 +1,14 @@
 import { IUser } from '@/domain'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
 } from '@/presentation/helpers/http/protocols'
 import { ControllerProtocol } from '../login'
-import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
-import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
+import { MailerServiceProtocol } from '@/application/protocols/mailer'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
 
 export class ForgotPasswordController implements ControllerProtocol {
   constructor (

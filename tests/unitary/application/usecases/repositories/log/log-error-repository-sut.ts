@@ -1,4 +1,4 @@
-import { LogErrorRepository } from '@/application/usecases/repositories/log/log-error-repository'
+import { LogErrorRepository } from '@/application/usecases/repositories/log-error-repository'
 
 interface SutTypes {
   sut: LogErrorRepository

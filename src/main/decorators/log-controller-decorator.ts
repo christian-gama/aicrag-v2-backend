@@ -1,4 +1,4 @@
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
+import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 

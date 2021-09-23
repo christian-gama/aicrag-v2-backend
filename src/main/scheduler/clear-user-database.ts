@@ -1,5 +1,5 @@
 import { ILogError } from '@/domain'
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories/log/log-error-db-repository-protocol'
+import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
 

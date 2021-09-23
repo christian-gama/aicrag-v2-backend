@@ -1,4 +1,4 @@
-import { UuidProtocol } from '@/application/protocols/helpers/uuid/uuid-protocol'
+import { UuidProtocol } from '@/application/protocols/helpers'
 
 export const makeUuidStub = (): UuidProtocol => {
   class UuidProtocolStub implements UuidProtocol {

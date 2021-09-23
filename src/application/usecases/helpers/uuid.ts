@@ -1,4 +1,4 @@
-import { UuidProtocol } from '@/application/usecases/helpers/uuid/'
+import { UuidProtocol } from '@/application/protocols/helpers'
 
 export class Uuid implements UuidProtocol {
   generate (): string {

@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { AccessToken } from '@/presentation/middlewares/authentication/access-token/'
 import { HttpHelperProtocol, HttpRequestToken } from '@/presentation/helpers/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'

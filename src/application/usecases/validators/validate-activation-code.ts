@@ -1,6 +1,6 @@
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
-import { AccountAlreadyActivatedError, CodeIsExpiredError, InvalidCodeError } from '../../errors'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { ValidatorProtocol } from '@/application/protocols/validators'
+import { AccountAlreadyActivatedError, CodeIsExpiredError, InvalidCodeError } from '../errors'
 
 export class ValidateActivationCode implements ValidatorProtocol {
   constructor (private readonly userDbRepository: UserDbRepositoryProtocol) {}

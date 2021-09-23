@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { InactiveAccountError } from '@/application/usecases/errors'
-import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 
 export class ValidateActiveAccount implements ValidatorProtocol {
   constructor (private readonly userDbRepository: UserDbRepositoryProtocol) {}

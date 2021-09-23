@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { VerifyTokenProtocol } from '@/application/protocols/providers/verify-token-protocol'
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { makeFakeUser } from '../../domain/mock-user'
 
 export const makeVerifyTokenStub = (): VerifyTokenProtocol => {

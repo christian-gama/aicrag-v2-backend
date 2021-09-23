@@ -1,4 +1,4 @@
-import { ValidateEmail } from '@/application/usecases/validators/user-validator'
+import { ValidateEmail } from '@/application/usecases/validators'
 import { EmailValidatorAdapter } from '@/infra/adapters/validators/email-validator/email-validator-adapter'
 
 export const makeValidateEmail = (): ValidateEmail => {

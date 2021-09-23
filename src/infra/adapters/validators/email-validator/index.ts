@@ -1,2 +1,2 @@
-export * from '@/application/protocols/validators/email-validator/email-validator-protocol'
+export * from '@/application/protocols/validators'
 export * from './email-validator-adapter'
