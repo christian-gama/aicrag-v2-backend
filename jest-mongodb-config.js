@@ -4,8 +4,8 @@ module.exports = {
       skipMD5: true
     },
     autoStart: false,
-    instance: {}
-  },
-
-  useSharedDBForAllJestWorkers: false
+    instance: {
+      dbName: 'jest'
+    }
+  }
 }
