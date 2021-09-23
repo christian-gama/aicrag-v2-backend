@@ -1,5 +1,5 @@
-import { ILogError } from '@/domain'
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories'
+import { ILogError } from '@/domain'
 
 export class LogErrorRepository implements LogErrorRepositoryProtocol {
   createLog (error: Error): ILogError {

@@ -1,0 +1,17 @@
+import { LogoutController } from '@/presentation/controllers/authentication'
+import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { makeTryCatchControllerDecorator } from '../../decorators'
+import { makeHttpHelper } from '../../helpers'
+import { makeUserDbRepository } from '../../repositories'
+
+export const makeLogoutController = (): ControllerProtocol => {
+  const httpHelper = makeHttpHelper()
+  const userDbRepository = makeUserDbRepository()
+
+  const logoutController = new LogoutController(
+    httpHelper,
+    userDbRepository
+  )
+
+  return makeTryCatchControllerDecorator(logoutController)
+}

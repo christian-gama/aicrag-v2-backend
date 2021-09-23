@@ -1,4 +1,4 @@
-import { env } from '@/main/config/env'
+import { environment } from '@/main/config/environment'
 import { MailerServiceError } from '@/application/usecases/errors'
 import { MailerSettingsProtocol } from '@/application/protocols/mailer'
 import { MailerService } from '@/main/mailer/mailer-service'
@@ -48,7 +48,7 @@ describe('MailerService', () => {
   })
 
   it('Should call sendMail with correct settings for production environment', async () => {
-    env.SERVER.NODE_ENV = 'production'
+    environment.SERVER.NODE_ENV = 'production'
 
     const { sut, settings } = makeSut()
 
@@ -59,14 +59,14 @@ describe('MailerService', () => {
     expect(createTransportSpy).toHaveBeenCalledWith({
       name: 'nodemailer-sendgrid',
       options: {
-        apiKey: env.MAILER.SENDGRID.APIKEY
+        apiKey: environment.MAILER.SENDGRID.APIKEY
       },
       version: '1.0.3'
     })
   })
 
   it('Should call sendMail with correct settings for development environment', async () => {
-    env.SERVER.NODE_ENV = 'development'
+    environment.SERVER.NODE_ENV = 'development'
 
     const { sut, settings } = makeSut()
 
@@ -76,11 +76,11 @@ describe('MailerService', () => {
 
     expect(createTransportSpy).toHaveBeenCalledWith({
       auth: {
-        pass: env.MAILER.MAILTRAP.PASSWORD,
-        user: env.MAILER.MAILTRAP.USER
+        pass: environment.MAILER.MAILTRAP.PASSWORD,
+        user: environment.MAILER.MAILTRAP.USER
       },
-      host: env.MAILER.MAILTRAP.HOST,
-      port: +env.MAILER.MAILTRAP.PORT
+      host: environment.MAILER.MAILTRAP.HOST,
+      port: +environment.MAILER.MAILTRAP.PORT
     })
   })
 

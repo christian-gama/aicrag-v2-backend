@@ -1,5 +1,5 @@
-import { ISignUpUserCredentials, IUser } from '@/domain/user'
-import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
+import { ISignUpUserCredentials, IUser } from '@/domain'
+import { UserDbFilter } from '@/infra/database/mongodb/protocols'
 
 /**
  * @description Generic user database repository.

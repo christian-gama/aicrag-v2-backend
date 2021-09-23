@@ -1,6 +1,6 @@
 import { MailerSettingsProtocol } from '@/application/protocols/mailer'
-import { MailerServiceError } from '@/application/usecases/errors/mailer-service-error'
-import { env } from '../config/env'
+import { MailerServiceError } from '@/application/usecases/errors'
+import { environment } from '../config/environment'
 
 import * as nodemailer from 'nodemailer'
 import sendgrid from 'nodemailer-sendgrid'
@@ -9,7 +9,7 @@ export abstract class MailerService {
   protected async sendEmail (settings: MailerSettingsProtocol): Promise<true | MailerServiceError> {
     try {
       await this.transporter.sendMail({
-        from: env.MAILER.SETTINGS.FROM,
+        from: environment.MAILER.SETTINGS.FROM,
         to: settings.to,
         subject: settings.subject,
         text: settings.text,
@@ -23,17 +23,17 @@ export abstract class MailerService {
   }
 
   private get transporter (): nodemailer.Transporter {
-    if (env.SERVER.NODE_ENV === 'development' || env.SERVER.NODE_ENV === 'test') {
+    if (environment.SERVER.NODE_ENV === 'development' || environment.SERVER.NODE_ENV === 'test') {
       return nodemailer.createTransport({
-        host: env.MAILER.MAILTRAP.HOST,
-        port: +env.MAILER.MAILTRAP.PORT,
+        host: environment.MAILER.MAILTRAP.HOST,
+        port: +environment.MAILER.MAILTRAP.PORT,
         auth: {
-          user: env.MAILER.MAILTRAP.USER,
-          pass: env.MAILER.MAILTRAP.PASSWORD
+          user: environment.MAILER.MAILTRAP.USER,
+          pass: environment.MAILER.MAILTRAP.PASSWORD
         }
       })
     }
 
-    return nodemailer.createTransport(sendgrid({ apiKey: env.MAILER.SENDGRID.APIKEY as string }))
+    return nodemailer.createTransport(sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY as string }))
   }
 }

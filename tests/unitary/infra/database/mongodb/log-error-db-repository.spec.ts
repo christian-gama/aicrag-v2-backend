@@ -1,7 +1,7 @@
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories'
 import { ILogError } from '@/domain'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { LogErrorDbRepository } from '@/infra/database/mongodb/log/log-error-db-repository'
+import { LogErrorDbRepository } from '@/infra/database/mongodb/repositories'
 import { makeFakeLogError, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'

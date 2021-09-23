@@ -1,6 +1,6 @@
-import { GenerateRefreshToken } from '@/infra/providers/token/generate-refresh-token'
-import { makeJwtRefreshToken } from '@/main/factories/cryptography/jwt-refresh-token-factory'
-import { makeUserDbRepository } from '@/main/factories/repositories/user/user-db-repository/user-db-repository-factory'
+import { GenerateRefreshToken } from '@/infra/providers/token'
+import { makeJwtRefreshToken } from '../../cryptography'
+import { makeUserDbRepository } from '../../repositories'
 
 export const makeGenerateRefreshToken = (): GenerateRefreshToken => {
   const jwtRefreshToken = makeJwtRefreshToken()

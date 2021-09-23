@@ -1,6 +1,6 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
-import { makeHttpHelper } from '../factories/helpers/http-helper-factory'
+import { makeHttpHelper } from '../factories/helpers'
 
 export class TryCatchControllerDecorator implements ControllerProtocol {
   constructor (private readonly controller: ControllerProtocol) {}

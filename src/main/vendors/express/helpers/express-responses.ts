@@ -1,11 +1,8 @@
 import { InternalError } from '@/application/usecases/errors'
 import { HttpResponse } from '@/presentation/helpers/http/protocols'
+import { createAccessTokenCookie, createRefreshTokenCookie } from './create-token-cookie'
 
 import { Response } from 'express'
-import {
-  createAccessTokenCookie,
-  createRefreshTokenCookie
-} from '@/main/vendors/express/helpers/create-token-cookie'
 
 export const defaultResponse = (expressResponse: Response, httpResponse: HttpResponse): void => {
   expressResponse.json({
@@ -14,7 +11,10 @@ export const defaultResponse = (expressResponse: Response, httpResponse: HttpRes
   })
 }
 
-export const accessTokenResponse = (expressResponse: Response, httpResponse: HttpResponse): void => {
+export const accessTokenResponse = (
+  expressResponse: Response,
+  httpResponse: HttpResponse
+): void => {
   createAccessTokenCookie(expressResponse, httpResponse)
 
   defaultResponse(expressResponse, httpResponse)

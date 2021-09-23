@@ -1,8 +1,8 @@
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
-import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpHelper } from '@/presentation/helpers/http-helper'
+import { HttpHelper } from '@/presentation/helpers/http/http-helper'
 import { makeControllerStub, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

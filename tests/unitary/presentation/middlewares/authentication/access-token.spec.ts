@@ -1,6 +1,6 @@
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { IUser } from '@/domain'
-import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { HttpHelperProtocol, HttpRequestToken } from '@/presentation/helpers/http/protocols'
 import { AccessToken } from '@/presentation/middlewares/authentication/access-token'
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'

@@ -1,5 +1,5 @@
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
-import { makeLogErrorDbRepository } from '../repositories/log/log-error-db-repository/log-error-db-repository-factory'
+import { makeLogErrorDbRepository } from '../repositories'
 
 export const makeClearUserDatabase = (): ClearUserDatabase => {
   const logErrorDbRepository = makeLogErrorDbRepository()

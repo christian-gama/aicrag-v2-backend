@@ -1,5 +1,5 @@
+import { environment } from '@/main/config/environment'
 import { HttpResponse } from '@/presentation/helpers/http/protocols'
-import { env } from '../../../config/env'
 
 import { Response } from 'express'
 
@@ -9,7 +9,7 @@ export const createRefreshTokenCookie = (
 ): Response<any, Record<any, string>> => {
   return expressResponse.cookie('refreshToken', httpResponse.data.refreshToken, {
     httpOnly: true,
-    secure: env.SERVER.NODE_ENV === 'production'
+    secure: environment.SERVER.NODE_ENV === 'production'
   })
 }
 
@@ -19,6 +19,6 @@ export const createAccessTokenCookie = (
 ): Response<any, Record<any, string>> => {
   return expressResponse.cookie('accessToken', httpResponse.data.accessToken, {
     httpOnly: true,
-    secure: env.SERVER.NODE_ENV === 'production'
+    secure: environment.SERVER.NODE_ENV === 'production'
   })
 }

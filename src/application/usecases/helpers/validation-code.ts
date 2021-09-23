@@ -1,5 +1,5 @@
 import { ValidationCodeProtocol } from '@/application/protocols/helpers'
-import { randomAlphanumeric } from './random-alphanumeric'
+import { randomAlphanumeric } from '.'
 
 export class ValidationCode implements ValidationCodeProtocol {
   generate (): string {

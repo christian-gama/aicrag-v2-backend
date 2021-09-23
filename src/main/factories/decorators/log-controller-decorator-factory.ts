@@ -1,6 +1,6 @@
 import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
-import { ControllerProtocol } from '@/presentation/controllers/authentication/login'
-import { makeLogErrorDbRepository } from '../repositories/log/log-error-db-repository/log-error-db-repository-factory'
+import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { makeLogErrorDbRepository } from '../repositories'
 
 export const makeLogControllerDecorator = (controller: ControllerProtocol): LogControllerDecorator => {
   const logErrorDbRepository = makeLogErrorDbRepository()

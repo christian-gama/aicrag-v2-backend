@@ -1,7 +1,7 @@
 import { UserRepositoryProtocol } from '@/application/protocols/repositories'
 import { IUser } from '@/domain'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { UserDbRepository } from '@/infra/database/mongodb/user'
+import { UserDbRepository } from '@/infra/database/mongodb/repositories'
 import {
   makeFakeUser,
   makeUserRepositoryStub,

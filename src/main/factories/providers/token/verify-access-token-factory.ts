@@ -1,6 +1,6 @@
-import { VerifyAccessToken } from '@/infra/providers/token/verify-access-token'
-import { makeJwtAccessToken } from '@/main/factories/cryptography/jwt-access-token-factory'
-import { makeUserDbRepository } from '../../repositories/user/user-db-repository/user-db-repository-factory'
+import { VerifyAccessToken } from '@/infra/providers/token'
+import { makeJwtAccessToken } from '../../cryptography'
+import { makeUserDbRepository } from '../../repositories'
 
 export const makeVerifyAccessToken = (): VerifyAccessToken => {
   const jwtAccessToken = makeJwtAccessToken()

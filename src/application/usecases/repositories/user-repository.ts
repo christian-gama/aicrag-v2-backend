@@ -1,7 +1,7 @@
-import { IUser, ISignUpUserCredentials } from '@/domain/user'
 import { HasherProtocol } from '@/application/protocols/cryptography'
-import { UuidProtocol, ValidationCodeProtocol } from '@/application/protocols/helpers'
+import { ValidationCodeProtocol, UuidProtocol } from '@/application/protocols/helpers'
 import { UserRepositoryProtocol } from '@/application/protocols/repositories'
+import { ISignUpUserCredentials, IUser } from '@/domain'
 
 export class UserRepository implements UserRepositoryProtocol {
   constructor (

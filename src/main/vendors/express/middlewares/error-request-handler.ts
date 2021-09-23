@@ -1,4 +1,4 @@
-import { env } from '../../../config/env'
+import { environment } from '@/main/config/environment'
 import { errorHandler } from '../helpers/error-handler'
 
 import { ErrorRequestHandler } from 'express'
@@ -7,7 +7,7 @@ export const errorRequestHandler: ErrorRequestHandler = (err, req, res, next) =>
   const error = errorHandler(err)
 
   // Development
-  if (env.SERVER.NODE_ENV === 'development') {
+  if (environment.SERVER.NODE_ENV === 'development') {
     if (error.statusCode.toString().startsWith('4')) {
       res.status(error.statusCode)
       return res.json({

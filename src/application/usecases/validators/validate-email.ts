@@ -1,5 +1,5 @@
-import { EmailValidatorProtocol, ValidatorProtocol } from '@/application/protocols/validators'
-import { InvalidParamError } from '@/application/usecases/errors'
+import { ValidatorProtocol, EmailValidatorProtocol } from '@/application/protocols/validators'
+import { InvalidParamError } from '../errors'
 
 export class ValidateEmail implements ValidatorProtocol {
   constructor (private readonly emailValidator: EmailValidatorProtocol) {}

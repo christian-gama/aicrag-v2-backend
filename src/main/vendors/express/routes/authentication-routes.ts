@@ -1,13 +1,14 @@
-import { Router } from 'express'
 import {
+  isLoggedInMiddleware,
   accessTokenMiddleware,
   activateAccountController,
   forgotPasswordController,
-  isLoggedInMiddleware,
   loginController,
   logoutController,
   signUpController
 } from '.'
+
+import { Router } from 'express'
 
 const router = Router()
 

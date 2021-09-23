@@ -1,5 +1,5 @@
-import { JwtAdapter } from '@/infra/adapters/cryptography/jwt'
-import { env } from '@/main/config/env'
+import { JwtAdapter } from '@/infra/adapters/cryptography'
+import { environment } from '@/main/config/environment'
 
 import jwt from 'jsonwebtoken'
 
@@ -11,8 +11,8 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const expires = env.JWT.ACCESS_EXPIRES
-  const secret = env.JWT.ACCESS_SECRET
+  const expires = environment.JWT.ACCESS_EXPIRES
+  const secret = environment.JWT.ACCESS_SECRET
   const token = jwt.sign({ id: 'any_id' }, secret, { expiresIn: expires })
   const sut = new JwtAdapter(expires, secret)
 

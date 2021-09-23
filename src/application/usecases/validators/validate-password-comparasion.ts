@@ -1,5 +1,5 @@
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { InvalidParamError } from '@/application/usecases/errors'
+import { InvalidParamError } from '../errors'
 
 export class ValidatePasswordComparasion implements ValidatorProtocol {
   validate (input: any): Error | undefined {

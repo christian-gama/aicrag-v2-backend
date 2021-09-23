@@ -1,5 +1,5 @@
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { MissingParamError } from '@/application/usecases/errors'
+import { MissingParamError } from '../errors'
 
 export class ValidateRequiredFields implements ValidatorProtocol {
   constructor (private readonly field: string) {}

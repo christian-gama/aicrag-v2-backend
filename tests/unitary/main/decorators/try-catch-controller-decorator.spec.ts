@@ -1,7 +1,7 @@
 import { TryCatchControllerDecorator } from '@/main/decorators/try-catch-controller-decorator'
-import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpHelper } from '@/presentation/helpers/http-helper'
+import { HttpHelper } from '@/presentation/helpers/http/http-helper'
 import { makeControllerStub } from '@/tests/__mocks__'
 
 interface SutTypes {

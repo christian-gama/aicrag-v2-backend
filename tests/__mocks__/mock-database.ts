@@ -1,6 +1,6 @@
 import { LogErrorDbRepositoryProtocol, UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ILogError, IUser, ISignUpUserCredentials } from '@/domain'
-import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
+import { UserDbFilter } from '@/infra/database/mongodb/protocols/update-user-options'
 import { makeFakeLogError } from './mock-log-error'
 
 export const makeLogErrorDbRepositoryStub = (error: Error): LogErrorDbRepositoryProtocol => {

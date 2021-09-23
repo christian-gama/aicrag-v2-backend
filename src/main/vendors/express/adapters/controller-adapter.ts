@@ -1,12 +1,7 @@
+import { environment } from '@/main/config/environment'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
-import { env } from '@/main/config/env'
-import {
-  accessTokenResponse,
-  defaultResponse,
-  productionErrorResponse,
-  refreshTokenResponse
-} from '@/main/vendors/express/helpers/express-responses'
+import { refreshTokenResponse, accessTokenResponse, productionErrorResponse, defaultResponse } from '../helpers/express-responses'
 
 import { NextFunction, Request, Response } from 'express'
 
@@ -25,7 +20,7 @@ export const controllerAdapter = (controller: ControllerProtocol) => {
         return accessTokenResponse(res, httpResponseData)
       }
 
-      if (httpResponseData.statusCode === 500 && env.SERVER.NODE_ENV === 'production') {
+      if (httpResponseData.statusCode === 500 && environment.SERVER.NODE_ENV === 'production') {
         return productionErrorResponse(res, httpResponseData)
       }
 

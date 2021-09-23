@@ -1,6 +1,6 @@
+import { environment } from '@/main/config/environment'
 import { HttpRequestToken, HttpResponse } from '@/presentation/helpers/http/protocols'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
-import { env } from '@/main/config/env'
 
 import { Request, Response, NextFunction } from 'express'
 
@@ -17,7 +17,7 @@ export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
       if (String(httpResponse.statusCode).startsWith('2')) {
         res.cookie('accessToken', httpResponse.data.accessToken, {
           httpOnly: true,
-          secure: env.SERVER.NODE_ENV === 'production'
+          secure: environment.SERVER.NODE_ENV === 'production'
         })
 
         req.cookies.accessToken = httpResponse.data.accessToken

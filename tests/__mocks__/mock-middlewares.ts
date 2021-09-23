@@ -1,4 +1,4 @@
-import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { HttpRequestToken, HttpResponse } from '@/presentation/helpers/http/protocols'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
 

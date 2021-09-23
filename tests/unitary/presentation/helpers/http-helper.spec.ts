@@ -1,4 +1,4 @@
-import { HttpHelper } from '@/presentation/helpers/http-helper'
+import { HttpHelper } from '@/presentation/helpers/http/http-helper'
 
 import faker from 'faker'
 

@@ -1,8 +1,8 @@
-import { IUser } from '@/domain'
 import { EncrypterProtocol } from '@/application/protocols/cryptography'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { UserDbFilter } from '@/infra/database/mongodb/user/protocols/update-user-options'
+import { IUser } from '@/domain'
+import { UserDbFilter } from '@/infra/database/mongodb/protocols'
 
 export class GenerateRefreshToken implements GenerateTokenProtocol {
   constructor (

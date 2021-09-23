@@ -1,6 +1,6 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
-import { makeHttpHelper } from '@/main/factories/helpers/http-helper-factory'
+import { makeHttpHelper } from '@/main/factories/helpers'
 
 export const makeControllerStub = (): ControllerProtocol => {
   class ControllerStub implements ControllerProtocol {

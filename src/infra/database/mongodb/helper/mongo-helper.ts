@@ -1,5 +1,6 @@
+import { Collections } from '../protocols/'
+
 import { Collection, MongoClient } from 'mongodb'
-import { Collections } from './protocols/mongo-collections-protocol'
 
 export const MongoHelper = {
   client: MongoClient,

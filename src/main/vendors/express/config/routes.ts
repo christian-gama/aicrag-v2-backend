@@ -1,6 +1,5 @@
+import { notFound, errorRequestHandler } from '../middlewares'
 import authenticationRoutes from '../routes/authentication-routes'
-import { errorRequestHandler } from '../middlewares/error-request-handler'
-import { notFound } from '../middlewares/not-found'
 
 import { Express } from 'express'
 

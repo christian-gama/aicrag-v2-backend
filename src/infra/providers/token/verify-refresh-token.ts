@@ -1,8 +1,8 @@
 import { DecoderProtocol } from '@/application/protocols/cryptography'
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { InvalidTokenError, TokenMissingError } from '@/application/usecases/errors'
+import { TokenMissingError, InvalidTokenError } from '@/application/usecases/errors'
 import { IUser } from '@/domain'
-import { VerifyTokenProtocol } from '../../../application/protocols/providers'
 
 export class VerifyRefreshToken implements VerifyTokenProtocol {
   constructor (

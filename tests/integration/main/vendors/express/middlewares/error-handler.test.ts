@@ -1,7 +1,7 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import app from '@/main/vendors/express/config/app'
 import { controllerAdapter } from '@/main/vendors/express/adapters/controller-adapter'
-import { env } from '@/main/config/env'
+import { environment } from '@/main/config/environment'
 import { errorRequestHandler } from '@/main/vendors/express/middlewares/error-request-handler'
 
 import request from 'supertest'
@@ -18,10 +18,10 @@ const makeControllerStub = (): ControllerProtocol => {
 }
 
 describe('ErrorRequestHandler', () => {
-  const environment = process.env.NODE_ENV as 'production' | 'development'
+  const env = process.env.NODE_ENV as 'production' | 'development'
 
   afterAll(() => {
-    env.SERVER.NODE_ENV = environment
+    environment.SERVER.NODE_ENV = env
   })
 
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe('ErrorRequestHandler', () => {
   })
 
   it('Should return a full error if environment is on development', async () => {
-    env.SERVER.NODE_ENV = 'development'
+    environment.SERVER.NODE_ENV = 'development'
     await agent
       .post('/error_handler')
       .send({})
@@ -47,7 +47,7 @@ describe('ErrorRequestHandler', () => {
   })
 
   it('Should return a shorten error if environment is on production', async () => {
-    env.SERVER.NODE_ENV = 'production'
+    environment.SERVER.NODE_ENV = 'production'
     await agent
       .post('/error_handler')
       .send({})
