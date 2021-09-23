@@ -6,7 +6,7 @@ import { ValidatorProtocol } from '@/application/protocols/validators'
 import { ConflictParamError, InvalidParamError, MustLogoutError, MailerServiceError } from '@/application/usecases/errors'
 import { IPublicUser, IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
-import { SignUpController } from '@/presentation/controllers/authentication'
+import { SignUpController } from '@/presentation/controllers/signup'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { makeFakeUser, makeFakePublicUser, makeFilterUserDataStub, makeGenerateTokenStub, makeUserDbRepositoryStub, makeValidatorStub, makeMailerServiceStub } from '@/tests/__mocks__'
 

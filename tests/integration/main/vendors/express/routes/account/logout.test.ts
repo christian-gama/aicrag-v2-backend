@@ -20,7 +20,7 @@ describe('GET /logout', () => {
     await userCollection.insertOne(fakeUser)
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
 
-    app.get('/api/auth/logout', isLoggedInMiddleware, logoutController)
+    app.get('/api/v1/account/logout', isLoggedInMiddleware, logoutController)
   })
 
   afterAll(async () => {
@@ -34,10 +34,10 @@ describe('GET /logout', () => {
   const agent = request.agent(app)
 
   it('Should return 200 if user is logged in', async () => {
-    await agent.get('/api/auth/logout').set('Cookie', `refreshToken=${refreshToken}`).expect(200)
+    await agent.get('/api/v1/account/logout').set('Cookie', `refreshToken=${refreshToken}`).expect(200)
   })
 
   it('Should return 401 if user is logged out', async () => {
-    await agent.get('/api/auth/logout').expect(403)
+    await agent.get('/api/v1/account/logout').expect(403)
   })
 })

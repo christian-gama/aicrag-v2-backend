@@ -15,7 +15,7 @@ describe('POST /activate-account', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.post('/api/auth/activate-account', activateAccountController)
+    app.post('/api/v1/login/activate-account', activateAccountController)
   })
 
   afterAll(async () => {
@@ -38,7 +38,7 @@ describe('POST /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/auth/activate-account')
+      .post('/api/v1/login/activate-account')
       .send({ email: fakeUser.personal.email, activationCode: activationCode })
       .expect(200)
   })
@@ -52,7 +52,7 @@ describe('POST /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/auth/activate-account')
+      .post('/api/v1/login/activate-account')
       .send({ email: fakeUser.personal.email, activationCode: 'invalid_code' })
       .expect(401)
   })
@@ -70,7 +70,7 @@ describe('POST /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/auth/activate-account')
+      .post('/api/v1/login/activate-account')
       .send({ email: fakeUser.personal.email, activationCode: activationCode })
       .expect(401)
   })
@@ -85,7 +85,7 @@ describe('POST /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/auth/activate-account')
+      .post('/api/v1/login/activate-account')
       .send({ email: fakeUser.personal.email, activationCode: activationCode })
       .expect(401)
   })
@@ -97,6 +97,6 @@ describe('POST /activate-account', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent.post('/api/auth/activate-account').send().expect(401)
+    await agent.post('/api/v1/login/activate-account').send().expect(401)
   })
 })

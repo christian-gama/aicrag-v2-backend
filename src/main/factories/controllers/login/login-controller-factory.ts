@@ -1,4 +1,4 @@
-import { LoginController } from '@/presentation/controllers/authentication'
+import { LoginController } from '@/presentation/controllers/login'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { makeTryCatchControllerDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'

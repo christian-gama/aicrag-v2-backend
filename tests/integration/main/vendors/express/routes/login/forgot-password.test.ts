@@ -15,7 +15,7 @@ describe('POST /forgot-password', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.post('/api/auth/forgot-password', forgotPasswordController)
+    app.post('/api/v1/login/forgot-password', forgotPasswordController)
   })
 
   afterAll(async () => {
@@ -34,7 +34,7 @@ describe('POST /forgot-password', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/auth/forgot-password')
+      .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
       .expect(200)
   })
@@ -43,7 +43,7 @@ describe('POST /forgot-password', () => {
     const fakeUser = makeFakeUser()
 
     await agent
-      .post('/api/auth/forgot-password')
+      .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
       .expect(400)
   })

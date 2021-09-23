@@ -2,7 +2,7 @@ import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { MustLoginError } from '@/application/usecases/errors'
 import { IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
-import { LogoutController } from '@/presentation/controllers/authentication/logout-controller'
+import { LogoutController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 

@@ -14,7 +14,7 @@ describe('POST /signup', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.post('/api/auth/signup', signUpController)
+    app.post('/api/v1/signup', signUpController)
   })
 
   afterAll(async () => {
@@ -28,11 +28,11 @@ describe('POST /signup', () => {
   const agent = request.agent(app)
 
   it('Should return 200 if all validations succeds', async () => {
-    await agent.post('/api/auth/signup').send(makeFakeSignUpUserCredentials()).expect(200)
-  })
+    await agent.post('/api/v1/signup').send(makeFakeSignUpUserCredentials()).expect(200)
+  }, 12000)
 
   it('Should return 400 if validation fails', async () => {
-    await agent.post('/api/auth/signup').send({}).expect(400)
+    await agent.post('/api/v1/signup').send({}).expect(400)
   })
 
   it('Should return 409 if email already exists', async () => {
@@ -45,10 +45,10 @@ describe('POST /signup', () => {
     }
     await userCollection.insertOne(fakeUser)
 
-    await agent.post('/api/auth/signup').send(fakeSignUpUserCredentials).expect(409)
+    await agent.post('/api/v1/signup').send(fakeSignUpUserCredentials).expect(409)
   })
 
   it('Should return 400 if miss a param or param is invalid', async () => {
-    await agent.post('/api/auth/signup').send().expect(400)
+    await agent.post('/api/v1/signup').send().expect(400)
   })
 })

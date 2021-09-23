@@ -1,9 +1,6 @@
-import { makeActivateAccountController, makeForgotPasswordController } from '@/main/factories/controllers/account'
-import {
-  makeLoginController,
-  makeLogoutController,
-  makeSignUpController
-} from '@/main/factories/controllers/authentication'
+import { makeLogoutController } from '@/main/factories/controllers/account'
+import { makeLoginController, makeActivateAccountController, makeForgotPasswordController } from '@/main/factories/controllers/login'
+import { makeSignUpController } from '@/main/factories/controllers/signup'
 import { makeAccessToken, makeRefreshToken } from '@/main/factories/middlewares/authentication'
 import { makeVerifyRefreshToken } from '@/main/factories/providers/token'
 import { controllerAdapter } from '../adapters/controller-adapter'

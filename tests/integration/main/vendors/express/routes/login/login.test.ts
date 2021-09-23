@@ -15,7 +15,7 @@ describe('POST /login', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.post('/api/auth/login', loginController)
+    app.post('/api/v1/login', loginController)
   })
 
   afterAll(async () => {
@@ -38,14 +38,14 @@ describe('POST /login', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/auth/login')
+      .post('/api/v1/login')
       .send({ email: fakeUser.personal.email, password: userPassword })
       .expect(200)
   })
 
   it('Should return 401 if credentials are invalid', async () => {
     await agent
-      .post('/api/auth/login')
+      .post('/api/v1/login')
       .send({ email: 'invalid_email@email.com', password: 'invalid_password' })
       .expect(401)
   })
@@ -59,12 +59,12 @@ describe('POST /login', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/auth/login')
+      .post('/api/v1/login')
       .send({ email: fakeUser.personal.email, password: userPassword })
       .expect(200)
   })
 
   it('Should return 400 if miss a param or param is invalid', async () => {
-    await agent.post('/api/auth/login').send().expect(400)
+    await agent.post('/api/v1/login').send().expect(400)
   })
 })
