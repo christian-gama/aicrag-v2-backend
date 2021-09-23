@@ -6,20 +6,18 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/main/vendors/express/server.js",
+    "build": "rimraf dist && tsc -p tsconfig.build.json && yarn copy-assets",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/vendors/express/server.js",
     "copy-assets": "copyfiles -u 1 src/**/*.pug dist/",
     "tsc:watch": "tsc -w -p tsconfig.build.json && yarn copy-assets",
-    "tsc:build": "rimraf dist && tsc -p tsconfig.build.json && yarn copy-assets",
     "up": "yarn tsc:build && docker-compose up -d",
     "down": "docker-compose down",
     "test": "yarn test:unit && yarn test:integration",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
-    "test:verbose": "jest --passWithNoTests --detectOpenHandles",
-    "test:secure": "set LOOP_TIME=10&& jest --clearCache && yarn test:verbose --maxWorkers 1",
-    "test:unit": "yarn test:silent -c jest-unit-config.js  --maxWorkers 8",
-    "test:integration": "yarn test:silent -c jest-integration-config.js --maxWorkers 1",
-    "test:staged": "yarn test --findRelatedTests",
-    "test:ci": "yarn test:secure --coverage"
+    "test:verbose": "jest --passWithNoTests --detectOpenHandles --maxWorkers=1",
+    "test:unit": "yarn test:silent -c jest-unit-config.js --maxWorkers=6",
+    "test:integration": "yarn test:silent -c jest-integration-config.js --maxWorkers=1",
+    "test:ci": "jest --clearCache && yarn test:verbose --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",

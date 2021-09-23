@@ -2,8 +2,9 @@ module.exports = {
   roots: ['<rootDir>/tests'],
   collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/main/**'],
   modulePathIgnorePatterns: ['protocols'],
+  watchPathIgnorePatterns: ['globalConfig'],
   coverageDirectory: 'coverage',
-  testEnvironment: 'node',
+  coverageProvider: 'babel',
   preset: '@shelf/jest-mongodb',
   transform: {
     '.+\\.ts$': 'ts-jest'
