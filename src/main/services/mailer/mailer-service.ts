@@ -23,7 +23,7 @@ export abstract class MailerService {
   }
 
   private get transporter (): nodemailer.Transporter {
-    if (env.SERVER.NODE_ENV === 'development') {
+    if (env.SERVER.NODE_ENV === 'development' || env.SERVER.NODE_ENV === 'test') {
       return nodemailer.createTransport({
         host: env.MAILER.MAILTRAP.HOST,
         port: +env.MAILER.MAILTRAP.PORT,

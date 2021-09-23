@@ -19,7 +19,7 @@ export const env = {
     REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES?.trim().toLowerCase() ?? '30d'
   },
   SERVER: {
-    NODE_ENV: (process.env.NODE_ENV?.trim().toLowerCase() as 'development' | 'production') ?? 'production',
+    NODE_ENV: (process.env.NODE_ENV?.trim().toLowerCase() as 'development' | 'production' | 'test') ?? 'production',
     PORT: process.env.PORT?.trim() ?? '3000'
   },
   MAILER: {
