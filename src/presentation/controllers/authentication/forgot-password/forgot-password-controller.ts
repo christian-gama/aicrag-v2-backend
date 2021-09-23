@@ -1,5 +1,4 @@
 import { IUser } from '@/domain/user'
-import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'
 import { ValidatorProtocol } from '@/application/protocols/validators/validator-protocol'
 import {
@@ -9,13 +8,14 @@ import {
 } from '@/presentation/helpers/http/protocols'
 import { ControllerProtocol } from '../login'
 import { MailerServiceProtocol } from '@/application/protocols/services/mailer/mailer-service-protocol'
+import { GenerateTokenProtocol } from '@/application/protocols/providers/generate-token-protocol'
 
 export class ForgotPasswordController implements ControllerProtocol {
   constructor (
     private readonly forgotPasswordEmail: MailerServiceProtocol,
     private readonly forgotPasswordValidator: ValidatorProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly jwtAccessToken: EncrypterProtocol,
+    private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
@@ -28,10 +28,7 @@ export class ForgotPasswordController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(email)) as IUser
 
-    const resetPasswordToken = this.jwtAccessToken.encrypt({
-      email: user.personal.email,
-      id: user.personal.id
-    })
+    const resetPasswordToken = this.generateAccessToken.generate(user) as string
 
     await this.userDbRepository.updateUser(user, {
       'temporary.resetPasswordToken': resetPasswordToken
