@@ -1,4 +1,4 @@
-import { IRefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
+import { IRefreshToken } from '@/application/protocols/providers/refresh-token-protocol'
 import { IUser } from '@/domain/user'
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories/user/user-db-repository-protocol'

@@ -1,5 +1,5 @@
 import faker from 'faker'
-import { IRefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
+import { IRefreshToken } from '@/application/protocols/providers/refresh-token-protocol'
 
 export const makeFakeRefreshToken = (): IRefreshToken => {
   return {

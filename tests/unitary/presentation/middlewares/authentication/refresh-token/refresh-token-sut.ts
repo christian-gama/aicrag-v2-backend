@@ -1,5 +1,5 @@
 import { IUser } from '@/domain/user/index'
-import { IRefreshToken } from '@/domain/refresh-token/refresh-token-protocol'
+import { IRefreshToken } from '@/application/protocols/providers/refresh-token-protocol'
 import { DecoderProtocol } from '@/application/protocols/cryptography/decoder-protocol'
 import { EncrypterProtocol } from '@/application/protocols/cryptography/encrypter-protocol'
 import { HttpHelperProtocol, HttpRequestToken } from '@/presentation/helpers/http/protocols'
