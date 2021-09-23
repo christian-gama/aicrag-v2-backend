@@ -1,8 +1,8 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'
 import app from '@/main/vendors/express/config/app'
-import { isLoggedInMiddleware, logoutController } from '@/main/vendors/express/routes/.'
-import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
+import { isLoggedInMiddleware, logoutController } from '@/main/vendors/express/routes'
+import { makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'

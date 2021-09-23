@@ -1,7 +1,8 @@
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { forgotPasswordController } from '@/main/vendors/express/routes/.'
 import app from '@/main/vendors/express/config/app'
-import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
+import { forgotPasswordController } from '@/main/vendors/express/routes'
+import { makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'

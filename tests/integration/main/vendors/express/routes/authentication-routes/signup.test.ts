@@ -1,8 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { signUpController } from '@/main/vendors/express/routes/.'
 import app from '@/main/vendors/express/config/app'
-import { makeFakeSignUpUserCredentials } from '@/tests/__mocks__/domain/mock-signup-user-credentials'
-import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
+import { signUpController } from '@/main/vendors/express/routes'
+import { makeFakeSignUpUserCredentials, makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'

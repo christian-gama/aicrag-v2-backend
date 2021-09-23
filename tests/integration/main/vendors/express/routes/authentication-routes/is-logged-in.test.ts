@@ -1,9 +1,10 @@
+
 import { IUser } from '@/domain'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import app from '@/main/vendors/express/config/app'
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token/generate-refresh-token-factory'
-import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
-import { isLoggedInMiddleware } from '@/main/vendors/express/routes/.'
+import app from '@/main/vendors/express/config/app'
+import { isLoggedInMiddleware } from '@/main/vendors/express/routes'
+import { makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'

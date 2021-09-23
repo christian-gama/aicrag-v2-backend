@@ -1,8 +1,23 @@
+import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
-import { makeSut } from './clear-user-database-sut'
+import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
+import { makeLogErrorDbRepositoryStub, makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
+
+interface SutTypes {
+  sut: ClearUserDatabase
+  error: Error
+  logErrorDbRepositoryStub: LogErrorDbRepositoryProtocol
+}
+
+const makeSut = (): SutTypes => {
+  const error = new Error('any_message')
+  const logErrorDbRepositoryStub = makeLogErrorDbRepositoryStub(error)
+  const sut = new ClearUserDatabase(logErrorDbRepositoryStub)
+
+  return { sut, error, logErrorDbRepositoryStub }
+}
 
 describe('ClearUserDatabase', () => {
   let userCollection: Collection

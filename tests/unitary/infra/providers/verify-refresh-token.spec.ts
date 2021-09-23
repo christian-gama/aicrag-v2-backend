@@ -1,5 +1,28 @@
+import { DecoderProtocol } from '@/application/protocols/cryptography'
+import { IRefreshToken } from '@/application/protocols/providers'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { InvalidTokenError, TokenMissingError } from '@/application/usecases/errors'
-import { makeSut } from './verify-refresh-token-sut'
+import { IUser } from '@/domain'
+import { VerifyRefreshToken } from '@/infra/providers/token/verify-refresh-token'
+import { makeFakeRefreshToken, makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+interface SutTypes {
+  sut: VerifyRefreshToken
+  fakeRefreshToken: IRefreshToken
+  fakeUser: IUser
+  jwtRefreshTokenStub: DecoderProtocol
+  userDbRepositoryStub: UserDbRepositoryProtocol
+}
+
+const makeSut = (): SutTypes => {
+  const fakeRefreshToken = makeFakeRefreshToken()
+  const fakeUser = makeFakeUser()
+  const jwtRefreshTokenStub = makeDecoderStub()
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+
+  const sut = new VerifyRefreshToken(jwtRefreshTokenStub, userDbRepositoryStub)
+
+  return { sut, fakeRefreshToken, fakeUser, jwtRefreshTokenStub, userDbRepositoryStub }
+}
 
 describe('VerifyRefreshToken', () => {
   it('Should return TokenMissingError if there is no refresh token', async () => {

@@ -1,5 +1,26 @@
-import { InvalidTokenError, TokenMissingError } from '@/application/usecases/errors'
-import { makeSut } from './verify-access-token-sut'
+import { DecoderProtocol } from '@/application/protocols/cryptography'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { TokenMissingError, InvalidTokenError } from '@/application/usecases/errors'
+import { IUser } from '@/domain'
+import { VerifyAccessToken } from '@/infra/providers/token/verify-access-token'
+import { makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+
+interface SutTypes {
+  sut: VerifyAccessToken
+  fakeUser: IUser
+  jwtAccessTokenStub: DecoderProtocol
+  userDbRepositoryStub: UserDbRepositoryProtocol
+}
+
+const makeSut = (): SutTypes => {
+  const fakeUser = makeFakeUser()
+  const jwtAccessTokenStub = makeDecoderStub()
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+
+  const sut = new VerifyAccessToken(jwtAccessTokenStub, userDbRepositoryStub)
+
+  return { sut, fakeUser, jwtAccessTokenStub, userDbRepositoryStub }
+}
 
 describe('VerifyRefreshToken', () => {
   it('Should return TokenMissingError if there is no token', async () => {

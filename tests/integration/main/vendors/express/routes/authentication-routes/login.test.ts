@@ -1,7 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { loginController } from '@/main/vendors/express/routes/'
 import app from '@/main/vendors/express/config/app'
-import { makeFakeUser } from '@/tests/__mocks__/domain/mock-user'
+import { makeFakeUser } from '@/tests/__mocks__/mock-user'
 
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'

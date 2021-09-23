@@ -6,8 +6,6 @@ import { errorRequestHandler } from '@/main/vendors/express/middlewares/error-re
 
 import request from 'supertest'
 
-const agent = request.agent(app)
-
 const error = new Error('any_message')
 const makeControllerStub = (): ControllerProtocol => {
   class ControllerStub implements ControllerProtocol {
@@ -30,6 +28,8 @@ describe('ErrorRequestHandler', () => {
     app.post('/error_handler', controllerAdapter(makeControllerStub()))
     app.use(errorRequestHandler)
   })
+
+  const agent = request.agent(app)
 
   it('Should return statusCode 500', async () => {
     await agent.post('/error_handler').send({}).expect(500)
