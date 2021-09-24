@@ -3,12 +3,25 @@ import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { ConflictParamError, InvalidParamError, MustLogoutError, MailerServiceError } from '@/application/usecases/errors'
+import {
+  ConflictParamError,
+  InvalidParamError,
+  MustLogoutError,
+  MailerServiceError
+} from '@/application/usecases/errors'
 import { IPublicUser, IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { SignUpController } from '@/presentation/controllers/signup'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import { makeFakeUser, makeFakePublicUser, makeFilterUserDataStub, makeGenerateTokenStub, makeUserDbRepositoryStub, makeValidatorStub, makeMailerServiceStub } from '@/tests/__mocks__'
+import {
+  makeFakeUser,
+  makeFakePublicUser,
+  makeFilterUserDataStub,
+  makeGenerateTokenStub,
+  makeUserDbRepositoryStub,
+  makeValidatorStub,
+  makeMailerServiceStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: SignUpController
@@ -65,6 +78,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('SignUpController', () => {
+  it('Should return forbidden if user is already logged in', async () => {
+    const { sut, fakeUser, httpHelper, request } = makeSut()
+    request.user = fakeUser
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.forbidden(new MustLogoutError()))
+  })
+
   it('Should call findUserByEmail with the correct value', async () => {
     const { sut, userDbRepositoryStub, request } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -152,15 +174,6 @@ describe('SignUpController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(error))
-  })
-
-  it('Should return badRequest if user is already logged in', async () => {
-    const { sut, fakeUser, httpHelper, request } = makeSut()
-    request.user = fakeUser
-
-    const response = await sut.handle(request)
-
-    expect(response).toEqual(httpHelper.badRequest(new MustLogoutError()))
   })
 
   it('Should return serverError if mailer service throws', async () => {

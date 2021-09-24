@@ -20,7 +20,7 @@ export class SignUpController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const signUpUserCredentials = httpRequest.body
 
-    if (httpRequest.user) return this.httpHelper.badRequest(new MustLogoutError())
+    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
     const error = await this.userValidator.validate(signUpUserCredentials)
 

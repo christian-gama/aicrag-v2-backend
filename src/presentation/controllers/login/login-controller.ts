@@ -24,7 +24,7 @@ export class LoginController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const credentials = httpRequest.body
 
-    if (httpRequest.user) return this.httpHelper.badRequest(new MustLogoutError())
+    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
     const error = await this.credentialsValidator.validate(credentials)
 
