@@ -45,15 +45,12 @@ describe('ValidateName', () => {
   it('Should return nothing if succeds', () => {
     const { sut } = makeSut()
     const data1 = { password: faker.internet.password(6) }
-
-    const value1 = sut.validate(data1)
-
-    expect(value1).toBeFalsy()
-
     const data2 = { password: faker.internet.password(32) }
 
+    const value1 = sut.validate(data1)
     const value2 = sut.validate(data2)
 
+    expect(value1).toBeFalsy()
     expect(value2).toBeFalsy()
   })
 })

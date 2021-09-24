@@ -37,7 +37,6 @@ describe('VerifyResetPasswordToken', () => {
 
   it('Should call jwtAccessToken.decode with correct token', async () => {
     const { sut, jwtAccessTokenStub } = makeSut()
-
     const unauthorizedSpy = jest.spyOn(jwtAccessTokenStub, 'decode')
 
     await sut.verify('any_token')
@@ -47,7 +46,6 @@ describe('VerifyResetPasswordToken', () => {
 
   it('Should call userDbRepository.findUserById with correct user id', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
-
     const findUserByIdSpy = jest.spyOn(userDbRepositoryStub, 'findUserById')
 
     await sut.verify('any_token')
@@ -57,7 +55,6 @@ describe('VerifyResetPasswordToken', () => {
 
   it('Should return InvalidTokenError if there is no user', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
-
     jest.spyOn(userDbRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(undefined))
 
     const response = await sut.verify('any_token')
@@ -67,7 +64,6 @@ describe('VerifyResetPasswordToken', () => {
 
   it("Should return InvalidTokenError if user's token is different from param token", async () => {
     const { sut, fakeUser, userDbRepositoryStub } = makeSut()
-
     jest.spyOn(userDbRepositoryStub, 'findUserById').mockImplementation(async () => {
       fakeUser.temporary.resetPasswordToken = 'different_token'
 
@@ -86,7 +82,6 @@ describe('VerifyResetPasswordToken', () => {
       .mockReturnValueOnce(
         Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
       )
-
     jest.spyOn(userDbRepositoryStub, 'findUserById').mockImplementation(async () => {
       fakeUser.temporary.resetPasswordToken = 'any_token'
 

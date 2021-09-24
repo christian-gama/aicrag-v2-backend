@@ -18,9 +18,9 @@ interface SutTypes {
   fakePublicUser: IPublicUser
   fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
-  httpHelper: HttpHelperProtocol
   generateAccessTokenStub: GenerateTokenProtocol
   generateRefreshTokenStub: GenerateTokenProtocol
+  httpHelper: HttpHelperProtocol
   request: HttpRequest
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
@@ -30,18 +30,18 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const fakePublicUser = makeFakePublicUser(fakeUser)
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
-  const httpHelper = new HttpHelper()
   const generateAccessTokenStub = makeGenerateTokenStub()
   const generateRefreshTokenStub = makeGenerateTokenStub()
+  const httpHelper = new HttpHelper()
   const request = { body: { email: fakeUser.personal.email, password: fakeUser.personal.password } }
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
   const sut = new LoginController(
     credentialsValidatorStub,
     filterUserDataStub,
-    httpHelper,
     generateAccessTokenStub,
     generateRefreshTokenStub,
+    httpHelper,
     userDbRepositoryStub
   )
 
@@ -51,9 +51,9 @@ const makeSut = (): SutTypes => {
     fakePublicUser,
     fakeUser,
     filterUserDataStub,
-    httpHelper,
     generateAccessTokenStub,
     generateRefreshTokenStub,
+    httpHelper,
     request,
     userDbRepositoryStub
   }
@@ -70,12 +70,10 @@ describe('LoginController', () => {
   })
 
   it('Should call unauthorized with the correct value', async () => {
-    const { sut, httpHelper, credentialsValidatorStub, request } = makeSut()
-
+    const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
     const error = new UserCredentialError()
-    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
-
     const unauthorizedSpy = jest.spyOn(httpHelper, 'unauthorized')
+    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)
 
@@ -84,11 +82,9 @@ describe('LoginController', () => {
 
   it('Should call badRequest with the correct value if it is an InvalidParamError', async () => {
     const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
-
+    const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
     const error = new InvalidParamError('email')
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
-
-    const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
 
     await sut.handle(request)
 
@@ -97,11 +93,9 @@ describe('LoginController', () => {
 
   it('Should call badRequest with the correct value if it is a MissingParamError', async () => {
     const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
-
+    const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
     const error = new MissingParamError('email')
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
-
-    const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
 
     await sut.handle(request)
 
@@ -110,7 +104,6 @@ describe('LoginController', () => {
 
   it('Should return ok with accessToken only if account is not activated with the correct value if it is an InactiveAccountError', async () => {
     const { sut, credentialsValidatorStub, httpHelper, request } = makeSut()
-
     const error = new InactiveAccountError()
     jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
 
@@ -121,7 +114,6 @@ describe('LoginController', () => {
 
   it('Should call generate with correct user', async () => {
     const { sut, fakeUser, generateAccessTokenStub, request } = makeSut()
-
     const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
     await sut.handle(request)
@@ -130,7 +122,7 @@ describe('LoginController', () => {
   })
 
   it('Should call findUserByEmail with the correct value', async () => {
-    const { sut, userDbRepositoryStub, request } = makeSut()
+    const { sut, request, userDbRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
@@ -181,9 +173,9 @@ describe('LoginController', () => {
     await sut.handle(request)
 
     expect(okSpy).toHaveBeenCalledWith({
-      user: fakePublicUser,
+      accessToken: 'any_token',
       refreshToken: 'any_token',
-      accessToken: 'any_token'
+      user: fakePublicUser
     })
   })
 

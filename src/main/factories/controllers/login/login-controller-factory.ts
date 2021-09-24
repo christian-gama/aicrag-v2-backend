@@ -10,17 +10,17 @@ import { makeCredentialsValidatorComposite } from '../../validators'
 export const makeLoginController = (): ControllerProtocol => {
   const credentialsValidator = makeCredentialsValidatorComposite()
   const filterUserData = makeFilterUserData()
-  const httpHelper = makeHttpHelper()
   const generateAccessToken = makeGenerateAccessToken()
   const generateRefreshToken = makeGenerateRefreshToken()
+  const httpHelper = makeHttpHelper()
   const userDbRepository = makeUserDbRepository()
 
   const loginController = new LoginController(
     credentialsValidator,
     filterUserData,
-    httpHelper,
     generateAccessToken,
     generateRefreshToken,
+    httpHelper,
     userDbRepository
   )
 

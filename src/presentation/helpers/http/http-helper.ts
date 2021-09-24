@@ -5,65 +5,65 @@ export class HttpHelper implements HttpHelperProtocol {
   // Range: 400 ~ 409
   badRequest (error: Error): HttpResponse {
     return {
+      data: { message: error.message },
       status: false,
-      statusCode: 400,
-      data: { message: error.message }
+      statusCode: 400
     }
   }
 
   unauthorized (error: Error): HttpResponse {
     return {
+      data: { message: error.message },
       status: false,
-      statusCode: 401,
-      data: { message: error.message }
+      statusCode: 401
     }
   }
 
   forbidden (error: Error): HttpResponse {
     return {
+      data: { message: error.message },
       status: false,
-      statusCode: 403,
-      data: { message: error.message }
+      statusCode: 403
     }
   }
 
   notFound (error: Error): HttpResponse {
     return {
+      data: { message: error.message },
       status: false,
-      statusCode: 404,
-      data: { message: error.message }
+      statusCode: 404
     }
   }
 
   conflict (error: Error): HttpResponse {
     return {
+      data: { message: error.message },
       status: false,
-      statusCode: 409,
-      data: { message: error.message }
+      statusCode: 409
     }
   }
 
   // ****************
   // Range: 200 ~ 204
   ok (data: { [key: string]: any }): HttpResponse {
-    return { status: true, statusCode: 200, data }
+    return { data, status: true, statusCode: 200 }
   }
 
   created (data: any): HttpResponse {
-    return { status: true, statusCode: 201, data }
+    return { data, status: true, statusCode: 201 }
   }
 
   deleted (): HttpResponse {
-    return { status: true, statusCode: 204, data: { message: 'Content deleted' } }
+    return { data: { message: 'Content deleted' }, status: true, statusCode: 204 }
   }
 
   // ****************
   // Range: 500
   serverError (error: Error): HttpResponse {
     return {
+      data: { error: { message: error.message, name: error.name, stack: error.stack } },
       status: false,
-      statusCode: 500,
-      data: { error: { name: error.name, message: error.message, stack: error.stack } }
+      statusCode: 500
     }
   }
 }

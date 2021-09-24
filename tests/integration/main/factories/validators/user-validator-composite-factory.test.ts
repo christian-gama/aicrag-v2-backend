@@ -1,7 +1,7 @@
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { ValidationComposite } from '@/application/usecases/validators'
 
-import { makeRequiredFields, makeValidatePassword, makeValidateEmail, makeUserValidatorComposite, makeValidateName, makeValidatePasswordComparasion } from '@/main/factories/validators'
+import { makeUserValidatorComposite, makeRequiredFields, makeValidateName, makeValidateEmail, makeValidatePassword, makeValidatePasswordComparasion } from '@/main/factories/validators'
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 

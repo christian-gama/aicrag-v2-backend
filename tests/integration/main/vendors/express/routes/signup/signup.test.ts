@@ -49,8 +49,8 @@ describe('POST /signup', () => {
   it('Should return 409 if email already exists', async () => {
     const fakeUser = makeFakeUser()
     const fakeSignUpUserCredentials = {
-      name: fakeUser.personal.name,
       email: fakeUser.personal.email,
+      name: fakeUser.personal.name,
       password: fakeUser.personal.password,
       passwordConfirmation: fakeUser.personal.password
     }

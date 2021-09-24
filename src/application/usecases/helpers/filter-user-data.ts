@@ -6,9 +6,9 @@ export class FilterUserData implements FilterUserDataProtocol {
   filter (user: IUser): IPublicUser {
     return {
       personal: {
+        email: user.personal.email,
         id: user.personal.id,
-        name: user.personal.name,
-        email: user.personal.email
+        name: user.personal.name
       },
       settings: {
         currency: user.settings.currency

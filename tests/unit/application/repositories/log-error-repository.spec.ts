@@ -17,9 +17,9 @@ describe('LogErrorRepository', () => {
 
     const value = sut.createLog(error)
 
-    expect(value.name).toBe(error.name)
     expect(new Date(value.date).getTime()).not.toBe(NaN)
     expect(value.message).toBe(error.message)
+    expect(value.name).toBe(error.name)
     expect(value.stack).toBe(error.stack)
   })
 })

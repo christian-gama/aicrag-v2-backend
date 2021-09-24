@@ -30,7 +30,7 @@ export const verifyResetPasswordTokenController = controllerAdapter(makeVerifyRe
 /* **** End of Controllers **** */
 
 /* ********** Middlewares *********** */
-export const isLoggedInMiddleware = isLoggedInMiddlewareAdapter(makeVerifyRefreshToken())
 export const accessTokenMiddleware = tokenMiddlewareAdapter(makeAccessToken())
+export const isLoggedInMiddleware = isLoggedInMiddlewareAdapter(makeVerifyRefreshToken())
 export const refreshTokenMiddleware = tokenMiddlewareAdapter(makeRefreshToken())
 /* ******* End of Middlewares ******* */

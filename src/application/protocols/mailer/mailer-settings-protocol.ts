@@ -3,8 +3,8 @@
  */
 
 export interface MailerSettingsProtocol {
-  readonly to: string
+  readonly html: string
   readonly subject: string
   readonly text: string
-  readonly html: string
+  readonly to: string
 }

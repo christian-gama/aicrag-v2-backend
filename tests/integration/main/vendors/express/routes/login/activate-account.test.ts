@@ -41,7 +41,7 @@ describe('POST /activate-account', () => {
 
     await agent
       .post('/api/v1/login/activate-account')
-      .send({ email: fakeUser.personal.email, activationCode: activationCode })
+      .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(200)
   })
 
@@ -73,7 +73,7 @@ describe('POST /activate-account', () => {
 
     await agent
       .post('/api/v1/login/activate-account')
-      .send({ email: fakeUser.personal.email, activationCode: activationCode })
+      .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(401)
   })
 
@@ -88,7 +88,7 @@ describe('POST /activate-account', () => {
 
     await agent
       .post('/api/v1/login/activate-account')
-      .send({ email: fakeUser.personal.email, activationCode: activationCode })
+      .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(401)
   })
 

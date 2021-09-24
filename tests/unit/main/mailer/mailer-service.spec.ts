@@ -17,10 +17,10 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const settings: MailerSettingsProtocol = {
-    to: 'any_email',
+    html: 'any_html',
     subject: 'any_subject',
     text: 'any_text',
-    html: 'any_html'
+    to: 'any_email'
   }
 
   const sut = new DummyService()
@@ -28,16 +28,16 @@ const makeSut = (): SutTypes => {
   return { sut, settings }
 }
 
-jest.mock('nodemailer')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodemailer = require('nodemailer')
 const sendMailMock = jest.fn().mockReturnValueOnce('ok')
 nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock })
+jest.mock('nodemailer')
 
 describe('MailerService', () => {
   beforeEach(() => {
-    sendMailMock.mockClear()
     nodemailer.createTransport.mockClear()
+    sendMailMock.mockClear()
   })
 
   it('Should return true if email is sent', async () => {
@@ -49,11 +49,9 @@ describe('MailerService', () => {
   })
 
   it('Should call sendMail with correct settings for production environment', async () => {
-    environment.SERVER.NODE_ENV = 'production'
-
     const { sut, settings } = makeSut()
-
     const createTransportSpy = jest.spyOn(nodemailer, 'createTransport')
+    environment.SERVER.NODE_ENV = 'production'
 
     await sut.send(settings)
 
@@ -67,11 +65,9 @@ describe('MailerService', () => {
   })
 
   it('Should call sendMail with correct settings for development environment', async () => {
-    environment.SERVER.NODE_ENV = 'development'
-
     const { sut, settings } = makeSut()
-
     const createTransportSpy = jest.spyOn(nodemailer, 'createTransport')
+    environment.SERVER.NODE_ENV = 'development'
 
     await sut.send(settings)
 
@@ -90,6 +86,7 @@ describe('MailerService', () => {
     sendMailMock.mockImplementationOnce(() => {
       throw new Error()
     })
+
     const result = await sut.send(settings)
 
     expect(result).toBeInstanceOf(MailerServiceError)

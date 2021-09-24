@@ -21,6 +21,6 @@ export class RefreshToken implements MiddlewareProtocol {
 
     const accessToken = this.jwtAccessToken.encrypt({ userId: response.personal.id })
 
-    return this.httpHelper.ok({ refreshToken, accessToken })
+    return this.httpHelper.ok({ accessToken, refreshToken })
   }
 }

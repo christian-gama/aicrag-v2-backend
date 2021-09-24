@@ -14,6 +14,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidatorStub()
+
   const sut = new ValidateEmail(emailValidatorStub)
 
   return { sut, emailValidatorStub }
@@ -22,9 +23,8 @@ const makeSut = (): SutTypes => {
 describe('ValidateEmail', () => {
   it('Should return a new InvalidParamError if email is invalid', () => {
     const { sut, emailValidatorStub } = makeSut()
-    jest.spyOn(emailValidatorStub, 'isEmail').mockReturnValueOnce(false)
-
     const data = { email: 'invalid_email' }
+    jest.spyOn(emailValidatorStub, 'isEmail').mockReturnValueOnce(false)
 
     const value = sut.validate(data)
 
@@ -33,9 +33,8 @@ describe('ValidateEmail', () => {
 
   it('Should call emailValidator with correct value', async () => {
     const { sut, emailValidatorStub } = makeSut()
-    const isEmailSpy = jest.spyOn(emailValidatorStub, 'isEmail')
-
     const data = { email: faker.internet.email() }
+    const isEmailSpy = jest.spyOn(emailValidatorStub, 'isEmail')
 
     sut.validate(data) as unknown
 

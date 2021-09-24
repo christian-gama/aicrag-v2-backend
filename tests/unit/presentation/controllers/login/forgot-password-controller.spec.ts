@@ -21,10 +21,10 @@ import {
 interface SutTypes {
   sut: ForgotPasswordController
   fakeUser: IUser
-  forgotPasswordValidatorStub: ValidatorProtocol
   forgotPasswordEmailStub: MailerServiceProtocol
-  httpHelper: HttpHelperProtocol
+  forgotPasswordValidatorStub: ValidatorProtocol
   generateTokenStub: GenerateTokenProtocol
+  httpHelper: HttpHelperProtocol
   request: HttpRequest
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
@@ -33,16 +33,16 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const forgotPasswordEmailStub = makeMailerServiceStub()
   const forgotPasswordValidatorStub = makeValidatorStub()
-  const httpHelper = makeHttpHelper()
   const generateTokenStub = makeGenerateTokenStub()
+  const httpHelper = makeHttpHelper()
   const request = { body: { email: fakeUser.personal.email } }
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
   const sut = new ForgotPasswordController(
     forgotPasswordEmailStub,
     forgotPasswordValidatorStub,
-    httpHelper,
     generateTokenStub,
+    httpHelper,
     userDbRepositoryStub
   )
 
@@ -51,8 +51,8 @@ const makeSut = (): SutTypes => {
     fakeUser,
     forgotPasswordEmailStub,
     forgotPasswordValidatorStub,
-    httpHelper,
     generateTokenStub,
+    httpHelper,
     request,
     userDbRepositoryStub
   }
@@ -89,7 +89,7 @@ describe('Forgot Password', () => {
   })
 
   it('Should call findUserByEmail with correct email', async () => {
-    const { sut, userDbRepositoryStub, request } = makeSut()
+    const { sut, request, userDbRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
@@ -99,7 +99,6 @@ describe('Forgot Password', () => {
 
   it('Should call updateUser with correct email', async () => {
     const { sut, fakeUser, userDbRepositoryStub, request } = makeSut()
-
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
@@ -111,14 +110,12 @@ describe('Forgot Password', () => {
 
   it('Should call send with updated user', async () => {
     const { sut, fakeUser, forgotPasswordEmailStub, request, userDbRepositoryStub } = makeSut()
+    const sendSpy = jest.spyOn(forgotPasswordEmailStub, 'send')
     const updatedFakeUser = JSON.parse(JSON.stringify(fakeUser))
     updatedFakeUser.temporary.resetPasswordToken = 'updated_token'
-
     jest
       .spyOn(userDbRepositoryStub, 'updateUser')
       .mockReturnValueOnce(Promise.resolve(updatedFakeUser))
-
-    const sendSpy = jest.spyOn(forgotPasswordEmailStub, 'send')
 
     await sut.handle(request)
 

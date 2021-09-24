@@ -29,14 +29,14 @@ import {
 
 interface SutTypes {
   sut: SignUpController
-  userDbRepositoryStub: UserDbRepositoryProtocol
-  userValidatorStub: ValidatorProtocol
   fakePublicUser: IPublicUser
   fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
   generateAccessTokenStub: GenerateTokenProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  userDbRepositoryStub: UserDbRepositoryProtocol
+  userValidatorStub: ValidatorProtocol
   welcomeEmailStub: MailerServiceProtocol
 }
 
@@ -48,8 +48,8 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request = {
     body: {
-      name: fakeUser.personal.name,
       email: fakeUser.personal.email,
+      name: fakeUser.personal.name,
       password: fakeUser.personal.password,
       passwordConfirmation: fakeUser.personal.password
     }
@@ -92,7 +92,7 @@ describe('SignUpController', () => {
   })
 
   it('Should call findUserByEmail with the correct value', async () => {
-    const { sut, userDbRepositoryStub, request } = makeSut()
+    const { sut, request, userDbRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
@@ -101,7 +101,7 @@ describe('SignUpController', () => {
   })
 
   it('Should return conflict if email exists', async () => {
-    const { sut, userDbRepositoryStub, fakeUser, httpHelper, request } = makeSut()
+    const { sut, fakeUser, httpHelper, request, userDbRepositoryStub } = makeSut()
     const error = new ConflictParamError('email')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -113,7 +113,7 @@ describe('SignUpController', () => {
   })
 
   it('Should call the saveUser with correct values', async () => {
-    const { sut, userDbRepositoryStub, request } = makeSut()
+    const { sut, request, userDbRepositoryStub } = makeSut()
     const saveUserSpy = jest.spyOn(userDbRepositoryStub, 'saveUser')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -126,12 +126,10 @@ describe('SignUpController', () => {
 
   it('Should call generate with the correct user', async () => {
     const { sut, fakeUser, generateAccessTokenStub, request, userDbRepositoryStub } = makeSut()
-
+    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
-
-    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
     await sut.handle(request)
 
@@ -139,7 +137,7 @@ describe('SignUpController', () => {
   })
 
   it('Should call validate with correct values', async () => {
-    const { sut, userDbRepositoryStub, userValidatorStub, request } = makeSut()
+    const { sut, request, userDbRepositoryStub, userValidatorStub } = makeSut()
     const validateSpy = jest.spyOn(userValidatorStub, 'validate')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -151,16 +149,13 @@ describe('SignUpController', () => {
   })
 
   it('Should call badRequest with the correct value', async () => {
-    const { sut, userDbRepositoryStub, userValidatorStub, httpHelper, request } = makeSut()
-
-    const error = new Error('any_error')
-    jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
-
+    const { sut, httpHelper, request, userDbRepositoryStub, userValidatorStub } = makeSut()
     const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
-
+    const error = new Error('any_error')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
+    jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)
 
@@ -168,12 +163,12 @@ describe('SignUpController', () => {
   })
 
   it('Should return badRequest if validation fails with an error message', async () => {
-    const { sut, userDbRepositoryStub, userValidatorStub, httpHelper, request } = makeSut()
+    const { sut, httpHelper, request, userDbRepositoryStub, userValidatorStub } = makeSut()
     const error = new InvalidParamError('any_field')
-    jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
+    jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
 
     const response = await sut.handle(request)
 
@@ -183,11 +178,10 @@ describe('SignUpController', () => {
   it('Should return serverError if mailer service throws', async () => {
     const { sut, httpHelper, request, userDbRepositoryStub, welcomeEmailStub } = makeSut()
     const error = new MailerServiceError()
+    jest.spyOn(welcomeEmailStub, 'send').mockReturnValueOnce(Promise.resolve(error))
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
-
-    jest.spyOn(welcomeEmailStub, 'send').mockReturnValueOnce(Promise.resolve(error))
 
     const response = await sut.handle(request)
 

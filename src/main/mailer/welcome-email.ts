@@ -13,16 +13,16 @@ export class WelcomeEmail extends MailerService implements MailerServiceProtocol
     const subject = 'Boas vindas ao Aicrag! Utilize o código abaixo para ativar a sua conta:'
 
     const html = pug.renderFile(path.resolve(__dirname, 'templates', 'welcome.pug'), {
+      attachment: user.temporary.activationCode as string,
       name: user.personal.name,
-      subject,
-      attachment: user.temporary.activationCode as string
+      subject
     })
 
     const settings: MailerSettingsProtocol = {
-      to: user.personal.email,
-      subject,
       html: html,
-      text: htmlToText(html)
+      subject,
+      text: htmlToText(html),
+      to: user.personal.email
     }
 
     return await this.sendEmail(settings)

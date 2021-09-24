@@ -1,4 +1,3 @@
-
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import app from '@/main/vendors/express/config/app'

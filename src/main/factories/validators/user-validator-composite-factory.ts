@@ -3,8 +3,8 @@ import { ValidationComposite } from '@/application/usecases/validators'
 
 import {
   makeRequiredFields,
-  makeValidateName,
   makeValidateEmail,
+  makeValidateName,
   makeValidatePassword,
   makeValidatePasswordComparasion
 } from '.'

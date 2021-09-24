@@ -43,7 +43,7 @@ describe('ErrorRequestHandler', () => {
       .send({})
       .expect({
         status: 'fail',
-        data: { error: { name: error.name, message: error.message, stack: error.stack } }
+        data: { error: { message: error.message, name: error.name, stack: error.stack } }
       })
   })
 

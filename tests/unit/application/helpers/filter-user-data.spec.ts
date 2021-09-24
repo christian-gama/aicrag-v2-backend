@@ -25,9 +25,9 @@ describe('FilterUserData', () => {
 
     expect(value).toEqual({
       personal: {
+        email: fakeUser.personal.email,
         id: fakeUser.personal.id,
-        name: fakeUser.personal.name,
-        email: fakeUser.personal.email
+        name: fakeUser.personal.name
       },
       settings: {
         currency: fakeUser.settings.currency

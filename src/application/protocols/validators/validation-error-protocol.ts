@@ -1,20 +1,20 @@
 import {
-  InvalidCodeError,
-  CodeIsExpiredError,
   AccountAlreadyActivatedError,
-  InactiveAccountError,
-  UserCredentialError,
-  InvalidParamError,
+  CodeIsExpiredError,
   ConflictParamError,
-  MissingParamError
+  InactiveAccountError,
+  InvalidCodeError,
+  InvalidParamError,
+  MissingParamError,
+  UserCredentialError
 } from '@/application/usecases/errors'
 
 export type ValidatorErrorProtocol =
-  | InvalidCodeError
-  | CodeIsExpiredError
   | AccountAlreadyActivatedError
-  | InactiveAccountError
-  | UserCredentialError
-  | InvalidParamError
+  | CodeIsExpiredError
   | ConflictParamError
+  | InactiveAccountError
+  | InvalidCodeError
+  | InvalidParamError
   | MissingParamError
+  | UserCredentialError

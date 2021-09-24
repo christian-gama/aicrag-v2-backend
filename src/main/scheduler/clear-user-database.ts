@@ -17,8 +17,8 @@ export class ClearUserDatabase {
       const userCollection = MongoHelper.getCollection('users')
 
       const filter: UserDbFilter | FindOptions = {
-        'settings.accountActivated': false,
-        'logs.createdAt': { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) } as any
+        'logs.createdAt': { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) } as any,
+        'settings.accountActivated': false
       }
 
       const deleted = await userCollection.deleteMany(filter)

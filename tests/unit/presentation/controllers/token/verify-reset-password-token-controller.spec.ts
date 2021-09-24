@@ -75,11 +75,10 @@ describe('VerifyResetPasswordTokenController', () => {
   it('Should call generate with correct user', async () => {
     const { sut, fakeUser, generateAccessTokenStub, request, verifyResetPasswordTokenStub } =
       makeSut()
+    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
-
-    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
     await sut.handle(request)
 

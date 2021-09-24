@@ -39,7 +39,6 @@ describe('VerifyRefreshToken', () => {
 
   it('Should call jwtRefreshToken.decode with correct token', async () => {
     const { sut, jwtRefreshTokenStub } = makeSut()
-
     const unauthorizedSpy = jest.spyOn(jwtRefreshTokenStub, 'decode')
 
     await sut.verify('any_token')
@@ -49,7 +48,6 @@ describe('VerifyRefreshToken', () => {
 
   it('Should call userDbRepository.findUserById with correct user id', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
-
     const findUserByIdSpy = jest.spyOn(userDbRepositoryStub, 'findUserById')
 
     await sut.verify('any_token')
@@ -59,7 +57,6 @@ describe('VerifyRefreshToken', () => {
 
   it('Should return InvalidTokenError if there is no user', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
-
     jest.spyOn(userDbRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(undefined))
 
     const response = await sut.verify('any_token')
@@ -69,7 +66,6 @@ describe('VerifyRefreshToken', () => {
 
   it("Should return InvalidTokenError if token version is different from user's token version", async () => {
     const { sut } = makeSut()
-
     const response = await sut.verify('any_token')
 
     expect(response).toEqual(new InvalidTokenError())

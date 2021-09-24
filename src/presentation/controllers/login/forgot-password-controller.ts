@@ -13,8 +13,8 @@ export class ForgotPasswordController implements ControllerProtocol {
   constructor (
     private readonly forgotPasswordEmail: MailerServiceProtocol,
     private readonly forgotPasswordValidator: ValidatorProtocol,
-    private readonly httpHelper: HttpHelperProtocol,
     private readonly generateAccessToken: GenerateTokenProtocol,
+    private readonly httpHelper: HttpHelperProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 

@@ -1,4 +1,4 @@
-import { ILogError, IUser, ISignUpUserCredentials } from '@/domain'
+import { ILogError, ISignUpUserCredentials, IUser } from '@/domain'
 
 import { LogErrorRepositoryProtocol, UserRepositoryProtocol } from '@/application/protocols/repositories'
 

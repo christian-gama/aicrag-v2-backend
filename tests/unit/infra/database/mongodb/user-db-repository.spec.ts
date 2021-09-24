@@ -22,6 +22,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
+
   const sut = new UserDbRepository(userRepositoryStub)
 
   return { sut, fakeUser, userRepositoryStub }
@@ -32,59 +33,16 @@ describe('UserDbRepository', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(global.__MONGO_URI__)
+
+    userCollection = MongoHelper.getCollection('users')
   })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
   })
 
-  beforeEach(async () => {
-    userCollection = MongoHelper.getCollection('users')
+  afterEach(async () => {
     await userCollection.deleteMany({})
-  })
-
-  describe('saveUser', () => {
-    it('Should create a user on success', async () => {
-      const { sut, fakeUser } = makeSut()
-      const user = await sut.saveUser(makeFakeSignUpUserCredentials())
-
-      expect(user).toHaveProperty('_id')
-
-      expect(Object.keys(user.personal).length).toBe(4)
-      expect(user.personal).toEqual({
-        id: fakeUser.personal.id,
-        name: fakeUser.personal.name,
-        email: fakeUser.personal.email,
-        password: fakeUser.personal.password
-      })
-
-      expect(Object.keys(user.settings).length).toBe(3)
-      expect(user.settings).toEqual({
-        accountActivated: fakeUser.settings.accountActivated,
-        handicap: fakeUser.settings.handicap,
-        currency: fakeUser.settings.currency
-      })
-
-      expect(Object.keys(user.logs).length).toBe(4)
-      expect(user.logs).toEqual({
-        createdAt: fakeUser.logs.createdAt,
-        lastLoginAt: fakeUser.logs.lastLoginAt,
-        lastSeenAt: fakeUser.logs.lastSeenAt,
-        updatedAt: fakeUser.logs.updatedAt
-      })
-
-      expect(Object.keys(user.temporary).length).toBe(6)
-      expect(user.temporary).toEqual({
-        activationCode: fakeUser.temporary.activationCode,
-        activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
-        resetPasswordToken: fakeUser.temporary.resetPasswordToken,
-        tempEmail: fakeUser.temporary.tempEmail,
-        tempEmailCode: fakeUser.temporary.tempEmailCode,
-        tempEmailCodeExpiration: fakeUser.temporary.tempEmailCodeExpiration
-      })
-
-      expect(user.tokenVersion).toBe(0)
-    })
   })
 
   describe('findUserByEmail', () => {
@@ -118,6 +76,50 @@ describe('UserDbRepository', () => {
       const user = await sut.findUserById('invalid_id')
 
       expect(user).toBe(undefined)
+    })
+  })
+
+  describe('saveUser', () => {
+    it('Should create a user on success', async () => {
+      const { sut, fakeUser } = makeSut()
+      const user = await sut.saveUser(makeFakeSignUpUserCredentials())
+
+      expect(user).toHaveProperty('_id')
+
+      expect(Object.keys(user.logs).length).toBe(4)
+      expect(user.logs).toEqual({
+        createdAt: fakeUser.logs.createdAt,
+        lastLoginAt: fakeUser.logs.lastLoginAt,
+        lastSeenAt: fakeUser.logs.lastSeenAt,
+        updatedAt: fakeUser.logs.updatedAt
+      })
+
+      expect(Object.keys(user.personal).length).toBe(4)
+      expect(user.personal).toEqual({
+        email: fakeUser.personal.email,
+        id: fakeUser.personal.id,
+        name: fakeUser.personal.name,
+        password: fakeUser.personal.password
+      })
+
+      expect(Object.keys(user.settings).length).toBe(3)
+      expect(user.settings).toEqual({
+        accountActivated: fakeUser.settings.accountActivated,
+        currency: fakeUser.settings.currency,
+        handicap: fakeUser.settings.handicap
+      })
+
+      expect(Object.keys(user.temporary).length).toBe(6)
+      expect(user.temporary).toEqual({
+        activationCode: fakeUser.temporary.activationCode,
+        activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
+        resetPasswordToken: fakeUser.temporary.resetPasswordToken,
+        tempEmail: fakeUser.temporary.tempEmail,
+        tempEmailCode: fakeUser.temporary.tempEmailCode,
+        tempEmailCodeExpiration: fakeUser.temporary.tempEmailCodeExpiration
+      })
+
+      expect(user.tokenVersion).toBe(0)
     })
   })
 

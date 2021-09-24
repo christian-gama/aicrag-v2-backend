@@ -20,6 +20,7 @@ const makeSut = (): SutTypes => {
   const error = new Error('any_error')
   const fakeLogError = makeFakeLogError(error)
   const logErrorRepositoryStub = makeLogErrorRepositoryStub(fakeLogError)
+
   const sut = new LogErrorDbRepository(logErrorRepositoryStub)
 
   return { sut, error, fakeLogError, logErrorRepositoryStub }
@@ -55,9 +56,9 @@ describe('LogErrorDbRepository', () => {
 
     const value = await sut.saveLog(error)
 
-    expect(value.name).toEqual(fakeLogError.name)
     expect(value.date).toEqual(fakeLogError.date)
     expect(value.message).toEqual(fakeLogError.message)
+    expect(value.name).toEqual(fakeLogError.name)
     expect(value.stack).toEqual(fakeLogError.stack)
   })
 })

@@ -18,9 +18,9 @@ export class LoginController implements ControllerProtocol {
   constructor (
     private readonly credentialsValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
-    private readonly httpHelper: HttpHelperProtocol,
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly generateRefreshToken: GenerateTokenProtocol,
+    private readonly httpHelper: HttpHelperProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 

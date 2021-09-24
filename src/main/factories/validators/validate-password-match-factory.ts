@@ -4,8 +4,8 @@ import { makeBcryptAdapter } from '../cryptography'
 import { makeUserDbRepository } from '../repositories'
 
 export const makeValidatePasswordMatch = (): ValidatePasswordMatch => {
-  const userDbRepository = makeUserDbRepository()
   const hasher = makeBcryptAdapter()
+  const userDbRepository = makeUserDbRepository()
 
-  return new ValidatePasswordMatch(userDbRepository, hasher)
+  return new ValidatePasswordMatch(hasher, userDbRepository)
 }

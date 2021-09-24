@@ -15,12 +15,8 @@ export const environment = {
   JWT: {
     ACCESS_EXPIRES: process.env.JWT_EXPIRES?.trim().toLowerCase() ?? '45s',
     ACCESS_SECRET: process.env.JWT_SECRET?.trim() ?? 'e26f414f-74cb-4f16-a1f1-db6438a1fcd6',
-    REFRESH_SECRET: process.env.JWT_REFRESH_SECRET?.trim() ?? '12f9b733-3ea0-4edf-9e05-33c1003dc9d1',
-    REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES?.trim().toLowerCase() ?? '30d'
-  },
-  SERVER: {
-    NODE_ENV: (process.env.NODE_ENV?.trim().toLowerCase() as 'development' | 'production' | 'test') ?? 'production',
-    PORT: process.env.PORT?.trim() ?? '3000'
+    REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES?.trim().toLowerCase() ?? '30d',
+    REFRESH_SECRET: process.env.JWT_REFRESH_SECRET?.trim() ?? '12f9b733-3ea0-4edf-9e05-33c1003dc9d1'
   },
   MAILER: {
     SENDGRID: {
@@ -28,12 +24,16 @@ export const environment = {
     },
     MAILTRAP: {
       HOST: process.env.MAILTRAP_HOST?.trim() ?? 'smtp.mailtrap.io',
+      PASSWORD: process.env.MAILTRAP_PASSWORD?.trim(),
       PORT: process.env.MAILTRAP_PORT?.trim() ?? '2525',
-      USER: process.env.MAILTRAP_USER?.trim(),
-      PASSWORD: process.env.MAILTRAP_PASSWORD?.trim()
+      USER: process.env.MAILTRAP_USER?.trim()
     },
     SETTINGS: {
       FROM: 'Aicrag <aicrag.team@gmail.com>'
     }
+  },
+  SERVER: {
+    NODE_ENV: (process.env.NODE_ENV?.trim().toLowerCase() as 'development' | 'production' | 'test') ?? 'production',
+    PORT: process.env.PORT?.trim() ?? '3000'
   }
 }

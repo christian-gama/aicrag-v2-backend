@@ -17,9 +17,9 @@ export class ActivateAccountController implements ControllerProtocol {
   constructor (
     private readonly activateAccountValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
-    private readonly httpHelper: HttpHelperProtocol,
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly generateRefreshToken: GenerateTokenProtocol,
+    private readonly httpHelper: HttpHelperProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
@@ -29,10 +29,10 @@ export class ActivateAccountController implements ControllerProtocol {
     const error = await this.activateAccountValidator.validate(credentials)
     if (error) return this.httpHelper.unauthorized(error)
 
-    const user = await this.userDbRepository.findUserByEmail(credentials.email) as IUser
+    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
-    await this.clearTemporary(user)
     await this.activateAccount(user)
+    await this.clearTemporary(user)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 
@@ -41,9 +41,17 @@ export class ActivateAccountController implements ControllerProtocol {
     const filteredUser = this.filterUserData.filter(user)
 
     return this.httpHelper.ok({
-      user: filteredUser,
+      accessToken,
       refreshToken,
-      accessToken
+      user: filteredUser
+    })
+  }
+
+  private async activateAccount (user: IUser): Promise<void> {
+    user.settings.accountActivated = true
+
+    await this.userDbRepository.updateUser(user, {
+      'settings.accountActivated': user.settings.accountActivated
     })
   }
 
@@ -54,14 +62,6 @@ export class ActivateAccountController implements ControllerProtocol {
     await this.userDbRepository.updateUser(user, {
       'temporary.activationCode': user.temporary.activationCode,
       'temporary.activationCodeExpiration': user.temporary.activationCode
-    })
-  }
-
-  private async activateAccount (user: IUser): Promise<void> {
-    user.settings.accountActivated = true
-
-    await this.userDbRepository.updateUser(user, {
-      'settings.accountActivated': user.settings.accountActivated
     })
   }
 }

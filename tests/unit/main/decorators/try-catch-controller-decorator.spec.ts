@@ -15,6 +15,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const controllerStub = makeControllerStub()
+
   const sut = new TryCatchControllerDecorator(controllerStub)
 
   return { sut, controllerStub, httpHelper }
@@ -32,14 +33,14 @@ describe('LogControllerDecorator', () => {
   })
 
   it('Should return a serverError as http response if statusCode is 500', async () => {
-    const { sut, httpHelper, controllerStub } = makeSut()
+    const { sut, controllerStub, httpHelper } = makeSut()
     const error = new Error('any_message')
-    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(async () => Promise.reject(error))
     const errorData = {
       name: error.name,
       message: error.message,
       stack: error.stack
     }
+    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(async () => Promise.reject(error))
 
     const promise = await sut.handle({})
 

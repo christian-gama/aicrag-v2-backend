@@ -8,6 +8,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const sut = new HttpHelper()
+
   return { sut }
 }
 
@@ -84,9 +85,9 @@ describe('HttpHelper', () => {
       const response = sut.deleted()
 
       expect(response).toEqual({
+        data: { message: 'Content deleted' },
         status: true,
-        statusCode: 204,
-        data: { message: 'Content deleted' }
+        statusCode: 204
       })
     })
   })
@@ -99,9 +100,9 @@ describe('HttpHelper', () => {
       const response = sut.serverError(error)
 
       expect(response).toEqual({
+        data: { error: { message: error.message, name: error.name, stack: error.stack } },
         status: false,
-        statusCode: 500,
-        data: { error: { name: error.name, message: error.message, stack: error.stack } }
+        statusCode: 500
       })
     })
   })

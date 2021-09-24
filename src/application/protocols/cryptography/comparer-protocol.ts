@@ -1,4 +1,3 @@
-
 export interface ComparerProtocol {
   /**
   * @async Asynchronous method.

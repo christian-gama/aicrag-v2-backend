@@ -30,15 +30,12 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const filteredUser = makeFakePublicUser(fakeUser)
+  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const generateRefreshTokenStub = makeGenerateTokenStub()
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
-  const request = {
-    accessToken: 'any_token',
-    body: { password: 'new_password', passwordConfirmation: 'new_password' }
-  }
+  const request = { accessToken: 'any_token', body: { password: 'new_password', passwordConfirmation: 'new_password' } }
   const resetPasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   const verifyResetPasswordTokenStub = makeVerifyTokenStub()
@@ -100,12 +97,10 @@ describe('ResetPasswordController', () => {
 
   it('Should call updateUser with correct values', async () => {
     const { sut, fakeUser, request, userDbRepositoryStub, verifyResetPasswordTokenStub } = makeSut()
-
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
-
-    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 
@@ -146,11 +141,10 @@ describe('ResetPasswordController', () => {
   it('Should call generate with correct user', async () => {
     const { sut, fakeUser, generateRefreshTokenStub, request, verifyResetPasswordTokenStub } =
       makeSut()
+    const generateSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
-
-    const generateSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
 
     await sut.handle(request)
 
@@ -159,11 +153,10 @@ describe('ResetPasswordController', () => {
 
   it('Should call filter with correct user', async () => {
     const { sut, fakeUser, filterUserDataStub, request, verifyResetPasswordTokenStub } = makeSut()
+    const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
-
-    const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
     await sut.handle(request)
 
@@ -180,11 +173,10 @@ describe('ResetPasswordController', () => {
       request,
       verifyResetPasswordTokenStub
     } = makeSut()
+    jest.spyOn(filterUserDataStub, 'filter').mockReturnValueOnce(filteredUser)
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
-
-    jest.spyOn(filterUserDataStub, 'filter').mockReturnValueOnce(filteredUser)
 
     const response = await sut.handle(request)
 

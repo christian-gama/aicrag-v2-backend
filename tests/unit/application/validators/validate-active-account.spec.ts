@@ -9,23 +9,23 @@ import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ValidatorProtocol
-  userDbRepositoryStub: UserDbRepositoryProtocol
   fakeUser: IUser
+  userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   fakeUser.settings.accountActivated = true
 
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   const sut = new ValidateActiveAccount(userDbRepositoryStub)
 
-  return { sut, userDbRepositoryStub, fakeUser }
+  return { sut, fakeUser, userDbRepositoryStub }
 }
 
 describe('ValidateCredentials', () => {
   it('Should return a InactiveAccountError if user account is inactive', async () => {
-    const { sut, userDbRepositoryStub, fakeUser } = makeSut()
+    const { sut, fakeUser, userDbRepositoryStub } = makeSut()
     fakeUser.settings.accountActivated = false
     jest
       .spyOn(userDbRepositoryStub, 'saveUser')
@@ -38,8 +38,8 @@ describe('ValidateCredentials', () => {
 
   it('Should call findUserByEmail with correct value', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.validate(credentials)
 

@@ -25,8 +25,8 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const jwtAccessToken = makeJwtAdapterStub()
-  const verifyRefreshTokenStub = makeVerifyTokenStub()
   const request: HttpRequest = { refreshToken: 'any_token' }
+  const verifyRefreshTokenStub = makeVerifyTokenStub()
 
   const sut = new RefreshToken(httpHelper, jwtAccessToken, verifyRefreshTokenStub)
 
@@ -36,15 +36,14 @@ const makeSut = (): SutTypes => {
     fakeUser,
     httpHelper,
     jwtAccessToken,
-    verifyRefreshTokenStub,
-    request
+    request,
+    verifyRefreshTokenStub
   }
 }
 
 describe('RefreshToken', () => {
   it('Should call verify with token', async () => {
     const { sut, request, verifyRefreshTokenStub } = makeSut()
-
     const verifySpy = jest.spyOn(verifyRefreshTokenStub, 'verify')
 
     await sut.handle(request)
@@ -53,8 +52,7 @@ describe('RefreshToken', () => {
   })
 
   it('Should return unauthorized if response is instance of Error', async () => {
-    const { sut, request, httpHelper, verifyRefreshTokenStub } = makeSut()
-
+    const { sut, httpHelper, request, verifyRefreshTokenStub } = makeSut()
     jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
@@ -64,13 +62,12 @@ describe('RefreshToken', () => {
 
   it('Should call jwtAccessToken with correct values', async () => {
     const { sut, fakeUser, jwtAccessToken, request, verifyRefreshTokenStub } = makeSut()
+    const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
     jest
       .spyOn(verifyRefreshTokenStub, 'verify')
       .mockReturnValueOnce(
         Promise.resolve(fakeUser)
       )
-
-    const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
 
     await sut.handle(request)
 

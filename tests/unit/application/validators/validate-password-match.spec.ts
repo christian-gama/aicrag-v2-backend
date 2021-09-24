@@ -9,18 +9,19 @@ import { makeFakeUser, makeUserDbRepositoryStub, makeComparerStub } from '@/test
 
 interface SutTypes {
   sut: ValidatePasswordMatch
-  userDbRepositoryStub: UserDbRepositoryProtocol
   comparerStub: ComparerProtocol
   fakeUser: IUser
+  userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
+  const comparerStub = makeComparerStub()
   const fakeUser = makeFakeUser()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
-  const comparerStub = makeComparerStub()
-  const sut = new ValidatePasswordMatch(userDbRepositoryStub, comparerStub)
 
-  return { sut, userDbRepositoryStub, comparerStub, fakeUser }
+  const sut = new ValidatePasswordMatch(comparerStub, userDbRepositoryStub)
+
+  return { sut, comparerStub, fakeUser, userDbRepositoryStub }
 }
 
 describe('ValidatePasswordMatches', () => {
@@ -48,8 +49,8 @@ describe('ValidatePasswordMatches', () => {
 
   it('Should return a UserCredentialError if password does not match', async () => {
     const { sut, comparerStub } = makeSut()
-    jest.spyOn(comparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    jest.spyOn(comparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
 
     const result = await sut.validate(credentials)
 

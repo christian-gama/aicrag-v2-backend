@@ -15,6 +15,7 @@ const makeSut = (): SutTypes => {
   const expires = environment.JWT.ACCESS_EXPIRES
   const secret = environment.JWT.ACCESS_SECRET
   const token = jwt.sign({ id: 'any_id' }, secret, { expiresIn: expires })
+
   const sut = new JwtAdapter(expires, secret)
 
   return { sut, expires, secret, token }
@@ -33,7 +34,7 @@ describe('JwtAdapter', () => {
 
   describe('encrypt', () => {
     it('Should call sign with correct value', () => {
-      const { sut, secret, expires } = makeSut()
+      const { sut, expires, secret } = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')
 
       sut.encrypt({ name: 'value' })

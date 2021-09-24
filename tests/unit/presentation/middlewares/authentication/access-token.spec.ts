@@ -37,7 +37,6 @@ const makeSut = (): SutTypes => {
 describe('AccessToken', () => {
   it('Should call verify with token', async () => {
     const { sut, request, verifyAccessTokenStub } = makeSut()
-
     const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')
 
     await sut.handle(request)
@@ -46,8 +45,7 @@ describe('AccessToken', () => {
   })
 
   it('Should return unauthorized if response is instance of Error', async () => {
-    const { sut, request, httpHelper, verifyAccessTokenStub } = makeSut()
-
+    const { sut, httpHelper, request, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)

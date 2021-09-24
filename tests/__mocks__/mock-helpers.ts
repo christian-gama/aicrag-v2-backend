@@ -1,4 +1,4 @@
-import { IUser, IPublicUser } from '@/domain'
+import { IPublicUser, IUser } from '@/domain'
 
 import { FilterUserDataProtocol, UuidProtocol, ValidationCodeProtocol } from '@/application/protocols/helpers'
 

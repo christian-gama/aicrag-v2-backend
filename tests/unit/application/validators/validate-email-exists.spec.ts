@@ -8,13 +8,14 @@ import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ValidateEmailExists
-  userDbRepositoryStub: UserDbRepositoryProtocol
   fakeUser: IUser
+  userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+
   const sut = new ValidateEmailExists(userDbRepositoryStub)
 
   return { sut, userDbRepositoryStub, fakeUser }
@@ -35,8 +36,8 @@ describe('ValidateCredentials', () => {
 
   it('Should call findUserByEmail with correct value', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.validate(credentials)
 

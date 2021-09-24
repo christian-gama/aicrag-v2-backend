@@ -20,19 +20,19 @@ export class UserRepository implements UserRepositoryProtocol {
     const activationCodeExpirationMinutes = 10 * 60 * 1000
 
     const user: IUser = {
-      personal: {
-        id: id,
-        name: signUpUserCredentials.name,
-        email: signUpUserCredentials.email,
-        password: hashedPassword
-      },
-      settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
       logs: {
         createdAt: dateNow,
         lastLoginAt: null,
         lastSeenAt: null,
         updatedAt: null
       },
+      personal: {
+        email: signUpUserCredentials.email,
+        id: id,
+        name: signUpUserCredentials.name,
+        password: hashedPassword
+      },
+      settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
       temporary: {
         activationCode: activationCode,
         activationCodeExpiration: new Date(Date.now() + activationCodeExpirationMinutes),

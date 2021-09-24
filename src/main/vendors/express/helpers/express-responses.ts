@@ -6,38 +6,29 @@ import { createAccessTokenCookie, createRefreshTokenCookie } from './create-toke
 
 import { Response } from 'express'
 
-export const defaultResponse = (expressResponse: Response, httpResponse: HttpResponse): void => {
-  expressResponse.json({
+export const accessTokenResponse = (res: Response, httpResponse: HttpResponse): void => {
+  createAccessTokenCookie(res, httpResponse)
+
+  defaultResponse(res, httpResponse)
+}
+
+export const defaultResponse = (res: Response, httpResponse: HttpResponse): void => {
+  res.json({
     status: httpResponse.status,
     data: httpResponse.data
   })
 }
 
-export const accessTokenResponse = (
-  expressResponse: Response,
-  httpResponse: HttpResponse
-): void => {
-  createAccessTokenCookie(expressResponse, httpResponse)
-
-  defaultResponse(expressResponse, httpResponse)
-}
-
-export const refreshTokenResponse = (
-  expressResponse: Response,
-  httpResponse: HttpResponse
-): void => {
-  createAccessTokenCookie(expressResponse, httpResponse)
-  createRefreshTokenCookie(expressResponse, httpResponse)
-
-  defaultResponse(expressResponse, httpResponse)
-}
-
-export const productionErrorResponse = (
-  expressResponse: Response,
-  httpResponse: HttpResponse
-): void => {
-  expressResponse.json({
+export const productionErrorResponse = (res: Response, httpResponse: HttpResponse): void => {
+  res.json({
     status: httpResponse.status,
     data: { message: new InternalError().message }
   })
+}
+
+export const refreshTokenResponse = (res: Response, httpResponse: HttpResponse): void => {
+  createAccessTokenCookie(res, httpResponse)
+  createRefreshTokenCookie(res, httpResponse)
+
+  defaultResponse(res, httpResponse)
 }

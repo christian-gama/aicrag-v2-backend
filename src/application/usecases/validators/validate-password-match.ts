@@ -8,8 +8,8 @@ import { UserCredentialError } from '../errors'
 
 export class ValidatePasswordMatch implements ValidatorProtocol {
   constructor (
-    private readonly userDbRepository: UserDbRepositoryProtocol,
-    private readonly hasher: ComparerProtocol
+    private readonly hasher: ComparerProtocol,
+    private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
   async validate (input: any): Promise<UserCredentialError | undefined> {

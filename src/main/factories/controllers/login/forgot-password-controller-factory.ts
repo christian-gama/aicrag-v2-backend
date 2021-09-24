@@ -11,15 +11,15 @@ import { makeForgotPasswordComposite } from '../../validators'
 export const makeForgotPasswordController = (): ControllerProtocol => {
   const forgotPasswordEmail = makeForgotPasswordEmail()
   const forgotPasswordValidator = makeForgotPasswordComposite()
-  const httpHelper = makeHttpHelper()
   const generateAccessToken = makeGenerateAccessToken()
+  const httpHelper = makeHttpHelper()
   const userDbRepository = makeUserDbRepository()
 
   const forgotPasswordController = new ForgotPasswordController(
     forgotPasswordEmail,
     forgotPasswordValidator,
-    httpHelper,
     generateAccessToken,
+    httpHelper,
     userDbRepository
   )
 

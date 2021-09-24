@@ -5,9 +5,9 @@ import { IUser } from './user-protocol'
  */
 export interface IPublicUser {
   personal: {
+    email: IUser['personal']['email']
     id: IUser['personal']['id']
     name: IUser['personal']['name']
-    email: IUser['personal']['email']
   }
   settings: {
     currency: IUser['settings']['currency']

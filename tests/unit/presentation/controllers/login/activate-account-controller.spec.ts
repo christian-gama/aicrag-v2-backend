@@ -11,7 +11,14 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/pro
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
-import { makeValidatorStub, makeFakeUser, makeFakePublicUser, makeFilterUserDataStub, makeGenerateTokenStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+import {
+  makeValidatorStub,
+  makeFakeUser,
+  makeFakePublicUser,
+  makeFilterUserDataStub,
+  makeGenerateTokenStub,
+  makeUserDbRepositoryStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ActivateAccountController
@@ -19,9 +26,9 @@ interface SutTypes {
   fakePublicUser: IPublicUser
   fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
-  httpHelper: HttpHelperProtocol
   generateAccessTokenStub: GenerateTokenProtocol
   generateRefreshTokenStub: GenerateTokenProtocol
+  httpHelper: HttpHelperProtocol
   request: HttpRequest
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
@@ -31,9 +38,9 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const fakePublicUser = makeFakePublicUser(fakeUser)
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
-  const httpHelper = makeHttpHelper()
   const generateAccessTokenStub = makeGenerateTokenStub()
   const generateRefreshTokenStub = makeGenerateTokenStub()
+  const httpHelper = makeHttpHelper()
   const request = {
     body: { email: fakeUser.personal.email, activationCode: fakeUser.temporary.activationCode }
   }
@@ -42,9 +49,9 @@ const makeSut = (): SutTypes => {
   const sut = new ActivateAccountController(
     activateAccountValidatorStub,
     filterUserDataStub,
-    httpHelper,
     generateAccessTokenStub,
     generateRefreshTokenStub,
+    httpHelper,
     userDbRepositoryStub
   )
 
@@ -54,9 +61,9 @@ const makeSut = (): SutTypes => {
     fakePublicUser,
     fakeUser,
     filterUserDataStub,
-    httpHelper,
     generateAccessTokenStub,
     generateRefreshTokenStub,
+    httpHelper,
     request,
     userDbRepositoryStub
   }
@@ -83,7 +90,7 @@ describe('LoginController', () => {
   })
 
   it('Should call findUserByEmail with correct email', async () => {
-    const { sut, userDbRepositoryStub, request } = makeSut()
+    const { sut, request, userDbRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
@@ -126,9 +133,9 @@ describe('LoginController', () => {
     await sut.handle(request)
 
     expect(okSpy).toHaveBeenCalledWith({
-      user: filteredUser,
+      accessToken: 'any_token',
       refreshToken: 'any_token',
-      accessToken: 'any_token'
+      user: filteredUser
     })
   })
 
@@ -150,7 +157,7 @@ describe('LoginController', () => {
   })
 
   it('Should call updateUser twice', async () => {
-    const { sut, userDbRepositoryStub, request } = makeSut()
+    const { sut, request, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)

@@ -11,10 +11,10 @@ export abstract class MailerService {
     try {
       await this.transporter.sendMail({
         from: environment.MAILER.SETTINGS.FROM,
-        to: settings.to,
+        html: settings.html,
         subject: settings.subject,
         text: settings.text,
-        html: settings.html
+        to: settings.to
       })
     } catch (error) {
       return new MailerServiceError()
@@ -26,15 +26,17 @@ export abstract class MailerService {
   private get transporter (): nodemailer.Transporter {
     if (environment.SERVER.NODE_ENV === 'development' || environment.SERVER.NODE_ENV === 'test') {
       return nodemailer.createTransport({
-        host: environment.MAILER.MAILTRAP.HOST,
-        port: +environment.MAILER.MAILTRAP.PORT,
         auth: {
           user: environment.MAILER.MAILTRAP.USER,
           pass: environment.MAILER.MAILTRAP.PASSWORD
-        }
+        },
+        host: environment.MAILER.MAILTRAP.HOST,
+        port: +environment.MAILER.MAILTRAP.PORT
       })
     }
 
-    return nodemailer.createTransport(sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY as string }))
+    return nodemailer.createTransport(
+      sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY as string })
+    )
   }
 }

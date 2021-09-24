@@ -49,7 +49,7 @@ describe('LogoutController', () => {
   })
 
   it('Should return ok if succeds', async () => {
-    const { sut, request, httpHelper } = makeSut()
+    const { sut, httpHelper, request } = makeSut()
 
     const response = await sut.handle(request)
 

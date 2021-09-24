@@ -1,15 +1,5 @@
 import { HasherProtocol, ComparerProtocol, DecoderProtocol, DecodedProtocol, EncrypterProtocol } from '@/application/protocols/cryptography'
 
-export const makeHasherStub = (): HasherProtocol => {
-  class HasherStub implements HasherProtocol {
-    async hash (value: string): Promise<string> {
-      return Promise.resolve('hashed_value')
-    }
-  }
-
-  return new HasherStub()
-}
-
 export const makeComparerStub = (): ComparerProtocol => {
   class ComparerStub implements ComparerProtocol {
     async compare (value: string, valueToCompare: string): Promise<boolean> {
@@ -40,14 +30,24 @@ export const makeEncrypterStub = (): EncrypterProtocol => {
   return new EncrypterStub()
 }
 
+export const makeHasherStub = (): HasherProtocol => {
+  class HasherStub implements HasherProtocol {
+    async hash (value: string): Promise<string> {
+      return Promise.resolve('hashed_value')
+    }
+  }
+
+  return new HasherStub()
+}
+
 export const makeJwtAdapterStub = (): EncrypterProtocol & DecoderProtocol => {
   class JwtAdapterStub implements EncrypterProtocol, DecoderProtocol {
-    encrypt (subject: Record<any, string>): string {
-      return 'any_token'
-    }
-
     async decode (token: string): Promise<DecodedProtocol> {
       return Promise.resolve({ userId: 'any_id', version: 'any_version' })
+    }
+
+    encrypt (subject: Record<any, string>): string {
+      return 'any_token'
     }
   }
 
