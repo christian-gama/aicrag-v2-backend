@@ -1,7 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper'
-import { makeGenerateAccessToken } from '@/main/factories/providers/token'
+import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { verifyResetPasswordTokenController } from '@/main/vendors/express/routes'
+import { isLoggedInMiddleware, verifyResetPasswordTokenController } from '@/main/vendors/express/routes'
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
@@ -15,7 +15,7 @@ describe('GET /verify-reset-password-token', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.get('/api/v1/token/verify-reset-password-token/:token', verifyResetPasswordTokenController)
+    app.get('/api/v1/token/verify-reset-password-token/:token', isLoggedInMiddleware, verifyResetPasswordTokenController)
   })
 
   afterAll(async () => {
@@ -28,14 +28,17 @@ describe('GET /verify-reset-password-token', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 200 if token is valid', async () => {
+  it('Should return 403 if user is logged in', async () => {
     const fakeUser = makeFakeUser()
-    const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
-    fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)
+    const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
 
-    await agent.get(`/api/v1/token/verify-reset-password-token/${resetPasswordToken}`).expect(200)
-  }, 12000)
+    await agent
+      .get('/api/v1/token/verify-reset-password-token/any_token')
+      .set('Cookie', `refreshToken=${refreshToken}`)
+      .send()
+      .expect(403)
+  })
 
   it('Should return 401 if token is invalid', async () => {
     await agent.get('/api/v1/token/verify-reset-password-token/invalid_token').expect(401)
@@ -49,6 +52,17 @@ describe('GET /verify-reset-password-token', () => {
 
     const differentResetPasswordToken = makeGenerateAccessToken().generate(makeFakeUser())
 
-    await agent.get(`/api/v1/token/verify-reset-password-token/${differentResetPasswordToken}`).expect(401)
+    await agent
+      .get(`/api/v1/token/verify-reset-password-token/${differentResetPasswordToken}`)
+      .expect(401)
+  })
+
+  it('Should return 200 if token is valid', async () => {
+    const fakeUser = makeFakeUser()
+    const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
+    fakeUser.temporary.resetPasswordToken = resetPasswordToken
+    await userCollection.insertOne(fakeUser)
+
+    await agent.get(`/api/v1/token/verify-reset-password-token/${resetPasswordToken}`).expect(200)
   })
 })

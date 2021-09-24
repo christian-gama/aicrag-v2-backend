@@ -1,6 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { signUpController } from '@/main/vendors/express/routes'
+import { isLoggedInMiddleware, signUpController } from '@/main/vendors/express/routes'
 import { makeFakeSignUpUserCredentials, makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
@@ -14,7 +15,7 @@ describe('POST /signup', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.post('/api/v1/signup', signUpController)
+    app.post('/api/v1/signup', isLoggedInMiddleware, signUpController)
   })
 
   afterAll(async () => {
@@ -27,9 +28,17 @@ describe('POST /signup', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 200 if all validations succeds', async () => {
-    await agent.post('/api/v1/signup').send(makeFakeSignUpUserCredentials()).expect(200)
-  }, 12000)
+  it('Should return 403 if user is already logged in', async () => {
+    const fakeUser = makeFakeUser()
+    await userCollection.insertOne(fakeUser)
+    const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+
+    await agent
+      .post('/api/v1/signup')
+      .set('Cookie', `refreshToken=${refreshToken}`)
+      .send()
+      .expect(403)
+  })
 
   it('Should return 400 if validation fails', async () => {
     await agent.post('/api/v1/signup').send({}).expect(400)
@@ -51,4 +60,8 @@ describe('POST /signup', () => {
   it('Should return 400 if miss a param or param is invalid', async () => {
     await agent.post('/api/v1/signup').send().expect(400)
   })
+
+  it('Should return 200 if all validations succeds', async () => {
+    await agent.post('/api/v1/signup').send(makeFakeSignUpUserCredentials()).expect(200)
+  }, 12000)
 })
