@@ -3,21 +3,12 @@ import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { InvalidTokenError, MustLogoutError } from '@/application/usecases/errors'
-import { IPublicUser, IUser } from '@/domain'
+import { MustLogoutError, InvalidTokenError } from '@/application/usecases/errors'
+import { IUser, IPublicUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import {
-  makeFakePublicUser,
-  makeFakeUser,
-  makeFilterUserDataStub,
-  makeGenerateTokenStub,
-  makeHasherStub,
-  makeUserDbRepositoryStub,
-  makeValidatorStub,
-  makeVerifyTokenStub
-} from '@/tests/__mocks__'
+import { makeFakeUser, makeFilterUserDataStub, makeFakePublicUser, makeGenerateTokenStub, makeHasherStub, makeValidatorStub, makeUserDbRepositoryStub, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ResetPasswordController
