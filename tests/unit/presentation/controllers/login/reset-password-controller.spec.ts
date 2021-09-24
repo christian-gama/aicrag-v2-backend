@@ -1,5 +1,5 @@
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
-import { MustLogoutError } from '@/application/usecases/errors'
+import { InvalidTokenError, MustLogoutError } from '@/application/usecases/errors'
 import { IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
@@ -42,5 +42,14 @@ describe('ResetPasswordController', () => {
     await sut.handle(request)
 
     expect(verifyStub).toHaveBeenCalledWith(request.accessToken)
+  })
+
+  it('Should return unauthorized if verify fails', async () => {
+    const { sut, httpHelper, request, verifyResetPasswordTokenStub } = makeSut()
+    jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 })
