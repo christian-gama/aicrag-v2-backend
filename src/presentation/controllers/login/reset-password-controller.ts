@@ -1,5 +1,6 @@
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MustLogoutError } from '@/application/usecases/errors'
 import {
   HttpHelperProtocol,
@@ -11,6 +12,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 export class ResetPasswordController implements ControllerProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
+    private readonly resetPasswordValidator: ValidatorProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol,
     private readonly verifyResetPasswordToken: VerifyTokenProtocol
   ) {}
@@ -24,10 +26,12 @@ export class ResetPasswordController implements ControllerProtocol {
       return this.httpHelper.unauthorized(response)
     }
 
-    const { password } = httpRequest.body
+    const credentials = httpRequest.body
+
+    await this.resetPasswordValidator.validate(credentials)
 
     await this.userDbRepository.updateUser(response, {
-      'personal.password': password
+      'personal.password': credentials.password
     })
 
     return this.httpHelper.ok({})
