@@ -40,4 +40,12 @@ describe('VerifyTokenUrlController', () => {
 
     expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
+
+  it('Should return ok if does find a user', async () => {
+    const { sut, httpHelper, request } = makeSut()
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.ok({ token: 'any_token' }))
+  })
 })
