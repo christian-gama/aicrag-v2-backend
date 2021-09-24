@@ -11,18 +11,18 @@ interface SutTypes {
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
-  verifyAccessTokenStub: VerifyTokenProtocol
+  verifyResetPasswordTokenStub: VerifyTokenProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const request = { accessToken: 'any_token', body: { password: 'new_password', passwordConfirmation: 'new_password' } }
-  const verifyAccessTokenStub = makeVerifyTokenStub()
+  const verifyResetPasswordTokenStub = makeVerifyTokenStub()
 
-  const sut = new ResetPasswordController(httpHelper, verifyAccessTokenStub)
+  const sut = new ResetPasswordController(httpHelper, verifyResetPasswordTokenStub)
 
-  return { sut, fakeUser, httpHelper, request, verifyAccessTokenStub }
+  return { sut, fakeUser, httpHelper, request, verifyResetPasswordTokenStub }
 }
 
 describe('ResetPasswordController', () => {
@@ -36,8 +36,8 @@ describe('ResetPasswordController', () => {
   })
 
   it('Should call verify with correct token', async () => {
-    const { sut, request, verifyAccessTokenStub } = makeSut()
-    const verifyStub = jest.spyOn(verifyAccessTokenStub, 'verify')
+    const { sut, request, verifyResetPasswordTokenStub } = makeSut()
+    const verifyStub = jest.spyOn(verifyResetPasswordTokenStub, 'verify')
 
     await sut.handle(request)
 

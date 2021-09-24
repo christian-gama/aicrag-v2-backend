@@ -4,12 +4,12 @@ import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/he
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class ResetPasswordController implements ControllerProtocol {
-  constructor (private readonly httpHelper: HttpHelperProtocol, private readonly verifyAccessToken: VerifyTokenProtocol) {}
+  constructor (private readonly httpHelper: HttpHelperProtocol, private readonly verifyResetPasswordToken: VerifyTokenProtocol) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
-    await this.verifyAccessToken.verify(httpRequest.accessToken)
+    await this.verifyResetPasswordToken.verify(httpRequest.accessToken)
 
     return this.httpHelper.ok({})
   }
