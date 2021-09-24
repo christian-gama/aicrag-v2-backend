@@ -1,4 +1,5 @@
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import { InvalidTokenError } from '@/application/usecases/errors'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { VerifyTokenUrlController } from '@/presentation/controllers/token/verify-token-url-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
@@ -29,5 +30,14 @@ describe('VerifyTokenUrlController', () => {
     await sut.handle(request)
 
     expect(verifySpy).toHaveBeenCalledWith('any_token')
+  })
+
+  it('Should return unauthorized if does not find a user', async () => {
+    const { sut, httpHelper, request, verifyAccessTokenStub } = makeSut()
+    jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 })
