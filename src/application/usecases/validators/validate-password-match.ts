@@ -10,7 +10,7 @@ export class ValidatePasswordMatch implements ValidatorProtocol {
     private readonly hasher: ComparerProtocol
   ) {}
 
-  async validate (input: any): Promise<Error | undefined> {
+  async validate (input: any): Promise<UserCredentialError | undefined> {
     const { email, password } = input
 
     const user = (await this.userDbRepository.findUserByEmail(email)) as IUser

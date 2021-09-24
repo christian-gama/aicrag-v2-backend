@@ -5,7 +5,7 @@ import { UserCredentialError } from '../errors'
 export class ValidateEmailExists implements ValidatorProtocol {
   constructor (private readonly userDbRepository: UserDbRepositoryProtocol) {}
 
-  async validate (input: any): Promise<Error | undefined> {
+  async validate (input: any): Promise<UserCredentialError | undefined> {
     const { email } = input
 
     const user = await this.userDbRepository.findUserByEmail(email)

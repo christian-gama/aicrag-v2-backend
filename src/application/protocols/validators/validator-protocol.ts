@@ -1,4 +1,6 @@
-type ValidatorReturnProtocol = Promise<Error | undefined> | Error | undefined
+import { ValidatorErrorProtocol } from './validation-error-protocol'
+
+type ValidatorReturnProtocol = Promise<ValidatorErrorProtocol | undefined> | ValidatorErrorProtocol | undefined
 
 export interface ValidatorProtocol {
   /**

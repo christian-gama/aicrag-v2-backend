@@ -10,7 +10,7 @@ export class VerifyRefreshToken implements VerifyTokenProtocol {
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
-  async verify (token: string | undefined): Promise<Error | IUser> {
+  async verify (token: string | undefined): Promise<InvalidTokenError | IUser> {
     if (!token) {
       return new TokenMissingError()
     }

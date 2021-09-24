@@ -4,7 +4,7 @@ import { InvalidParamError } from '../errors'
 export class ValidateEmail implements ValidatorProtocol {
   constructor (private readonly emailValidator: EmailValidatorProtocol) {}
 
-  validate (input: any): Error | undefined {
+  validate (input: any): InvalidParamError | undefined {
     if (!this.emailValidator.isEmail(input.email)) return new InvalidParamError('email')
   }
 }
