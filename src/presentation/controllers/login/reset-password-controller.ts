@@ -1,8 +1,9 @@
 import { HasherProtocol } from '@/application/protocols/cryptography'
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MustLogoutError } from '@/application/usecases/errors'
+import { IUser } from '@/domain'
 import {
   HttpHelperProtocol,
   HttpRequest,
@@ -12,6 +13,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class ResetPasswordController implements ControllerProtocol {
   constructor (
+    private readonly generateRefreshToken: GenerateTokenProtocol,
     private readonly hasher: HasherProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly resetPasswordValidator: ValidatorProtocol,
@@ -34,9 +36,11 @@ export class ResetPasswordController implements ControllerProtocol {
 
     const hashedPassword = await this.hasher.hash(credentials.password)
 
-    await this.userDbRepository.updateUser(response, {
+    const user = await this.userDbRepository.updateUser(response, {
       'personal.password': hashedPassword
-    })
+    }) as IUser
+
+    await this.generateRefreshToken.generate(user)
 
     return this.httpHelper.ok({})
   }
