@@ -28,7 +28,9 @@ export class ResetPasswordController implements ControllerProtocol {
 
     const credentials = httpRequest.body
 
-    await this.resetPasswordValidator.validate(credentials)
+    const error = await this.resetPasswordValidator.validate(credentials)
+
+    if (error) return this.httpHelper.badRequest(error)
 
     await this.userDbRepository.updateUser(response, {
       'personal.password': credentials.password
