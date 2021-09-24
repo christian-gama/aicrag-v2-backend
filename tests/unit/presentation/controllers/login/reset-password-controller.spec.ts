@@ -90,4 +90,13 @@ describe('ResetPasswordController', () => {
 
     expect(validateStub).toHaveBeenCalledWith(request.body)
   })
+
+  it('Should return badRequest if validation fails', async () => {
+    const { sut, httpHelper, request, resetPasswordValidatorStub } = makeSut()
+    jest.spyOn(resetPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.badRequest(new Error()))
+  })
 })
