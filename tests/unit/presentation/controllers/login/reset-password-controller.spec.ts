@@ -1,17 +1,19 @@
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { ValidatorProtocol } from '@/application/protocols/validators'
 import { InvalidTokenError, MustLogoutError } from '@/application/usecases/errors'
 import { IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import { makeFakeUser, makeUserDbRepositoryStub, makeVerifyTokenStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeUserDbRepositoryStub, makeValidatorStub, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ResetPasswordController
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  resetPasswordValidatorStub: ValidatorProtocol
   userDbRepositoryStub: UserDbRepositoryProtocol
   verifyResetPasswordTokenStub: VerifyTokenProtocol
 }
@@ -23,16 +25,18 @@ const makeSut = (): SutTypes => {
     accessToken: 'any_token',
     body: { password: 'new_password', passwordConfirmation: 'new_password' }
   }
+  const resetPasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   const verifyResetPasswordTokenStub = makeVerifyTokenStub()
 
   const sut = new ResetPasswordController(
     httpHelper,
+    resetPasswordValidatorStub,
     userDbRepositoryStub,
     verifyResetPasswordTokenStub
   )
 
-  return { sut, fakeUser, httpHelper, request, userDbRepositoryStub, verifyResetPasswordTokenStub }
+  return { sut, fakeUser, httpHelper, request, resetPasswordValidatorStub, userDbRepositoryStub, verifyResetPasswordTokenStub }
 }
 
 describe('ResetPasswordController', () => {
@@ -71,10 +75,19 @@ describe('ResetPasswordController', () => {
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
 
-    const updateUserStub = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 
-    expect(updateUserStub).toHaveBeenCalledWith(fakeUser, { 'personal.password': request.body.password })
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, { 'personal.password': request.body.password })
+  })
+
+  it('Should call validate with correct credentials', async () => {
+    const { sut, request, resetPasswordValidatorStub } = makeSut()
+    const validateStub = jest.spyOn(resetPasswordValidatorStub, 'validate')
+
+    await sut.handle(request)
+
+    expect(validateStub).toHaveBeenCalledWith(request.body)
   })
 })
