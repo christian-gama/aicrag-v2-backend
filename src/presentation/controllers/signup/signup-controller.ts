@@ -3,8 +3,16 @@ import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { MustLogoutError, ConflictParamError, MailerServiceError } from '@/application/usecases/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import {
+  MustLogoutError,
+  ConflictParamError,
+  MailerServiceError
+} from '@/application/usecases/errors'
+import {
+  HttpHelperProtocol,
+  HttpRequest,
+  HttpResponse
+} from '@/presentation/helpers/http/protocols'
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class SignUpController implements ControllerProtocol {
@@ -18,9 +26,9 @@ export class SignUpController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const signUpUserCredentials = httpRequest.body
-
     if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
+
+    const signUpUserCredentials = httpRequest.body
 
     const error = await this.userValidator.validate(signUpUserCredentials)
 
