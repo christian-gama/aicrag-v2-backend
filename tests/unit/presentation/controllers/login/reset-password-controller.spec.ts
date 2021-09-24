@@ -1,4 +1,5 @@
 import { HasherProtocol } from '@/application/protocols/cryptography'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
@@ -9,6 +10,7 @@ import { ResetPasswordController } from '@/presentation/controllers/login/reset-
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import {
   makeFakeUser,
+  makeFilterUserDataStub,
   makeGenerateTokenStub,
   makeHasherStub,
   makeUserDbRepositoryStub,
@@ -19,6 +21,7 @@ import {
 interface SutTypes {
   sut: ResetPasswordController
   fakeUser: IUser
+  filterUserDataStub: FilterUserDataProtocol
   generateRefreshTokenStub: GenerateTokenProtocol
   hasherStub: HasherProtocol
   httpHelper: HttpHelperProtocol
@@ -30,6 +33,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
+  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const generateRefreshTokenStub = makeGenerateTokenStub()
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
@@ -42,6 +46,7 @@ const makeSut = (): SutTypes => {
   const verifyResetPasswordTokenStub = makeVerifyTokenStub()
 
   const sut = new ResetPasswordController(
+    filterUserDataStub,
     generateRefreshTokenStub,
     hasherStub,
     httpHelper,
@@ -53,6 +58,7 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     fakeUser,
+    filterUserDataStub,
     generateRefreshTokenStub,
     hasherStub,
     httpHelper,
@@ -150,5 +156,19 @@ describe('ResetPasswordController', () => {
     await sut.handle(request)
 
     expect(generateSpy).toHaveBeenCalledWith(fakeUser)
+  })
+
+  it('Should call filter with correct user', async () => {
+    const { sut, fakeUser, filterUserDataStub, request, verifyResetPasswordTokenStub } =
+      makeSut()
+    jest
+      .spyOn(verifyResetPasswordTokenStub, 'verify')
+      .mockReturnValueOnce(Promise.resolve(fakeUser))
+
+    const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
+
+    await sut.handle(request)
+
+    expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 })
