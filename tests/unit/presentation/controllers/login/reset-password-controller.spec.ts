@@ -1,5 +1,5 @@
 import { HasherProtocol } from '@/application/protocols/cryptography'
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { InvalidTokenError, MustLogoutError } from '@/application/usecases/errors'
@@ -9,6 +9,7 @@ import { ResetPasswordController } from '@/presentation/controllers/login/reset-
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import {
   makeFakeUser,
+  makeGenerateTokenStub,
   makeHasherStub,
   makeUserDbRepositoryStub,
   makeValidatorStub,
@@ -18,6 +19,7 @@ import {
 interface SutTypes {
   sut: ResetPasswordController
   fakeUser: IUser
+  generateRefreshTokenStub: GenerateTokenProtocol
   hasherStub: HasherProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
@@ -28,6 +30,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
+  const generateRefreshTokenStub = makeGenerateTokenStub()
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
   const request = {
@@ -39,6 +42,7 @@ const makeSut = (): SutTypes => {
   const verifyResetPasswordTokenStub = makeVerifyTokenStub()
 
   const sut = new ResetPasswordController(
+    generateRefreshTokenStub,
     hasherStub,
     httpHelper,
     resetPasswordValidatorStub,
@@ -48,8 +52,9 @@ const makeSut = (): SutTypes => {
 
   return {
     sut,
-    hasherStub,
     fakeUser,
+    generateRefreshTokenStub,
+    hasherStub,
     httpHelper,
     request,
     resetPasswordValidatorStub,
@@ -131,5 +136,19 @@ describe('ResetPasswordController', () => {
     await sut.handle(request)
 
     expect(hashSpy).toHaveBeenCalledWith(request.body.password)
+  })
+
+  it('Should call generate with correct user', async () => {
+    const { sut, fakeUser, generateRefreshTokenStub, request, verifyResetPasswordTokenStub } =
+      makeSut()
+    jest
+      .spyOn(verifyResetPasswordTokenStub, 'verify')
+      .mockReturnValueOnce(Promise.resolve(fakeUser))
+
+    const generateSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
+
+    await sut.handle(request)
+
+    expect(generateSpy).toHaveBeenCalledWith(fakeUser)
   })
 })
