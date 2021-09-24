@@ -13,7 +13,7 @@ export class ForgotPasswordEmail extends MailerService implements MailerServiceP
     const html = pug.renderFile(path.resolve(__dirname, 'templates', 'forgot-password.pug'), {
       name: user.personal.name,
       subject,
-      attachment: `https://aicrag.app.br/account/reset-password/${
+      attachment: `https://aicrag.app.br/login/reset-password/${
         user.temporary.resetPasswordToken as string
       }`
     })
