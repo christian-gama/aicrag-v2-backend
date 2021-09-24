@@ -1,4 +1,5 @@
 import { HasherProtocol } from '@/application/protocols/cryptography'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
@@ -13,6 +14,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class ResetPasswordController implements ControllerProtocol {
   constructor (
+    private readonly filterUserData: FilterUserDataProtocol,
     private readonly generateRefreshToken: GenerateTokenProtocol,
     private readonly hasher: HasherProtocol,
     private readonly httpHelper: HttpHelperProtocol,
@@ -41,6 +43,8 @@ export class ResetPasswordController implements ControllerProtocol {
     }) as IUser
 
     await this.generateRefreshToken.generate(user)
+
+    this.filterUserData.filter(user)
 
     return this.httpHelper.ok({})
   }
