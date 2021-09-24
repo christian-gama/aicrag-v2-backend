@@ -1,9 +1,17 @@
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
+import {
+  HttpHelperProtocol,
+  HttpRequest,
+  HttpResponse
+} from '@/presentation/helpers/http/protocols'
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class VerifyResetPasswordTokenController implements ControllerProtocol {
-  constructor (private readonly httpHelper: HttpHelperProtocol, private readonly verifyResetPasswordToken: VerifyTokenProtocol) {}
+  constructor (
+    private readonly generateAccessToken: GenerateTokenProtocol,
+    private readonly httpHelper: HttpHelperProtocol,
+    private readonly verifyResetPasswordToken: VerifyTokenProtocol
+  ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const token = httpRequest.params.token
@@ -13,6 +21,8 @@ export class VerifyResetPasswordTokenController implements ControllerProtocol {
     if (response instanceof Error) {
       return this.httpHelper.unauthorized(response)
     }
+
+    await this.generateAccessToken.generate(response)
 
     return this.httpHelper.ok({ token })
   }
