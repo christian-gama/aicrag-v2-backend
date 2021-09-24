@@ -3,9 +3,27 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "plugins": ["import-helpers"],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/return-await": "off",
-    "@typescript-eslint/no-misused-promises": "off"
+    "@typescript-eslint/no-misused-promises": "off",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^@/domain/",
+          "/^@/application/",
+          "/^@/infra/",
+          "/^@/presentation/",
+          "/^@/main/",
+          "/^@/tests/",
+          ["parent", "sibling", "index"],
+          "module"
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": true }
+      }
+    ]
   }
 }
