@@ -1,5 +1,7 @@
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+
 import { MiddlewareProtocol } from '../protocols/middleware-protocol'
 
 export class AccessToken implements MiddlewareProtocol {

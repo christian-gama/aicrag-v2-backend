@@ -1,5 +1,6 @@
 import { ActivateAccountController } from '@/presentation/controllers/account'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+
 import { makeTryCatchControllerDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'

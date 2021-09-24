@@ -1,4 +1,5 @@
 import { ValidateActiveAccount } from '@/application/usecases/validators'
+
 import { makeUserDbRepository } from '../repositories'
 
 export const makeValidateActiveAccount = (): ValidateActiveAccount => {

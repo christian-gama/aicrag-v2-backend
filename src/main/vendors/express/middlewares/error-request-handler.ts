@@ -1,4 +1,5 @@
 import { environment } from '@/main/config/environment'
+
 import { errorHandler } from '../helpers/error-handler'
 
 import { ErrorRequestHandler } from 'express'

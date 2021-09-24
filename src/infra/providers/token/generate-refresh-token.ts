@@ -1,7 +1,8 @@
+import { IUser } from '@/domain'
+
 import { EncrypterProtocol } from '@/application/protocols/cryptography'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { IUser } from '@/domain'
 
 export class GenerateRefreshToken implements GenerateTokenProtocol {
   constructor (

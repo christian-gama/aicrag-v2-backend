@@ -1,5 +1,7 @@
 import { InternalError } from '@/application/usecases/errors'
+
 import { HttpResponse } from '@/presentation/helpers/http/protocols'
+
 import { createAccessTokenCookie, createRefreshTokenCookie } from './create-token-cookie'
 
 import { Response } from 'express'

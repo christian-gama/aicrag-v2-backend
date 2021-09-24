@@ -1,4 +1,5 @@
 import { loginController, accessTokenMiddleware, activateAccountController, forgotPasswordController } from '.'
+
 import { Router } from 'express'
 
 const router = Router()

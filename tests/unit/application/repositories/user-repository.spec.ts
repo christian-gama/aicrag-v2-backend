@@ -3,6 +3,7 @@ import { UuidProtocol } from '@/application/protocols/helpers'
 import { UserRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidationCode } from '@/application/usecases/helpers'
 import { UserRepository } from '@/application/usecases/repositories'
+
 import { makeHasherStub, makeValidationCodeStub, makeUuidStub, makeFakeSignUpUserCredentials } from '@/tests/__mocks__'
 
 interface SutTypes {

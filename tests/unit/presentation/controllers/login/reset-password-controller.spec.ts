@@ -1,13 +1,17 @@
+import { IUser, IPublicUser } from '@/domain'
+
 import { HasherProtocol } from '@/application/protocols/cryptography'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MustLogoutError, InvalidTokenError } from '@/application/usecases/errors'
-import { IUser, IPublicUser } from '@/domain'
-import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
+
+import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { makeFakeUser, makeFilterUserDataStub, makeFakePublicUser, makeGenerateTokenStub, makeHasherStub, makeValidatorStub, makeUserDbRepositoryStub, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {

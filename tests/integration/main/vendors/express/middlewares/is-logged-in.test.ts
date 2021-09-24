@@ -1,13 +1,16 @@
 import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
 import { isLoggedInMiddleware } from '@/main/vendors/express/routes'
+
 import { makeFakeUser } from '@/tests/__mocks__'
 
+import { Request } from 'express'
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import { Request } from 'express'
 
 type RequestUser = Request & { user: IUser }
 

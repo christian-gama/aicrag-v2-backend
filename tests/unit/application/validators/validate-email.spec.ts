@@ -1,6 +1,7 @@
 import { ValidatorProtocol, EmailValidatorProtocol } from '@/application/protocols/validators'
 import { InvalidParamError } from '@/application/usecases/errors'
 import { ValidateEmail } from '@/application/usecases/validators'
+
 import { makeEmailValidatorStub } from '@/tests/__mocks__'
 import { config } from '@/tests/config'
 

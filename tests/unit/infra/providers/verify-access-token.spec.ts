@@ -1,8 +1,11 @@
+import { IUser } from '@/domain'
+
 import { DecoderProtocol } from '@/application/protocols/cryptography'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { TokenMissingError, InvalidTokenError } from '@/application/usecases/errors'
-import { IUser } from '@/domain'
+
 import { VerifyAccessToken } from '@/infra/providers/token/verify-access-token'
+
 import { makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

@@ -1,7 +1,10 @@
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { MustLoginError } from '@/application/usecases/errors'
+
 import { UserDbFilter } from '@/infra/database/mongodb/protocols'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class LogoutController implements ControllerProtocol {

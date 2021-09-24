@@ -1,6 +1,7 @@
-import { environment } from '@/main/config/environment'
 import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
+
+import { environment } from '@/main/config/environment'
 
 import { Request, Response, NextFunction } from 'express'
 

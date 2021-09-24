@@ -1,4 +1,5 @@
 import { GenerateRefreshToken } from '@/infra/providers/token'
+
 import { makeJwtRefreshToken } from '../../cryptography'
 import { makeUserDbRepository } from '../../repositories'
 

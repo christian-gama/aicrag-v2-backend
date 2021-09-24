@@ -1,5 +1,6 @@
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { IUser } from '@/domain'
+
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 
 import { Request, Response, NextFunction } from 'express'
 

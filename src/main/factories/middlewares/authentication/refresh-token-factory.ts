@@ -1,4 +1,5 @@
 import { RefreshToken } from '@/presentation/middlewares/authentication/refresh-token'
+
 import { makeJwtAccessToken } from '../../cryptography'
 import { makeHttpHelper } from '../../helpers'
 import { makeVerifyRefreshToken } from '../../providers/token'

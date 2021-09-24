@@ -1,9 +1,13 @@
+import { IUser } from '@/domain'
+
 import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
 import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
-import { IUser } from '@/domain'
-import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { RefreshToken } from '@/presentation/middlewares/authentication/refresh-token'
+
+import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { makeFakeRefreshToken, makeFakeUser, makeJwtAdapterStub, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {

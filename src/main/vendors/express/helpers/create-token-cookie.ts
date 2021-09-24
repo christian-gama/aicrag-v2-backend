@@ -1,5 +1,6 @@
-import { environment } from '@/main/config/environment'
 import { HttpResponse } from '@/presentation/helpers/http/protocols'
+
+import { environment } from '@/main/config/environment'
 
 import { Response } from 'express'
 

@@ -1,5 +1,7 @@
-import { TryCatchControllerDecorator } from '@/main/decorators/try-catch-controller-decorator'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+
+import { TryCatchControllerDecorator } from '@/main/decorators/try-catch-controller-decorator'
+
 import { makeLogControllerDecorator } from '.'
 
 export const makeTryCatchControllerDecorator = (

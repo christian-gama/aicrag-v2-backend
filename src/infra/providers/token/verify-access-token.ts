@@ -1,8 +1,9 @@
+import { IUser } from '@/domain'
+
 import { DecodedProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { TokenMissingError, InvalidTokenError } from '@/application/usecases/errors'
-import { IUser } from '@/domain'
 
 export class VerifyAccessToken implements VerifyTokenProtocol {
   constructor (

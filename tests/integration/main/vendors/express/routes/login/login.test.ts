@@ -1,12 +1,14 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { isLoggedInMiddleware, loginController } from '@/main/vendors/express/routes'
+
+import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
+import { isLoggedInMiddleware, loginController } from '@/main/vendors/express/routes'
+
 import { makeFakeUser } from '@/tests/__mocks__/mock-user'
 
-import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'
+import { Collection } from 'mongodb'
 import request from 'supertest'
-import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 
 describe('POST /login', () => {
   let userCollection: Collection

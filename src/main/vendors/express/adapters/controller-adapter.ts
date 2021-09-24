@@ -1,6 +1,8 @@
-import { environment } from '@/main/config/environment'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+
+import { environment } from '@/main/config/environment'
+
 import { refreshTokenResponse, accessTokenResponse, productionErrorResponse, defaultResponse } from '../helpers/express-responses'
 
 import { NextFunction, Request, Response } from 'express'

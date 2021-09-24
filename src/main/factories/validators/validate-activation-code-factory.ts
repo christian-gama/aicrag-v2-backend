@@ -1,4 +1,5 @@
 import { ValidateActivationCode } from '@/application/usecases/validators'
+
 import { makeUserDbRepository } from '../repositories'
 
 export const makeValidateActivationCode = (): ValidateActivationCode => {

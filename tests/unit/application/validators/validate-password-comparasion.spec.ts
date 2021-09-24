@@ -1,6 +1,7 @@
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { InvalidParamError } from '@/application/usecases/errors'
 import { ValidatePasswordComparasion } from '@/application/usecases/validators'
+
 import { config } from '@/tests/config'
 
 import faker from 'faker'

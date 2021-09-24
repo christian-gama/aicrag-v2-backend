@@ -1,12 +1,16 @@
+import { IPublicUser, IUser } from '@/domain'
+
 import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { InvalidCodeError } from '@/application/usecases/errors'
-import { IPublicUser, IUser } from '@/domain'
-import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { ActivateAccountController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
+
+import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { makeValidatorStub, makeFakeUser, makeFakePublicUser, makeFilterUserDataStub, makeGenerateTokenStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

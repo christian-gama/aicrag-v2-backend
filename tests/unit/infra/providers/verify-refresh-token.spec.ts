@@ -1,9 +1,12 @@
+import { IUser } from '@/domain'
+
 import { DecoderProtocol } from '@/application/protocols/cryptography'
 import { IRefreshToken } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { InvalidTokenError, TokenMissingError } from '@/application/usecases/errors'
-import { IUser } from '@/domain'
+
 import { VerifyRefreshToken } from '@/infra/providers/token/verify-refresh-token'
+
 import { makeFakeRefreshToken, makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 interface SutTypes {
   sut: VerifyRefreshToken

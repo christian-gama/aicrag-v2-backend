@@ -1,5 +1,6 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { VerifyResetPasswordTokenController } from '@/presentation/controllers/token'
+
 import { makeTryCatchControllerDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken } from '../../providers/token'

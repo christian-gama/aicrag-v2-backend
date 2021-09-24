@@ -1,4 +1,5 @@
 import { VerifyAccessToken } from '@/infra/providers/token'
+
 import { makeJwtAccessToken } from '../../cryptography'
 import { makeUserDbRepository } from '../../repositories'
 

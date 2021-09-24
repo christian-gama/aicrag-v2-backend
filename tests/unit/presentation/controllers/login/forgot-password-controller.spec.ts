@@ -1,11 +1,15 @@
+import { IUser } from '@/domain'
+
 import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { IUser } from '@/domain'
-import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { ForgotPasswordController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
+
+import { makeHttpHelper } from '@/main/factories/helpers'
+
 import {
   makeFakeUser,
   makeMailerServiceStub,

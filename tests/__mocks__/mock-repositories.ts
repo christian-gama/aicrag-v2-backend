@@ -1,5 +1,6 @@
-import { LogErrorRepositoryProtocol, UserRepositoryProtocol } from '@/application/protocols/repositories'
 import { ILogError, IUser, ISignUpUserCredentials } from '@/domain'
+
+import { LogErrorRepositoryProtocol, UserRepositoryProtocol } from '@/application/protocols/repositories'
 
 export const makeLogErrorRepositoryStub = (fakeLogError: ILogError): LogErrorRepositoryProtocol => {
   class LogErrorRepositoryStub implements LogErrorRepositoryProtocol {

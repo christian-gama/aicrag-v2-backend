@@ -1,3 +1,5 @@
+import { IPublicUser, IUser } from '@/domain'
+
 import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
@@ -9,10 +11,12 @@ import {
   MustLogoutError,
   MailerServiceError
 } from '@/application/usecases/errors'
-import { IPublicUser, IUser } from '@/domain'
-import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { SignUpController } from '@/presentation/controllers/signup'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
+
+import { makeHttpHelper } from '@/main/factories/helpers'
+
 import {
   makeFakeUser,
   makeFakePublicUser,

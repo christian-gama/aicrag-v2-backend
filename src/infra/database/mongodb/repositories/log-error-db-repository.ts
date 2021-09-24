@@ -1,6 +1,8 @@
+import { ILogError } from '@/domain'
+
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { LogErrorRepository } from '@/application/usecases/repositories'
-import { ILogError } from '@/domain'
+
 import { MongoHelper } from '../helper'
 
 export class LogErrorDbRepository implements LogErrorDbRepositoryProtocol {

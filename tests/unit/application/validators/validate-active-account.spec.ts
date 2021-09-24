@@ -1,8 +1,10 @@
+import { IUser } from '@/domain'
+
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { InactiveAccountError } from '@/application/usecases/errors'
 import { ValidateActiveAccount } from '@/application/usecases/validators'
-import { IUser } from '@/domain'
+
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

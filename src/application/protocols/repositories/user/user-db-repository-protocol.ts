@@ -1,4 +1,5 @@
 import { ISignUpUserCredentials, IUser } from '@/domain'
+
 import { UserDbFilter } from '@/infra/database/mongodb/protocols'
 
 /**

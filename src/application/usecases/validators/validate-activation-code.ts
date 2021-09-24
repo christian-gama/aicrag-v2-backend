@@ -1,5 +1,6 @@
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
+
 import { InvalidCodeError, AccountAlreadyActivatedError, CodeIsExpiredError } from '../errors'
 
 export class ValidateActivationCode implements ValidatorProtocol {

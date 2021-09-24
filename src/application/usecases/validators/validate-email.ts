@@ -1,4 +1,5 @@
 import { ValidatorProtocol, EmailValidatorProtocol } from '@/application/protocols/validators'
+
 import { InvalidParamError } from '../errors'
 
 export class ValidateEmail implements ValidatorProtocol {

@@ -1,5 +1,6 @@
 import { UuidProtocol } from '@/application/protocols/helpers'
 import { Uuid } from '@/application/usecases/helpers'
+
 import { config } from '@/tests/config'
 
 interface SutTypes {

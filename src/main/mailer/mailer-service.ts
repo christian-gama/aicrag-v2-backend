@@ -1,5 +1,6 @@
 import { MailerSettingsProtocol } from '@/application/protocols/mailer'
 import { MailerServiceError } from '@/application/usecases/errors'
+
 import { environment } from '../config/environment'
 
 import * as nodemailer from 'nodemailer'

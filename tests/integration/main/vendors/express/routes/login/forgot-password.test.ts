@@ -1,7 +1,9 @@
 
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+
 import app from '@/main/vendors/express/config/app'
 import { forgotPasswordController } from '@/main/vendors/express/routes'
+
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'

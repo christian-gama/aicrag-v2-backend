@@ -1,6 +1,13 @@
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { ValidationComposite } from '@/application/usecases/validators'
-import { makeRequiredFields, makeValidateName, makeValidateEmail, makeValidatePassword, makeValidatePasswordComparasion } from '.'
+
+import {
+  makeRequiredFields,
+  makeValidateName,
+  makeValidateEmail,
+  makeValidatePassword,
+  makeValidatePasswordComparasion
+} from '.'
 
 export const makeUserValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []

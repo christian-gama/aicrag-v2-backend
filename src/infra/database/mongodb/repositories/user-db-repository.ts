@@ -1,5 +1,7 @@
-import { UserDbRepositoryProtocol, UserRepositoryProtocol } from '@/application/protocols/repositories'
 import { ISignUpUserCredentials, IUser } from '@/domain'
+
+import { UserDbRepositoryProtocol, UserRepositoryProtocol } from '@/application/protocols/repositories'
+
 import { MongoHelper } from '../helper'
 import { UserDbFilter } from '../protocols'
 

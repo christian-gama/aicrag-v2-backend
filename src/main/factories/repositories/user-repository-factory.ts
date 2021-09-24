@@ -1,4 +1,5 @@
 import { UserRepository } from '@/application/usecases/repositories'
+
 import { makeBcryptAdapter } from '@/main/factories/cryptography'
 import { makeUuid, makeValidationCode } from '@/main/factories/helpers'
 

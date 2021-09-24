@@ -1,5 +1,7 @@
-import { FilterUserDataProtocol, UuidProtocol, ValidationCodeProtocol } from '@/application/protocols/helpers'
 import { IUser, IPublicUser } from '@/domain'
+
+import { FilterUserDataProtocol, UuidProtocol, ValidationCodeProtocol } from '@/application/protocols/helpers'
+
 import { makeFakePublicUser } from './mock-user'
 
 export const makeFilterUserDataStub = (fakeUser: IUser): FilterUserDataProtocol => {

@@ -8,11 +8,13 @@ import {
   ConflictParamError,
   MailerServiceError
 } from '@/application/usecases/errors'
+
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
 } from '@/presentation/helpers/http/protocols'
+
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class SignUpController implements ControllerProtocol {

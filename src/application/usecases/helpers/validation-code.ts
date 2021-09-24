@@ -1,4 +1,5 @@
 import { ValidationCodeProtocol } from '@/application/protocols/helpers'
+
 import { randomAlphanumeric } from '.'
 
 export class ValidationCode implements ValidationCodeProtocol {

@@ -1,6 +1,8 @@
 import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+
 import { MiddlewareProtocol } from '../protocols/middleware-protocol'
 
 export class RefreshToken implements MiddlewareProtocol {

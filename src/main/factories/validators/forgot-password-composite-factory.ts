@@ -1,5 +1,6 @@
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { ValidationComposite } from '@/application/usecases/validators'
+
 import { makeRequiredFields, makeValidateEmail, makeValidateEmailExists } from '.'
 
 export const makeForgotPasswordComposite = (): ValidatorProtocol => {

@@ -1,5 +1,6 @@
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { IUser, IPublicUser } from '@/domain'
+
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 
 export class FilterUserData implements FilterUserDataProtocol {
   filter (user: IUser): IPublicUser {

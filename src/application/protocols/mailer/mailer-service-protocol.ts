@@ -1,5 +1,6 @@
-import { MailerServiceError } from '@/application/usecases/errors'
 import { IUser } from '@/domain'
+
+import { MailerServiceError } from '@/application/usecases/errors'
 
 export interface MailerServiceProtocol {
   /**

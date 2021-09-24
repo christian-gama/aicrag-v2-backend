@@ -1,12 +1,16 @@
-import { UserRepositoryProtocol } from '@/application/protocols/repositories'
 import { IUser } from '@/domain'
+
+import { UserRepositoryProtocol } from '@/application/protocols/repositories'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 import { UserDbRepository } from '@/infra/database/mongodb/repositories'
+
 import {
   makeFakeUser,
   makeUserRepositoryStub,
   makeFakeSignUpUserCredentials
 } from '@/tests/__mocks__'
+
 import { Collection } from 'mongodb'
 
 interface SutTypes {

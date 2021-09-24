@@ -1,8 +1,12 @@
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { IUser } from '@/domain'
-import { makeHttpHelper } from '@/main/factories/helpers'
+
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
+
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { AccessToken } from '@/presentation/middlewares/authentication/access-token'
+
+import { makeHttpHelper } from '@/main/factories/helpers'
+
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {

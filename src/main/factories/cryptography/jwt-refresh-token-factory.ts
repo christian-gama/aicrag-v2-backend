@@ -1,4 +1,5 @@
 import { JwtAdapter } from '@/infra/adapters/cryptography'
+
 import { environment } from '@/main/config/environment'
 
 export const makeJwtRefreshToken = (): JwtAdapter => {

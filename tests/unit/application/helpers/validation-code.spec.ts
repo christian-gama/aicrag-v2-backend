@@ -1,5 +1,6 @@
 import { ValidationCodeProtocol } from '@/application/protocols/helpers'
 import { ValidationCode } from '@/application/usecases/helpers'
+
 import { config } from '@/tests/config'
 
 interface SutTypes {

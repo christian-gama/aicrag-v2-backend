@@ -1,4 +1,5 @@
 import { GenerateAccessToken } from '@/infra/providers/token'
+
 import { makeJwtAccessToken } from '../../cryptography'
 
 export const makeGenerateAccessToken = (): GenerateAccessToken => {

@@ -1,9 +1,11 @@
-import { IRefreshToken, GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { IUser } from '@/domain'
+
+import { IRefreshToken, GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
+import { InvalidTokenError } from '@/application/usecases/errors'
+
 import { makeFakeUser } from './mock-user'
 
 import faker from 'faker'
-import { InvalidTokenError } from '@/application/usecases/errors'
 
 export const makeFakeRefreshToken = (): IRefreshToken => {
   return {

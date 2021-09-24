@@ -1,5 +1,6 @@
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
+
 import { UserCredentialError } from '../errors'
 
 export class ValidateEmailExists implements ValidatorProtocol {

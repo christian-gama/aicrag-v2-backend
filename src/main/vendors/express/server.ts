@@ -1,6 +1,7 @@
 import 'module-alias/register'
 
 import { MongoHelper } from '@/infra/database/mongodb/helper'
+
 import { environment } from '@/main/config/environment'
 
 MongoHelper.connect(environment.DB.MONGO_URL)

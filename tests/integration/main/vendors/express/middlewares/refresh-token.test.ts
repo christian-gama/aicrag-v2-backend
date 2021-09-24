@@ -1,7 +1,9 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
 import { refreshTokenMiddleware, accessTokenMiddleware } from '@/main/vendors/express/routes'
+
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'

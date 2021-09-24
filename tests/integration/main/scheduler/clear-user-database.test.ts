@@ -1,6 +1,9 @@
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
+
 import { makeLogErrorDbRepositoryStub, makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'

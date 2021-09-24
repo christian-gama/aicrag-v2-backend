@@ -1,4 +1,5 @@
 import { AccessToken } from '@/presentation/middlewares/authentication/access-token'
+
 import { makeHttpHelper } from '../../helpers'
 import { makeVerifyAccessToken } from '../../providers/token'
 

@@ -1,8 +1,10 @@
+import { IUser } from '@/domain'
+
 import { ComparerProtocol } from '@/application/protocols/cryptography'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { UserCredentialError } from '@/application/usecases/errors'
 import { ValidatePasswordMatch } from '@/application/usecases/validators'
-import { IUser } from '@/domain'
+
 import { makeFakeUser, makeUserDbRepositoryStub, makeComparerStub } from '@/tests/__mocks__'
 
 interface SutTypes {

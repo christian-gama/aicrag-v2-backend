@@ -1,11 +1,14 @@
+import { IUser } from '@/domain'
+
 import { HasherProtocol } from '@/application/protocols/cryptography'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MustLogoutError } from '@/application/usecases/errors'
-import { IUser } from '@/domain'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class ResetPasswordController implements ControllerProtocol {

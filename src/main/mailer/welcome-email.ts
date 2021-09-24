@@ -1,10 +1,12 @@
-import { MailerServiceProtocol, MailerSettingsProtocol } from '@/application/protocols/mailer'
 import { IUser } from '@/domain'
+
+import { MailerServiceProtocol, MailerSettingsProtocol } from '@/application/protocols/mailer'
+
 import { MailerService } from './mailer-service'
 
+import { htmlToText } from 'html-to-text'
 import path from 'path'
 import pug from 'pug'
-import { htmlToText } from 'html-to-text'
 
 export class WelcomeEmail extends MailerService implements MailerServiceProtocol {
   async send (user: IUser): Promise<true | Error> {
