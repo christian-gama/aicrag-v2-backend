@@ -5,18 +5,12 @@ import { IUser } from '@/domain'
  */
 export interface HttpRequest {
   /**
-   * @description Body that comes from request.
+   * @description Data that comes from request.
    */
   query?: any
   params?: any
   body?: any
   user?: IUser
-}
-
-export interface HttpRequestToken {
-  /**
-   * @description Token that comes from request.
-   */
   refreshToken?: string
   accessToken?: string
 }

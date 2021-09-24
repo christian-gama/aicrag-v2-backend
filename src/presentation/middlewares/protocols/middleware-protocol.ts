@@ -1,4 +1,4 @@
-import { HttpRequestToken, HttpResponse } from '@/presentation/helpers/http/protocols'
+import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
 export interface MiddlewareProtocol {
   /**
@@ -8,5 +8,5 @@ export interface MiddlewareProtocol {
    * @returns Return a generic http response.
    */
 
-  handle: (httpRequest: HttpRequestToken) => Promise<HttpResponse>
+  handle: (httpRequest: HttpRequest) => Promise<HttpResponse>
 }

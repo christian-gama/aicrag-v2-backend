@@ -1,5 +1,5 @@
 import { environment } from '@/main/config/environment'
-import { HttpRequestToken, HttpResponse } from '@/presentation/helpers/http/protocols'
+import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
 
 import { Request, Response, NextFunction } from 'express'
@@ -7,10 +7,13 @@ import { Request, Response, NextFunction } from 'express'
 export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const httpRequest: HttpRequestToken = {
-        accessToken: req.cookies?.accessToken,
-        refreshToken: req.cookies?.refreshToken
-      }
+      const httpRequest: HttpRequest = Object.assign(
+        {
+          accessToken: req.cookies?.accessToken,
+          refreshToken: req.cookies?.refreshToken
+        },
+        req
+      )
 
       const httpResponse: HttpResponse = await middleware.handle(httpRequest)
 

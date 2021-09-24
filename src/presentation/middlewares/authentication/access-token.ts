@@ -1,11 +1,11 @@
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
-import { HttpHelperProtocol, HttpRequestToken, HttpResponse } from '@/presentation/helpers/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 import { MiddlewareProtocol } from '../protocols/middleware-protocol'
 
 export class AccessToken implements MiddlewareProtocol {
   constructor (private readonly httpHelper: HttpHelperProtocol, private readonly verifyAccessToken: VerifyTokenProtocol) {}
 
-  async handle (httpRequest: HttpRequestToken): Promise<HttpResponse> {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const { accessToken } = httpRequest
 
     const response = await this.verifyAccessToken.verify(accessToken)

@@ -2,7 +2,7 @@ import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryp
 import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
 import { IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
-import { HttpHelperProtocol, HttpRequestToken } from '@/presentation/helpers/http/protocols'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { RefreshToken } from '@/presentation/middlewares/authentication/refresh-token'
 import { makeFakeRefreshToken, makeFakeUser, makeJwtAdapterStub, makeVerifyTokenStub } from '@/tests/__mocks__'
 
@@ -12,7 +12,7 @@ interface SutTypes {
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   jwtAccessToken: EncrypterProtocol & DecoderProtocol
-  request: HttpRequestToken
+  request: HttpRequest
   verifyRefreshTokenStub: VerifyTokenProtocol
 }
 
@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const jwtAccessToken = makeJwtAdapterStub()
   const verifyRefreshTokenStub = makeVerifyTokenStub()
-  const request: HttpRequestToken = { refreshToken: 'any_token' }
+  const request: HttpRequest = { refreshToken: 'any_token' }
 
   const sut = new RefreshToken(httpHelper, jwtAccessToken, verifyRefreshTokenStub)
 
