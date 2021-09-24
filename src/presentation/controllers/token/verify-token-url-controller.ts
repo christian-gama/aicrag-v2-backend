@@ -14,6 +14,6 @@ export class VerifyTokenUrlController implements ControllerProtocol {
       return this.httpHelper.unauthorized(response)
     }
 
-    return this.httpHelper.ok({})
+    return this.httpHelper.ok({ token })
   }
 }
