@@ -8,7 +8,11 @@ export class VerifyTokenUrlController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const token = httpRequest.param.token
 
-    await this.verifyAccessToken.verify(token)
+    const response = await this.verifyAccessToken.verify(token)
+
+    if (response instanceof Error) {
+      return this.httpHelper.unauthorized(response)
+    }
 
     return this.httpHelper.ok({})
   }
