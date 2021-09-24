@@ -34,7 +34,7 @@ describe('VerifyRefreshToken', () => {
     expect(response).toEqual(new TokenMissingError())
   })
 
-  it('Should call jwtRefreshToken.decode with token', async () => {
+  it('Should call jwtRefreshToken.decode with correct token', async () => {
     const { sut, jwtRefreshTokenStub } = makeSut()
 
     const unauthorizedSpy = jest.spyOn(jwtRefreshTokenStub, 'decode')

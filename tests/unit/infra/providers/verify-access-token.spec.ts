@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
   return { sut, fakeUser, jwtAccessTokenStub, userDbRepositoryStub }
 }
 
-describe('VerifyRefreshToken', () => {
+describe('VerifyAccessToken', () => {
   it('Should return TokenMissingError if there is no token', async () => {
     const { sut } = makeSut()
     const refreshToken = undefined
@@ -32,7 +32,7 @@ describe('VerifyRefreshToken', () => {
     expect(response).toEqual(new TokenMissingError())
   })
 
-  it('Should call jwtRefreshToken.decode with token', async () => {
+  it('Should call jwtAccessToken.decode with correct token', async () => {
     const { sut, jwtAccessTokenStub } = makeSut()
 
     const unauthorizedSpy = jest.spyOn(jwtAccessTokenStub, 'decode')
@@ -61,6 +61,7 @@ describe('VerifyRefreshToken', () => {
 
     expect(response).toEqual(new InvalidTokenError())
   })
+
   it('Should return a user if succeds', async () => {
     const { sut, fakeUser, jwtAccessTokenStub } = makeSut()
     jest
