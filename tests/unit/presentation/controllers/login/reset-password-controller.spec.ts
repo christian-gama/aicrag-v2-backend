@@ -1,3 +1,4 @@
+import { HasherProtocol } from '@/application/protocols/cryptography'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
@@ -6,11 +7,18 @@ import { IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import { makeFakeUser, makeUserDbRepositoryStub, makeValidatorStub, makeVerifyTokenStub } from '@/tests/__mocks__'
+import {
+  makeFakeUser,
+  makeHasherStub,
+  makeUserDbRepositoryStub,
+  makeValidatorStub,
+  makeVerifyTokenStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ResetPasswordController
   fakeUser: IUser
+  hasherStub: HasherProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   resetPasswordValidatorStub: ValidatorProtocol
@@ -20,6 +28,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
+  const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
   const request = {
     accessToken: 'any_token',
@@ -30,13 +39,23 @@ const makeSut = (): SutTypes => {
   const verifyResetPasswordTokenStub = makeVerifyTokenStub()
 
   const sut = new ResetPasswordController(
+    hasherStub,
     httpHelper,
     resetPasswordValidatorStub,
     userDbRepositoryStub,
     verifyResetPasswordTokenStub
   )
 
-  return { sut, fakeUser, httpHelper, request, resetPasswordValidatorStub, userDbRepositoryStub, verifyResetPasswordTokenStub }
+  return {
+    sut,
+    hasherStub,
+    fakeUser,
+    httpHelper,
+    request,
+    resetPasswordValidatorStub,
+    userDbRepositoryStub,
+    verifyResetPasswordTokenStub
+  }
 }
 
 describe('ResetPasswordController', () => {
@@ -71,6 +90,7 @@ describe('ResetPasswordController', () => {
 
   it('Should call updateUser with correct values', async () => {
     const { sut, fakeUser, request, userDbRepositoryStub, verifyResetPasswordTokenStub } = makeSut()
+
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(fakeUser))
@@ -79,24 +99,37 @@ describe('ResetPasswordController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, { 'personal.password': request.body.password })
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'personal.password': 'hashed_value'
+    })
   })
 
   it('Should call validate with correct credentials', async () => {
     const { sut, request, resetPasswordValidatorStub } = makeSut()
-    const validateStub = jest.spyOn(resetPasswordValidatorStub, 'validate')
+    const validateSpy = jest.spyOn(resetPasswordValidatorStub, 'validate')
 
     await sut.handle(request)
 
-    expect(validateStub).toHaveBeenCalledWith(request.body)
+    expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
   it('Should return badRequest if validation fails', async () => {
     const { sut, httpHelper, request, resetPasswordValidatorStub } = makeSut()
-    jest.spyOn(resetPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
+    jest
+      .spyOn(resetPasswordValidatorStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('Should call hash with correct password', async () => {
+    const { sut, hasherStub, request } = makeSut()
+    const hashSpy = jest.spyOn(hasherStub, 'hash')
+
+    await sut.handle(request)
+
+    expect(hashSpy).toHaveBeenCalledWith(request.body.password)
   })
 })
