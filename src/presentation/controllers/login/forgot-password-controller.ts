@@ -22,13 +22,13 @@ export class ForgotPasswordController implements ControllerProtocol {
 
     if (error) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userDbRepository.findUserByEmail(credential.email)) as IUser
+    let user = (await this.userDbRepository.findUserByEmail(credential.email)) as IUser
 
-    const resetPasswordToken = this.generateAccessToken.generate(user) as string
+    const resetPasswordToken = await this.generateAccessToken.generate(user)
 
-    await this.userDbRepository.updateUser(user, {
+    user = await this.userDbRepository.updateUser(user, {
       'temporary.resetPasswordToken': resetPasswordToken
-    })
+    }) as IUser
 
     await this.forgotPasswordEmail.send(user)
 
