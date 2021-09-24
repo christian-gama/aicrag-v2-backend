@@ -13,7 +13,7 @@ export const environment = {
     MONGO_URL: process.env.MONGO_URL?.trim() ?? 'mongodb://mongo/aicrag'
   },
   JWT: {
-    ACCESS_EXPIRES: process.env.JWT_EXPIRES?.trim().toLowerCase() ?? '10s',
+    ACCESS_EXPIRES: process.env.JWT_EXPIRES?.trim().toLowerCase() ?? '45s',
     ACCESS_SECRET: process.env.JWT_SECRET?.trim() ?? 'e26f414f-74cb-4f16-a1f1-db6438a1fcd6',
     REFRESH_SECRET: process.env.JWT_REFRESH_SECRET?.trim() ?? '12f9b733-3ea0-4edf-9e05-33c1003dc9d1',
     REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES?.trim().toLowerCase() ?? '30d'
