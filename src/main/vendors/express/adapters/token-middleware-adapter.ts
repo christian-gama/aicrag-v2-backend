@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import { HttpResponse } from '@/presentation/helpers/http/protocols'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
 
 import { environment } from '@/main/config/environment'
@@ -8,7 +8,7 @@ import { defaultResponse } from '../helpers/express-responses'
 import { Request, Response, NextFunction } from 'express'
 
 export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
-  return async (req: AdaptHttpRequest, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const httpResponse: HttpResponse = await middleware.handle(req)
 
@@ -29,5 +29,3 @@ export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
     }
   }
 }
-
-type AdaptHttpRequest = Request & Pick<HttpRequest, 'cookies'>
