@@ -12,7 +12,16 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/pro
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
-import { makeFakeUser, makeFilterUserDataStub, makeFakePublicUser, makeGenerateTokenStub, makeHasherStub, makeValidatorStub, makeUserDbRepositoryStub, makeVerifyTokenStub } from '@/tests/__mocks__'
+import {
+  makeFakeUser,
+  makeFilterUserDataStub,
+  makeFakePublicUser,
+  makeGenerateTokenStub,
+  makeHasherStub,
+  makeValidatorStub,
+  makeUserDbRepositoryStub,
+  makeVerifyTokenStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ResetPasswordController
@@ -35,7 +44,10 @@ const makeSut = (): SutTypes => {
   const generateRefreshTokenStub = makeGenerateTokenStub()
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
-  const request = { accessToken: 'any_token', body: { password: 'new_password', passwordConfirmation: 'new_password' } }
+  const request = {
+    accessToken: 'any_token',
+    body: { password: 'new_password', passwordConfirmation: 'new_password' }
+  }
   const resetPasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   const verifyResetPasswordTokenStub = makeVerifyTokenStub()
@@ -105,7 +117,8 @@ describe('ResetPasswordController', () => {
     await sut.handle(request)
 
     expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
-      'personal.password': 'hashed_value'
+      'personal.password': 'hashed_value',
+      'temporary.resetPasswordToken': null
     })
   })
 
