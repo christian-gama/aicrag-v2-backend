@@ -4,6 +4,7 @@ import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
+import { MustLogoutError } from '@/application/usecases/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
@@ -19,6 +20,8 @@ export class ForgotPasswordController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
+
     const credential = httpRequest.body
 
     const error = await this.forgotPasswordValidator.validate(credential)
