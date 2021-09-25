@@ -1,11 +1,11 @@
-import { AccessToken } from '@/presentation/middlewares/authentication/access-token'
+import { AccessTokenMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '../../helpers'
 import { makeVerifyAccessToken } from '../../providers/token'
 
-export const makeAccessToken = (): AccessToken => {
+export const makeAccessToken = (): AccessTokenMiddleware => {
   const httpHelper = makeHttpHelper()
   const verifyAccessToken = makeVerifyAccessToken()
 
-  return new AccessToken(httpHelper, verifyAccessToken)
+  return new AccessTokenMiddleware(httpHelper, verifyAccessToken)
 }

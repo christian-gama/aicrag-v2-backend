@@ -3,9 +3,9 @@ import { VerifyTokenProtocol } from '@/application/protocols/providers'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
-import { MiddlewareProtocol } from '../protocols/middleware-protocol'
+import { MiddlewareProtocol } from './protocols/middleware-protocol'
 
-export class RefreshToken implements MiddlewareProtocol {
+export class RefreshTokenMiddleware implements MiddlewareProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
     private readonly jwtAccessToken: EncrypterProtocol & DecoderProtocol,

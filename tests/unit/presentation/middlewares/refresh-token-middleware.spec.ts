@@ -4,14 +4,14 @@ import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryp
 import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import { RefreshToken } from '@/presentation/middlewares/authentication/refresh-token'
+import { RefreshTokenMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
 import { makeFakeRefreshToken, makeFakeUser, makeJwtAdapterStub, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: RefreshToken
+  sut: RefreshTokenMiddleware
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
@@ -28,7 +28,7 @@ const makeSut = (): SutTypes => {
   const request: HttpRequest = { refreshToken: 'any_token' }
   const verifyRefreshTokenStub = makeVerifyTokenStub()
 
-  const sut = new RefreshToken(httpHelper, jwtAccessToken, verifyRefreshTokenStub)
+  const sut = new RefreshTokenMiddleware(httpHelper, jwtAccessToken, verifyRefreshTokenStub)
 
   return {
     sut,
@@ -41,7 +41,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('RefreshToken', () => {
+describe('RefreshTokenMiddleware', () => {
   it('Should call verify with token', async () => {
     const { sut, request, verifyRefreshTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyRefreshTokenStub, 'verify')

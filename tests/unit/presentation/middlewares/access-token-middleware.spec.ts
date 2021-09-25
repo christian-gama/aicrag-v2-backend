@@ -3,14 +3,14 @@ import { IUser } from '@/domain'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import { AccessToken } from '@/presentation/middlewares/authentication/access-token'
+import { AccessTokenMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: AccessToken
+  sut: AccessTokenMiddleware
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
   const request = { accessToken: 'any_token' }
   const verifyAccessTokenStub = makeVerifyTokenStub()
 
-  const sut = new AccessToken(httpHelper, verifyAccessTokenStub)
+  const sut = new AccessTokenMiddleware(httpHelper, verifyAccessTokenStub)
 
   return {
     sut,
@@ -34,7 +34,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('AccessToken', () => {
+describe('AccessTokenMiddleware', () => {
   it('Should call verify with token', async () => {
     const { sut, request, verifyAccessTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')

@@ -1,13 +1,13 @@
-import { RefreshToken } from '@/presentation/middlewares/authentication/refresh-token'
+import { RefreshTokenMiddleware } from '@/presentation/middlewares'
 
 import { makeJwtAccessToken } from '../../cryptography'
 import { makeHttpHelper } from '../../helpers'
 import { makeVerifyRefreshToken } from '../../providers/token'
 
-export const makeRefreshToken = (): RefreshToken => {
+export const makeRefreshToken = (): RefreshTokenMiddleware => {
   const httpHelper = makeHttpHelper()
   const jwtAccessToken = makeJwtAccessToken()
   const verifyRefreshToken = makeVerifyRefreshToken()
 
-  return new RefreshToken(httpHelper, jwtAccessToken, verifyRefreshToken)
+  return new RefreshTokenMiddleware(httpHelper, jwtAccessToken, verifyRefreshToken)
 }

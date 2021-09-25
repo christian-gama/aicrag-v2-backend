@@ -2,9 +2,9 @@ import { VerifyTokenProtocol } from '@/application/protocols/providers'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
-import { MiddlewareProtocol } from '../protocols/middleware-protocol'
+import { MiddlewareProtocol } from './protocols/middleware-protocol'
 
-export class AccessToken implements MiddlewareProtocol {
+export class AccessTokenMiddleware implements MiddlewareProtocol {
   constructor (private readonly httpHelper: HttpHelperProtocol, private readonly verifyAccessToken: VerifyTokenProtocol) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
