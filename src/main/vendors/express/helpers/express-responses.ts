@@ -13,6 +13,7 @@ export const accessTokenResponse = (res: Response, httpResponse: HttpResponse): 
 }
 
 export const defaultResponse = (res: Response, httpResponse: HttpResponse): void => {
+  res.status(httpResponse.statusCode)
   res.json({
     status: httpResponse.status,
     data: httpResponse.data
@@ -20,6 +21,7 @@ export const defaultResponse = (res: Response, httpResponse: HttpResponse): void
 }
 
 export const productionErrorResponse = (res: Response, httpResponse: HttpResponse): void => {
+  res.status(httpResponse.statusCode)
   res.json({
     status: httpResponse.status,
     data: { message: new InternalError().message }
