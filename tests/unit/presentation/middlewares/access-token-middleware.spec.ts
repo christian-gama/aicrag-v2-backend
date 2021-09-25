@@ -20,7 +20,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
-  const request = { accessToken: 'any_token' }
+  const request: HttpRequest = { cookies: { accessToken: 'any_token' } }
   const verifyAccessTokenStub = makeVerifyTokenStub()
 
   const sut = new AccessTokenMiddleware(httpHelper, verifyAccessTokenStub)
@@ -41,7 +41,7 @@ describe('AccessTokenMiddleware', () => {
 
     await sut.handle(request)
 
-    expect(verifySpy).toHaveBeenCalledWith(request.accessToken)
+    expect(verifySpy).toHaveBeenCalledWith(request.cookies?.accessToken)
   })
 
   it('Should return unauthorized if response is instance of Error', async () => {

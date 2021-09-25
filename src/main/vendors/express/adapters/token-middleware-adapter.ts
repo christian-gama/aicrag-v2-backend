@@ -8,17 +8,9 @@ import { defaultResponse } from '../helpers/express-responses'
 import { Request, Response, NextFunction } from 'express'
 
 export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: AdaptHttpRequest, res: Response, next: NextFunction) => {
     try {
-      const httpRequest: HttpRequest = Object.assign(
-        {
-          accessToken: req.cookies?.accessToken,
-          refreshToken: req.cookies?.refreshToken
-        },
-        req
-      )
-
-      const httpResponse: HttpResponse = await middleware.handle(httpRequest)
+      const httpResponse: HttpResponse = await middleware.handle(req)
 
       if (httpResponse.data.accessToken) {
         res.cookie('accessToken', httpResponse.data.accessToken, {
@@ -37,3 +29,5 @@ export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
     }
   }
 }
+
+type AdaptHttpRequest = Request & Pick<HttpRequest, 'cookies'>

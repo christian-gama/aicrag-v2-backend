@@ -1,7 +1,11 @@
 import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import {
+  HttpHelperProtocol,
+  HttpRequest,
+  HttpResponse
+} from '@/presentation/helpers/http/protocols'
 
 import { MiddlewareProtocol } from './protocols/middleware-protocol'
 
@@ -13,7 +17,7 @@ export class RefreshTokenMiddleware implements MiddlewareProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { refreshToken } = httpRequest
+    const refreshToken = httpRequest.cookies?.refreshToken
 
     const response = await this.verifyRefreshToken.verify(refreshToken)
 

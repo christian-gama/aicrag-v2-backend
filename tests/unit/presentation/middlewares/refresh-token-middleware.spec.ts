@@ -8,7 +8,12 @@ import { RefreshTokenMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
-import { makeFakeRefreshToken, makeFakeUser, makeJwtAdapterStub, makeVerifyTokenStub } from '@/tests/__mocks__'
+import {
+  makeFakeRefreshToken,
+  makeFakeUser,
+  makeJwtAdapterStub,
+  makeVerifyTokenStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: RefreshTokenMiddleware
@@ -25,7 +30,7 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const jwtAccessToken = makeJwtAdapterStub()
-  const request: HttpRequest = { refreshToken: 'any_token' }
+  const request: HttpRequest = { cookies: { refreshToken: 'any_token' } }
   const verifyRefreshTokenStub = makeVerifyTokenStub()
 
   const sut = new RefreshTokenMiddleware(httpHelper, jwtAccessToken, verifyRefreshTokenStub)
@@ -48,7 +53,7 @@ describe('RefreshTokenMiddleware', () => {
 
     await sut.handle(request)
 
-    expect(verifySpy).toHaveBeenCalledWith(request.refreshToken)
+    expect(verifySpy).toHaveBeenCalledWith(request.cookies?.refreshToken)
   })
 
   it('Should return unauthorized if response is instance of Error', async () => {
@@ -63,11 +68,7 @@ describe('RefreshTokenMiddleware', () => {
   it('Should call jwtAccessToken with correct values', async () => {
     const { sut, fakeUser, jwtAccessToken, request, verifyRefreshTokenStub } = makeSut()
     const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
-    jest
-      .spyOn(verifyRefreshTokenStub, 'verify')
-      .mockReturnValueOnce(
-        Promise.resolve(fakeUser)
-      )
+    jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(fakeUser))
 
     await sut.handle(request)
 
@@ -79,6 +80,8 @@ describe('RefreshTokenMiddleware', () => {
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ refreshToken: request.refreshToken, accessToken: 'any_token' }))
+    expect(response).toEqual(
+      httpHelper.ok({ refreshToken: request.cookies?.refreshToken, accessToken: 'any_token' })
+    )
   })
 })

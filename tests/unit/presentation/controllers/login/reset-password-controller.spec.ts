@@ -44,9 +44,9 @@ const makeSut = (): SutTypes => {
   const generateRefreshTokenStub = makeGenerateTokenStub()
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
-  const request = {
-    accessToken: 'any_token',
-    body: { password: 'new_password', passwordConfirmation: 'new_password' }
+  const request: HttpRequest = {
+    body: { password: 'new_password', passwordConfirmation: 'new_password' },
+    cookies: { accessToken: 'any_token' }
   }
   const resetPasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
@@ -93,7 +93,7 @@ describe('ResetPasswordController', () => {
 
     await sut.handle(request)
 
-    expect(verifyStub).toHaveBeenCalledWith(request.accessToken)
+    expect(verifyStub).toHaveBeenCalledWith(request.cookies?.accessToken)
   })
 
   it('Should return unauthorized if verify fails', async () => {

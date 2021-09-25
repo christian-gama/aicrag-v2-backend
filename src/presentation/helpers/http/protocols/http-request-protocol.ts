@@ -7,10 +7,13 @@ export interface HttpRequest {
   /**
    * @description Data that comes from request.
    */
-  query?: any
-  params?: any
   body?: any
+  cookies?: {
+    accessToken?: string
+    refreshToken?: string
+  }
+  params?: any
+  query?: any
   user?: IUser
-  refreshToken?: string
-  accessToken?: string
+
 }

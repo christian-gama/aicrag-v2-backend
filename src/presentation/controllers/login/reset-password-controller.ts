@@ -29,7 +29,7 @@ export class ResetPasswordController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
-    const response = await this.verifyResetPasswordToken.verify(httpRequest.accessToken)
+    const response = await this.verifyResetPasswordToken.verify(httpRequest.cookies?.accessToken)
     if (response instanceof Error) {
       return this.httpHelper.unauthorized(response)
     }

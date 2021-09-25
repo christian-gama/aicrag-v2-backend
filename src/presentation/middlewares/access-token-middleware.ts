@@ -8,7 +8,7 @@ export class AccessTokenMiddleware implements MiddlewareProtocol {
   constructor (private readonly httpHelper: HttpHelperProtocol, private readonly verifyAccessToken: VerifyTokenProtocol) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { accessToken } = httpRequest
+    const accessToken = httpRequest.cookies?.accessToken
 
     const response = await this.verifyAccessToken.verify(accessToken)
 
