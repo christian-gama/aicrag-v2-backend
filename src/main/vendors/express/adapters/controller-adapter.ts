@@ -1,5 +1,4 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
 
 import { environment } from '@/main/config/environment'
 
@@ -13,14 +12,9 @@ import {
 import { NextFunction, Request, Response } from 'express'
 
 export const controllerAdapter = (controller: ControllerProtocol) => {
-  return async (req: AdaptHttpRequest, res: AdaptHttpResponse, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const httpRequest: HttpRequest = Object.assign(
-        { accessToken: req.cookies?.accessToken, refreshToken: req.cookies?.refreshToken },
-        req
-      )
-
-      const httpResponseData = await controller.handle(httpRequest)
+      const httpResponseData = await controller.handle(req)
 
       res.status(httpResponseData.statusCode)
 
@@ -42,6 +36,3 @@ export const controllerAdapter = (controller: ControllerProtocol) => {
     }
   }
 }
-
-type AdaptHttpRequest = HttpRequest & Request
-type AdaptHttpResponse = HttpResponse & Response
