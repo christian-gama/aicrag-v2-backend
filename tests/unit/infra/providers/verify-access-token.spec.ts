@@ -53,6 +53,15 @@ describe('VerifyAccessToken', () => {
     expect(findUserByIdSpy).toHaveBeenCalledWith('any_id')
   })
 
+  it('Should return InvalidTokenError if decode throws', async () => {
+    const { sut, jwtAccessTokenStub } = makeSut()
+    jest.spyOn(jwtAccessTokenStub, 'decode').mockReturnValueOnce(Promise.reject(new Error()))
+
+    const promise = await sut.verify('any_token')
+
+    expect(promise).toEqual(new InvalidTokenError())
+  })
+
   it('Should return InvalidTokenError if there is no user', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
     jest.spyOn(userDbRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(undefined))

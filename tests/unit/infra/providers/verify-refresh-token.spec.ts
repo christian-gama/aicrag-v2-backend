@@ -64,6 +64,15 @@ describe('VerifyRefreshToken', () => {
     expect(response).toEqual(new InvalidTokenError())
   })
 
+  it('Should return InvalidTokenError if decode throws', async () => {
+    const { sut, jwtRefreshTokenStub } = makeSut()
+    jest.spyOn(jwtRefreshTokenStub, 'decode').mockReturnValueOnce(Promise.reject(new Error()))
+
+    const promise = await sut.verify('any_token')
+
+    expect(promise).toEqual(new InvalidTokenError())
+  })
+
   it("Should return InvalidTokenError if token version is different from user's token version", async () => {
     const { sut } = makeSut()
     const response = await sut.verify('any_token')
