@@ -1,13 +1,16 @@
-import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { MustLogoutError } from '@/application/usecases/errors'
 
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import {
+  HttpHelperProtocol,
+  HttpRequest,
+  HttpResponse
+} from '@/presentation/helpers/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class VerifyResetPasswordTokenController implements ControllerProtocol {
   constructor (
-    private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly verifyResetPasswordToken: VerifyTokenProtocol
   ) {}
@@ -23,8 +26,6 @@ export class VerifyResetPasswordTokenController implements ControllerProtocol {
       return this.httpHelper.unauthorized(response)
     }
 
-    const accessToken = await this.generateAccessToken.generate(response)
-
-    return this.httpHelper.ok({ accessToken })
+    return this.httpHelper.ok({ accessToken: token })
   }
 }

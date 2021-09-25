@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
+import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { InvalidTokenError, MustLogoutError } from '@/application/usecases/errors'
 
 import { VerifyResetPasswordTokenController } from '@/presentation/controllers/token'
@@ -8,12 +8,11 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/pro
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
-import { makeFakeUser, makeGenerateTokenStub, makeVerifyTokenStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: VerifyResetPasswordTokenController
   fakeUser: IUser
-  generateAccessTokenStub: GenerateTokenProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   verifyResetPasswordTokenStub: VerifyTokenProtocol
@@ -21,13 +20,11 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const generateAccessTokenStub = makeGenerateTokenStub()
   const httpHelper = makeHttpHelper()
-  const request = { params: { token: 'any_token' } }
+  const request = { params: { token: 'param_token' } }
   const verifyResetPasswordTokenStub = makeVerifyTokenStub()
 
   const sut = new VerifyResetPasswordTokenController(
-    generateAccessTokenStub,
     httpHelper,
     verifyResetPasswordTokenStub
   )
@@ -35,7 +32,6 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     fakeUser,
-    generateAccessTokenStub,
     httpHelper,
     request,
     verifyResetPasswordTokenStub
@@ -58,7 +54,7 @@ describe('VerifyResetPasswordTokenController', () => {
 
     await sut.handle(request)
 
-    expect(verifySpy).toHaveBeenCalledWith('any_token')
+    expect(verifySpy).toHaveBeenCalledWith('param_token')
   })
 
   it('Should return unauthorized if return an error', async () => {
@@ -72,24 +68,11 @@ describe('VerifyResetPasswordTokenController', () => {
     expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
-  it('Should call generate with correct user', async () => {
-    const { sut, fakeUser, generateAccessTokenStub, request, verifyResetPasswordTokenStub } =
-      makeSut()
-    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
-
-    await sut.handle(request)
-
-    expect(generateSpy).toHaveBeenCalledWith(fakeUser)
-  })
-
   it('Should return ok if finds a user', async () => {
     const { sut, httpHelper, request } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ accessToken: 'any_token' }))
+    expect(response).toEqual(httpHelper.ok({ accessToken: 'param_token' }))
   })
 })

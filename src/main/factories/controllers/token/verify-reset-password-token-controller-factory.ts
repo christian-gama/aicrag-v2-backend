@@ -3,15 +3,13 @@ import { VerifyResetPasswordTokenController } from '@/presentation/controllers/t
 
 import { makeTryCatchControllerDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
-import { makeGenerateAccessToken } from '../../providers/token'
 import { makeVerifyResetPasswordToken } from '../../providers/token/verify-reset-password-token-factory'
 
 export const makeVerifyResetPasswordTokenController = (): ControllerProtocol => {
-  const generateAccessToken = makeGenerateAccessToken()
   const httpHelper = makeHttpHelper()
   const verifyResetPasswordToken = makeVerifyResetPasswordToken()
 
-  const verifyResetPasswordTokenController = new VerifyResetPasswordTokenController(generateAccessToken, httpHelper, verifyResetPasswordToken)
+  const verifyResetPasswordTokenController = new VerifyResetPasswordTokenController(httpHelper, verifyResetPasswordToken)
 
   return makeTryCatchControllerDecorator(verifyResetPasswordTokenController)
 }
