@@ -21,6 +21,10 @@ export const middlewareAdapter = (middleware: MiddlewareProtocol) => {
         return defaultResponse(res, httpResponse)
       }
 
+      if (httpResponse.statusCode === 500) {
+        return defaultResponse(res, httpResponse)
+      }
+
       if (httpResponse.data.refreshToken) {
         res.cookie('accessToken', httpResponse.data.accessToken, {
           httpOnly: true,

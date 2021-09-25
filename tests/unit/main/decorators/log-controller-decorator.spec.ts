@@ -3,13 +3,13 @@ import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositori
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpHelper } from '@/presentation/helpers/http/http-helper'
 
-import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
+import { LogDecorator } from '@/main/decorators'
 import { makeHttpHelper } from '@/main/factories/helpers'
 
 import { makeControllerStub, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: LogControllerDecorator
+  sut: LogDecorator<ControllerProtocol>
   controllerStub: ControllerProtocol
   error: Error
   httpHelper: HttpHelper
@@ -22,12 +22,12 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const logErrorDbRepositoryStub = makeLogErrorDbRepositoryStub(error)
 
-  const sut = new LogControllerDecorator(controllerStub, logErrorDbRepositoryStub)
+  const sut = new LogDecorator(controllerStub, logErrorDbRepositoryStub)
 
   return { sut, controllerStub, error, httpHelper, logErrorDbRepositoryStub }
 }
 
-describe('LogControllerDecorator', () => {
+describe('LogDecorator', () => {
   it('Should call logErrorDbRepository with correct error', async () => {
     const { sut, controllerStub, error, httpHelper, logErrorDbRepositoryStub } = makeSut()
     const errorData = {

@@ -1,7 +1,7 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { SignUpController } from '@/presentation/controllers/signup'
 
-import { makeTryCatchControllerDecorator } from '../../decorators'
+import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeWelcomeEmail } from '../../mailer'
 import { makeGenerateAccessToken } from '../../providers/token'
@@ -25,5 +25,5 @@ export const makeSignUpController = (): ControllerProtocol => {
     welcomeEmail
   )
 
-  return makeTryCatchControllerDecorator(signUpController)
+  return makeTryCatchDecorator(signUpController)
 }

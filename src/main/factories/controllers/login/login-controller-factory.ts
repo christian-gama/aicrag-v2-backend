@@ -1,7 +1,7 @@
 import { LoginController } from '@/presentation/controllers/login'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
-import { makeTryCatchControllerDecorator } from '../../decorators'
+import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
@@ -24,5 +24,5 @@ export const makeLoginController = (): ControllerProtocol => {
     userDbRepository
   )
 
-  return makeTryCatchControllerDecorator(loginController)
+  return makeTryCatchDecorator(loginController)
 }

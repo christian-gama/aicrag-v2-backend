@@ -2,7 +2,7 @@ import { ResetPasswordController } from '@/presentation/controllers/login/reset-
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeBcryptAdapter } from '../../cryptography'
-import { makeTryCatchControllerDecorator } from '../../decorators'
+import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateRefreshToken } from '../../providers/token'
 import { makeVerifyResetPasswordToken } from '../../providers/token/verify-reset-password-token-factory'
@@ -28,5 +28,5 @@ export const makeResetPasswordController = (): ControllerProtocol => {
     verifyResetPasswordToken
   )
 
-  return makeTryCatchControllerDecorator(resetPasswordController)
+  return makeTryCatchDecorator(resetPasswordController)
 }

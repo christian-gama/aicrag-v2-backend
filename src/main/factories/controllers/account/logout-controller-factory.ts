@@ -1,7 +1,7 @@
 import { LogoutController } from '@/presentation/controllers/account'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
-import { makeTryCatchControllerDecorator } from '../../decorators'
+import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeUserDbRepository } from '../../repositories'
 
@@ -14,5 +14,5 @@ export const makeLogoutController = (): ControllerProtocol => {
     userDbRepository
   )
 
-  return makeTryCatchControllerDecorator(logoutController)
+  return makeTryCatchDecorator(logoutController)
 }

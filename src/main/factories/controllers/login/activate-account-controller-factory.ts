@@ -1,7 +1,7 @@
 import { ActivateAccountController } from '@/presentation/controllers/account'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
-import { makeTryCatchControllerDecorator } from '../../decorators'
+import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
@@ -24,5 +24,5 @@ export const makeActivateAccountController = (): ControllerProtocol => {
     userDbRepository
   )
 
-  return makeTryCatchControllerDecorator(activateUserController)
+  return makeTryCatchDecorator(activateUserController)
 }

@@ -1,13 +1,13 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpHelper } from '@/presentation/helpers/http/http-helper'
 
-import { TryCatchControllerDecorator } from '@/main/decorators/try-catch-controller-decorator'
+import { TryCatchDecorator } from '@/main/decorators'
 import { makeHttpHelper } from '@/main/factories/helpers'
 
 import { makeControllerStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: TryCatchControllerDecorator
+  sut: TryCatchDecorator<ControllerProtocol>
   controllerStub: ControllerProtocol
   httpHelper: HttpHelper
 }
@@ -16,12 +16,12 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const controllerStub = makeControllerStub()
 
-  const sut = new TryCatchControllerDecorator(controllerStub)
+  const sut = new TryCatchDecorator(controllerStub)
 
   return { sut, controllerStub, httpHelper }
 }
 
-describe('LogControllerDecorator', () => {
+describe('LogDecorator', () => {
   it('Should call handle with correct value', async () => {
     const { sut, controllerStub } = makeSut()
     const handleSpy = jest.spyOn(controllerStub, 'handle')
