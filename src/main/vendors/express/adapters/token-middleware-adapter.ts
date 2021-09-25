@@ -3,6 +3,8 @@ import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middlew
 
 import { environment } from '@/main/config/environment'
 
+import { defaultResponse } from '../helpers/express-responses'
+
 import { Request, Response, NextFunction } from 'express'
 
 export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
@@ -18,7 +20,7 @@ export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
 
       const httpResponse: HttpResponse = await middleware.handle(httpRequest)
 
-      if (String(httpResponse.statusCode).startsWith('2')) {
+      if (httpResponse.data.accessToken) {
         res.cookie('accessToken', httpResponse.data.accessToken, {
           httpOnly: true,
           secure: environment.SERVER.NODE_ENV === 'production'
@@ -29,10 +31,7 @@ export const tokenMiddlewareAdapter = (middleware: MiddlewareProtocol) => {
         return next()
       }
 
-      res.status(httpResponse.statusCode).json({
-        status: httpResponse.status,
-        data: { message: httpResponse.data.message }
-      })
+      defaultResponse(res, httpResponse)
     } catch (error) {
       next(error)
     }
