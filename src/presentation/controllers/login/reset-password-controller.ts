@@ -41,10 +41,11 @@ export class ResetPasswordController implements ControllerProtocol {
 
     const hashedPassword = await this.hasher.hash(credentials.password)
 
-    const user = (await this.userDbRepository.updateUser(response, {
+    const update = {
       'personal.password': hashedPassword,
       'temporary.resetPasswordToken': null
-    })) as IUser
+    }
+    const user = (await this.userDbRepository.updateUser(response, update)) as IUser
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 
