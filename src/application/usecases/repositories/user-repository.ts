@@ -27,9 +27,9 @@ export class UserRepository implements UserRepositoryProtocol {
         updatedAt: null
       },
       personal: {
-        email: signUpUserCredentials.email,
+        email: signUpUserCredentials.email.toLocaleLowerCase(),
         id: id,
-        name: signUpUserCredentials.name,
+        name: signUpUserCredentials.name.toLocaleLowerCase(),
         password: hashedPassword
       },
       settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
