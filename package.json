@@ -12,6 +12,7 @@
     "tsc:watch": "tsc -w -p tsconfig.build.json && yarn copy-assets",
     "up": "yarn build && docker-compose up -d",
     "down": "docker-compose down",
+    "restart": "yarn build && docker-compose restart",
     "test": "yarn test:unit && yarn test:integration",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
     "test:verbose": "jest --passWithNoTests --detectOpenHandles --maxWorkers=1",
