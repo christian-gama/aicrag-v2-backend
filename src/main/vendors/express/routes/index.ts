@@ -3,7 +3,7 @@ import { makeActivateAccountController, makeForgotPasswordController, makeLoginC
 import { makeResetPasswordController } from '@/main/factories/controllers/login/reset-password-controller-factory'
 import { makeSignUpController } from '@/main/factories/controllers/signup'
 import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/token'
-import { makeAccessToken, makeRefreshToken } from '@/main/factories/middlewares/authentication'
+import { makeAccessTokenMiddleware, makeRefreshTokenMiddleware } from '@/main/factories/middlewares/authentication'
 import { makeVerifyRefreshToken } from '@/main/factories/providers/token'
 
 import { controllerAdapter } from '../adapters/controller-adapter'
@@ -28,7 +28,7 @@ export const verifyResetPasswordTokenController = controllerAdapter(makeVerifyRe
 /* **** End of Controllers **** */
 
 /* ********** Middlewares *********** */
-export const accessTokenMiddleware = tokenMiddlewareAdapter(makeAccessToken())
+export const accessTokenMiddleware = tokenMiddlewareAdapter(makeAccessTokenMiddleware())
 export const isLoggedInMiddleware = isLoggedInMiddlewareAdapter(makeVerifyRefreshToken())
-export const refreshTokenMiddleware = tokenMiddlewareAdapter(makeRefreshToken())
+export const refreshTokenMiddleware = tokenMiddlewareAdapter(makeRefreshTokenMiddleware())
 /* ******* End of Middlewares ******* */

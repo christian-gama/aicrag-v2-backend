@@ -4,7 +4,7 @@ import { makeJwtAccessToken } from '../../cryptography'
 import { makeHttpHelper } from '../../helpers'
 import { makeVerifyRefreshToken } from '../../providers/token'
 
-export const makeRefreshToken = (): RefreshTokenMiddleware => {
+export const makeRefreshTokenMiddleware = (): RefreshTokenMiddleware => {
   const httpHelper = makeHttpHelper()
   const jwtAccessToken = makeJwtAccessToken()
   const verifyRefreshToken = makeVerifyRefreshToken()

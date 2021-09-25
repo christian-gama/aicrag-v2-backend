@@ -1,2 +1,2 @@
-export * from './access-token-factory'
-export * from './refresh-token-factory'
+export * from './access-token-middleware-factory'
+export * from './refresh-token-middleware-factory'

@@ -18,7 +18,7 @@ describe('RefreshTokenMiddleware', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.get('/invalid-refresh-token', refreshTokenMiddleware, (req, res) => {
+    app.get('/invalid-refresh-token', refreshTokenMiddleware, accessTokenMiddleware, (req, res) => {
       res.send()
     })
 
