@@ -1,16 +1,17 @@
 import { IUser } from '@/domain'
 
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import { AccessTokenMiddleware } from '@/presentation/middlewares'
+import { PartialProtectedMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
-import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
+import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: AccessTokenMiddleware
+  sut: PartialProtectedMiddleware
+  fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
@@ -18,15 +19,17 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
+  const fakeRefreshToken = makeFakeRefreshToken()
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { cookies: { accessToken: 'any_token' } }
   const verifyAccessTokenStub = makeVerifyTokenStub()
 
-  const sut = new AccessTokenMiddleware(httpHelper, verifyAccessTokenStub)
+  const sut = new PartialProtectedMiddleware(httpHelper, verifyAccessTokenStub)
 
   return {
     sut,
+    fakeRefreshToken,
     fakeUser,
     httpHelper,
     request,
@@ -34,7 +37,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('AccessTokenMiddleware', () => {
+describe('PartialProtectedMiddleware', () => {
   it('Should call verify with token', async () => {
     const { sut, request, verifyAccessTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')

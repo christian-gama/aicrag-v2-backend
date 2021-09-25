@@ -2,7 +2,6 @@ import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { isLoggedInMiddleware, loginController } from '@/main/vendors/express/routes'
 
 import { makeFakeUser } from '@/tests/__mocks__/mock-user'
 
@@ -17,8 +16,6 @@ describe('POST /login', () => {
     await MongoHelper.connect(global.__MONGO_URI__)
 
     userCollection = MongoHelper.getCollection('users')
-
-    app.post('/api/v1/login', isLoggedInMiddleware, loginController)
   })
 
   afterAll(async () => {
@@ -56,7 +53,7 @@ describe('POST /login', () => {
 
   it('Should return 200 if account is not activated', async () => {
     const fakeUser = makeFakeUser()
-    const hashedPassword = await hash(fakeUser.personal.password, 12)
+    const hashedPassword = await hash(fakeUser.personal.password, 2)
     const userPassword = fakeUser.personal.password
     fakeUser.personal.password = hashedPassword
 
@@ -70,7 +67,7 @@ describe('POST /login', () => {
 
   it('Should return 200 if all validations succeds', async () => {
     const fakeUser = makeFakeUser()
-    const hashedPassword = await hash(fakeUser.personal.password, 12)
+    const hashedPassword = await hash(fakeUser.personal.password, 2)
     const userPassword = fakeUser.personal.password
     fakeUser.personal.password = hashedPassword
     fakeUser.settings.accountActivated = true

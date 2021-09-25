@@ -1,9 +1,9 @@
 import {
   loginController,
-  accessTokenMiddleware,
   activateAccountController,
   forgotPasswordController,
-  resetPasswordController
+  resetPasswordController,
+  partialProtectedMiddleware
 } from '.'
 
 import { Router } from 'express'
@@ -11,7 +11,7 @@ import { Router } from 'express'
 const router = Router()
 
 router.post('/', loginController)
-router.post('/activate-account', accessTokenMiddleware, activateAccountController)
+router.post('/activate-account', partialProtectedMiddleware, activateAccountController)
 router.post('/forgot-password', forgotPasswordController)
 router.post('/reset-password', resetPasswordController)
 

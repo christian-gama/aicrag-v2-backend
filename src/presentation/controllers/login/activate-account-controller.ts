@@ -27,7 +27,7 @@ export class ActivateAccountController implements ControllerProtocol {
     const credentials = httpRequest.body
 
     const error = await this.activateAccountValidator.validate(credentials)
-    if (error) return this.httpHelper.unauthorized(error)
+    if (error) return this.httpHelper.badRequest(error)
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 

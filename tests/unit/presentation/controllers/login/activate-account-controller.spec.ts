@@ -79,14 +79,14 @@ describe('LoginController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('Should return unauthorized if validation fails', async () => {
+  it('Should return badRequest if validation fails', async () => {
     const { sut, activateAccountValidatorStub, httpHelper, request } = makeSut()
     const error = new InvalidCodeError()
     jest.spyOn(activateAccountValidatorStub, 'validate').mockReturnValueOnce(error)
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.unauthorized(error))
+    expect(response).toEqual(httpHelper.badRequest(error))
   })
 
   it('Should call findUserByEmail with correct email', async () => {

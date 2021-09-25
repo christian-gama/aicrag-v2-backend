@@ -2,7 +2,6 @@ import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { isLoggedInMiddleware, signUpController } from '@/main/vendors/express/routes'
 
 import { makeFakeSignUpUserCredentials, makeFakeUser } from '@/tests/__mocks__'
 
@@ -16,8 +15,6 @@ describe('POST /signup', () => {
     await MongoHelper.connect(global.__MONGO_URI__)
 
     userCollection = MongoHelper.getCollection('users')
-
-    app.post('/api/v1/signup', isLoggedInMiddleware, signUpController)
   })
 
   afterAll(async () => {

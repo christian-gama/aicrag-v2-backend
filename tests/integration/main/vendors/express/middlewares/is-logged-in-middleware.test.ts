@@ -2,14 +2,14 @@ import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { refreshTokenMiddleware, accessTokenMiddleware } from '@/main/vendors/express/routes'
+import { isLoggedInMiddleware } from '@/main/vendors/express/routes'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('RefreshTokenMiddleware', () => {
+describe('IsLoggedInMiddleware', () => {
   let refreshToken: string
   let userCollection: Collection
 
@@ -18,16 +18,13 @@ describe('RefreshTokenMiddleware', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.get('/invalid-refresh-token', refreshTokenMiddleware, accessTokenMiddleware, (req, res) => {
-      res.send()
-    })
-
     const fakeUser = makeFakeUser()
     await userCollection.insertOne(fakeUser)
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
 
-    app.get('/valid-refresh-token', refreshTokenMiddleware, accessTokenMiddleware, (req, res) => {
-      res.send()
+    app.get('/is-logged-in', isLoggedInMiddleware, (req, res) => {
+      if ((req as any).user) res.send('user')
+      else res.send('no_user')
     })
   })
 
@@ -38,11 +35,11 @@ describe('RefreshTokenMiddleware', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 401 if there is an invalid refresh token', async () => {
-    await agent.get('/invalid-refresh-token').expect(401)
+  it('Should not return a user if fails', async () => {
+    await agent.get('/is-logged-in').expect('no_user')
   })
 
-  it('Should return 200 if there is a valid refresh token', async () => {
-    await agent.get('/valid-refresh-token').set('Cookie', `refreshToken=${refreshToken}`).expect(200)
+  it('Should return a user if succeds', async () => {
+    await agent.get('/is-logged-in').set('Cookie', `refreshToken=${refreshToken}`).expect('user')
   })
 })

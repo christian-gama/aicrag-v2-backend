@@ -2,7 +2,6 @@ import { MongoHelper } from '@/infra/database/mongodb/helper'
 
 import { makeGenerateRefreshToken, makeGenerateAccessToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { isLoggedInMiddleware, resetPasswordController } from '@/main/vendors/express/routes'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
@@ -16,8 +15,6 @@ describe('POST /reset-password', () => {
     await MongoHelper.connect(global.__MONGO_URI__)
 
     userCollection = MongoHelper.getCollection('users')
-
-    app.post('/api/v1/login/reset-password', isLoggedInMiddleware, resetPasswordController)
   })
 
   afterAll(async () => {
@@ -35,7 +32,11 @@ describe('POST /reset-password', () => {
     const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
     await userCollection.insertOne(fakeUser)
 
-    await agent.post('/api/v1/login/reset-password').set('Cookie', `refreshToken=${refreshToken}`).send().expect(403)
+    await agent
+      .post('/api/v1/login/reset-password')
+      .set('Cookie', `refreshToken=${refreshToken}`)
+      .send()
+      .expect(403)
   })
 
   it('Should return 401 if token is missing', async () => {

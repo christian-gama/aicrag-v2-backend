@@ -1,7 +1,7 @@
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
+import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { forgotPasswordController } from '@/main/vendors/express/routes'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
@@ -15,8 +15,6 @@ describe('POST /forgot-password', () => {
     await MongoHelper.connect(global.__MONGO_URI__)
 
     userCollection = MongoHelper.getCollection('users')
-
-    app.post('/api/v1/login/forgot-password', forgotPasswordController)
   })
 
   afterAll(async () => {
@@ -47,5 +45,17 @@ describe('POST /forgot-password', () => {
       .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
       .expect(400)
+  })
+
+  it('Should return 403 if user is logged in', async () => {
+    const fakeUser = makeFakeUser()
+    const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+    await userCollection.insertOne(fakeUser)
+
+    await agent
+      .post('/api/v1/login/forgot-password')
+      .set('Cookie', `refreshToken=${refreshToken}`)
+      .send({ email: fakeUser.personal.email })
+      .expect(403)
   })
 })

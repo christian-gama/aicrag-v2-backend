@@ -4,7 +4,7 @@ import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryp
 import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-import { RefreshTokenMiddleware } from '@/presentation/middlewares'
+import { ProtectedMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
@@ -16,12 +16,13 @@ import {
 } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: RefreshTokenMiddleware
+  sut: ProtectedMiddleware
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   jwtAccessToken: EncrypterProtocol & DecoderProtocol
   request: HttpRequest
+  verifyAccessTokenStub: VerifyTokenProtocol
   verifyRefreshTokenStub: VerifyTokenProtocol
 }
 
@@ -30,10 +31,16 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const jwtAccessToken = makeJwtAdapterStub()
-  const request: HttpRequest = { cookies: { refreshToken: 'any_token' } }
+  const request: HttpRequest = { cookies: { accessToken: 'any_token', refreshToken: 'any_token' } }
+  const verifyAccessTokenStub = makeVerifyTokenStub()
   const verifyRefreshTokenStub = makeVerifyTokenStub()
 
-  const sut = new RefreshTokenMiddleware(httpHelper, jwtAccessToken, verifyRefreshTokenStub)
+  const sut = new ProtectedMiddleware(
+    httpHelper,
+    jwtAccessToken,
+    verifyAccessTokenStub,
+    verifyRefreshTokenStub
+  )
 
   return {
     sut,
@@ -42,11 +49,12 @@ const makeSut = (): SutTypes => {
     httpHelper,
     jwtAccessToken,
     request,
+    verifyAccessTokenStub,
     verifyRefreshTokenStub
   }
 }
 
-describe('RefreshTokenMiddleware', () => {
+describe('ProtectedMiddleware', () => {
   it('Should call verify with token', async () => {
     const { sut, request, verifyRefreshTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyRefreshTokenStub, 'verify')
@@ -65,16 +73,6 @@ describe('RefreshTokenMiddleware', () => {
     expect(response).toEqual(httpHelper.unauthorized(new Error()))
   })
 
-  it('Should call jwtAccessToken with correct values', async () => {
-    const { sut, fakeUser, jwtAccessToken, request, verifyRefreshTokenStub } = makeSut()
-    const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
-    jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(fakeUser))
-
-    await sut.handle(request)
-
-    expect(encryptSpy).toHaveBeenCalledWith({ userId: fakeUser.personal.id })
-  })
-
   it('Should return ok if succeds', async () => {
     const { sut, httpHelper, request } = makeSut()
 
@@ -83,5 +81,32 @@ describe('RefreshTokenMiddleware', () => {
     expect(response).toEqual(
       httpHelper.ok({ refreshToken: request.cookies?.refreshToken, accessToken: 'any_token' })
     )
+  })
+
+  it('Should call encrypt if response is instance of Error', async () => {
+    const {
+      fakeUser,
+      jwtAccessToken,
+      request,
+      sut,
+      verifyAccessTokenStub,
+      verifyRefreshTokenStub
+    } = makeSut()
+    const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
+    jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(fakeUser))
+
+    await sut.handle(request)
+
+    expect(encryptSpy).toHaveBeenCalledWith({ userId: fakeUser.personal.id })
+  })
+
+  it('Should call verify with token', async () => {
+    const { sut, request, verifyAccessTokenStub } = makeSut()
+    const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')
+
+    await sut.handle(request)
+
+    expect(verifySpy).toHaveBeenCalledWith(request.cookies?.accessToken)
   })
 })
