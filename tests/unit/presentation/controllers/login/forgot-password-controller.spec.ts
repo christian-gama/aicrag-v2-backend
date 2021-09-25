@@ -4,6 +4,7 @@ import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
+import { MustLogoutError } from '@/application/usecases/errors'
 
 import { ForgotPasswordController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
@@ -59,6 +60,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Forgot Password', () => {
+  it('Should return forbidden if user is already logged in', async () => {
+    const { sut, fakeUser, httpHelper, request } = makeSut()
+    request.user = fakeUser
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.forbidden(new MustLogoutError()))
+  })
+
   it('Should call validate with correct value', async () => {
     const { sut, forgotPasswordValidatorStub, request } = makeSut()
     const validateSpy = jest.spyOn(forgotPasswordValidatorStub, 'validate')
