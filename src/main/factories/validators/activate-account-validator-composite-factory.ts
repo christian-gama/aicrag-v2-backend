@@ -13,7 +13,7 @@ export const makeActivateAccountValidatorComposite = (): ValidatorProtocol => {
 
   validations.push(makeValidateActivationCode())
 
-  const credentialsValidationComposite = new ValidationComposite(validations)
+  const activateAccountValidatorComposite = new ValidationComposite(validations)
 
-  return credentialsValidationComposite
+  return activateAccountValidatorComposite
 }
