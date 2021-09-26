@@ -1,5 +1,9 @@
 import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import {
+  InvalidTokenError,
+  TokenMissingError
+} from '@/application/usecases/errors'
 
 import {
   HttpHelperProtocol,
@@ -22,14 +26,21 @@ export class ProtectedMiddleware implements MiddlewareProtocol {
 
     const refreshTokenResponse = await this.verifyRefreshToken.verify(refreshToken)
 
-    if (refreshTokenResponse instanceof Error) { return this.httpHelper.unauthorized(refreshTokenResponse) }
+    if (refreshTokenResponse instanceof Error) {
+      return this.httpHelper.unauthorized(refreshTokenResponse)
+    }
 
     let accessToken = httpRequest.cookies?.accessToken
 
     const accessTokenResponse = await this.verifyAccessToken.verify(accessToken)
 
-    if (accessTokenResponse instanceof Error) {
-      accessToken = this.jwtAccessToken.encrypt({ userId: refreshTokenResponse.personal.id })
+    switch (accessTokenResponse.constructor) {
+      case InvalidTokenError:
+        return this.httpHelper.unauthorized(accessTokenResponse as Error)
+      case TokenMissingError:
+        return this.httpHelper.unauthorized(accessTokenResponse as Error)
+      default:
+        accessToken = this.jwtAccessToken.encrypt({ userId: refreshTokenResponse.personal.id })
     }
 
     return this.httpHelper.ok({ accessToken, refreshToken })

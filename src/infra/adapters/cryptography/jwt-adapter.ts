@@ -1,8 +1,9 @@
 import {
   DecodedProtocol,
-  DecoderProtocol
-  , EncrypterProtocol
+  DecoderProtocol,
+  EncrypterProtocol
 } from '@/application/protocols/cryptography'
+import { ExpiredTokenError, InvalidTokenError } from '@/application/usecases/errors'
 
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'
@@ -10,8 +11,13 @@ import { promisify } from 'util'
 export class JwtAdapter implements EncrypterProtocol, DecoderProtocol {
   constructor (private readonly expires: string, private readonly secret: string) {}
 
-  async decode (token: string): Promise<DecodedProtocol> {
-    return await promisify<string, string, DecodedProtocol>(jwt.verify)(token, this.secret)
+  async decode (token: string): Promise<DecodedProtocol | InvalidTokenError | ExpiredTokenError> {
+    try {
+      return await promisify<string, string, DecodedProtocol>(jwt.verify)(token, this.secret)
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') return new ExpiredTokenError()
+      else return new InvalidTokenError()
+    }
   }
 
   encrypt (subject: Record<any, string>): string {

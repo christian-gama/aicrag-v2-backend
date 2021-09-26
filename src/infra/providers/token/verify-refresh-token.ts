@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-import { DecodedProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
+import { DecoderProtocol } from '@/application/protocols/cryptography'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { TokenMissingError, InvalidTokenError } from '@/application/usecases/errors'
@@ -16,12 +16,9 @@ export class VerifyRefreshToken implements VerifyTokenProtocol {
       return new TokenMissingError()
     }
 
-    let decodedRefreshToken: DecodedProtocol
-    try {
-      decodedRefreshToken = await this.jwtRefreshToken.decode(token)
-    } catch (error) {
-      return new InvalidTokenError()
-    }
+    const decodedRefreshToken = await this.jwtRefreshToken.decode(token)
+
+    if (decodedRefreshToken instanceof Error) return decodedRefreshToken
 
     const user = await this.userDbRepository.findUserById(decodedRefreshToken.userId)
 

@@ -10,6 +10,6 @@ describe('InvalidTokenError', () => {
   it('Should return a message with the field name', () => {
     const sut = new InvalidTokenError()
 
-    expect(sut.message).toBe('Token is invalid or expired')
+    expect(sut.message).toBe('Token is invalid')
   })
 })
