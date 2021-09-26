@@ -128,12 +128,11 @@ describe('Forgot Password', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should call ok with correct message', async () => {
+  it('Should return ok with user if succeds', async () => {
     const { sut, fakeUser, httpHelper, request } = makeSut()
-    const okSpy = jest.spyOn(httpHelper, 'ok')
 
-    await sut.handle(request)
+    const response = await sut.handle(request)
 
-    expect(okSpy).toHaveBeenCalledWith({ user: makeFakePublicUser(fakeUser) })
+    expect(response).toEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
   })
 })
