@@ -3,7 +3,7 @@ import { IUser } from '@/domain'
 import { VerifyTokenProtocol } from '@/application/protocols/providers'
 import { InvalidTokenError, MustLogoutError } from '@/application/usecases/errors'
 
-import { VerifyResetPasswordTokenController } from '@/presentation/controllers/token'
+import { VerifyResetPasswordTokenController } from '@/presentation/controllers/helpers'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 
 import { makeHttpHelper } from '@/main/factories/helpers'

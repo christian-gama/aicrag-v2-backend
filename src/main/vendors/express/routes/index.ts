@@ -20,6 +20,11 @@ import { middlewareAdapter } from '../adapters/middleware-adapter'
 // Account Routes
 export const logoutController = controllerAdapter(makeLogoutController())
 
+// Helpers Routes
+export const verifyResetPasswordTokenController = controllerAdapter(
+  makeVerifyResetPasswordTokenController()
+)
+
 // Login Routes
 export const activateAccountController = controllerAdapter(makeActivateAccountController())
 export const forgotPasswordController = controllerAdapter(makeForgotPasswordController())
@@ -28,11 +33,6 @@ export const resetPasswordController = controllerAdapter(makeResetPasswordContro
 
 // SignUp Routes
 export const signUpController = controllerAdapter(makeSignUpController())
-
-// Token Routes
-export const verifyResetPasswordTokenController = controllerAdapter(
-  makeVerifyResetPasswordTokenController()
-)
 /* **** End of Controllers **** */
 
 /* ********** Middlewares *********** */

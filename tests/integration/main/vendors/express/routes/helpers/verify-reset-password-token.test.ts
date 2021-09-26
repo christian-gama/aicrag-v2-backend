@@ -17,7 +17,7 @@ describe('GET /verify-reset-password-token', () => {
 
     userCollection = MongoHelper.getCollection('users')
 
-    app.get('/api/v1/token/verify-reset-password-token/:token', isLoggedInMiddleware, verifyResetPasswordTokenController)
+    app.get('/api/v1/helpers/verify-reset-password-token/:token', isLoggedInMiddleware, verifyResetPasswordTokenController)
   })
 
   afterAll(async () => {
@@ -36,14 +36,14 @@ describe('GET /verify-reset-password-token', () => {
     const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
 
     await agent
-      .get('/api/v1/token/verify-reset-password-token/any_token')
+      .get('/api/v1/helpers/verify-reset-password-token/any_token')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
       .expect(403)
   })
 
   it('Should return 401 if token is invalid', async () => {
-    await agent.get('/api/v1/token/verify-reset-password-token/invalid_token').expect(401)
+    await agent.get('/api/v1/helpers/verify-reset-password-token/invalid_token').expect(401)
   })
 
   it("Should return 401 if param's token does not match user's token", async () => {
@@ -55,7 +55,7 @@ describe('GET /verify-reset-password-token', () => {
     const differentResetPasswordToken = makeGenerateAccessToken().generate(makeFakeUser())
 
     await agent
-      .get(`/api/v1/token/verify-reset-password-token/${differentResetPasswordToken}`)
+      .get(`/api/v1/helpers/verify-reset-password-token/${differentResetPasswordToken}`)
       .expect(401)
   })
 
@@ -65,6 +65,6 @@ describe('GET /verify-reset-password-token', () => {
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)
 
-    await agent.get(`/api/v1/token/verify-reset-password-token/${resetPasswordToken}`).expect(200)
+    await agent.get(`/api/v1/helpers/verify-reset-password-token/${resetPasswordToken}`).expect(200)
   })
 })

@@ -10,9 +10,9 @@ import { Express } from 'express'
 export default (app: Express): void => {
   app.use(isLoggedInMiddleware)
   app.use('/api/v1/account', accountRoutes)
+  app.use('/api/v1/helpers', tokenRoutes)
   app.use('/api/v1/login', loginRoutes)
   app.use('/api/v1/signup', signupRoutes)
-  app.use('/api/v1/token', tokenRoutes)
 
   if (process.env.NODE_ENV !== 'test') {
     app.all('*', notFound)
