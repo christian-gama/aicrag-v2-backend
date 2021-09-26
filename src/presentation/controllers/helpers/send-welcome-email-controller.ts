@@ -1,5 +1,6 @@
 import { IUser } from '@/domain'
 
+import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 
@@ -15,7 +16,8 @@ export class SendWelcomeEmailController implements ControllerProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
     private readonly sendWelcomeValidator: ValidatorProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol
+    private readonly userDbRepository: UserDbRepositoryProtocol,
+    private readonly welcomeEmail: MailerServiceProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -26,6 +28,8 @@ export class SendWelcomeEmailController implements ControllerProtocol {
     if (error) return this.httpHelper.badRequest(error)
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
+
+    await this.welcomeEmail.send(user)
 
     return this.httpHelper.ok({
       message: `A welcome email with activation code has been sent to ${user.personal.email}`
