@@ -1,18 +1,22 @@
 import { IUser } from '@/domain'
 
-import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MustLogoutError } from '@/application/usecases/errors'
+import { FilterUserData } from '@/application/usecases/helpers'
 
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import {
+  HttpHelperProtocol,
+  HttpRequest,
+  HttpResponse
+} from '@/presentation/helpers/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class ForgotPasswordController implements ControllerProtocol {
   constructor (
-    private readonly forgotPasswordEmail: MailerServiceProtocol,
+    private readonly filterUserData: FilterUserData,
     private readonly forgotPasswordValidator: ValidatorProtocol,
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly httpHelper: HttpHelperProtocol,
@@ -32,14 +36,12 @@ export class ForgotPasswordController implements ControllerProtocol {
 
     const resetPasswordToken = await this.generateAccessToken.generate(user)
 
-    user = await this.userDbRepository.updateUser(user, {
+    user = (await this.userDbRepository.updateUser(user, {
       'temporary.resetPasswordToken': resetPasswordToken
-    }) as IUser
+    })) as IUser
 
-    await this.forgotPasswordEmail.send(user)
+    const filteredUser = this.filterUserData.filter(user)
 
-    return this.httpHelper.ok({
-      message: `Instructions to reset your password were sent to ${user.personal.email}`
-    })
+    return this.httpHelper.ok({ user: filteredUser })
   }
 }
