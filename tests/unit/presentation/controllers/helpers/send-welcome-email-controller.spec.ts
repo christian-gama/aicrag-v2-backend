@@ -3,7 +3,7 @@ import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { MailerServiceError } from '@/application/usecases/errors'
+import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/usecases/errors'
 
 import { SendWelcomeEmailController } from '@/presentation/controllers/helpers/send-welcome-email-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
@@ -72,6 +72,19 @@ describe('SendWelcomeEmailController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('Should return forbidden if account is already activated', async () => {
+    const { sut, fakeUser, httpHelper, request, userDbRepositoryStub } = makeSut()
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockImplementationOnce(async () => {
+      fakeUser.settings.accountActivated = true
+
+      return fakeUser
+    })
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.forbidden(new AccountAlreadyActivatedError()))
   })
 
   it('Should call findUserByEmail with correct email', async () => {
