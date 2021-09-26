@@ -1,13 +1,13 @@
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { ValidationComposite } from '@/application/usecases/validators'
 
-import { makeForgotPasswordComposite, makeRequiredFields, makeValidateEmail, makeValidateEmailExists } from '@/main/factories/validators'
+import { makeForgotPasswordValidatorComposite, makeRequiredFields, makeValidateEmail, makeValidateEmailExists } from '@/main/factories/validators'
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 
 describe('CredentialsValidator Factory', () => {
   it('Should create factory with all validations', () => {
-    makeForgotPasswordComposite()
+    makeForgotPasswordValidatorComposite()
 
     const validations: ValidatorProtocol[] = []
 

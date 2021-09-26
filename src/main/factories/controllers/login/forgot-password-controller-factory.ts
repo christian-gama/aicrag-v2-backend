@@ -6,11 +6,11 @@ import { makeHttpHelper } from '../../helpers'
 import { makeForgotPasswordEmail } from '../../mailer'
 import { makeGenerateAccessToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
-import { makeForgotPasswordComposite } from '../../validators'
+import { makeForgotPasswordValidatorComposite } from '../../validators'
 
 export const makeForgotPasswordController = (): ControllerProtocol => {
   const forgotPasswordEmail = makeForgotPasswordEmail()
-  const forgotPasswordValidator = makeForgotPasswordComposite()
+  const forgotPasswordValidator = makeForgotPasswordValidatorComposite()
   const generateAccessToken = makeGenerateAccessToken()
   const httpHelper = makeHttpHelper()
   const userDbRepository = makeUserDbRepository()

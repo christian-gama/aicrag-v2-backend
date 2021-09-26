@@ -3,7 +3,7 @@ import { ValidationComposite } from '@/application/usecases/validators'
 
 import { makeRequiredFields, makeValidateEmail, makeValidateEmailExists } from '.'
 
-export const makeForgotPasswordComposite = (): ValidatorProtocol => {
+export const makeForgotPasswordValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['email']
