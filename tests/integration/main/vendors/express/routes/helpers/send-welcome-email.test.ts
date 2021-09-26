@@ -14,9 +14,17 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('POST /send-welcome-email', () => {
-  let fakeUser: IUser
   let accessToken: string
+  let fakeUser: IUser
   let userCollection: Collection
+
+  afterAll(async () => {
+    await MongoHelper.disconnect()
+  })
+
+  afterEach(async () => {
+    await userCollection.deleteMany({})
+  })
 
   beforeAll(async () => {
     await MongoHelper.connect(global.__MONGO_URI__)
@@ -24,18 +32,9 @@ describe('POST /send-welcome-email', () => {
     userCollection = MongoHelper.getCollection('users')
   })
 
-  afterAll(async () => {
-    await MongoHelper.disconnect()
-  })
-
   beforeEach(async () => {
     fakeUser = makeFakeUser()
-    await userCollection.insertOne(fakeUser)
     accessToken = makeGenerateAccessToken().generate(fakeUser)
-  })
-
-  afterEach(async () => {
-    await userCollection.deleteMany({})
   })
 
   const agent = request.agent(app)
@@ -45,6 +44,8 @@ describe('POST /send-welcome-email', () => {
   })
 
   it('Should return 400 if validation fails', async () => {
+    await userCollection.insertOne(fakeUser)
+
     await agent
       .post('/api/v1/helpers/send-welcome-email')
       .set('Cookie', `accessToken=${accessToken}`)
@@ -53,6 +54,8 @@ describe('POST /send-welcome-email', () => {
   })
 
   it('Should return 500 if email is not sent', async () => {
+    await userCollection.insertOne(fakeUser)
+
     jest
       .spyOn(WelcomeEmail.prototype, 'send')
       .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
@@ -65,6 +68,8 @@ describe('POST /send-welcome-email', () => {
   })
 
   it('Should return 200 email is sent', async () => {
+    await userCollection.insertOne(fakeUser)
+
     jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 
     await agent

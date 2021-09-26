@@ -1,3 +1,5 @@
+import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
@@ -9,13 +11,9 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('POST /signup', () => {
+  let fakeUser: IUser
+  let refreshToken: string
   let userCollection: Collection
-
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-
-    userCollection = MongoHelper.getCollection('users')
-  })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
@@ -25,12 +23,21 @@ describe('POST /signup', () => {
     await userCollection.deleteMany({})
   })
 
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+
+    userCollection = MongoHelper.getCollection('users')
+  })
+
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+  })
+
   const agent = request.agent(app)
 
   it('Should return 403 if user is already logged in', async () => {
-    const fakeUser = makeFakeUser()
     await userCollection.insertOne(fakeUser)
-    const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
 
     await agent
       .post('/api/v1/signup')
@@ -44,7 +51,6 @@ describe('POST /signup', () => {
   })
 
   it('Should return 409 if email already exists', async () => {
-    const fakeUser = makeFakeUser()
     const fakeSignUpUserCredentials = {
       email: fakeUser.personal.email,
       name: fakeUser.personal.name,

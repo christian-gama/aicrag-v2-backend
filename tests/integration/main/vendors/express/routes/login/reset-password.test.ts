@@ -1,3 +1,5 @@
+import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper'
 
 import { makeGenerateRefreshToken, makeGenerateAccessToken } from '@/main/factories/providers/token'
@@ -9,13 +11,10 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('POST /reset-password', () => {
+  let accessToken: string
+  let fakeUser: IUser
+  let refreshToken: string
   let userCollection: Collection
-
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-
-    userCollection = MongoHelper.getCollection('users')
-  })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
@@ -25,11 +24,21 @@ describe('POST /reset-password', () => {
     await userCollection.deleteMany({})
   })
 
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+
+    userCollection = MongoHelper.getCollection('users')
+  })
+
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
+    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+  })
+
   const agent = request.agent(app)
 
   it('Should return 403 if user is logged in', async () => {
-    const fakeUser = makeFakeUser()
-    const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -51,40 +60,34 @@ describe('POST /reset-password', () => {
   })
 
   it('Should return 400 if params are missing', async () => {
-    const fakeUser = makeFakeUser()
-    const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
-    fakeUser.temporary.resetPasswordToken = resetPasswordToken
+    fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
     await agent
       .post('/api/v1/login/reset-password')
-      .set('Cookie', `accessToken=${resetPasswordToken}`)
+      .set('Cookie', `accessToken=${accessToken}`)
       .send()
       .expect(400)
   })
 
   it('Should return 400 if params are invalid', async () => {
-    const fakeUser = makeFakeUser()
-    const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
-    fakeUser.temporary.resetPasswordToken = resetPasswordToken
+    fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
     await agent
       .post('/api/v1/login/reset-password')
-      .set('Cookie', `accessToken=${resetPasswordToken}`)
+      .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123', passwordConfirmation: '1234' })
       .expect(400)
   })
 
   it('Should return 200 if params are valid', async () => {
-    const fakeUser = makeFakeUser()
-    const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
-    fakeUser.temporary.resetPasswordToken = resetPasswordToken
+    fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
     await agent
       .post('/api/v1/login/reset-password')
-      .set('Cookie', `accessToken=${resetPasswordToken}`)
+      .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123456', passwordConfirmation: '123456' })
       .expect(200)
   })

@@ -1,8 +1,9 @@
+import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper'
 
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
-import { isLoggedInMiddleware, verifyResetPasswordTokenController } from '@/main/vendors/express/routes'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
@@ -10,15 +11,9 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('GET /verify-reset-password-token', () => {
+  let fakeUser: IUser
+  let refreshToken: string
   let userCollection: Collection
-
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-
-    userCollection = MongoHelper.getCollection('users')
-
-    app.get('/api/v1/helpers/verify-reset-password-token/:token', isLoggedInMiddleware, verifyResetPasswordTokenController)
-  })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
@@ -28,12 +23,21 @@ describe('GET /verify-reset-password-token', () => {
     await userCollection.deleteMany({})
   })
 
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+
+    userCollection = MongoHelper.getCollection('users')
+  })
+
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+  })
+
   const agent = request.agent(app)
 
   it('Should return 403 if user is logged in', async () => {
-    const fakeUser = makeFakeUser()
     await userCollection.insertOne(fakeUser)
-    const refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
 
     await agent
       .get('/api/v1/helpers/verify-reset-password-token/any_token')
@@ -47,7 +51,6 @@ describe('GET /verify-reset-password-token', () => {
   })
 
   it("Should return 401 if param's token does not match user's token", async () => {
-    const fakeUser = makeFakeUser()
     const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)
@@ -60,7 +63,6 @@ describe('GET /verify-reset-password-token', () => {
   })
 
   it('Should return 200 if token is valid', async () => {
-    const fakeUser = makeFakeUser()
     const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)

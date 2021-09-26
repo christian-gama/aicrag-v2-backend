@@ -1,3 +1,5 @@
+import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
@@ -9,18 +11,9 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('GET /logout', () => {
+  let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
-
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-
-    userCollection = MongoHelper.getCollection('users')
-
-    const fakeUser = makeFakeUser()
-    await userCollection.insertOne(fakeUser)
-    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
-  })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
@@ -30,9 +23,22 @@ describe('GET /logout', () => {
     await userCollection.deleteMany({})
   })
 
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+
+    userCollection = MongoHelper.getCollection('users')
+  })
+
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+  })
+
   const agent = request.agent(app)
 
   it('Should return 200 if user is logged in', async () => {
+    await userCollection.insertOne(fakeUser)
+
     await agent
       .get('/api/v1/account/logout')
       .set('Cookie', `refreshToken=${refreshToken}`)

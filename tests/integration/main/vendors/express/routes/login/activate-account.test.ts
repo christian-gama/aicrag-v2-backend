@@ -1,3 +1,5 @@
+import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateAccessToken } from '@/main/factories/providers/token'
@@ -9,13 +11,9 @@ import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('POST /activate-account', () => {
+  let accessToken: string
+  let fakeUser: IUser
   let userCollection: Collection
-
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-
-    userCollection = MongoHelper.getCollection('users')
-  })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
@@ -25,14 +23,23 @@ describe('POST /activate-account', () => {
     await userCollection.deleteMany({})
   })
 
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+
+    userCollection = MongoHelper.getCollection('users')
+  })
+
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
+  })
+
   const agent = request.agent(app)
 
   it('Should return 200 if all validations succeds', async () => {
-    const fakeUser = makeFakeUser()
-    await userCollection.insertOne(fakeUser)
-    const accessToken = makeGenerateAccessToken().generate(fakeUser)
     const activationCode = fakeUser.temporary.activationCode
     fakeUser.settings.accountActivated = false
+    await userCollection.insertOne(fakeUser)
 
     await agent
       .post('/api/v1/login/activate-account')
@@ -42,15 +49,12 @@ describe('POST /activate-account', () => {
   })
 
   it('Should return 401 if user does not have access token', async () => {
-    const fakeUser = makeFakeUser()
     await userCollection.insertOne(fakeUser)
 
     await agent.post('/api/v1/login/activate-account').send().expect(401)
   })
 
   it('Should return 400 if code is invalid', async () => {
-    const fakeUser = makeFakeUser()
-    const accessToken = makeGenerateAccessToken().generate(fakeUser)
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -61,12 +65,8 @@ describe('POST /activate-account', () => {
   })
 
   it('Should return 400 if code is expired', async () => {
-    const fakeUser = makeFakeUser()
     const activationCode = fakeUser.temporary.activationCode
-    if (fakeUser.temporary) {
-      fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
-    }
-    const accessToken = makeGenerateAccessToken().generate(fakeUser)
+    fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -77,8 +77,6 @@ describe('POST /activate-account', () => {
   })
 
   it('Should return 400 if misses any field', async () => {
-    const fakeUser = makeFakeUser()
-    const accessToken = makeGenerateAccessToken().generate(fakeUser)
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -89,10 +87,8 @@ describe('POST /activate-account', () => {
   })
 
   it('Should return 400 if account is already activated', async () => {
-    const fakeUser = makeFakeUser()
     const activationCode = fakeUser.temporary.activationCode
     fakeUser.settings.accountActivated = true
-    const accessToken = makeGenerateAccessToken().generate(fakeUser)
     await userCollection.insertOne(fakeUser)
 
     await agent
