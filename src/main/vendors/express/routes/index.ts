@@ -1,4 +1,5 @@
 import { makeLogoutController } from '@/main/factories/controllers/account'
+import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/helpers'
 import {
   makeActivateAccountController,
   makeForgotPasswordController,
@@ -6,7 +7,6 @@ import {
 } from '@/main/factories/controllers/login'
 import { makeResetPasswordController } from '@/main/factories/controllers/login/reset-password-controller-factory'
 import { makeSignUpController } from '@/main/factories/controllers/signup'
-import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/token'
 import {
   makePartialProtectedMiddleware,
   makeIsLoggedInMiddleware,
