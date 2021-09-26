@@ -44,6 +44,17 @@ describe('SendWelcomeEmailController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
+  it('Should return badRequest if validation fails', async () => {
+    const { sut, httpHelper, request, sendWelcomeValidatorStub } = makeSut()
+    jest
+      .spyOn(sendWelcomeValidatorStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new Error()))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.badRequest(new Error()))
+  })
+
   it('Should return ok if send email', async () => {
     const { sut, fakeUser, httpHelper, request } = makeSut()
 
