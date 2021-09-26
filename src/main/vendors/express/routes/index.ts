@@ -42,7 +42,7 @@ export const signUpController = controllerAdapter(makeSignUpController())
 /* **** End of Controllers **** */
 
 /* ********** Middlewares *********** */
-export const partialProtectedMiddleware = middlewareAdapter(makePartialProtectedMiddleware())
 export const isLoggedInMiddleware = middlewareAdapter(makeIsLoggedInMiddleware())
+export const partialProtectedMiddleware = middlewareAdapter(makePartialProtectedMiddleware())
 export const protectedMiddleware = middlewareAdapter(makeProtectedMiddleware())
 /* ******* End of Middlewares ******* */
