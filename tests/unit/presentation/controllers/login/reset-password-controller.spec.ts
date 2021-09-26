@@ -50,7 +50,7 @@ const makeSut = (): SutTypes => {
   }
   const resetPasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
-  const verifyResetPasswordTokenStub = makeVerifyTokenStub()
+  const verifyResetPasswordTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new ResetPasswordController(
     filterUserDataStub,
@@ -108,11 +108,8 @@ describe('ResetPasswordController', () => {
   })
 
   it('Should call updateUser with correct values', async () => {
-    const { sut, fakeUser, request, userDbRepositoryStub, verifyResetPasswordTokenStub } = makeSut()
+    const { sut, fakeUser, request, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     await sut.handle(request)
 
@@ -152,12 +149,8 @@ describe('ResetPasswordController', () => {
   })
 
   it('Should call generate with correct user', async () => {
-    const { sut, fakeUser, generateRefreshTokenStub, request, verifyResetPasswordTokenStub } =
-      makeSut()
+    const { sut, fakeUser, generateRefreshTokenStub, request } = makeSut()
     const generateSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     await sut.handle(request)
 
@@ -165,11 +158,8 @@ describe('ResetPasswordController', () => {
   })
 
   it('Should call filter with correct user', async () => {
-    const { sut, fakeUser, filterUserDataStub, request, verifyResetPasswordTokenStub } = makeSut()
+    const { sut, fakeUser, filterUserDataStub, request } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     await sut.handle(request)
 
@@ -177,19 +167,8 @@ describe('ResetPasswordController', () => {
   })
 
   it('Should return ok if succeds', async () => {
-    const {
-      sut,
-      fakeUser,
-      filteredUser,
-      filterUserDataStub,
-      httpHelper,
-      request,
-      verifyResetPasswordTokenStub
-    } = makeSut()
+    const { sut, filteredUser, filterUserDataStub, httpHelper, request } = makeSut()
     jest.spyOn(filterUserDataStub, 'filter').mockReturnValueOnce(filteredUser)
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const response = await sut.handle(request)
 

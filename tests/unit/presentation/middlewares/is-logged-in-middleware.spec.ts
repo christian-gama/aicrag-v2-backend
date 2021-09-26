@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { cookies: { refreshToken: 'any_token' } }
-  const verifyRefreshTokenStub = makeVerifyTokenStub()
+  const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new IsLoggedInMiddleware(httpHelper, verifyRefreshTokenStub)
 
@@ -57,8 +57,7 @@ describe('IsLoggedInMiddleware', () => {
   })
 
   it('Should return ok if succeds', async () => {
-    const { sut, fakeUser, httpHelper, request, verifyRefreshTokenStub } = makeSut()
-    jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(fakeUser))
+    const { sut, fakeUser, httpHelper, request } = makeSut()
 
     const response = await sut.handle(request)
 

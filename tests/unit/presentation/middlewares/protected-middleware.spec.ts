@@ -37,8 +37,8 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const jwtAccessToken = makeJwtAdapterStub()
   const request: HttpRequest = { cookies: { accessToken: 'any_token', refreshToken: 'any_token' } }
-  const verifyAccessTokenStub = makeVerifyTokenStub()
-  const verifyRefreshTokenStub = makeVerifyTokenStub()
+  const verifyAccessTokenStub = makeVerifyTokenStub(fakeUser)
+  const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new ProtectedMiddleware(
     httpHelper,
@@ -102,19 +102,11 @@ describe('ProtectedMiddleware', () => {
   })
 
   it('Should call encrypt if response is instance of ExpiredTokenError', async () => {
-    const {
-      sut,
-      fakeUser,
-      jwtAccessToken,
-      request,
-      verifyAccessTokenStub,
-      verifyRefreshTokenStub
-    } = makeSut()
+    const { sut, fakeUser, jwtAccessToken, request, verifyAccessTokenStub } = makeSut()
     const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
     jest
       .spyOn(verifyAccessTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(new ExpiredTokenError()))
-    jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(fakeUser))
 
     await sut.handle(request)
 

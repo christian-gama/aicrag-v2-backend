@@ -1,9 +1,11 @@
 import { IUser } from '@/domain'
 
-import { GenerateTokenProtocol, IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
+import {
+  GenerateTokenProtocol,
+  IRefreshToken,
+  VerifyTokenProtocol
+} from '@/application/protocols/providers'
 import { InvalidTokenError } from '@/application/usecases/errors'
-
-import { makeFakeUser } from './mock-user'
 
 import faker from 'faker'
 
@@ -24,10 +26,10 @@ export const makeGenerateTokenStub = (): GenerateTokenProtocol => {
   return new GenerateTokenStub()
 }
 
-export const makeVerifyTokenStub = (): VerifyTokenProtocol => {
+export const makeVerifyTokenStub = (fakeUser: IUser): VerifyTokenProtocol => {
   class VerifyTokenStub implements VerifyTokenProtocol {
     async verify (token: any): Promise<InvalidTokenError | IUser> {
-      return makeFakeUser()
+      return fakeUser
     }
   }
 

@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { cookies: { accessToken: 'any_token' } }
-  const verifyAccessTokenStub = makeVerifyTokenStub()
+  const verifyAccessTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new PartialProtectedMiddleware(httpHelper, verifyAccessTokenStub)
 

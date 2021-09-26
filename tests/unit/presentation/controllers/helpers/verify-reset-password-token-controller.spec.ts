@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const request = { params: { token: 'param_token' } }
-  const verifyResetPasswordTokenStub = makeVerifyTokenStub()
+  const verifyResetPasswordTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new VerifyResetPasswordTokenController(
     httpHelper,
