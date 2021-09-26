@@ -1,5 +1,6 @@
 import { makeLogoutController } from '@/main/factories/controllers/account'
 import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/helpers'
+import { makeSendForgotPasswordEmailController } from '@/main/factories/controllers/helpers/send-forgot-password-email-controller-factory'
 import { makeSendWelcomeEmailController } from '@/main/factories/controllers/helpers/send-welcome-email-controller-factory,'
 import {
   makeActivateAccountController,
@@ -22,10 +23,13 @@ import { middlewareAdapter } from '../adapters/middleware-adapter'
 export const logoutController = controllerAdapter(makeLogoutController())
 
 // Helpers Routes
+export const sendForgotPasswordEmailController = controllerAdapter(
+  makeSendForgotPasswordEmailController()
+)
+export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 export const verifyResetPasswordTokenController = controllerAdapter(
   makeVerifyResetPasswordTokenController()
 )
-export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 
 // Login Routes
 export const activateAccountController = controllerAdapter(makeActivateAccountController())
