@@ -1,5 +1,6 @@
 import { IUser } from '@/domain'
 
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 
 import { SendWelcomeEmailController } from '@/presentation/controllers/helpers/send-welcome-email-controller'
@@ -7,7 +8,7 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/pro
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
-import { makeFakeUser, makeValidatorStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeValidatorStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: SendWelcomeEmailController
@@ -15,6 +16,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sendWelcomeValidatorStub: ValidatorProtocol
+  userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -22,15 +24,21 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: { email: fakeUser.personal.email } }
   const sendWelcomeValidatorStub = makeValidatorStub()
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new SendWelcomeEmailController(httpHelper, sendWelcomeValidatorStub)
+  const sut = new SendWelcomeEmailController(
+    httpHelper,
+    sendWelcomeValidatorStub,
+    userDbRepositoryStub
+  )
 
   return {
     sut,
     fakeUser,
     httpHelper,
     request,
-    sendWelcomeValidatorStub
+    sendWelcomeValidatorStub,
+    userDbRepositoryStub
   }
 }
 
@@ -53,6 +61,15 @@ describe('SendWelcomeEmailController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('Should call findUserByEmail with correct email', async () => {
+    const { sut, request, userDbRepositoryStub } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
+
+    await sut.handle(request)
+
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
   it('Should return ok if send email', async () => {
