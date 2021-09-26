@@ -6,7 +6,7 @@ import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { MustLogoutError } from '@/application/usecases/errors'
 
-import { ForgotPasswordController } from '@/presentation/controllers/account'
+import { ForgotPasswordController } from '@/presentation/controllers/login'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 
 import { makeHttpHelper } from '@/main/factories/helpers'

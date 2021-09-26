@@ -6,7 +6,7 @@ import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import { InvalidCodeError } from '@/application/usecases/errors'
 
-import { ActivateAccountController } from '@/presentation/controllers/account'
+import { ActivateAccountController } from '@/presentation/controllers/login'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 
 import { makeHttpHelper } from '@/main/factories/helpers'

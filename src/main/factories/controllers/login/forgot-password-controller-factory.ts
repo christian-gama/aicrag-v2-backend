@@ -1,4 +1,4 @@
-import { ForgotPasswordController } from '@/presentation/controllers/account'
+import { ForgotPasswordController } from '@/presentation/controllers/login'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'

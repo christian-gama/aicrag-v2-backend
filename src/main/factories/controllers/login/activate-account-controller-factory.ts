@@ -1,4 +1,4 @@
-import { ActivateAccountController } from '@/presentation/controllers/account'
+import { ActivateAccountController } from '@/presentation/controllers/login'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'
