@@ -1,9 +1,9 @@
 import { notFound, errorRequestHandler } from '../middlewares'
 import { isLoggedInMiddleware } from '../routes'
 import accountRoutes from '../routes/account-routes'
+import tokenRoutes from '../routes/helpers-routes'
 import loginRoutes from '../routes/login-routes'
 import signupRoutes from '../routes/signup-routes'
-import tokenRoutes from '../routes/token-routes'
 
 import { Express } from 'express'
 
