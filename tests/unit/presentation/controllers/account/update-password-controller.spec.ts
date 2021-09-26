@@ -1,6 +1,7 @@
 import { IUser } from '@/domain'
 
 import { HasherProtocol } from '@/application/protocols/cryptography'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 
@@ -10,7 +11,9 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/pro
 import { makeHttpHelper } from '@/main/factories/helpers'
 
 import {
+  makeFakePublicUser,
   makeFakeUser,
+  makeFilterUserDataStub,
   makeHasherStub,
   makeUserDbRepositoryStub,
   makeValidatorStub
@@ -18,6 +21,7 @@ import {
 
 interface SutTypes {
   fakeUser: IUser
+  filterUserDataStub: FilterUserDataProtocol
   hasherStub: HasherProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
@@ -28,6 +32,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
+  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = {
@@ -41,6 +46,7 @@ const makeSut = (): SutTypes => {
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
   const sut = new UpdatePasswordController(
+    filterUserDataStub,
     hasherStub,
     httpHelper,
     updatePasswordValidatorStub,
@@ -49,6 +55,7 @@ const makeSut = (): SutTypes => {
 
   return {
     fakeUser,
+    filterUserDataStub,
     hasherStub,
     httpHelper,
     request,
@@ -116,13 +123,24 @@ describe('updatePasswordController', () => {
     expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, { 'personal.password': 'hashed_value' })
   })
 
+  it('should call filter with correct user', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, filterUserDataStub, request, sut } = makeSut()
+    const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
+
+    await sut.handle(request)
+
+    expect(filterSpy).toHaveBeenCalledWith(fakeUser)
+  })
+
   it('should return ok if succeds', async () => {
     expect.hasAssertions()
 
-    const { httpHelper, request, sut } = makeSut()
+    const { fakeUser, httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ user: 'filteredUser' }))
+    expect(response).toStrictEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
   })
 })
