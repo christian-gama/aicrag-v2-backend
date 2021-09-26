@@ -3,7 +3,7 @@ import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
-import { MailerServiceError } from '@/application/usecases/errors'
+import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/usecases/errors'
 
 import {
   HttpHelperProtocol,
@@ -29,6 +29,8 @@ export class SendWelcomeEmailController implements ControllerProtocol {
     if (error) return this.httpHelper.badRequest(error)
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
+
+    if (user.settings.accountActivated) return this.httpHelper.forbidden(new AccountAlreadyActivatedError())
 
     const mailerResponse = await this.welcomeEmail.send(user)
 
