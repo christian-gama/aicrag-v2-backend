@@ -17,7 +17,9 @@ export class UpdatePasswordController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const credentials = httpRequest.body
 
-    await this.updatePasswordValidator.validate(credentials)
+    const error = await this.updatePasswordValidator.validate(credentials)
+
+    if (error) return this.httpHelper.badRequest(error)
 
     return this.httpHelper.ok({ user: 'filteredUser' })
   }
