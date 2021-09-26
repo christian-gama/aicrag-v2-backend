@@ -1,6 +1,7 @@
 import { IUser } from '@/domain'
 
 import { HasherProtocol } from '@/application/protocols/cryptography'
+import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 
 import { UpdatePasswordController } from '@/presentation/controllers/account/update-password-controller'
@@ -8,7 +9,12 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/pro
 
 import { makeHttpHelper } from '@/main/factories/helpers'
 
-import { makeFakeUser, makeHasherStub, makeValidatorStub } from '@/tests/__mocks__'
+import {
+  makeFakeUser,
+  makeHasherStub,
+  makeUserDbRepositoryStub,
+  makeValidatorStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser
@@ -17,6 +23,7 @@ interface SutTypes {
   request: HttpRequest
   sut: UpdatePasswordController
   updatePasswordValidatorStub: ValidatorProtocol
+  userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -31,10 +38,24 @@ const makeSut = (): SutTypes => {
     }
   }
   const updatePasswordValidatorStub = makeValidatorStub()
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new UpdatePasswordController(httpHelper, updatePasswordValidatorStub, hasherStub)
+  const sut = new UpdatePasswordController(
+    hasherStub,
+    httpHelper,
+    updatePasswordValidatorStub,
+    userDbRepositoryStub
+  )
 
-  return { fakeUser, hasherStub, httpHelper, request, sut, updatePasswordValidatorStub }
+  return {
+    fakeUser,
+    hasherStub,
+    httpHelper,
+    request,
+    sut,
+    updatePasswordValidatorStub,
+    userDbRepositoryStub
+  }
 }
 
 describe('updatePasswordController', () => {
@@ -71,6 +92,17 @@ describe('updatePasswordController', () => {
     await sut.handle(request)
 
     expect(hashSpy).toHaveBeenCalledWith(request.body.password)
+  })
+
+  it('should call findUserByEmail with correct password', async () => {
+    expect.hasAssertions()
+
+    const { userDbRepositoryStub, request, sut } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
+
+    await sut.handle(request)
+
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
   it('should return ok if succeds', async () => {
