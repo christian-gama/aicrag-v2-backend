@@ -39,7 +39,7 @@ describe('POST /send-welcome-email', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 401 there is no access token', async () => {
+  it('Should return 401 if there is no access token', async () => {
     await agent.post('/api/v1/helpers/send-welcome-email').send().expect(401)
   })
 
@@ -51,6 +51,17 @@ describe('POST /send-welcome-email', () => {
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ email: 'invalid_email' })
       .expect(400)
+  })
+
+  it('Should return 403 if account is already activated', async () => {
+    fakeUser.settings.accountActivated = true
+    await userCollection.insertOne(fakeUser)
+
+    await agent
+      .post('/api/v1/helpers/send-welcome-email')
+      .set('Cookie', `accessToken=${accessToken}`)
+      .send({ email: fakeUser.personal.email })
+      .expect(403)
   })
 
   it('Should return 500 if email is not sent', async () => {
@@ -67,7 +78,7 @@ describe('POST /send-welcome-email', () => {
       .expect(500)
   })
 
-  it('Should return 200 email is sent', async () => {
+  it('Should return 200 if email is sent', async () => {
     await userCollection.insertOne(fakeUser)
 
     jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
