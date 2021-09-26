@@ -3,6 +3,7 @@ import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
+import { MailerServiceError } from '@/application/usecases/errors'
 
 import { SendWelcomeEmailController } from '@/presentation/controllers/helpers/send-welcome-email-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
@@ -89,6 +90,17 @@ describe('SendWelcomeEmailController', () => {
     await sut.handle(request)
 
     expect(sendSpy).toHaveBeenCalledWith(fakeUser)
+  })
+
+  it('Should return serverError if mailer fails', async () => {
+    const { sut, request, welcomeEmailStub } = makeSut()
+    jest
+      .spyOn(welcomeEmailStub, 'send')
+      .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
+
+    const response = await sut.handle(request)
+
+    expect(response.data.error.name).toBe('MailerServiceError')
   })
 
   it('Should return ok if send email', async () => {
