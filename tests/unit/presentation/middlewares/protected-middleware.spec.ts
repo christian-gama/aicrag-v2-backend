@@ -2,7 +2,11 @@ import { IUser } from '@/domain'
 
 import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
 import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
-import { ExpiredTokenError, InvalidTokenError } from '@/application/usecases/errors'
+import {
+  ExpiredTokenError,
+  InvalidTokenError,
+  TokenMissingError
+} from '@/application/usecases/errors'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 import { ProtectedMiddleware } from '@/presentation/middlewares'
@@ -65,24 +69,26 @@ describe('ProtectedMiddleware', () => {
     expect(verifySpy).toHaveBeenCalledWith(request.cookies?.refreshToken)
   })
 
-  it('Should return unauthorized if refresh token response is instance of Error', async () => {
-    const { sut, httpHelper, request, verifyRefreshTokenStub } = makeSut()
-    jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
-
-    const response = await sut.handle(request)
-
-    expect(response).toEqual(httpHelper.unauthorized(new Error()))
-  })
-
-  it('Should return unauthorized if access token response is instance of InvalidTokenError', async () => {
-    const { sut, httpHelper, request, verifyRefreshTokenStub } = makeSut()
+  it('Should return unauthorized if refresh token response is instance of InvalidTokenError', async () => {
+    const { sut, httpHelper, request, verifyAccessTokenStub } = makeSut()
     jest
-      .spyOn(verifyRefreshTokenStub, 'verify')
+      .spyOn(verifyAccessTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
+  })
+
+  it('Should return unauthorized if access token response is instance of TokenMissingError', async () => {
+    const { sut, httpHelper, request, verifyAccessTokenStub } = makeSut()
+    jest
+      .spyOn(verifyAccessTokenStub, 'verify')
+      .mockReturnValueOnce(Promise.resolve(new TokenMissingError()))
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(httpHelper.unauthorized(new TokenMissingError()))
   })
 
   it('Should return ok if succeds', async () => {
