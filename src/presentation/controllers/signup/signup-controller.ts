@@ -1,12 +1,10 @@
 import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import {
   MustLogoutError,
-  ConflictParamError,
-  MailerServiceError
+  ConflictParamError
 } from '@/application/usecases/errors'
 
 import {
@@ -23,8 +21,7 @@ export class SignUpController implements ControllerProtocol {
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol,
-    private readonly userValidator: ValidatorProtocol,
-    private readonly welcomeEmail: MailerServiceProtocol
+    private readonly userValidator: ValidatorProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -47,12 +44,6 @@ export class SignUpController implements ControllerProtocol {
     const user = await this.userDbRepository.saveUser(signUpUserCredentials)
 
     const accessToken = this.generateAccessToken.generate(user) as string
-
-    const mailerResponse = await this.welcomeEmail.send(user)
-
-    if (mailerResponse instanceof MailerServiceError) {
-      return this.httpHelper.serverError(mailerResponse)
-    }
 
     const filteredUser = this.filterUserData.filter(user)
 

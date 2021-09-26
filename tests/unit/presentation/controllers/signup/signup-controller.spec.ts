@@ -1,15 +1,13 @@
 import { IPublicUser, IUser } from '@/domain'
 
 import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { MailerServiceProtocol } from '@/application/protocols/mailer'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 import {
   ConflictParamError,
   InvalidParamError,
-  MustLogoutError,
-  MailerServiceError
+  MustLogoutError
 } from '@/application/usecases/errors'
 
 import { SignUpController } from '@/presentation/controllers/signup'
@@ -23,8 +21,7 @@ import {
   makeFilterUserDataStub,
   makeGenerateTokenStub,
   makeUserDbRepositoryStub,
-  makeValidatorStub,
-  makeMailerServiceStub
+  makeValidatorStub
 } from '@/tests/__mocks__'
 
 interface SutTypes {
@@ -37,7 +34,6 @@ interface SutTypes {
   request: HttpRequest
   userDbRepositoryStub: UserDbRepositoryProtocol
   userValidatorStub: ValidatorProtocol
-  welcomeEmailStub: MailerServiceProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -56,15 +52,13 @@ const makeSut = (): SutTypes => {
   }
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
   const userValidatorStub = makeValidatorStub()
-  const welcomeEmailStub = makeMailerServiceStub()
 
   const sut = new SignUpController(
     filterUserDataStub,
     generateAccessTokenStub,
     httpHelper,
     userDbRepositoryStub,
-    userValidatorStub,
-    welcomeEmailStub
+    userValidatorStub
   )
 
   return {
@@ -76,8 +70,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     userDbRepositoryStub,
-    userValidatorStub,
-    welcomeEmailStub
+    userValidatorStub
   }
 }
 
@@ -173,31 +166,6 @@ describe('SignUpController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(httpHelper.badRequest(error))
-  })
-
-  it('Should return serverError if mailer service throws', async () => {
-    const { sut, httpHelper, request, userDbRepositoryStub, welcomeEmailStub } = makeSut()
-    const error = new MailerServiceError()
-    jest.spyOn(welcomeEmailStub, 'send').mockReturnValueOnce(Promise.resolve(error))
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
-
-    const response = await sut.handle(request)
-
-    expect(response).toEqual(httpHelper.serverError(error))
-  })
-
-  it('Should call send with the correct user', async () => {
-    const { sut, fakeUser, userDbRepositoryStub, request, welcomeEmailStub } = makeSut()
-    const sendSpy = jest.spyOn(welcomeEmailStub, 'send')
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
-
-    await sut.handle(request)
-
-    expect(sendSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('Should call ok with the correct value', async () => {
