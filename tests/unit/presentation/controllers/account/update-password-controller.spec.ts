@@ -97,12 +97,23 @@ describe('updatePasswordController', () => {
   it('should call findUserByEmail with correct password', async () => {
     expect.hasAssertions()
 
-    const { userDbRepositoryStub, request, sut } = makeSut()
+    const { request, sut, userDbRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
 
     expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
+  })
+
+  it('should call updateUser with correct password', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, { 'personal.password': 'hashed_value' })
   })
 
   it('should return ok if succeds', async () => {
