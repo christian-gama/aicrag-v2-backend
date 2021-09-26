@@ -42,6 +42,17 @@ describe('updatePasswordController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
+  it('should return badRequest if validation fails', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, updatePasswordValidatorStub } = makeSut()
+    jest.spyOn(updatePasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
+
+    const response = await sut.handle(request)
+
+    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
   it('should return ok if succeds', async () => {
     expect.hasAssertions()
 
