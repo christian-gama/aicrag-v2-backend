@@ -1,3 +1,6 @@
+import { DecodedProtocol } from '@/application/protocols/cryptography'
+import { ExpiredTokenError, InvalidTokenError } from '@/application/usecases/errors'
+
 import { JwtAdapter } from '@/infra/adapters/cryptography'
 
 import { environment } from '@/main/config/environment'
@@ -28,7 +31,32 @@ describe('JwtAdapter', () => {
 
       const decodedToken = await sut.decode(token)
 
-      expect(decodedToken.id).toBe('any_id')
+      expect((decodedToken as DecodedProtocol).id).toBe('any_id')
+    })
+
+    it('Should return ExpiredTokenError if verify throws', async () => {
+      const { sut, token } = makeSut()
+      jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+        const error = new Error()
+        error.name = 'TokenExpiredError'
+
+        throw error
+      })
+
+      const decodedToken = await sut.decode(token)
+
+      expect(decodedToken).toEqual(new ExpiredTokenError())
+    })
+
+    it('Should return InvalidToken if verify throws', async () => {
+      const { sut, token } = makeSut()
+      jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+        throw new Error()
+      })
+
+      const decodedToken = await sut.decode(token)
+
+      expect(decodedToken).toEqual(new InvalidTokenError())
     })
   })
 
