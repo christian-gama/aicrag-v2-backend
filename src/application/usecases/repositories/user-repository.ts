@@ -13,11 +13,10 @@ export class UserRepository implements UserRepositoryProtocol {
 
   async createUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
     const activationCode = this.activationCode.generate()
+    const activationCodeExpirationMinutes = 10 * 60 * 1000
     const dateNow = new Date(Date.now())
     const hashedPassword = await this.hasher.hash(signUpUserCredentials.password)
     const id = this.uuid.generate()
-
-    const activationCodeExpirationMinutes = 10 * 60 * 1000
 
     const user: IUser = {
       logs: {
@@ -27,9 +26,9 @@ export class UserRepository implements UserRepositoryProtocol {
         updatedAt: null
       },
       personal: {
-        email: signUpUserCredentials.email.toLocaleLowerCase(),
+        email: signUpUserCredentials.email.toLowerCase(),
         id: id,
-        name: signUpUserCredentials.name.toLocaleLowerCase(),
+        name: signUpUserCredentials.name,
         password: hashedPassword
       },
       settings: { accountActivated: false, handicap: 1, currency: 'BRL' },

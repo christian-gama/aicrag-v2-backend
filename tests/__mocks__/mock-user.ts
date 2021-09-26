@@ -15,7 +15,7 @@ export const makeFakeSignUpUserCredentials = (): ISignUpUserCredentials => {
   const password = faker.internet.password()
   return {
     email: faker.internet.email().toLowerCase(),
-    name: faker.name.findName().toLowerCase(),
+    name: faker.name.findName(),
     password: password,
     passwordConfirmation: password
   }
@@ -30,9 +30,9 @@ export const makeFakeUser = (): IUser => {
       updatedAt: null
     },
     personal: {
-      email: faker.internet.email().toLocaleLowerCase(),
+      email: faker.internet.email().toLowerCase(),
       id: faker.datatype.uuid(),
-      name: faker.name.findName().toLocaleLowerCase(),
+      name: faker.name.findName(),
       password: faker.internet.password()
     },
     settings: { accountActivated: false, handicap: 1, currency: 'BRL' },

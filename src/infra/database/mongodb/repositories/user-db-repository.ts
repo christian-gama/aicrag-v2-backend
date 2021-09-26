@@ -10,7 +10,7 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
 
   async findUserByEmail (email: string): Promise<IUser | undefined> {
     const userCollection = MongoHelper.getCollection('users')
-    const filter: UserDbFilter = { 'personal.email': email }
+    const filter: UserDbFilter = { 'personal.email': email.toLowerCase() }
 
     const user = (await userCollection.findOne(filter)) as IUser
 
