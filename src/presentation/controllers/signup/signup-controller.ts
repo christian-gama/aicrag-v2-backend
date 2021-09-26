@@ -34,14 +34,14 @@ export class SignUpController implements ControllerProtocol {
 
     const error = await this.userValidator.validate(signUpUserCredentials)
 
+    if (error) {
+      return this.httpHelper.badRequest(error)
+    }
+
     const emailExists = await this.userDbRepository.findUserByEmail(signUpUserCredentials.email)
 
     if (emailExists) {
       return this.httpHelper.conflict(new ConflictParamError('email'))
-    }
-
-    if (error) {
-      return this.httpHelper.badRequest(error)
     }
 
     const user = await this.userDbRepository.saveUser(signUpUserCredentials)
