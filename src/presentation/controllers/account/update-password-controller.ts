@@ -2,6 +2,7 @@ import { IUser } from '@/domain'
 
 import { HasherProtocol } from '@/application/protocols/cryptography'
 import { FilterUserDataProtocol } from '@/application/protocols/helpers'
+import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 
@@ -16,6 +17,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 export class UpdatePasswordController implements ControllerProtocol {
   constructor (
     private readonly filterUserData: FilterUserDataProtocol,
+    private readonly generateRefreshToken: GenerateTokenProtocol,
     private readonly hasher: HasherProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly updatePasswordValidator: ValidatorProtocol,
@@ -34,8 +36,10 @@ export class UpdatePasswordController implements ControllerProtocol {
 
     const updatedUser = await this.userDbRepository.updateUser(user, { 'personal.password': hashedPassword }) as IUser
 
+    const refreshToken = await this.generateRefreshToken.generate(user)
+
     const filteredUser = this.filterUserData.filter(updatedUser)
 
-    return this.httpHelper.ok({ user: filteredUser })
+    return this.httpHelper.ok({ refreshToken, user: filteredUser })
   }
 }
