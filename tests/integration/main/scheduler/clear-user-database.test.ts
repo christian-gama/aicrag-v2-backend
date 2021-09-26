@@ -1,3 +1,5 @@
+import { IUser } from '@/domain'
+
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 
 import { MongoHelper } from '@/infra/database/mongodb/helper'
@@ -24,39 +26,38 @@ const makeSut = (): SutTypes => {
 }
 
 describe('ClearUserDatabase', () => {
+  let fakeUser: IUser
   let userCollection: Collection
-
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-  })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
   })
 
-  beforeEach(async () => {
-    userCollection = MongoHelper.getCollection('users')
+  afterEach(async () => {
     await userCollection.deleteMany({})
   })
 
-  it('Should delete a inactive that has createad an account more than 24 hours ago', async () => {
-    const { sut } = makeSut()
-    const fakeUser1 = makeFakeUser()
-    fakeUser1.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
-    await userCollection.insertOne(fakeUser1)
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+  })
 
-    const fakeUser2 = makeFakeUser()
-    fakeUser2.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
-    await userCollection.insertOne(fakeUser2)
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    userCollection = MongoHelper.getCollection('users')
+  })
+
+  it('Should delete a inactive user that has createad an account more than 24 hours ago', async () => {
+    const { sut } = makeSut()
+    fakeUser.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
+    await userCollection.insertOne(fakeUser)
 
     const count = await sut.deleteInactiveUsers()
 
-    expect(count).toBe(2)
+    expect(count).toBe(1)
   })
 
   it('Should not delete users that are active', async () => {
     const { sut } = makeSut()
-    const fakeUser = makeFakeUser()
     fakeUser.settings.accountActivated = true
     fakeUser.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
     await userCollection.insertOne(fakeUser)
@@ -68,7 +69,6 @@ describe('ClearUserDatabase', () => {
 
   it('Should not delete users that are inactive and account creation did is lower than 24 hours', async () => {
     const { sut } = makeSut()
-    const fakeUser = makeFakeUser()
     fakeUser.settings.accountActivated = false
     fakeUser.logs.createdAt = new Date(Date.now() - 23 * 60 * 60 * 1000)
     await userCollection.insertOne(fakeUser)
@@ -76,17 +76,5 @@ describe('ClearUserDatabase', () => {
     const count = await sut.deleteInactiveUsers()
 
     expect(count).toBe(0)
-  })
-
-  it('Should call saveLog if throws', async () => {
-    const { sut, error, logErrorDbRepositoryStub } = makeSut()
-    const saveLogSpy = jest.spyOn(logErrorDbRepositoryStub, 'saveLog')
-    jest.spyOn(MongoHelper, 'getCollection').mockImplementationOnce(() => {
-      throw error
-    })
-
-    await sut.deleteInactiveUsers()
-
-    expect(saveLogSpy).toHaveBeenCalledWith(error)
   })
 })

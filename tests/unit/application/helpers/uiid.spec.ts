@@ -1,8 +1,6 @@
 import { UuidProtocol } from '@/application/protocols/helpers'
 import { Uuid } from '@/application/usecases/helpers'
 
-import { config } from '@/tests/config'
-
 interface SutTypes {
   sut: UuidProtocol
 }
@@ -34,7 +32,7 @@ describe('Uiid', () => {
     const { sut } = makeSut()
 
     const values: Partial<string[]> = []
-    for (let i = 0; i < config.loopTimes; i++) {
+    for (let i = 0; i < 5; i++) {
       const value = sut.generate()
 
       values.push(value)
@@ -42,6 +40,6 @@ describe('Uiid', () => {
 
     const filteredValues = [...new Set(values)]
 
-    expect(filteredValues.length).toBe(config.loopTimes)
+    expect(filteredValues.length).toBe(5)
   })
 })

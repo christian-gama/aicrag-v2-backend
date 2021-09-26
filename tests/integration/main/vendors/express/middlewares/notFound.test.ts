@@ -9,19 +9,18 @@ import request from 'supertest'
 describe('ErrorHandler', () => {
   beforeEach(() => {
     app.all('*', notFound)
-    app.post('/notFound', controllerAdapter(makeControllerStub()))
+    app.get('/notFound', controllerAdapter(makeControllerStub()))
   })
 
   const agent = request.agent(app)
 
   it('Should return 404', async () => {
-    await agent.post('/notFound').send({}).expect(404)
+    await agent.get('/notFound').expect(404)
   })
 
   it('Should return a default error message', async () => {
     await agent
-      .post('/notFound')
-      .send({})
+      .get('/notFound')
       .expect({ status: 'fail', data: { message: 'Cannot find the path: /notFound' } })
   })
 })

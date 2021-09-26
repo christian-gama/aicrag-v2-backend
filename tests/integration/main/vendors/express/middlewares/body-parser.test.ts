@@ -3,7 +3,7 @@ import app from '@/main/vendors/express/config/app'
 import request from 'supertest'
 
 describe('BodyParser', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     app.post('/use_body_parser', (req, res) => {
       res.send(req.body)
     })

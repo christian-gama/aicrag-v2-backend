@@ -45,8 +45,8 @@ const makeSut = (): SutTypes => {
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = {
-    body: { password: 'new_password', passwordConfirmation: 'new_password' },
-    cookies: { accessToken: 'any_token' }
+    cookies: { accessToken: 'any_token' },
+    body: { password: 'new_password', passwordConfirmation: 'new_password' }
   }
   const resetPasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)

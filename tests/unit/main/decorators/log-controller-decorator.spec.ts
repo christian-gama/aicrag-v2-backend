@@ -31,8 +31,8 @@ describe('LogDecorator', () => {
   it('Should call logErrorDbRepository with correct error', async () => {
     const { sut, controllerStub, error, httpHelper, logErrorDbRepositoryStub } = makeSut()
     const errorData = {
-      name: error.name,
       message: error.message,
+      name: error.name,
       stack: error.stack
     }
     const saveLogSpy = jest.spyOn(logErrorDbRepositoryStub, 'saveLog')

@@ -29,13 +29,8 @@ const makeSut = (): SutTypes => {
 }
 
 describe('UserDbRepository', () => {
+  let user: IUser
   let userCollection: Collection
-
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-
-    userCollection = MongoHelper.getCollection('users')
-  })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
@@ -45,37 +40,47 @@ describe('UserDbRepository', () => {
     await userCollection.deleteMany({})
   })
 
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+
+    userCollection = MongoHelper.getCollection('users')
+  })
+
+  beforeEach(async () => {
+    const { sut } = makeSut()
+
+    user = await sut.saveUser(makeFakeSignUpUserCredentials())
+  })
+
   describe('findUserByEmail', () => {
     it('Should return a user if findUserByEmail finds a user', async () => {
       const { sut } = makeSut()
-      const savedUser = await sut.saveUser(makeFakeSignUpUserCredentials())
-      const user = await sut.findUserByEmail(savedUser.personal.email)
+      const foundUser = await sut.findUserByEmail(user.personal.email)
 
-      expect(user).toHaveProperty('_id')
+      expect(foundUser).toHaveProperty('_id')
     })
 
     it('Should return undefined if does not findUserByEmail finds a user', async () => {
       const { sut } = makeSut()
-      const user = await sut.findUserByEmail('non_existent@email.com')
+      const foundUser = await sut.findUserByEmail('non_existent@email.com')
 
-      expect(user).toBe(undefined)
+      expect(foundUser).toBe(undefined)
     })
   })
 
   describe('findUserById', () => {
     it('Should return a user if findUserById finds a user', async () => {
       const { sut } = makeSut()
-      const savedUser = await sut.saveUser(makeFakeSignUpUserCredentials())
-      const user = await sut.findUserById(savedUser.personal.id)
+      const foundUser = await sut.findUserById(user.personal.id)
 
-      expect(user).toHaveProperty('_id')
+      expect(foundUser).toHaveProperty('_id')
     })
 
     it('Should return undefined if does not findUserById finds a user', async () => {
       const { sut } = makeSut()
-      const user = await sut.findUserById('invalid_id')
+      const foundUser = await sut.findUserById('invalid_id')
 
-      expect(user).toBe(undefined)
+      expect(foundUser).toBe(undefined)
     })
   })
 
@@ -126,41 +131,38 @@ describe('UserDbRepository', () => {
   describe('updateUser', () => {
     it('Should return a user if updateUser finds a user', async () => {
       const { sut } = makeSut()
-      const user = await sut.saveUser(makeFakeSignUpUserCredentials())
 
-      const user2 = await sut.updateUser(user, { 'personal.name': 'changed_name' })
+      const updatedUser = await sut.updateUser(user, { 'personal.name': 'changed_name' })
 
-      expect(user2).toHaveProperty('_id')
+      expect(updatedUser).toHaveProperty('_id')
     })
 
     it('Should return a user with updated values', async () => {
       const { sut } = makeSut()
-      const user = await sut.saveUser(makeFakeSignUpUserCredentials())
 
-      const user2 = await sut.updateUser(user, { 'personal.name': 'changed_name' })
+      const updatedUser = await sut.updateUser(user, { 'personal.name': 'changed_name' })
 
-      expect(user2?.personal.name).toBe('changed_name')
+      expect(updatedUser?.personal.name).toBe('changed_name')
     })
 
     it('Should return a user if pass multiple update properties', async () => {
       const { sut } = makeSut()
-      const user = await sut.saveUser(makeFakeSignUpUserCredentials())
 
-      const user2 = await sut.updateUser(user, {
+      const updatedUser = await sut.updateUser(user, {
         'personal.name': 'changed_name',
         'personal.email': 'changed_email'
       })
 
-      expect(user2?.personal.name).toBe('changed_name')
-      expect(user2?.personal.email).toBe('changed_email')
+      expect(updatedUser?.personal.name).toBe('changed_name')
+      expect(updatedUser?.personal.email).toBe('changed_email')
     })
 
     it('Should return undefined if does not updateUser finds a user', async () => {
       const { sut, fakeUser } = makeSut()
 
-      const user = await sut.updateUser(fakeUser, { 'personal.name': 'any_name' })
+      const updatedUser = await sut.updateUser(fakeUser, { 'personal.name': 'any_name' })
 
-      expect(user).toBe(undefined)
+      expect(updatedUser).toBe(undefined)
     })
   })
 })

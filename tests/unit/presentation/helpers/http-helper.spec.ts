@@ -13,6 +13,38 @@ const makeSut = (): SutTypes => {
 }
 
 describe('HttpHelper', () => {
+  describe('StatusCode: 200 ~ 204', () => {
+    it('Should return 200 and a data when calls ok', () => {
+      const { sut } = makeSut()
+      const fakeData = { [faker.random.word()]: faker.random.word() }
+
+      const response = sut.ok(fakeData)
+
+      expect(response).toEqual({ status: true, statusCode: 200, data: fakeData })
+    })
+
+    it('Should return 201 and a data when calls created', () => {
+      const { sut } = makeSut()
+      const fakeData = { [faker.random.word()]: faker.random.word() }
+
+      const response = sut.created(fakeData)
+
+      expect(response).toEqual({ status: true, statusCode: 201, data: fakeData })
+    })
+
+    it('Should return 204 and a data when calls deleted', () => {
+      const { sut } = makeSut()
+
+      const response = sut.deleted()
+
+      expect(response).toEqual({
+        data: { message: 'Content deleted' },
+        status: true,
+        statusCode: 204
+      })
+    })
+  })
+
   describe('StatusCode: 400 ~ 409', () => {
     it('Should return 400 and an error message when calls badRequest', () => {
       const { sut } = makeSut()
@@ -57,38 +89,6 @@ describe('HttpHelper', () => {
       const response = sut.conflict(new Error(errorMessage))
 
       expect(response).toEqual({ status: false, statusCode: 409, data: { message: errorMessage } })
-    })
-  })
-
-  describe('StatusCode: 200 ~ 204', () => {
-    it('Should return 200 and a data when calls ok', () => {
-      const { sut } = makeSut()
-      const fakeData = { [faker.random.word()]: faker.random.word() }
-
-      const response = sut.ok(fakeData)
-
-      expect(response).toEqual({ status: true, statusCode: 200, data: fakeData })
-    })
-
-    it('Should return 201 and a data when calls created', () => {
-      const { sut } = makeSut()
-      const fakeData = { [faker.random.word()]: faker.random.word() }
-
-      const response = sut.created(fakeData)
-
-      expect(response).toEqual({ status: true, statusCode: 201, data: fakeData })
-    })
-
-    it('Should return 204 and a data when calls deleted', () => {
-      const { sut } = makeSut()
-
-      const response = sut.deleted()
-
-      expect(response).toEqual({
-        data: { message: 'Content deleted' },
-        status: true,
-        statusCode: 204
-      })
     })
   })
 

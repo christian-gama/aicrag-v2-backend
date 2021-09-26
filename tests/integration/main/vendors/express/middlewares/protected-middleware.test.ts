@@ -1,3 +1,5 @@
+import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/main/factories/providers/token'
@@ -11,27 +13,32 @@ import request from 'supertest'
 
 describe('ProtectedMiddleware', () => {
   let accessToken: string
+  let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
+
+  afterAll(async () => {
+    await MongoHelper.disconnect()
+  })
+
+  afterEach(async () => {
+    await userCollection.deleteMany({})
+  })
 
   beforeAll(async () => {
     await MongoHelper.connect(global.__MONGO_URI__)
 
     userCollection = MongoHelper.getCollection('users')
 
-    const fakeUser = makeFakeUser()
-    await userCollection.insertOne(fakeUser)
-    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
-    accessToken = makeGenerateAccessToken().generate(fakeUser)
-
     app.get('/protected', protectedMiddleware, (req, res) => {
       res.send()
     })
   })
 
-  afterAll(async () => {
-    await userCollection.deleteMany({})
-    await MongoHelper.disconnect()
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
   })
 
   const agent = request.agent(app)
@@ -41,6 +48,8 @@ describe('ProtectedMiddleware', () => {
   })
 
   it('Should return 401 if access token is invalid', async () => {
+    await userCollection.insertOne(fakeUser)
+
     await agent
       .get('/protected')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=invalid_token`)
@@ -48,6 +57,8 @@ describe('ProtectedMiddleware', () => {
   })
 
   it('Should return 200 if refresh token and access token are valid', async () => {
+    await userCollection.insertOne(fakeUser)
+
     await agent
       .get('/protected')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)

@@ -103,10 +103,10 @@ describe('ProtectedMiddleware', () => {
 
   it('Should call encrypt if response is instance of ExpiredTokenError', async () => {
     const {
+      sut,
       fakeUser,
       jwtAccessToken,
       request,
-      sut,
       verifyAccessTokenStub,
       verifyRefreshTokenStub
     } = makeSut()

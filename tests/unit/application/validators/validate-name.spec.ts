@@ -2,8 +2,6 @@ import { ValidatorProtocol } from '@/application/protocols/validators'
 import { InvalidParamError } from '@/application/usecases/errors'
 import { ValidateName } from '@/application/usecases/validators'
 
-import { config } from '@/tests/config'
-
 import faker from 'faker'
 
 interface SutTypes {
@@ -46,16 +44,10 @@ describe('ValidateName', () => {
 
   it('Should return nothing if succeds', () => {
     const { sut } = makeSut()
+    const data = { name: faker.name.findName() }
 
-    let error = 0
-    for (let i = 0; i < config.loopTimes; i++) {
-      const data = { name: faker.name.findName() }
+    const value = sut.validate(data)
 
-      const value = sut.validate(data)
-
-      if (value !== undefined) error++
-    }
-
-    expect(error).toBe(0)
+    expect(value).toBe(undefined)
   })
 })

@@ -29,16 +29,17 @@ const makeSut = (): SutTypes => {
 describe('LogErrorDbRepository', () => {
   let logCollection: Collection
 
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
-  })
-
   afterAll(async () => {
     await MongoHelper.disconnect()
   })
 
-  beforeEach(async () => {
+  beforeAll(async () => {
+    await MongoHelper.connect(global.__MONGO_URI__)
+
     logCollection = MongoHelper.getCollection('logs')
+  })
+
+  beforeEach(async () => {
     await logCollection.deleteMany({})
   })
 

@@ -1,3 +1,5 @@
+import { IUser } from '@/domain'
+
 import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
 
 import { makeGenerateAccessToken } from '@/main/factories/providers/token'
@@ -11,25 +13,30 @@ import request from 'supertest'
 
 describe('PartialProtectedMiddleware', () => {
   let accessToken: string
+  let fakeUser: IUser
   let userCollection: Collection
+
+  afterAll(async () => {
+    await MongoHelper.disconnect()
+  })
+
+  afterEach(async () => {
+    await userCollection.deleteMany({})
+  })
 
   beforeAll(async () => {
     await MongoHelper.connect(global.__MONGO_URI__)
 
     userCollection = MongoHelper.getCollection('users')
 
-    const fakeUser = makeFakeUser()
-    await userCollection.insertOne(fakeUser)
-    accessToken = makeGenerateAccessToken().generate(fakeUser)
-
     app.get('/partial-protected', partialProtectedMiddleware, (req, res) => {
       res.send()
     })
   })
 
-  afterAll(async () => {
-    await userCollection.deleteMany({})
-    await MongoHelper.disconnect()
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
   })
 
   const agent = request.agent(app)
@@ -39,6 +46,8 @@ describe('PartialProtectedMiddleware', () => {
   })
 
   it('Should return 200 if succeds', async () => {
+    await userCollection.insertOne(fakeUser)
+
     await agent.get('/partial-protected').set('Cookie', `accessToken=${accessToken}`).expect(200)
   })
 })

@@ -36,8 +36,8 @@ describe('LogDecorator', () => {
     const { sut, controllerStub, httpHelper } = makeSut()
     const error = new Error('any_message')
     const errorData = {
-      name: error.name,
       message: error.message,
+      name: error.name,
       stack: error.stack
     }
     jest.spyOn(controllerStub, 'handle').mockImplementationOnce(async () => Promise.reject(error))

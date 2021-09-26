@@ -27,10 +27,10 @@ const makeSut = (): SutTypes => {
 describe('ValidatePasswordMatches', () => {
   it('Should return a UserCredentialError if email does not exists', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
+    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
 
     const error = await sut.validate(credentials)
 
@@ -39,8 +39,8 @@ describe('ValidatePasswordMatches', () => {
 
   it('Should call findUserByEmail with correct value', async () => {
     const { sut, userDbRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.validate(credentials)
 

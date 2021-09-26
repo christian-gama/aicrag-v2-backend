@@ -25,7 +25,7 @@ describe('ErrorRequestHandler', () => {
     environment.SERVER.NODE_ENV = env
   })
 
-  beforeEach(() => {
+  beforeAll(() => {
     app.post('/error_handler', controllerAdapter(makeControllerStub()))
     app.use(errorRequestHandler)
   })
@@ -38,6 +38,7 @@ describe('ErrorRequestHandler', () => {
 
   it('Should return a full error if environment is on development', async () => {
     environment.SERVER.NODE_ENV = 'development'
+
     await agent
       .post('/error_handler')
       .send({})
@@ -49,6 +50,7 @@ describe('ErrorRequestHandler', () => {
 
   it('Should return a shorten error if environment is on production', async () => {
     environment.SERVER.NODE_ENV = 'production'
+
     await agent
       .post('/error_handler')
       .send({})

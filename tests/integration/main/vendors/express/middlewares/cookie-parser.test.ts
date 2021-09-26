@@ -3,7 +3,7 @@ import app from '@/main/vendors/express/config/app'
 import request from 'supertest'
 
 describe('CookieParser', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     app.get('/save_cookie', (req, res) => {
       res.cookie('any_cookie', 'any_value')
       res.send()

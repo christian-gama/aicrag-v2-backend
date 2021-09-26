@@ -1,8 +1,6 @@
 import { ValidationCodeProtocol } from '@/application/protocols/helpers'
 import { ValidationCode } from '@/application/usecases/helpers'
 
-import { config } from '@/tests/config'
-
 interface SutTypes {
   sut: ValidationCodeProtocol
 }
@@ -17,28 +15,23 @@ describe('CodeGenerator', () => {
   it('Should return 5 digits', () => {
     const { sut } = makeSut()
 
-    let error = 0
-    for (let i = 0; i < config.loopTimes; i++) {
-      const value = sut.generate()
+    const value = sut.generate()
 
-      if (value.length !== 5) error++
-    }
-
-    expect(error).toBe(0)
+    expect(value.length).toBe(5)
   })
 
   it('Should return random digits', () => {
     const { sut } = makeSut()
 
     const values: Partial<string[]> = []
-    for (let i = 0; i < config.loopTimes; i++) {
+    for (let i = 0; i < 3; i++) {
       const value = sut.generate()
       values.push(value)
     }
 
     const filteredValues = [...new Set(values)]
 
-    expect(filteredValues.length).toBe(config.loopTimes)
+    expect(filteredValues.length).toBe(3)
   })
 
   it('Should return a string', () => {
