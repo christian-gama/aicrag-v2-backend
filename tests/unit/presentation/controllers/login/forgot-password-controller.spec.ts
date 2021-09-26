@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-import { MailerServiceProtocol } from '@/application/protocols/mailer'
+import { FilterUserDataProtocol } from '@/application/protocols/helpers'
 import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
@@ -13,16 +13,17 @@ import { makeHttpHelper } from '@/main/factories/helpers'
 
 import {
   makeFakeUser,
-  makeMailerServiceStub,
   makeValidatorStub,
   makeGenerateTokenStub,
-  makeUserDbRepositoryStub
+  makeUserDbRepositoryStub,
+  makeFilterUserDataStub,
+  makeFakePublicUser
 } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ForgotPasswordController
   fakeUser: IUser
-  forgotPasswordEmailStub: MailerServiceProtocol
+  filterUserDataStub: FilterUserDataProtocol
   forgotPasswordValidatorStub: ValidatorProtocol
   generateTokenStub: GenerateTokenProtocol
   httpHelper: HttpHelperProtocol
@@ -32,7 +33,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const forgotPasswordEmailStub = makeMailerServiceStub()
+  const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const forgotPasswordValidatorStub = makeValidatorStub()
   const generateTokenStub = makeGenerateTokenStub()
   const httpHelper = makeHttpHelper()
@@ -40,7 +41,7 @@ const makeSut = (): SutTypes => {
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
   const sut = new ForgotPasswordController(
-    forgotPasswordEmailStub,
+    filterUserDataStub,
     forgotPasswordValidatorStub,
     generateTokenStub,
     httpHelper,
@@ -50,7 +51,7 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     fakeUser,
-    forgotPasswordEmailStub,
+    filterUserDataStub,
     forgotPasswordValidatorStub,
     generateTokenStub,
     httpHelper,
@@ -118,18 +119,13 @@ describe('Forgot Password', () => {
     })
   })
 
-  it('Should call send with updated user', async () => {
-    const { sut, fakeUser, forgotPasswordEmailStub, request, userDbRepositoryStub } = makeSut()
-    const sendSpy = jest.spyOn(forgotPasswordEmailStub, 'send')
-    const updatedFakeUser = JSON.parse(JSON.stringify(fakeUser))
-    updatedFakeUser.temporary.resetPasswordToken = 'updated_token'
-    jest
-      .spyOn(userDbRepositoryStub, 'updateUser')
-      .mockReturnValueOnce(Promise.resolve(updatedFakeUser))
+  it('Should call filterUserData with correct user', async () => {
+    const { sut, fakeUser, filterUserDataStub, request } = makeSut()
+    const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
     await sut.handle(request)
 
-    expect(sendSpy).toHaveBeenCalledWith(updatedFakeUser)
+    expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('Should call ok with correct message', async () => {
@@ -138,8 +134,6 @@ describe('Forgot Password', () => {
 
     await sut.handle(request)
 
-    expect(okSpy).toHaveBeenCalledWith({
-      message: `Instructions to reset your password were sent to ${fakeUser.personal.email}`
-    })
+    expect(okSpy).toHaveBeenCalledWith({ user: makeFakePublicUser(fakeUser) })
   })
 })
