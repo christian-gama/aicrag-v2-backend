@@ -6,24 +6,26 @@ import { FilterUserData } from '@/application/usecases/helpers'
 import { makeFakeUser } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: FilterUserDataProtocol
   fakeUser: IUser
+  sut: FilterUserDataProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const sut = new FilterUserData()
 
-  return { sut, fakeUser }
+  return { fakeUser, sut }
 }
 
-describe('FilterUserData', () => {
-  it('Should return a public user', () => {
-    const { sut, fakeUser } = makeSut()
+describe('filterUserData', () => {
+  it('should return a public user', () => {
+    expect.hasAssertions()
+
+    const { fakeUser, sut } = makeSut()
 
     const value = sut.filter(fakeUser)
 
-    expect(value).toEqual({
+    expect(value).toStrictEqual({
       personal: {
         email: fakeUser.personal.email,
         id: fakeUser.personal.id,

@@ -11,10 +11,10 @@ import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: VerifyResetPasswordTokenController
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  sut: VerifyResetPasswordTokenController
   verifyResetPasswordTokenStub: VerifyTokenProtocol
 }
 
@@ -30,26 +30,30 @@ const makeSut = (): SutTypes => {
   )
 
   return {
-    sut,
     fakeUser,
     httpHelper,
     request,
+    sut,
     verifyResetPasswordTokenStub
   }
 }
 
-describe('VerifyResetPasswordTokenController', () => {
-  it('Should return forbidden if user is logged in', async () => {
-    const { sut, fakeUser, httpHelper, request } = makeSut()
+describe('verifyResetPasswordTokenController', () => {
+  it('should return forbidden if user is logged in', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.forbidden(new MustLogoutError()))
+    expect(response).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
   })
 
-  it('Should call verify with correct values', async () => {
-    const { sut, request, verifyResetPasswordTokenStub } = makeSut()
+  it('should call verify with correct values', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, verifyResetPasswordTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyResetPasswordTokenStub, 'verify')
 
     await sut.handle(request)
@@ -57,22 +61,26 @@ describe('VerifyResetPasswordTokenController', () => {
     expect(verifySpy).toHaveBeenCalledWith('param_token')
   })
 
-  it('Should return unauthorized if return an error', async () => {
-    const { sut, httpHelper, request, verifyResetPasswordTokenStub } = makeSut()
+  it('should return unauthorized if return an error', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, verifyResetPasswordTokenStub } = makeSut()
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
+    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
-  it('Should return ok if finds a user', async () => {
-    const { sut, httpHelper, request } = makeSut()
+  it('should return ok if finds a user', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ accessToken: 'param_token' }))
+    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'param_token' }))
   })
 })

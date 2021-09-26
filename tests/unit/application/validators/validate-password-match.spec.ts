@@ -21,11 +21,13 @@ const makeSut = (): SutTypes => {
 
   const sut = new ValidatePasswordMatch(comparerStub, userDbRepositoryStub)
 
-  return { sut, comparerStub, fakeUser, userDbRepositoryStub }
+  return { comparerStub, fakeUser, sut, userDbRepositoryStub }
 }
 
-describe('ValidatePasswordMatches', () => {
-  it('Should return a UserCredentialError if email does not exists', async () => {
+describe('validatePasswordMatches', () => {
+  it('should return a UserCredentialError if email does not exists', async () => {
+    expect.hasAssertions()
+
     const { sut, userDbRepositoryStub } = makeSut()
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
     jest
@@ -34,10 +36,12 @@ describe('ValidatePasswordMatches', () => {
 
     const error = await sut.validate(credentials)
 
-    expect(error).toEqual(new UserCredentialError())
+    expect(error).toStrictEqual(new UserCredentialError())
   })
 
-  it('Should call findUserByEmail with correct value', async () => {
+  it('should call findUserByEmail with correct value', async () => {
+    expect.hasAssertions()
+
     const { sut, userDbRepositoryStub } = makeSut()
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -47,17 +51,21 @@ describe('ValidatePasswordMatches', () => {
     expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
   })
 
-  it('Should return a UserCredentialError if password does not match', async () => {
+  it('should return a UserCredentialError if password does not match', async () => {
+    expect.hasAssertions()
+
     const { sut, comparerStub } = makeSut()
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(comparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
 
     const result = await sut.validate(credentials)
 
-    expect(result).toEqual(new UserCredentialError())
+    expect(result).toStrictEqual(new UserCredentialError())
   })
 
-  it('Should call compare with correct value', async () => {
+  it('should call compare with correct value', async () => {
+    expect.hasAssertions()
+
     const { sut, comparerStub, fakeUser } = makeSut()
     const compareSpy = jest.spyOn(comparerStub, 'compare')
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }

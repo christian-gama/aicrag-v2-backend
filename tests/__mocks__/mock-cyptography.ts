@@ -3,7 +3,7 @@ import { HasherProtocol, ComparerProtocol, DecoderProtocol, DecodedProtocol, Enc
 export const makeComparerStub = (): ComparerProtocol => {
   class ComparerStub implements ComparerProtocol {
     async compare (value: string, valueToCompare: string): Promise<boolean> {
-      return Promise.resolve(true)
+      return await Promise.resolve(true)
     }
   }
 
@@ -13,7 +13,7 @@ export const makeComparerStub = (): ComparerProtocol => {
 export const makeDecoderStub = (): DecoderProtocol => {
   class DecoderStub implements DecoderProtocol {
     async decode (token: string): Promise<DecodedProtocol> {
-      return Promise.resolve({ userId: 'any_id', version: 'any_version' })
+      return await Promise.resolve({ userId: 'any_id', version: 'any_version' })
     }
   }
 
@@ -33,7 +33,7 @@ export const makeEncrypterStub = (): EncrypterProtocol => {
 export const makeHasherStub = (): HasherProtocol => {
   class HasherStub implements HasherProtocol {
     async hash (value: string): Promise<string> {
-      return Promise.resolve('hashed_value')
+      return await Promise.resolve('hashed_value')
     }
   }
 
@@ -43,7 +43,7 @@ export const makeHasherStub = (): HasherProtocol => {
 export const makeJwtAdapterStub = (): EncrypterProtocol & DecoderProtocol => {
   class JwtAdapterStub implements EncrypterProtocol, DecoderProtocol {
     async decode (token: string): Promise<DecodedProtocol> {
-      return Promise.resolve({ userId: 'any_id', version: 'any_version' })
+      return await Promise.resolve({ userId: 'any_id', version: 'any_version' })
     }
 
     encrypt (subject: Record<any, string>): string {

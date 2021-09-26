@@ -12,7 +12,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('POST /send-forgot-password-email', () => {
+describe('post /send-forgot-password-email', () => {
   let fakeUser: IUser
   let userCollection: Collection
 
@@ -36,7 +36,9 @@ describe('POST /send-forgot-password-email', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 400 if validation fails', async () => {
+  it('should return 400 if validation fails', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -45,7 +47,9 @@ describe('POST /send-forgot-password-email', () => {
       .expect(400)
   })
 
-  it('Should return 500 if email is not sent', async () => {
+  it('should return 500 if email is not sent', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     jest
@@ -58,7 +62,9 @@ describe('POST /send-forgot-password-email', () => {
       .expect(500)
   })
 
-  it('Should return 200 if email is sent', async () => {
+  it('should return 200 if email is sent', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
     jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 

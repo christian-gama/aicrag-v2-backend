@@ -21,12 +21,12 @@ import {
 } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: ProtectedMiddleware
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   jwtAccessToken: EncrypterProtocol & DecoderProtocol
   request: HttpRequest
+  sut: ProtectedMiddleware
   verifyAccessTokenStub: VerifyTokenProtocol
   verifyRefreshTokenStub: VerifyTokenProtocol
 }
@@ -48,20 +48,22 @@ const makeSut = (): SutTypes => {
   )
 
   return {
-    sut,
     fakeRefreshToken,
     fakeUser,
     httpHelper,
     jwtAccessToken,
     request,
+    sut,
     verifyAccessTokenStub,
     verifyRefreshTokenStub
   }
 }
 
-describe('ProtectedMiddleware', () => {
-  it('Should call verify with token', async () => {
-    const { sut, request, verifyRefreshTokenStub } = makeSut()
+describe('protectedMiddleware', () => {
+  it('should call refresh token verify with correct token', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, verifyRefreshTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyRefreshTokenStub, 'verify')
 
     await sut.handle(request)
@@ -69,39 +71,47 @@ describe('ProtectedMiddleware', () => {
     expect(verifySpy).toHaveBeenCalledWith(request.cookies?.refreshToken)
   })
 
-  it('Should return unauthorized if refresh token response is instance of InvalidTokenError', async () => {
-    const { sut, httpHelper, request, verifyAccessTokenStub } = makeSut()
+  it('should return unauthorized if refresh token response is instance of InvalidTokenError', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest
       .spyOn(verifyAccessTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
+    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
-  it('Should return unauthorized if access token response is instance of TokenMissingError', async () => {
-    const { sut, httpHelper, request, verifyAccessTokenStub } = makeSut()
+  it('should return unauthorized if access token response is instance of TokenMissingError', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest
       .spyOn(verifyAccessTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(new TokenMissingError()))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.unauthorized(new TokenMissingError()))
+    expect(response).toStrictEqual(httpHelper.unauthorized(new TokenMissingError()))
   })
 
-  it('Should return ok if succeds', async () => {
-    const { sut, httpHelper, request } = makeSut()
+  it('should return ok if succeds', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(
-      httpHelper.ok({ refreshToken: request.cookies?.refreshToken, accessToken: 'any_token' })
+    expect(response).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', refreshToken: request.cookies?.refreshToken })
     )
   })
 
-  it('Should call encrypt if response is instance of ExpiredTokenError', async () => {
+  it('should call encrypt if response is instance of ExpiredTokenError', async () => {
+    expect.hasAssertions()
+
     const { sut, fakeUser, jwtAccessToken, request, verifyAccessTokenStub } = makeSut()
     const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
     jest
@@ -113,7 +123,9 @@ describe('ProtectedMiddleware', () => {
     expect(encryptSpy).toHaveBeenCalledWith({ userId: fakeUser.personal.id })
   })
 
-  it('Should call verify with token', async () => {
+  it('should call access token verify with correct token', async () => {
+    expect.hasAssertions()
+
     const { sut, request, verifyAccessTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')
 

@@ -21,13 +21,13 @@ import {
 } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: ForgotPasswordController
   fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
   forgotPasswordValidatorStub: ValidatorProtocol
   generateTokenStub: GenerateTokenProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  sut: ForgotPasswordController
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
@@ -49,29 +49,33 @@ const makeSut = (): SutTypes => {
   )
 
   return {
-    sut,
     fakeUser,
     filterUserDataStub,
     forgotPasswordValidatorStub,
     generateTokenStub,
     httpHelper,
     request,
+    sut,
     userDbRepositoryStub
   }
 }
 
-describe('Forgot Password', () => {
-  it('Should return forbidden if user is already logged in', async () => {
-    const { sut, fakeUser, httpHelper, request } = makeSut()
+describe('forgot Password', () => {
+  it('should return forbidden if user is already logged in', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.forbidden(new MustLogoutError()))
+    expect(response).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
   })
 
-  it('Should call validate with correct value', async () => {
-    const { sut, forgotPasswordValidatorStub, request } = makeSut()
+  it('should call validate with correct value', async () => {
+    expect.hasAssertions()
+
+    const { forgotPasswordValidatorStub, request, sut } = makeSut()
     const validateSpy = jest.spyOn(forgotPasswordValidatorStub, 'validate')
 
     await sut.handle(request)
@@ -79,19 +83,23 @@ describe('Forgot Password', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('Should return badRequest if validation fails', async () => {
-    const { sut, forgotPasswordValidatorStub, httpHelper, request } = makeSut()
+  it('should return badRequest if validation fails', async () => {
+    expect.hasAssertions()
+
+    const { forgotPasswordValidatorStub, httpHelper, request, sut } = makeSut()
     jest
       .spyOn(forgotPasswordValidatorStub, 'validate')
       .mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.badRequest(new Error()))
+    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
-  it('Should call encrypt with correct values', async () => {
-    const { sut, fakeUser, generateTokenStub, request } = makeSut()
+  it('should call encrypt with correct values', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, generateTokenStub, request, sut } = makeSut()
     const encryptSpy = jest.spyOn(generateTokenStub, 'generate')
 
     await sut.handle(request)
@@ -99,8 +107,10 @@ describe('Forgot Password', () => {
     expect(encryptSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should call findUserByEmail with correct email', async () => {
-    const { sut, request, userDbRepositoryStub } = makeSut()
+  it('should call findUserByEmail with correct email', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, userDbRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
@@ -108,8 +118,10 @@ describe('Forgot Password', () => {
     expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
-  it('Should call updateUser with correct email', async () => {
-    const { sut, fakeUser, userDbRepositoryStub, request } = makeSut()
+  it('should call updateUser with correct email', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
@@ -119,8 +131,10 @@ describe('Forgot Password', () => {
     })
   })
 
-  it('Should call filterUserData with correct user', async () => {
-    const { sut, fakeUser, filterUserDataStub, request } = makeSut()
+  it('should call filterUserData with correct user', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, filterUserDataStub, request, sut } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
     await sut.handle(request)
@@ -128,11 +142,13 @@ describe('Forgot Password', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should return ok with user if succeds', async () => {
-    const { sut, fakeUser, httpHelper, request } = makeSut()
+  it('should return ok with user if succeds', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
+    expect(response).toStrictEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
   })
 })

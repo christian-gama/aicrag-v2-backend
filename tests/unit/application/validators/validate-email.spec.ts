@@ -7,8 +7,8 @@ import { makeEmailValidatorStub } from '@/tests/__mocks__'
 import faker from 'faker'
 
 interface SutTypes {
-  sut: ValidatorProtocol
   emailValidatorStub: EmailValidatorProtocol
+  sut: ValidatorProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -16,22 +16,26 @@ const makeSut = (): SutTypes => {
 
   const sut = new ValidateEmail(emailValidatorStub)
 
-  return { sut, emailValidatorStub }
+  return { emailValidatorStub, sut }
 }
 
-describe('ValidateEmail', () => {
-  it('Should return a new InvalidParamError if email is invalid', () => {
+describe('validateEmail', () => {
+  it('should return a new InvalidParamError if email is invalid', () => {
+    expect.hasAssertions()
+
     const { sut, emailValidatorStub } = makeSut()
     const data = { email: 'invalid_email' }
     jest.spyOn(emailValidatorStub, 'isEmail').mockReturnValueOnce(false)
 
     const value = sut.validate(data)
 
-    expect(value).toEqual(new InvalidParamError('email'))
+    expect(value).toStrictEqual(new InvalidParamError('email'))
   })
 
-  it('Should call emailValidator with correct value', async () => {
-    const { sut, emailValidatorStub } = makeSut()
+  it('should call emailValidator with correct value', async () => {
+    expect.hasAssertions()
+
+    const { emailValidatorStub, sut } = makeSut()
     const data = { email: faker.internet.email() }
     const isEmailSpy = jest.spyOn(emailValidatorStub, 'isEmail')
 
@@ -40,21 +44,25 @@ describe('ValidateEmail', () => {
     expect(isEmailSpy).toHaveBeenCalledWith(data.email)
   })
 
-  it('Should throw if emailValidator throws', () => {
-    const { sut, emailValidatorStub } = makeSut()
+  it('should throw if emailValidator throws', () => {
+    expect.hasAssertions()
+
+    const { emailValidatorStub, sut } = makeSut()
     jest.spyOn(emailValidatorStub, 'isEmail').mockImplementationOnce(() => {
       throw new Error()
     })
 
-    expect(sut.validate).toThrow()
+    expect(sut.validate).toThrow('')
   })
 
-  it('Should return nothing if succeds', () => {
+  it('should return nothing if succeds', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const data = { email: faker.internet.email() }
 
     const value = sut.validate(data)
 
-    expect(value).toBe(undefined)
+    expect(value).toBeUndefined()
   })
 })

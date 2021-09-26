@@ -14,7 +14,7 @@ export class LogoutController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const { user } = httpRequest
 
-    if (!user) return this.httpHelper.forbidden(new MustLoginError())
+    if (user == null) return this.httpHelper.forbidden(new MustLoginError())
 
     user.tokenVersion++
     await this.userDbRepository.updateUser(user, { tokenVersion: user.tokenVersion })

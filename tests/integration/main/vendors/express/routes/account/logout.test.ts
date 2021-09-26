@@ -10,7 +10,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('GET /logout', () => {
+describe('get /logout', () => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
@@ -36,7 +36,9 @@ describe('GET /logout', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 200 if user is logged in', async () => {
+  it('should return 200 if user is logged in', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -45,7 +47,9 @@ describe('GET /logout', () => {
       .expect(200)
   })
 
-  it('Should return 401 if user is logged out', async () => {
+  it('should return 401 if user is logged out', async () => {
+    expect.assertions(0)
+
     await agent.get('/api/v1/account/logout').expect(403)
   })
 })

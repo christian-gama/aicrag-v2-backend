@@ -10,7 +10,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('POST /activate-account', () => {
+describe('post /activate-account', () => {
   let accessToken: string
   let fakeUser: IUser
   let userCollection: Collection
@@ -36,7 +36,9 @@ describe('POST /activate-account', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 200 if all validations succeds', async () => {
+  it('should return 200 if all validations succeds', async () => {
+    expect.assertions(0)
+
     const activationCode = fakeUser.temporary.activationCode
     fakeUser.settings.accountActivated = false
     await userCollection.insertOne(fakeUser)
@@ -48,23 +50,29 @@ describe('POST /activate-account', () => {
       .expect(200)
   })
 
-  it('Should return 401 if user does not have access token', async () => {
+  it('should return 401 if user does not have access token', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent.post('/api/v1/login/activate-account').send().expect(401)
   })
 
-  it('Should return 400 if code is invalid', async () => {
+  it('should return 400 if code is invalid', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
       .post('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
-      .send({ email: fakeUser.personal.email, activationCode: 'invalid_code' })
+      .send({ activationCode: 'invalid_code', email: fakeUser.personal.email })
       .expect(400)
   })
 
-  it('Should return 400 if code is expired', async () => {
+  it('should return 400 if code is expired', async () => {
+    expect.assertions(0)
+
     const activationCode = fakeUser.temporary.activationCode
     fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
     await userCollection.insertOne(fakeUser)
@@ -76,7 +84,9 @@ describe('POST /activate-account', () => {
       .expect(400)
   })
 
-  it('Should return 400 if misses any field', async () => {
+  it('should return 400 if misses any field', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -86,7 +96,9 @@ describe('POST /activate-account', () => {
       .expect(400)
   })
 
-  it('Should return 400 if account is already activated', async () => {
+  it('should return 400 if account is already activated', async () => {
+    expect.assertions(0)
+
     const activationCode = fakeUser.temporary.activationCode
     fakeUser.settings.accountActivated = true
     await userCollection.insertOne(fakeUser)

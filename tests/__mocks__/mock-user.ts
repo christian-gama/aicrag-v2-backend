@@ -35,7 +35,7 @@ export const makeFakeUser = (): IUser => {
       name: faker.name.findName(),
       password: faker.internet.password()
     },
-    settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
+    settings: { accountActivated: false, currency: 'BRL', handicap: 1 },
     temporary: {
       activationCode: faker.lorem.word(5),
       activationCodeExpiration: new Date(Date.now() + 10 * 60 * 1000),

@@ -11,7 +11,7 @@ import { hash } from 'bcrypt'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('POST /login', () => {
+describe('post /login', () => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
@@ -37,7 +37,9 @@ describe('POST /login', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 403 if user is logged in', async () => {
+  it('should return 403 if user is logged in', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -47,18 +49,24 @@ describe('POST /login', () => {
       .expect(403)
   })
 
-  it('Should return 401 if credentials are invalid', async () => {
+  it('should return 401 if credentials are invalid', async () => {
+    expect.assertions(0)
+
     await agent
       .post('/api/v1/login')
       .send({ email: 'invalid_email@email.com', password: 'invalid_password' })
       .expect(401)
   })
 
-  it('Should return 400 if miss a param or param is invalid', async () => {
+  it('should return 400 if miss a param or param is invalid', async () => {
+    expect.assertions(0)
+
     await agent.post('/api/v1/login').send().expect(400)
   })
 
-  it('Should return 200 if account is not activated', async () => {
+  it('should return 200 if account is not activated', async () => {
+    expect.assertions(0)
+
     const hashedPassword = await hash(fakeUser.personal.password, 2)
     const userPassword = fakeUser.personal.password
     fakeUser.personal.password = hashedPassword
@@ -70,7 +78,9 @@ describe('POST /login', () => {
       .expect(200)
   })
 
-  it('Should return 200 if all validations succeds', async () => {
+  it('should return 200 if all validations succeds', async () => {
+    expect.assertions(0)
+
     const hashedPassword = await hash(fakeUser.personal.password, 2)
     const userPassword = fakeUser.personal.password
     fakeUser.personal.password = hashedPassword

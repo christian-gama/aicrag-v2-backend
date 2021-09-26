@@ -24,15 +24,15 @@ import {
 } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: ResetPasswordController
   fakeUser: IUser
-  filteredUser: IPublicUser
   filterUserDataStub: FilterUserDataProtocol
+  filteredUser: IPublicUser
   generateRefreshTokenStub: GenerateTokenProtocol
   hasherStub: HasherProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   resetPasswordValidatorStub: ValidatorProtocol
+  sut: ResetPasswordController
   userDbRepositoryStub: UserDbRepositoryProtocol
   verifyResetPasswordTokenStub: VerifyTokenProtocol
 }
@@ -45,8 +45,8 @@ const makeSut = (): SutTypes => {
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = {
-    cookies: { accessToken: 'any_token' },
-    body: { password: 'new_password', passwordConfirmation: 'new_password' }
+    body: { password: 'new_password', passwordConfirmation: 'new_password' },
+    cookies: { accessToken: 'any_token' }
   }
   const resetPasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
@@ -63,31 +63,35 @@ const makeSut = (): SutTypes => {
   )
 
   return {
-    sut,
     fakeUser,
-    filteredUser,
     filterUserDataStub,
+    filteredUser,
     generateRefreshTokenStub,
     hasherStub,
     httpHelper,
     request,
     resetPasswordValidatorStub,
+    sut,
     userDbRepositoryStub,
     verifyResetPasswordTokenStub
   }
 }
 
-describe('ResetPasswordController', () => {
-  it('Should return forbidden if user is logged in', async () => {
-    const { sut, fakeUser, httpHelper, request } = makeSut()
+describe('resetPasswordController', () => {
+  it('should return forbidden if user is logged in', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.forbidden(new MustLogoutError()))
+    expect(response).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
   })
 
-  it('Should call verify with correct token', async () => {
+  it('should call verify with correct token', async () => {
+    expect.hasAssertions()
+
     const { sut, request, verifyResetPasswordTokenStub } = makeSut()
     const verifyStub = jest.spyOn(verifyResetPasswordTokenStub, 'verify')
 
@@ -96,7 +100,9 @@ describe('ResetPasswordController', () => {
     expect(verifyStub).toHaveBeenCalledWith(request.cookies?.accessToken)
   })
 
-  it('Should return unauthorized if verify fails', async () => {
+  it('should return unauthorized if verify fails', async () => {
+    expect.hasAssertions()
+
     const { sut, httpHelper, request, verifyResetPasswordTokenStub } = makeSut()
     jest
       .spyOn(verifyResetPasswordTokenStub, 'verify')
@@ -104,11 +110,13 @@ describe('ResetPasswordController', () => {
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.unauthorized(new InvalidTokenError()))
+    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
-  it('Should call updateUser with correct values', async () => {
-    const { sut, fakeUser, request, userDbRepositoryStub } = makeSut()
+  it('should call updateUser with correct values', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
@@ -119,7 +127,9 @@ describe('ResetPasswordController', () => {
     })
   })
 
-  it('Should call validate with correct credentials', async () => {
+  it('should call validate with correct credentials', async () => {
+    expect.hasAssertions()
+
     const { sut, request, resetPasswordValidatorStub } = makeSut()
     const validateSpy = jest.spyOn(resetPasswordValidatorStub, 'validate')
 
@@ -128,7 +138,9 @@ describe('ResetPasswordController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('Should return badRequest if validation fails', async () => {
+  it('should return badRequest if validation fails', async () => {
+    expect.hasAssertions()
+
     const { sut, httpHelper, request, resetPasswordValidatorStub } = makeSut()
     jest
       .spyOn(resetPasswordValidatorStub, 'validate')
@@ -136,11 +148,13 @@ describe('ResetPasswordController', () => {
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.badRequest(new Error()))
+    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
-  it('Should call hash with correct password', async () => {
-    const { sut, hasherStub, request } = makeSut()
+  it('should call hash with correct password', async () => {
+    expect.hasAssertions()
+
+    const { hasherStub, request, sut } = makeSut()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
 
     await sut.handle(request)
@@ -148,8 +162,10 @@ describe('ResetPasswordController', () => {
     expect(hashSpy).toHaveBeenCalledWith(request.body.password)
   })
 
-  it('Should call generate with correct user', async () => {
-    const { sut, fakeUser, generateRefreshTokenStub, request } = makeSut()
+  it('should call generate with correct user', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, generateRefreshTokenStub, request, sut } = makeSut()
     const generateSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
 
     await sut.handle(request)
@@ -157,8 +173,10 @@ describe('ResetPasswordController', () => {
     expect(generateSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should call filter with correct user', async () => {
-    const { sut, fakeUser, filterUserDataStub, request } = makeSut()
+  it('should call filter with correct user', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, filterUserDataStub, request, sut } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
     await sut.handle(request)
@@ -166,12 +184,14 @@ describe('ResetPasswordController', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should return ok if succeds', async () => {
-    const { sut, filteredUser, filterUserDataStub, httpHelper, request } = makeSut()
+  it('should return ok if succeds', async () => {
+    expect.hasAssertions()
+
+    const { filteredUser, filterUserDataStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(filterUserDataStub, 'filter').mockReturnValueOnce(filteredUser)
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ user: filteredUser, refreshToken: 'any_token' }))
+    expect(response).toStrictEqual(httpHelper.ok({ refreshToken: 'any_token', user: filteredUser }))
   })
 })

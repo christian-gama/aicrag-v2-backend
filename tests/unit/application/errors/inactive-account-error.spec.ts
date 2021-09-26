@@ -1,13 +1,17 @@
 import { InactiveAccountError } from '@/application/usecases/errors'
 
-describe('InactiveAccountError', () => {
-  it('Should be an instance of Error', () => {
+describe('inactiveAccountError', () => {
+  it('should be an instance of Error', () => {
+    expect.hasAssertions()
+
     const sut = new InactiveAccountError()
 
     expect(sut).toBeInstanceOf(Error)
   })
 
-  it('Should return a message with the field name', () => {
+  it('should return a message with the field name', () => {
+    expect.hasAssertions()
+
     const sut = new InactiveAccountError()
 
     expect(sut.message).toBe('Account is not activated')

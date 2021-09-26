@@ -7,8 +7,8 @@ import { ValidateEmailExists } from '@/application/usecases/validators'
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: ValidateEmailExists
   fakeUser: IUser
+  sut: ValidateEmailExists
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
@@ -18,11 +18,13 @@ const makeSut = (): SutTypes => {
 
   const sut = new ValidateEmailExists(userDbRepositoryStub)
 
-  return { sut, userDbRepositoryStub, fakeUser }
+  return { fakeUser, sut, userDbRepositoryStub }
 }
 
-describe('ValidateCredentials', () => {
-  it('Should return a UserCredentialError if email does not exists', async () => {
+describe('validateCredentials', () => {
+  it('should return a UserCredentialError if email does not exists', async () => {
+    expect.hasAssertions()
+
     const { sut, userDbRepositoryStub } = makeSut()
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -31,10 +33,12 @@ describe('ValidateCredentials', () => {
 
     const error = await sut.validate(credentials)
 
-    expect(error).toEqual(new UserCredentialError())
+    expect(error).toStrictEqual(new UserCredentialError())
   })
 
-  it('Should call findUserByEmail with correct value', async () => {
+  it('should call findUserByEmail with correct value', async () => {
+    expect.hasAssertions()
+
     const { sut, userDbRepositoryStub } = makeSut()
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')

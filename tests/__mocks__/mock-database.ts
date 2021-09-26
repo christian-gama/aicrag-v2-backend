@@ -19,19 +19,19 @@ export const makeLogErrorDbRepositoryStub = (error: Error): LogErrorDbRepository
 export const makeUserDbRepositoryStub = (fakeUser: IUser): UserDbRepositoryProtocol => {
   class UserDbRepositoryStub implements UserDbRepositoryProtocol {
     async saveUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
-      return Promise.resolve(fakeUser)
+      return await Promise.resolve(fakeUser)
     }
 
     async findUserByEmail (email: string): Promise<IUser | undefined> {
-      return Promise.resolve(fakeUser)
+      return await Promise.resolve(fakeUser)
     }
 
     async findUserById (id: string): Promise<IUser | undefined> {
-      return Promise.resolve(fakeUser)
+      return await Promise.resolve(fakeUser)
     }
 
     async updateUser (user: IUser, update: UserDbFilter): Promise<IUser | undefined> {
-      return Promise.resolve(fakeUser)
+      return await Promise.resolve(fakeUser)
     }
   }
 

@@ -2,14 +2,16 @@ import app from '@/main/vendors/express/config/app'
 
 import request from 'supertest'
 
-describe('Cors', () => {
+describe('cors', () => {
   beforeAll(() => {
     app.post('/test_cors', (req, res) => {
       res.send()
     })
   })
 
-  it('Should enable cors', async () => {
+  it('should enable cors', async () => {
+    expect.assertions(0)
+
     await request(app)
       .post('/test_cors')
       .expect('access-control-allow-headers', '*')

@@ -4,35 +4,41 @@ import { ValidateRequiredFields } from '@/application/usecases/validators'
 import faker from 'faker'
 
 interface SutTypes {
-  sut: ValidateRequiredFields
   fakeField: string
+  sut: ValidateRequiredFields
 }
 
 const makeSut = (): SutTypes => {
   const fakeField = faker.random.word()
   const sut = new ValidateRequiredFields(fakeField)
 
-  return { sut, fakeField }
+  return { fakeField, sut }
 }
 
-describe('RequiredFields', () => {
-  it('Should return MissingParamError if field is missing', () => {
-    const { sut, fakeField } = makeSut()
+describe('requiredFields', () => {
+  it('should return MissingParamError if field is missing', () => {
+    expect.hasAssertions()
+
+    const { fakeField, sut } = makeSut()
 
     const value = sut.validate({ invalidField: fakeField })
 
-    expect(value).toEqual(new MissingParamError(fakeField))
+    expect(value).toStrictEqual(new MissingParamError(fakeField))
   })
 
-  it('Should return MissingParamError if field is empty', () => {
-    const { sut, fakeField } = makeSut()
+  it('should return MissingParamError if field is empty', () => {
+    expect.hasAssertions()
+
+    const { fakeField, sut } = makeSut()
 
     const value = sut.validate({ [fakeField]: '' })
 
-    expect(value).toEqual(new MissingParamError(fakeField))
+    expect(value).toStrictEqual(new MissingParamError(fakeField))
   })
 
-  it('Should return nothing if succeds', () => {
+  it('should return nothing if succeds', () => {
+    expect.hasAssertions()
+
     const { sut, fakeField } = makeSut()
 
     const value = sut.validate({ [fakeField]: 'any_text' })

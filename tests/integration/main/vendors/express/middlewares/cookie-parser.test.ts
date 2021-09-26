@@ -2,7 +2,7 @@ import app from '@/main/vendors/express/config/app'
 
 import request from 'supertest'
 
-describe('CookieParser', () => {
+describe('cookieParser', () => {
   beforeAll(() => {
     app.get('/save_cookie', (req, res) => {
       res.cookie('any_cookie', 'any_value')
@@ -17,11 +17,15 @@ describe('CookieParser', () => {
 
   const agent = request.agent(app)
 
-  it('Should save cookies', async () => {
+  it('should save cookies', async () => {
+    expect.assertions(0)
+
     await agent.get('/save_cookie').expect('set-cookie', 'any_cookie=any_value; Path=/')
   })
 
-  it('Should send cookies', async () => {
+  it('should send cookies', async () => {
+    expect.assertions(0)
+
     await agent.get('/send_cookie').expect('any_value')
   })
 })

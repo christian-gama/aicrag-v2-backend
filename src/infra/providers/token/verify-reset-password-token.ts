@@ -22,7 +22,7 @@ export class VerifyResetPasswordToken implements VerifyTokenProtocol {
 
     const user = await this.userDbRepository.findUserById(decodedAccessToken.userId)
 
-    if (!user) return new InvalidTokenError()
+    if (user == null) return new InvalidTokenError()
 
     if (user.temporary.resetPasswordToken !== token) {
       return new InvalidTokenError()

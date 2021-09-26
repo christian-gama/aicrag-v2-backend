@@ -13,7 +13,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('POST /send-welcome-email', () => {
+describe('post /send-welcome-email', () => {
   let accessToken: string
   let fakeUser: IUser
   let userCollection: Collection
@@ -39,11 +39,15 @@ describe('POST /send-welcome-email', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 401 if there is no access token', async () => {
+  it('should return 401 if there is no access token', async () => {
+    expect.assertions(0)
+
     await agent.post('/api/v1/helpers/send-welcome-email').send().expect(401)
   })
 
-  it('Should return 400 if validation fails', async () => {
+  it('should return 400 if validation fails', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -53,7 +57,9 @@ describe('POST /send-welcome-email', () => {
       .expect(400)
   })
 
-  it('Should return 403 if account is already activated', async () => {
+  it('should return 403 if account is already activated', async () => {
+    expect.assertions(0)
+
     fakeUser.settings.accountActivated = true
     await userCollection.insertOne(fakeUser)
 
@@ -64,7 +70,9 @@ describe('POST /send-welcome-email', () => {
       .expect(403)
   })
 
-  it('Should return 500 if email is not sent', async () => {
+  it('should return 500 if email is not sent', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     jest
@@ -78,7 +86,9 @@ describe('POST /send-welcome-email', () => {
       .expect(500)
   })
 
-  it('Should return 200 if email is sent', async () => {
+  it('should return 200 if email is sent', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))

@@ -10,7 +10,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('POST /forgot-password', () => {
+describe('post /forgot-password', () => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
@@ -36,7 +36,9 @@ describe('POST /forgot-password', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 200 if all validations succeds', async () => {
+  it('should return 200 if all validations succeds', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -45,14 +47,18 @@ describe('POST /forgot-password', () => {
       .expect(200)
   })
 
-  it('Should return 400 if email does not exist', async () => {
+  it('should return 400 if email does not exist', async () => {
+    expect.assertions(0)
+
     await agent
       .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
       .expect(400)
   })
 
-  it('Should return 403 if user is logged in', async () => {
+  it('should return 403 if user is logged in', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent

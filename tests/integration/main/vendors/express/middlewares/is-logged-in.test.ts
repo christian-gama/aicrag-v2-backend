@@ -14,7 +14,7 @@ import request from 'supertest'
 
 type RequestUser = Request & { user: IUser }
 
-describe('IsLoggedInMiddleware', () => {
+describe('isLoggedInMiddleware', () => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
@@ -44,11 +44,15 @@ describe('IsLoggedInMiddleware', () => {
 
   const agent = request.agent(app)
 
-  it('Should return false if user is not logged in', async () => {
+  it('should return false if user is not logged in', async () => {
+    expect.assertions(0)
+
     await agent.get('/is-logged-in').expect('false')
   })
 
-  it('Should return true if user is logged in', async () => {
+  it('should return true if user is logged in', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent.get('/is-logged-in').set('Cookie', `refreshToken=${refreshToken}`).expect('true')

@@ -14,35 +14,43 @@ const makeSut = (): SutTypes => {
   return { sut }
 }
 
-describe('ValidateName', () => {
-  it('Should return InvalidParamError if password is lesser than 6 characters', () => {
+describe('validateName', () => {
+  it('should return InvalidParamError if password is lesser than 6 characters', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const data = { password: faker.internet.password(5) }
 
     const value = sut.validate(data)
 
-    expect(value).toEqual(new InvalidParamError('password'))
+    expect(value).toStrictEqual(new InvalidParamError('password'))
   })
 
-  it('Should return InvalidParamError if password is greater than 32 characters', () => {
+  it('should return InvalidParamError if password is greater than 32 characters', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const data = { password: faker.internet.password(33) }
 
     const value = sut.validate(data)
 
-    expect(value).toEqual(new InvalidParamError('password'))
+    expect(value).toStrictEqual(new InvalidParamError('password'))
   })
 
-  it('Should return InvalidParamError if password is empty', () => {
+  it('should return InvalidParamError if password is empty', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const data = { password: '' }
 
     const value = sut.validate(data)
 
-    expect(value).toEqual(new InvalidParamError('password'))
+    expect(value).toStrictEqual(new InvalidParamError('password'))
   })
 
-  it('Should return nothing if succeds', () => {
+  it('should return nothing if succeds', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const data1 = { password: faker.internet.password(6) }
     const data2 = { password: faker.internet.password(32) }

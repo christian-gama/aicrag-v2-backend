@@ -11,6 +11,6 @@ export class ValidateEmailExists implements ValidatorProtocol {
 
     const user = await this.userDbRepository.findUserByEmail(email)
 
-    if (!user) return new UserCredentialError()
+    if (user == null) return new UserCredentialError()
   }
 }

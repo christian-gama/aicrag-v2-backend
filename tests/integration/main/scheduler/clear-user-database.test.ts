@@ -22,10 +22,10 @@ const makeSut = (): SutTypes => {
 
   const sut = new ClearUserDatabase(logErrorDbRepositoryStub)
 
-  return { sut, error, logErrorDbRepositoryStub }
+  return { error, logErrorDbRepositoryStub, sut }
 }
 
-describe('ClearUserDatabase', () => {
+describe('clearUserDatabase', () => {
   let fakeUser: IUser
   let userCollection: Collection
 
@@ -46,7 +46,9 @@ describe('ClearUserDatabase', () => {
     userCollection = MongoHelper.getCollection('users')
   })
 
-  it('Should delete a inactive user that has createad an account more than 24 hours ago', async () => {
+  it('should delete a inactive user that has createad an account more than 24 hours ago', async () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     fakeUser.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
     await userCollection.insertOne(fakeUser)
@@ -56,7 +58,9 @@ describe('ClearUserDatabase', () => {
     expect(count).toBe(1)
   })
 
-  it('Should not delete users that are active', async () => {
+  it('should not delete users that are active', async () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     fakeUser.settings.accountActivated = true
     fakeUser.logs.createdAt = new Date(Date.now() - 25 * 60 * 60 * 1000)
@@ -67,7 +71,9 @@ describe('ClearUserDatabase', () => {
     expect(count).toBe(0)
   })
 
-  it('Should not delete users that are inactive and account creation did is lower than 24 hours', async () => {
+  it('should not delete users that are inactive and account creation did is lower than 24 hours', async () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     fakeUser.settings.accountActivated = false
     fakeUser.logs.createdAt = new Date(Date.now() - 23 * 60 * 60 * 1000)

@@ -12,15 +12,15 @@ export const errorRequestHandler: ErrorRequestHandler = (err, req, res, next) =>
     if (error.statusCode.toString().startsWith('4')) {
       res.status(error.statusCode)
       return res.json({
-        status: 'fail',
-        data: { error: { name: error.name, message: error.message, stack: error.stack } }
+        data: { error: { message: error.message, name: error.name, stack: error.stack } },
+        status: 'fail'
       })
     }
 
     res.status(500)
     return res.json({
-      status: 'fail',
-      data: { error: { name: error.name, message: error.message, stack: error.stack } }
+      data: { error: { message: error.message, name: error.name, stack: error.stack } },
+      status: 'fail'
     })
   }
 
@@ -28,14 +28,14 @@ export const errorRequestHandler: ErrorRequestHandler = (err, req, res, next) =>
   if (error.statusCode.toString().startsWith('4')) {
     res.status(error.statusCode)
     return res.json({
-      status: 'fail',
-      data: { message: error.message }
+      data: { message: error.message },
+      status: 'fail'
     })
   }
 
   res.status(500)
   return res.json({
-    status: 'fail',
-    data: { message: 'Internal error: Try again later' }
+    data: { message: 'Internal error: Try again later' },
+    status: 'fail'
   })
 }

@@ -25,7 +25,7 @@ export class LoginController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
+    if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
 
     const credentials = httpRequest.body
 
@@ -41,8 +41,8 @@ export class LoginController implements ControllerProtocol {
 
     if (error?.name === 'InactiveAccountError') {
       return this.httpHelper.ok({
-        message: error.message,
-        accessToken
+        accessToken,
+        message: error.message
       })
     }
 
@@ -51,9 +51,9 @@ export class LoginController implements ControllerProtocol {
     const filteredUser = this.filterUserData.filter(user)
 
     return this.httpHelper.ok({
-      user: filteredUser,
+      accessToken,
       refreshToken,
-      accessToken
+      user: filteredUser
     })
   }
 }

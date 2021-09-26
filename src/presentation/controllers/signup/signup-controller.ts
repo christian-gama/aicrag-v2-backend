@@ -25,19 +25,19 @@ export class SignUpController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
+    if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
 
     const signUpUserCredentials = httpRequest.body
 
     const error = await this.userValidator.validate(signUpUserCredentials)
 
-    if (error) {
+    if (error != null) {
       return this.httpHelper.badRequest(error)
     }
 
     const emailExists = await this.userDbRepository.findUserByEmail(signUpUserCredentials.email)
 
-    if (emailExists) {
+    if (emailExists != null) {
       return this.httpHelper.conflict(new ConflictParamError('email'))
     }
 
@@ -47,6 +47,6 @@ export class SignUpController implements ControllerProtocol {
 
     const filteredUser = this.filterUserData.filter(user)
 
-    return this.httpHelper.ok({ user: filteredUser, accessToken })
+    return this.httpHelper.ok({ accessToken, user: filteredUser })
   }
 }

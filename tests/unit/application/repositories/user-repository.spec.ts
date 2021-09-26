@@ -25,49 +25,53 @@ const makeSut = (): SutTypes => {
 
   const sut = new UserRepository(activationCodeStub, hasherStub, uuidStub)
 
-  return { sut, activationCodeStub, hasherStub, uuidStub }
+  return { activationCodeStub, hasherStub, sut, uuidStub }
 }
 
-describe('UserRepository', () => {
-  it('Should return a user with correct values', async () => {
-    const { sut, activationCodeStub, hasherStub, uuidStub } = makeSut()
+describe('userRepository', () => {
+  it('should return a user with correct values', async () => {
+    expect.hasAssertions()
+
+    const { activationCodeStub, hasherStub, sut, uuidStub } = makeSut()
     const fakeActivationCode = activationCodeStub.generate()
-    const fakeId = uuidStub.generate()
     const fakeSignUpUserCredentials = makeFakeSignUpUserCredentials()
     const fakeHashedPassword = await hasherStub.hash(fakeSignUpUserCredentials.password)
+    const fakeId = uuidStub.generate()
 
     const user = await sut.createUser(fakeSignUpUserCredentials)
 
-    expect(Object.keys(user.logs).length).toBe(4)
+    expect(Object.keys(user.logs)).toHaveLength(4)
     expect(typeof user.logs.createdAt).toBe('object')
-    expect(user.logs.lastLoginAt).toBe(null)
-    expect(user.logs.lastSeenAt).toBe(null)
-    expect(user.logs.updatedAt).toBe(null)
+    expect(user.logs.lastLoginAt).toBeNull()
+    expect(user.logs.lastSeenAt).toBeNull()
+    expect(user.logs.updatedAt).toBeNull()
 
-    expect(Object.keys(user.personal).length).toBe(4)
-    expect(user.personal).toEqual({
+    expect(Object.keys(user.personal)).toHaveLength(4)
+    expect(user.personal).toStrictEqual({
       email: fakeSignUpUserCredentials.email,
       id: fakeId,
       name: fakeSignUpUserCredentials.name,
       password: fakeHashedPassword
     })
 
-    expect(Object.keys(user.settings).length).toBe(3)
-    expect(user.settings).toEqual({ accountActivated: false, currency: 'BRL', handicap: 1 })
+    expect(Object.keys(user.settings)).toHaveLength(3)
+    expect(user.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1 })
 
-    expect(Object.keys(user.temporary).length).toBe(6)
+    expect(Object.keys(user.temporary)).toHaveLength(6)
     expect(typeof user.temporary.activationCodeExpiration).toBe('object')
     expect(user.temporary.activationCode).toBe(fakeActivationCode)
-    expect(user.temporary.resetPasswordToken).toBe(null)
-    expect(user.temporary.tempEmail).toBe(null)
-    expect(user.temporary.tempEmailCode).toBe(null)
-    expect(user.temporary.tempEmailCodeExpiration).toBe(null)
+    expect(user.temporary.resetPasswordToken).toBeNull()
+    expect(user.temporary.tempEmail).toBeNull()
+    expect(user.temporary.tempEmailCode).toBeNull()
+    expect(user.temporary.tempEmailCodeExpiration).toBeNull()
 
     expect(user.tokenVersion).toBe(0)
   })
 
-  it('Should call hash with correct values', async () => {
-    const { sut, hasherStub } = makeSut()
+  it('should call hash with correct values', async () => {
+    expect.hasAssertions()
+
+    const { hasherStub, sut } = makeSut()
     const fakeSignUpUserCredentials = makeFakeSignUpUserCredentials()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
 

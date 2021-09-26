@@ -12,9 +12,9 @@ export class ValidateActivationCode implements ValidatorProtocol {
     const { email, activationCode } = input
     const user = await this.userDbRepository.findUserByEmail(email)
 
-    if (!user) return new InvalidCodeError()
+    if (user == null) return new InvalidCodeError()
 
-    if (!user.temporary.activationCodeExpiration) return new InvalidCodeError()
+    if (user.temporary.activationCodeExpiration == null) return new InvalidCodeError()
     if (activationCode !== user.temporary.activationCode) return new InvalidCodeError()
     if (user.settings.accountActivated) return new AccountAlreadyActivatedError()
     if (user.temporary.activationCodeExpiration.getTime() < Date.now()) return new CodeIsExpiredError()

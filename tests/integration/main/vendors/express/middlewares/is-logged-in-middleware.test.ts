@@ -11,7 +11,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('IsLoggedInMiddleware', () => {
+describe('isLoggedInMiddleware', () => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
@@ -42,11 +42,15 @@ describe('IsLoggedInMiddleware', () => {
 
   const agent = request.agent(app)
 
-  it('Should not return a user if fails', async () => {
+  it('should not return a user if fails', async () => {
+    expect.assertions(0)
+
     await agent.get('/is-logged-in').expect('no_user')
   })
 
-  it('Should return a user if succeds', async () => {
+  it('should return a user if succeds', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent.get('/is-logged-in').set('Cookie', `refreshToken=${refreshToken}`).expect('user')

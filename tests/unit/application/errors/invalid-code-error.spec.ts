@@ -1,13 +1,17 @@
 import { InvalidCodeError } from '@/application/usecases/errors'
 
-describe('InvalidCodeError', () => {
-  it('Should be an instance of Error', () => {
+describe('invalidCodeError', () => {
+  it('should be an instance of Error', () => {
+    expect.hasAssertions()
+
     const sut = new InvalidCodeError()
 
     expect(sut).toBeInstanceOf(Error)
   })
 
-  it('Should return a message with the field name', () => {
+  it('should return a message with the field name', () => {
+    expect.hasAssertions()
+
     const sut = new InvalidCodeError()
 
     expect(sut.message).toBe('Invalid code')

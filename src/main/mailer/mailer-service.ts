@@ -27,8 +27,8 @@ export abstract class MailerService {
     if (environment.SERVER.NODE_ENV === 'development' || environment.SERVER.NODE_ENV === 'test') {
       return nodemailer.createTransport({
         auth: {
-          user: environment.MAILER.MAILTRAP.USER,
-          pass: environment.MAILER.MAILTRAP.PASSWORD
+          pass: environment.MAILER.MAILTRAP.PASSWORD,
+          user: environment.MAILER.MAILTRAP.USER
         },
         host: environment.MAILER.MAILTRAP.HOST,
         port: +environment.MAILER.MAILTRAP.PORT

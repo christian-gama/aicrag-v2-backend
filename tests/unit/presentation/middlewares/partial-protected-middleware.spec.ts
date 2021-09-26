@@ -10,11 +10,11 @@ import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: PartialProtectedMiddleware
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  sut: PartialProtectedMiddleware
   verifyAccessTokenStub: VerifyTokenProtocol
 }
 
@@ -28,17 +28,19 @@ const makeSut = (): SutTypes => {
   const sut = new PartialProtectedMiddleware(httpHelper, verifyAccessTokenStub)
 
   return {
-    sut,
     fakeRefreshToken,
     fakeUser,
     httpHelper,
     request,
+    sut,
     verifyAccessTokenStub
   }
 }
 
-describe('PartialProtectedMiddleware', () => {
-  it('Should call verify with token', async () => {
+describe('partialProtectedMiddleware', () => {
+  it('should call verify with token', async () => {
+    expect.hasAssertions()
+
     const { sut, request, verifyAccessTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')
 
@@ -47,20 +49,24 @@ describe('PartialProtectedMiddleware', () => {
     expect(verifySpy).toHaveBeenCalledWith(request.cookies?.accessToken)
   })
 
-  it('Should return unauthorized if response is instance of Error', async () => {
-    const { sut, httpHelper, request, verifyAccessTokenStub } = makeSut()
+  it('should return unauthorized if response is instance of Error', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.unauthorized(new Error()))
+    expect(response).toStrictEqual(httpHelper.unauthorized(new Error()))
   })
 
-  it('Should return ok if succeds', async () => {
-    const { sut, httpHelper, request } = makeSut()
+  it('should return ok if succeds', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ accessToken: 'any_token' }))
+    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token' }))
   })
 })

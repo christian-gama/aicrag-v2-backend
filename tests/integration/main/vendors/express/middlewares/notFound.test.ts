@@ -6,7 +6,7 @@ import { makeControllerStub } from '@/tests/__mocks__/mock-controllers'
 
 import request from 'supertest'
 
-describe('ErrorHandler', () => {
+describe('errorHandler', () => {
   beforeEach(() => {
     app.all('*', notFound)
     app.get('/notFound', controllerAdapter(makeControllerStub()))
@@ -14,13 +14,17 @@ describe('ErrorHandler', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 404', async () => {
+  it('should return 404', async () => {
+    expect.assertions(0)
+
     await agent.get('/notFound').expect(404)
   })
 
-  it('Should return a default error message', async () => {
+  it('should return a default error message', async () => {
+    expect.assertions(0)
+
     await agent
       .get('/notFound')
-      .expect({ status: 'fail', data: { message: 'Cannot find the path: /notFound' } })
+      .expect({ data: { message: 'Cannotfindthepath:/notFound', status: 'fail' } })
   })
 })

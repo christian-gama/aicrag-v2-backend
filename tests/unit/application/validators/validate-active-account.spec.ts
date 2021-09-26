@@ -8,8 +8,8 @@ import { ValidateActiveAccount } from '@/application/usecases/validators'
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: ValidatorProtocol
   fakeUser: IUser
+  sut: ValidatorProtocol
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
@@ -20,12 +20,14 @@ const makeSut = (): SutTypes => {
 
   const sut = new ValidateActiveAccount(userDbRepositoryStub)
 
-  return { sut, fakeUser, userDbRepositoryStub }
+  return { fakeUser, sut, userDbRepositoryStub }
 }
 
-describe('ValidateCredentials', () => {
-  it('Should return a InactiveAccountError if user account is inactive', async () => {
-    const { sut, fakeUser, userDbRepositoryStub } = makeSut()
+describe('validateCredentials', () => {
+  it('should return a InactiveAccountError if user account is inactive', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, sut, userDbRepositoryStub } = makeSut()
     fakeUser.settings.accountActivated = false
     jest
       .spyOn(userDbRepositoryStub, 'saveUser')
@@ -33,10 +35,12 @@ describe('ValidateCredentials', () => {
 
     const result = await sut.validate(fakeUser)
 
-    expect(result).toEqual(new InactiveAccountError())
+    expect(result).toStrictEqual(new InactiveAccountError())
   })
 
-  it('Should call findUserByEmail with correct value', async () => {
+  it('should call findUserByEmail with correct value', async () => {
+    expect.hasAssertions()
+
     const { sut, userDbRepositoryStub } = makeSut()
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -46,12 +50,14 @@ describe('ValidateCredentials', () => {
     expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
   })
 
-  it('Should return nothing if succeds', async () => {
+  it('should return nothing if succeds', async () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
 
     const value = await sut.validate(credentials)
 
-    expect(value).toBe(undefined)
+    expect(value).toBeUndefined()
   })
 })

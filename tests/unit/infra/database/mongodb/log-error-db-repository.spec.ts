@@ -10,10 +10,10 @@ import { makeFakeLogError, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 
 interface SutTypes {
-  sut: LogErrorDbRepository
   error: Error
   fakeLogError: ILogError
   logErrorRepositoryStub: LogErrorRepositoryProtocol
+  sut: LogErrorDbRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -23,10 +23,10 @@ const makeSut = (): SutTypes => {
 
   const sut = new LogErrorDbRepository(logErrorRepositoryStub)
 
-  return { sut, error, fakeLogError, logErrorRepositoryStub }
+  return { error, fakeLogError, logErrorRepositoryStub, sut }
 }
 
-describe('LogErrorDbRepository', () => {
+describe('logErrorDbRepository', () => {
   let logCollection: Collection
 
   afterAll(async () => {
@@ -43,7 +43,9 @@ describe('LogErrorDbRepository', () => {
     await logCollection.deleteMany({})
   })
 
-  it('Should call createLog with correct error', async () => {
+  it('should call createLog with correct error', async () => {
+    expect.hasAssertions()
+
     const { sut, error, logErrorRepositoryStub } = makeSut()
     const createLogSpy = jest.spyOn(logErrorRepositoryStub, 'createLog')
 
@@ -52,14 +54,16 @@ describe('LogErrorDbRepository', () => {
     expect(createLogSpy).toHaveBeenCalledWith(error)
   })
 
-  it('Should save a log error on database', async () => {
-    const { sut, error, fakeLogError } = makeSut()
+  it('should save a log error on database', async () => {
+    expect.hasAssertions()
+
+    const { error, fakeLogError, sut } = makeSut()
 
     const value = await sut.saveLog(error)
 
-    expect(value.date).toEqual(fakeLogError.date)
-    expect(value.message).toEqual(fakeLogError.message)
-    expect(value.name).toEqual(fakeLogError.name)
-    expect(value.stack).toEqual(fakeLogError.stack)
+    expect(value.date).toStrictEqual(fakeLogError.date)
+    expect(value.message).toStrictEqual(fakeLogError.message)
+    expect(value.name).toStrictEqual(fakeLogError.name)
+    expect(value.stack).toStrictEqual(fakeLogError.stack)
   })
 })

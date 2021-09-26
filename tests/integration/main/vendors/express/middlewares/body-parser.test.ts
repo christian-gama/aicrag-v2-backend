@@ -2,7 +2,7 @@ import app from '@/main/vendors/express/config/app'
 
 import request from 'supertest'
 
-describe('BodyParser', () => {
+describe('bodyParser', () => {
   beforeAll(() => {
     app.post('/use_body_parser', (req, res) => {
       res.send(req.body)
@@ -11,7 +11,9 @@ describe('BodyParser', () => {
 
   const agent = request.agent(app)
 
-  it('Should parse body', async () => {
+  it('should parse body', async () => {
+    expect.assertions(0)
+
     await agent.post('/use_body_parser').send({ name: 'any_name' }).expect({ name: 'any_name' })
   })
 })

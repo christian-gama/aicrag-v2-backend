@@ -11,16 +11,20 @@ const makeSut = (): SutTypes => {
   return { sut }
 }
 
-describe('Uiid', () => {
-  it('Should return an uiid with 24 digits', () => {
+describe('uiid', () => {
+  it('should return an uiid with 24 digits', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const value = sut.generate()
 
-    expect(value.length).toBe(36)
+    expect(value).toHaveLength(36)
   })
 
-  it('Should return a string', () => {
+  it('should return a string', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const value = sut.generate()
@@ -28,7 +32,9 @@ describe('Uiid', () => {
     expect(typeof value).toBe('string')
   })
 
-  it('Should return an unique id', () => {
+  it('should return an unique id', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const values: Partial<string[]> = []
@@ -40,6 +46,6 @@ describe('Uiid', () => {
 
     const filteredValues = [...new Set(values)]
 
-    expect(filteredValues.length).toBe(5)
+    expect(filteredValues).toHaveLength(5)
   })
 })

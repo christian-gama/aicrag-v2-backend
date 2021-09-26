@@ -11,7 +11,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('ProtectedMiddleware', () => {
+describe('protectedMiddleware', () => {
   let accessToken: string
   let fakeUser: IUser
   let refreshToken: string
@@ -43,11 +43,15 @@ describe('ProtectedMiddleware', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 401 if refresh token is invalid', async () => {
+  it('should return 401 if refresh token is invalid', async () => {
+    expect.assertions(0)
+
     await agent.get('/protected').expect(401)
   })
 
-  it('Should return 401 if access token is invalid', async () => {
+  it('should return 401 if access token is invalid', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -56,7 +60,9 @@ describe('ProtectedMiddleware', () => {
       .expect(401)
   })
 
-  it('Should return 200 if refresh token and access token are valid', async () => {
+  it('should return 200 if refresh token and access token are valid', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent

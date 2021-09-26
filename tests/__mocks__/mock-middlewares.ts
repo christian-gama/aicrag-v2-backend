@@ -7,7 +7,7 @@ const httpHelper = makeHttpHelper()
 export const makeMiddlewareStub = (): MiddlewareProtocol => {
   class MiddlewareStub implements MiddlewareProtocol {
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-      return Promise.resolve(httpHelper.ok({}))
+      return await Promise.resolve(httpHelper.ok({}))
     }
   }
 

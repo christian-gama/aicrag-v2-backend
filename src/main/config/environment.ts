@@ -19,21 +19,23 @@ export const environment = {
     REFRESH_SECRET: process.env.JWT_REFRESH_SECRET?.trim() ?? '12f9b733-3ea0-4edf-9e05-33c1003dc9d1'
   },
   MAILER: {
-    SENDGRID: {
-      APIKEY: process.env.SENDGRID_APIKEY?.trim()
-    },
     MAILTRAP: {
       HOST: process.env.MAILTRAP_HOST?.trim() ?? 'smtp.mailtrap.io',
       PASSWORD: process.env.MAILTRAP_PASSWORD?.trim(),
       PORT: process.env.MAILTRAP_PORT?.trim() ?? '2525',
       USER: process.env.MAILTRAP_USER?.trim()
     },
+    SENDGRID: {
+      APIKEY: process.env.SENDGRID_APIKEY?.trim()
+    },
     SETTINGS: {
       FROM: 'Aicrag <aicrag.team@gmail.com>'
     }
   },
   SERVER: {
-    NODE_ENV: (process.env.NODE_ENV?.trim().toLowerCase() as 'development' | 'production' | 'test') ?? 'production',
+    NODE_ENV:
+      (process.env.NODE_ENV?.trim().toLowerCase() as 'development' | 'production' | 'test') ??
+      'production',
     PORT: process.env.PORT?.trim() ?? '3000'
   }
 }

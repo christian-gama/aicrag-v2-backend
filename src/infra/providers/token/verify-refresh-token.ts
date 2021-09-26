@@ -22,7 +22,7 @@ export class VerifyRefreshToken implements VerifyTokenProtocol {
 
     const user = await this.userDbRepository.findUserById(decodedRefreshToken.userId)
 
-    if (!user) return new InvalidTokenError()
+    if (user == null) return new InvalidTokenError()
 
     if (user.tokenVersion !== +decodedRefreshToken.version) {
       return new InvalidTokenError()

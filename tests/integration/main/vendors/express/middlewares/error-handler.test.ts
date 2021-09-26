@@ -18,7 +18,7 @@ const makeControllerStub = (): ControllerProtocol => {
   return new ControllerStub()
 }
 
-describe('ErrorRequestHandler', () => {
+describe('errorRequestHandler', () => {
   const env = process.env.NODE_ENV as 'production' | 'development'
 
   afterAll(() => {
@@ -32,31 +32,37 @@ describe('ErrorRequestHandler', () => {
 
   const agent = request.agent(app)
 
-  it('Should return statusCode 500', async () => {
+  it('should return statusCode 500', async () => {
+    expect.assertions(0)
+
     await agent.post('/error_handler').send({}).expect(500)
   })
 
-  it('Should return a full error if environment is on development', async () => {
+  it('should return a full error if environment is on development', async () => {
+    expect.assertions(0)
+
     environment.SERVER.NODE_ENV = 'development'
 
     await agent
       .post('/error_handler')
       .send({})
       .expect({
-        status: 'fail',
-        data: { error: { message: error.message, name: error.name, stack: error.stack } }
+        data: { error: { message: error.message, name: error.name, stack: error.stack } },
+        status: 'fail'
       })
   })
 
-  it('Should return a shorten error if environment is on production', async () => {
+  it('should return a shorten error if environment is on production', async () => {
+    expect.assertions(0)
+
     environment.SERVER.NODE_ENV = 'production'
 
     await agent
       .post('/error_handler')
       .send({})
       .expect({
-        status: 'fail',
-        data: { message: 'Internal error: Try again later' }
+        data: { message: 'Internal error: Try again later' },
+        status: 'fail'
       })
   })
 })

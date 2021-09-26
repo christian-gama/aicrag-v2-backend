@@ -18,11 +18,11 @@ import {
 } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: SendWelcomeEmailController
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sendWelcomeValidatorStub: ValidatorProtocol
+  sut: SendWelcomeEmailController
   userDbRepositoryStub: UserDbRepositoryProtocol
   welcomeEmailStub: MailerServiceProtocol
 }
@@ -43,19 +43,21 @@ const makeSut = (): SutTypes => {
   )
 
   return {
-    sut,
     fakeUser,
     httpHelper,
     request,
     sendWelcomeValidatorStub,
+    sut,
     userDbRepositoryStub,
     welcomeEmailStub
   }
 }
 
-describe('SendWelcomeEmailController', () => {
-  it('Should call validate with correct credentials', async () => {
-    const { sut, request, sendWelcomeValidatorStub } = makeSut()
+describe('sendWelcomeEmailController', () => {
+  it('should call validate with correct credentials', async () => {
+    expect.hasAssertions()
+
+    const { request, sendWelcomeValidatorStub, sut } = makeSut()
     const validateSpy = jest.spyOn(sendWelcomeValidatorStub, 'validate')
 
     await sut.handle(request)
@@ -63,19 +65,23 @@ describe('SendWelcomeEmailController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('Should return badRequest if validation fails', async () => {
-    const { sut, httpHelper, request, sendWelcomeValidatorStub } = makeSut()
+  it('should return badRequest if validation fails', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sendWelcomeValidatorStub, sut } = makeSut()
     jest
       .spyOn(sendWelcomeValidatorStub, 'validate')
       .mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.badRequest(new Error()))
+    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
-  it('Should return forbidden if account is already activated', async () => {
-    const { sut, fakeUser, httpHelper, request, userDbRepositoryStub } = makeSut()
+  it('should return forbidden if account is already activated', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()
     jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockImplementationOnce(async () => {
       fakeUser.settings.accountActivated = true
 
@@ -84,11 +90,13 @@ describe('SendWelcomeEmailController', () => {
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.forbidden(new AccountAlreadyActivatedError()))
+    expect(response).toStrictEqual(httpHelper.forbidden(new AccountAlreadyActivatedError()))
   })
 
-  it('Should call findUserByEmail with correct email', async () => {
-    const { sut, request, userDbRepositoryStub } = makeSut()
+  it('should call findUserByEmail with correct email', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, userDbRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
@@ -96,7 +104,9 @@ describe('SendWelcomeEmailController', () => {
     expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
-  it('Should call send with correct user', async () => {
+  it('should call send with correct user', async () => {
+    expect.hasAssertions()
+
     const { sut, fakeUser, request, welcomeEmailStub } = makeSut()
     const sendSpy = jest.spyOn(welcomeEmailStub, 'send')
 
@@ -105,7 +115,9 @@ describe('SendWelcomeEmailController', () => {
     expect(sendSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('Should return serverError if mailer fails', async () => {
+  it('should return serverError if mailer fails', async () => {
+    expect.hasAssertions()
+
     const { sut, request, welcomeEmailStub } = makeSut()
     jest
       .spyOn(welcomeEmailStub, 'send')
@@ -116,12 +128,14 @@ describe('SendWelcomeEmailController', () => {
     expect(response.data.error.name).toBe('MailerServiceError')
   })
 
-  it('Should return ok if send email', async () => {
+  it('should return ok if send email', async () => {
+    expect.hasAssertions()
+
     const { sut, fakeUser, httpHelper, request } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(
+    expect(response).toStrictEqual(
       httpHelper.ok({
         message: `A welcome email with activation code has been sent to ${fakeUser.personal.email}`
       })

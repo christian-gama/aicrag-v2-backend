@@ -31,7 +31,7 @@ export class UserRepository implements UserRepositoryProtocol {
         name: signUpUserCredentials.name,
         password: hashedPassword
       },
-      settings: { accountActivated: false, handicap: 1, currency: 'BRL' },
+      settings: { accountActivated: false, currency: 'BRL', handicap: 1 },
       temporary: {
         activationCode: activationCode,
         activationCodeExpiration: new Date(Date.now() + activationCodeExpirationMinutes),

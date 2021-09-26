@@ -7,7 +7,7 @@ export class ValidationComposite implements ValidatorProtocol {
     for (const validation of this.validations) {
       const error = await validation.validate(input)
 
-      if (error) return error
+      if (error != null) return error
     }
   }
 }

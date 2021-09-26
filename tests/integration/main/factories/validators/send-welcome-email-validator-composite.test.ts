@@ -10,8 +10,10 @@ import {
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 
-describe('CredentialsValidator Factory', () => {
-  it('Should create factory with all validations', () => {
+describe('credentialsValidator Factory', () => {
+  it('should create factory with all validations', () => {
+    expect.hasAssertions()
+
     makeSendWelcomeEmailValidatorComposite()
 
     const validations: ValidatorProtocol[] = []

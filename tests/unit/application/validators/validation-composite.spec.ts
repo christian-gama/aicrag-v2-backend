@@ -17,8 +17,10 @@ const makeSut = (): SutTypes => {
   return { sut, validationStubs }
 }
 
-describe('ValidationCompose', () => {
-  it('Should return an error if validate returns an error', async () => {
+describe('validationCompose', () => {
+  it('should return an error if validate returns an error', async () => {
+    expect.hasAssertions()
+
     const { sut, validationStubs } = makeSut()
     jest
       .spyOn(validationStubs[0], 'validate')
@@ -26,10 +28,12 @@ describe('ValidationCompose', () => {
 
     const error = await sut.validate({ field: 'any_value' })
 
-    expect(error).toEqual(new MissingParamError('any_field'))
+    expect(error).toStrictEqual(new MissingParamError('any_field'))
   })
 
-  it('Should return the first error if validate fails', async () => {
+  it('should return the first error if validate fails', async () => {
+    expect.hasAssertions()
+
     const { sut, validationStubs } = makeSut()
     jest
       .spyOn(validationStubs[0], 'validate')
@@ -40,10 +44,12 @@ describe('ValidationCompose', () => {
 
     const error = await sut.validate({ field: 'any_value' })
 
-    expect(error).toEqual(new MissingParamError('first_error'))
+    expect(error).toStrictEqual(new MissingParamError('first_error'))
   })
 
-  it('Should return nothing if succeds', async () => {
+  it('should return nothing if succeds', async () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const value = await sut.validate({ field: 'any_field' })
 

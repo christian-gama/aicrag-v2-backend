@@ -1,13 +1,17 @@
 import { ConflictParamError } from '@/application/usecases/errors'
 
-describe('ConflictParamError', () => {
-  it('Should be an instance of Error', () => {
+describe('conflictParamError', () => {
+  it('should be an instance of Error', () => {
+    expect.hasAssertions()
+
     const sut = new ConflictParamError('any_field')
 
     expect(sut).toBeInstanceOf(Error)
   })
 
-  it('Should return a message with the field name', () => {
+  it('should return a message with the field name', () => {
+    expect.hasAssertions()
+
     const sut = new ConflictParamError('any_field')
 
     expect(sut.message).toBe('Param already exists: any_field')

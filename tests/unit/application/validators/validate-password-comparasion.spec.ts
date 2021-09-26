@@ -14,8 +14,10 @@ const makeSut = (): SutTypes => {
   return { sut }
 }
 
-describe('ValidateName', () => {
-  it('Should return InvalidParamError if passwords are not equal', () => {
+describe('validateName', () => {
+  it('should return InvalidParamError if passwords are not equal', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const data = {
       password: faker.internet.password(),
@@ -24,16 +26,18 @@ describe('ValidateName', () => {
 
     const value = sut.validate(data)
 
-    expect(value).toEqual(new InvalidParamError('passwordConfirmation'))
+    expect(value).toStrictEqual(new InvalidParamError('passwordConfirmation'))
   })
 
-  it('Should return nothing if succeds', () => {
+  it('should return nothing if succeds', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
     const password = faker.internet.password()
     const data = { password: password, passwordConfirmation: password }
 
     const value = sut.validate(data)
 
-    expect(value).toBe(undefined)
+    expect(value).toBeUndefined()
   })
 })

@@ -10,11 +10,11 @@ import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: IsLoggedInMiddleware
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  sut: IsLoggedInMiddleware
   verifyRefreshTokenStub: VerifyTokenProtocol
 }
 
@@ -28,18 +28,20 @@ const makeSut = (): SutTypes => {
   const sut = new IsLoggedInMiddleware(httpHelper, verifyRefreshTokenStub)
 
   return {
-    sut,
     fakeRefreshToken,
     fakeUser,
     httpHelper,
     request,
+    sut,
     verifyRefreshTokenStub
   }
 }
 
-describe('IsLoggedInMiddleware', () => {
-  it('Should call verify with correct token', async () => {
-    const { sut, request, verifyRefreshTokenStub } = makeSut()
+describe('isLoggedInMiddleware', () => {
+  it('should call verify with correct token', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, verifyRefreshTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyRefreshTokenStub, 'verify')
 
     await sut.handle(request)
@@ -47,20 +49,24 @@ describe('IsLoggedInMiddleware', () => {
     expect(verifySpy).toHaveBeenCalledWith(request.cookies?.refreshToken)
   })
 
-  it('Should return ok with undefined user if fails', async () => {
-    const { sut, httpHelper, request, verifyRefreshTokenStub } = makeSut()
+  it('should return ok with undefined user if fails', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, verifyRefreshTokenStub } = makeSut()
     jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ user: undefined }))
+    expect(response).toStrictEqual(httpHelper.ok({ user: undefined }))
   })
 
-  it('Should return ok if succeds', async () => {
-    const { sut, fakeUser, httpHelper, request } = makeSut()
+  it('should return ok if succeds', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ user: fakeUser }))
+    expect(response).toStrictEqual(httpHelper.ok({ user: fakeUser }))
   })
 })

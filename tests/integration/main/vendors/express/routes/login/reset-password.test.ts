@@ -10,7 +10,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('POST /reset-password', () => {
+describe('post /reset-password', () => {
   let accessToken: string
   let fakeUser: IUser
   let refreshToken: string
@@ -38,7 +38,9 @@ describe('POST /reset-password', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 403 if user is logged in', async () => {
+  it('should return 403 if user is logged in', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -48,18 +50,24 @@ describe('POST /reset-password', () => {
       .expect(403)
   })
 
-  it('Should return 401 if token is missing', async () => {
+  it('should return 401 if token is missing', async () => {
+    expect.assertions(0)
+
     await agent.post('/api/v1/login/reset-password').send().expect(401)
   })
 
-  it('Should return 401 if token is invalid', async () => {
+  it('should return 401 if token is invalid', async () => {
+    expect.assertions(0)
+
     await agent
       .post('/api/v1/login/reset-password')
       .set('Cookie', 'accessToken=invalid_token')
       .expect(401)
   })
 
-  it('Should return 400 if params are missing', async () => {
+  it('should return 400 if params are missing', async () => {
+    expect.assertions(0)
+
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
@@ -70,7 +78,9 @@ describe('POST /reset-password', () => {
       .expect(400)
   })
 
-  it('Should return 400 if params are invalid', async () => {
+  it('should return 400 if params are invalid', async () => {
+    expect.assertions(0)
+
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
@@ -81,7 +91,9 @@ describe('POST /reset-password', () => {
       .expect(400)
   })
 
-  it('Should return 200 if params are valid', async () => {
+  it('should return 200 if params are valid', async () => {
+    expect.assertions(0)
+
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 

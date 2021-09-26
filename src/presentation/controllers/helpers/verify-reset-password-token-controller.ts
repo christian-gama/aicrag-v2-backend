@@ -16,7 +16,7 @@ export class VerifyResetPasswordTokenController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
+    if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
 
     const token = httpRequest.params.token
 

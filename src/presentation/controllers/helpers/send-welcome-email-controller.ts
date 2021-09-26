@@ -26,7 +26,7 @@ export class SendWelcomeEmailController implements ControllerProtocol {
 
     const error = await this.sendWelcomeValidator.validate(credentials)
 
-    if (error) return this.httpHelper.badRequest(error)
+    if (error != null) return this.httpHelper.badRequest(error)
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 

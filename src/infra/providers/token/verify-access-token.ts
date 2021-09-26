@@ -22,7 +22,7 @@ export class VerifyAccessToken implements VerifyTokenProtocol {
 
     const user = await this.userDbRepository.findUserById(decodedAccessToken.userId)
 
-    if (!user) return new InvalidTokenError()
+    if (user == null) return new InvalidTokenError()
 
     return user
   }

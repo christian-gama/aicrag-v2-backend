@@ -11,16 +11,20 @@ const makeSut = (): SutTypes => {
   return { sut }
 }
 
-describe('CodeGenerator', () => {
-  it('Should return 5 digits', () => {
+describe('codeGenerator', () => {
+  it('should return 5 digits', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const value = sut.generate()
 
-    expect(value.length).toBe(5)
+    expect(value).toHaveLength(5)
   })
 
-  it('Should return random digits', () => {
+  it('should return random digits', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const values: Partial<string[]> = []
@@ -31,10 +35,12 @@ describe('CodeGenerator', () => {
 
     const filteredValues = [...new Set(values)]
 
-    expect(filteredValues.length).toBe(3)
+    expect(filteredValues).toHaveLength(3)
   })
 
-  it('Should return a string', () => {
+  it('should return a string', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const value = sut.generate()
@@ -42,7 +48,9 @@ describe('CodeGenerator', () => {
     expect(typeof value).toBe('string')
   })
 
-  it('Should contain only alphanumerics', () => {
+  it('should contain only alphanumerics', () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const value = sut.generate()

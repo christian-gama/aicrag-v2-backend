@@ -8,9 +8,9 @@ import { environment } from '@/main/config/environment'
 import jwt from 'jsonwebtoken'
 
 interface SutTypes {
-  sut: JwtAdapter
   expires: string
   secret: string
+  sut: JwtAdapter
   token: string
 }
 
@@ -21,12 +21,14 @@ const makeSut = (): SutTypes => {
 
   const sut = new JwtAdapter(expires, secret)
 
-  return { sut, expires, secret, token }
+  return { expires, secret, sut, token }
 }
 
-describe('JwtAdapter', () => {
+describe('jwtAdapter', () => {
   describe('decode', () => {
-    it('Should return an id if signature is valid', async () => {
+    it('should return an id if signature is valid', async () => {
+      expect.hasAssertions()
+
       const { sut, token } = makeSut()
 
       const decodedToken = await sut.decode(token)
@@ -34,7 +36,9 @@ describe('JwtAdapter', () => {
       expect((decodedToken as DecodedProtocol).id).toBe('any_id')
     })
 
-    it('Should return ExpiredTokenError if verify throws', async () => {
+    it('should return ExpiredTokenError if verify throws', async () => {
+      expect.hasAssertions()
+
       const { sut, token } = makeSut()
       jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
         const error = new Error()
@@ -45,10 +49,12 @@ describe('JwtAdapter', () => {
 
       const decodedToken = await sut.decode(token)
 
-      expect(decodedToken).toEqual(new ExpiredTokenError())
+      expect(decodedToken).toStrictEqual(new ExpiredTokenError())
     })
 
-    it('Should return InvalidToken if verify throws', async () => {
+    it('should return InvalidToken if verify throws', async () => {
+      expect.hasAssertions()
+
       const { sut, token } = makeSut()
       jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
         throw new Error()
@@ -56,13 +62,15 @@ describe('JwtAdapter', () => {
 
       const decodedToken = await sut.decode(token)
 
-      expect(decodedToken).toEqual(new InvalidTokenError())
+      expect(decodedToken).toStrictEqual(new InvalidTokenError())
     })
   })
 
   describe('encrypt', () => {
-    it('Should call sign with correct value', () => {
-      const { sut, expires, secret } = makeSut()
+    it('should call sign with correct value', () => {
+      expect.hasAssertions()
+
+      const { expires, secret, sut } = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')
 
       sut.encrypt({ name: 'value' })
@@ -70,7 +78,9 @@ describe('JwtAdapter', () => {
       expect(signSpy).toHaveBeenCalledWith({ name: 'value' }, secret, { expiresIn: expires })
     })
 
-    it('Should return an encrypted value', () => {
+    it('should return an encrypted value', () => {
+      expect.hasAssertions()
+
       const { sut } = makeSut()
 
       const value = sut.encrypt({ name: 'value' })
@@ -78,13 +88,17 @@ describe('JwtAdapter', () => {
       expect(value).not.toBe('value')
     })
 
-    it('Should throw if sign throws', async () => {
+    it('should throw if sign throws', async () => {
+      expect.hasAssertions()
+
       const { sut } = makeSut()
       jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
         throw new Error()
       })
 
-      expect(sut.encrypt).toThrow()
+      const encrypt = sut.encrypt.bind(sut)
+
+      expect(encrypt).toThrow('')
     })
   })
 })

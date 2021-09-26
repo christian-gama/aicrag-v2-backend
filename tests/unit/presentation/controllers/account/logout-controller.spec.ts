@@ -11,10 +11,10 @@ import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: LogoutController
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  sut: LogoutController
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
@@ -26,21 +26,25 @@ const makeSut = (): SutTypes => {
 
   const sut = new LogoutController(httpHelper, userDbRepositoryStub)
 
-  return { sut, fakeUser, httpHelper, request, userDbRepositoryStub }
+  return { fakeUser, httpHelper, request, sut, userDbRepositoryStub }
 }
 
-describe('LogoutController', () => {
-  it('Should return MustLoginError if user is not logged in', async () => {
-    const { sut, httpHelper, request } = makeSut()
+describe('logoutController', () => {
+  it('should return MustLoginError if user is not logged in', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.forbidden(new MustLoginError()))
+    expect(response).toStrictEqual(httpHelper.forbidden(new MustLoginError()))
   })
 
-  it('Should call updateUser with correct values', async () => {
-    const { sut, fakeUser, request, userDbRepositoryStub } = makeSut()
+  it('should call updateUser with correct values', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUser = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
@@ -48,11 +52,13 @@ describe('LogoutController', () => {
     expect(updateUser).toHaveBeenCalledWith(fakeUser, { tokenVersion: fakeUser.tokenVersion })
   })
 
-  it('Should return ok if succeds', async () => {
-    const { sut, httpHelper, request } = makeSut()
+  it('should return ok if succeds', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toEqual(httpHelper.ok({ message: "You've been logged out" }))
+    expect(response).toStrictEqual(httpHelper.ok({ message: "You've been logged out" }))
   })
 })

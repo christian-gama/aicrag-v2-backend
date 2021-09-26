@@ -10,7 +10,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('GET /verify-reset-password-token', () => {
+describe('get /verify-reset-password-token', () => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: Collection
@@ -36,7 +36,9 @@ describe('GET /verify-reset-password-token', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 403 if user is logged in', async () => {
+  it('should return 403 if user is logged in', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent
@@ -46,11 +48,15 @@ describe('GET /verify-reset-password-token', () => {
       .expect(403)
   })
 
-  it('Should return 401 if token is invalid', async () => {
+  it('should return 401 if token is invalid', async () => {
+    expect.assertions(0)
+
     await agent.get('/api/v1/helpers/verify-reset-password-token/invalid_token').expect(401)
   })
 
-  it("Should return 401 if param's token does not match user's token", async () => {
+  it("should return 401 if param's token does not match user's token", async () => {
+    expect.assertions(0)
+
     const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)
@@ -62,7 +68,9 @@ describe('GET /verify-reset-password-token', () => {
       .expect(401)
   })
 
-  it('Should return 200 if token is valid', async () => {
+  it('should return 200 if token is valid', async () => {
+    expect.assertions(0)
+
     const resetPasswordToken = makeGenerateAccessToken().generate(fakeUser)
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)

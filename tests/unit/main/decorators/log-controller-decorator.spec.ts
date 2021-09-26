@@ -9,11 +9,11 @@ import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeControllerStub, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: LogDecorator<ControllerProtocol>
   controllerStub: ControllerProtocol
   error: Error
   httpHelper: HttpHelper
   logErrorDbRepositoryStub: LogErrorDbRepositoryProtocol
+  sut: LogDecorator<ControllerProtocol>
 }
 
 const makeSut = (): SutTypes => {
@@ -24,12 +24,14 @@ const makeSut = (): SutTypes => {
 
   const sut = new LogDecorator(controllerStub, logErrorDbRepositoryStub)
 
-  return { sut, controllerStub, error, httpHelper, logErrorDbRepositoryStub }
+  return { controllerStub, error, httpHelper, logErrorDbRepositoryStub, sut }
 }
 
-describe('LogDecorator', () => {
-  it('Should call logErrorDbRepository with correct error', async () => {
-    const { sut, controllerStub, error, httpHelper, logErrorDbRepositoryStub } = makeSut()
+describe('logDecorator', () => {
+  it('should call logErrorDbRepository with correct error', async () => {
+    expect.hasAssertions()
+
+    const { controllerStub, error, httpHelper, logErrorDbRepositoryStub, sut } = makeSut()
     const errorData = {
       message: error.message,
       name: error.name,
@@ -45,8 +47,10 @@ describe('LogDecorator', () => {
     expect(saveLogSpy).toHaveBeenCalledWith(errorData)
   })
 
-  it('Should return a serverError as http response if statusCode is 500', async () => {
-    const { sut, controllerStub, error, httpHelper } = makeSut()
+  it('should return a serverError as http response if statusCode is 500', async () => {
+    expect.hasAssertions()
+
+    const { controllerStub, error, httpHelper, sut } = makeSut()
     const errorData = {
       message: error.message,
       name: error.name,
@@ -58,10 +62,12 @@ describe('LogDecorator', () => {
 
     const response = await sut.handle({})
 
-    expect(response).toEqual(httpHelper.serverError(errorData))
+    expect(response).toStrictEqual(httpHelper.serverError(errorData))
   })
 
-  it('Should return any http response', async () => {
+  it('should return any http response', async () => {
+    expect.hasAssertions()
+
     const { sut } = makeSut()
 
     const response = await sut.handle({})

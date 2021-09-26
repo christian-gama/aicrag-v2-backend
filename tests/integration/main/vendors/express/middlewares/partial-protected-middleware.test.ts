@@ -11,7 +11,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-describe('PartialProtectedMiddleware', () => {
+describe('partialProtectedMiddleware', () => {
   let accessToken: string
   let fakeUser: IUser
   let userCollection: Collection
@@ -41,11 +41,15 @@ describe('PartialProtectedMiddleware', () => {
 
   const agent = request.agent(app)
 
-  it('Should return 401 if fails', async () => {
+  it('should return 401 if fails', async () => {
+    expect.assertions(0)
+
     await agent.get('/partial-protected').expect(401)
   })
 
-  it('Should return 200 if succeds', async () => {
+  it('should return 200 if succeds', async () => {
+    expect.assertions(0)
+
     await userCollection.insertOne(fakeUser)
 
     await agent.get('/partial-protected').set('Cookie', `accessToken=${accessToken}`).expect(200)

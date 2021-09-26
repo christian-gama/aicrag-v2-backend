@@ -1,13 +1,17 @@
 import { MailerServiceError } from '@/application/usecases/errors'
 
-describe('MailerServiceError', () => {
-  it('Should be an instance of Error', () => {
+describe('mailerServiceError', () => {
+  it('should be an instance of Error', () => {
+    expect.hasAssertions()
+
     const sut = new MailerServiceError()
 
     expect(sut).toBeInstanceOf(Error)
   })
 
-  it('Should return a message with the field name', () => {
+  it('should return a message with the field name', () => {
+    expect.hasAssertions()
+
     const sut = new MailerServiceError()
 
     expect(sut.message).toBe('Could not send the email')
