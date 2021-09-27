@@ -1,6 +1,6 @@
 import { ISignUpUserCredentials, IUser } from '@/domain'
 
-import { UserDbFilter } from '@/infra/database/mongodb/protocols'
+import { UserDbFilter } from '@/infra/database/protocols'
 
 /**
  * @description Generic user database repository.

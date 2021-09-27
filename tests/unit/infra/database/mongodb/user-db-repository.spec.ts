@@ -2,8 +2,8 @@ import { IUser } from '@/domain'
 
 import { UserRepositoryProtocol } from '@/application/protocols/repositories'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { UserDbRepository } from '@/infra/database/mongodb/repositories'
+import { MongoAdapter } from '@/infra/adapters/database/mongo-adapter'
+import { UserDbRepository } from '@/infra/database/repositories'
 
 import {
   makeFakeUser,
@@ -33,7 +33,7 @@ describe('userDbRepository', () => {
   let userCollection: Collection
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoAdapter.disconnect()
   })
 
   afterEach(async () => {
@@ -41,9 +41,9 @@ describe('userDbRepository', () => {
   })
 
   beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+    await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoHelper.getCollection('users')
+    userCollection = MongoAdapter.getCollection('users')
   })
 
   beforeEach(async () => {

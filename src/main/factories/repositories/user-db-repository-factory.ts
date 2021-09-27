@@ -1,4 +1,4 @@
-import { UserDbRepository } from '@/infra/database/mongodb/repositories'
+import { UserDbRepository } from '@/infra/database/repositories'
 
 import { makeUserRepository } from './user-repository-factory'
 

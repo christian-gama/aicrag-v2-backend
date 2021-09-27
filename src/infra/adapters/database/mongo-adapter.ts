@@ -1,8 +1,8 @@
-import { Collections } from '../protocols/'
+import { Collections } from '../../database/protocols'
 
 import { Collection, MongoClient } from 'mongodb'
 
-export const MongoHelper = {
+export const MongoAdapter = {
   client: MongoClient,
   async connect (url: string): Promise<void> {
     this.client = await MongoClient.connect(url)

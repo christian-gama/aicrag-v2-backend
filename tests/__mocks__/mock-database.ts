@@ -2,7 +2,7 @@ import { ILogError, IUser, ISignUpUserCredentials } from '@/domain'
 
 import { LogErrorDbRepositoryProtocol, UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 
-import { UserDbFilter } from '@/infra/database/mongodb/protocols/update-user-options'
+import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
 
 import { makeFakeLogError } from './mock-log-error'
 

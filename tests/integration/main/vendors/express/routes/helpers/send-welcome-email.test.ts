@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { MailerServiceError } from '@/application/usecases/errors'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper'
+import { MongoAdapter } from '@/infra/adapters/database'
 
 import { makeGenerateAccessToken } from '@/main/factories/providers/token'
 import { WelcomeEmail } from '@/main/mailer/welcome-email'
@@ -19,7 +19,7 @@ describe('post /send-welcome-email', () => {
   let userCollection: Collection
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoAdapter.disconnect()
   })
 
   afterEach(async () => {
@@ -27,9 +27,9 @@ describe('post /send-welcome-email', () => {
   })
 
   beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+    await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoHelper.getCollection('users')
+    userCollection = MongoAdapter.getCollection('users')
   })
 
   beforeEach(async () => {

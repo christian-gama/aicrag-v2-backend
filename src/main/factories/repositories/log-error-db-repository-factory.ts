@@ -1,4 +1,4 @@
-import { LogErrorDbRepository } from '@/infra/database/mongodb/repositories'
+import { LogErrorDbRepository } from '@/infra/database/repositories'
 
 import { makeLogErrorRepository } from '.'
 

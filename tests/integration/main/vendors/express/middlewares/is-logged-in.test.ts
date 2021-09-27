@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+import { MongoAdapter } from '@/infra/adapters/database/mongo-adapter'
 
 import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
@@ -20,7 +20,7 @@ describe('isLoggedInMiddleware', () => {
   let userCollection: Collection
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoAdapter.disconnect()
   })
 
   afterEach(async () => {
@@ -28,9 +28,9 @@ describe('isLoggedInMiddleware', () => {
   })
 
   beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+    await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoHelper.getCollection('users')
+    userCollection = MongoAdapter.getCollection('users')
 
     app.get('/is-logged-in', isLoggedInMiddleware, (req: RequestUser, res) => {
       res.send(!!req.user)

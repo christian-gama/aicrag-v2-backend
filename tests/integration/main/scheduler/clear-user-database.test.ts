@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper'
+import { MongoAdapter } from '@/infra/adapters/database'
 
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 
@@ -30,7 +30,7 @@ describe('clearUserDatabase', () => {
   let userCollection: Collection
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoAdapter.disconnect()
   })
 
   afterEach(async () => {
@@ -38,12 +38,12 @@ describe('clearUserDatabase', () => {
   })
 
   beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+    await MongoAdapter.connect(global.__MONGO_URI__)
   })
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
-    userCollection = MongoHelper.getCollection('users')
+    userCollection = MongoAdapter.getCollection('users')
   })
 
   it('should delete a inactive user that has createad an account more than 24 hours ago', async () => {

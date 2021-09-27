@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { MailerServiceError } from '@/application/usecases/errors'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper'
+import { MongoAdapter } from '@/infra/adapters/database'
 
 import { ForgotPasswordEmail } from '@/main/mailer/forgot-password-email'
 import app from '@/main/vendors/express/config/app'
@@ -17,7 +17,7 @@ describe('post /send-forgot-password-email', () => {
   let userCollection: Collection
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoAdapter.disconnect()
   })
 
   afterEach(async () => {
@@ -25,9 +25,9 @@ describe('post /send-forgot-password-email', () => {
   })
 
   beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+    await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoHelper.getCollection('users')
+    userCollection = MongoAdapter.getCollection('users')
   })
 
   beforeEach(async () => {

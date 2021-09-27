@@ -1,10 +1,10 @@
 import 'module-alias/register'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper'
+import { MongoAdapter } from '@/infra/adapters/database'
 
 import { environment } from '@/main/config/environment'
 
-MongoHelper.connect(environment.DB.MONGO_URL)
+MongoAdapter.connect(environment.DB.MONGO_URL)
   .then(async () => {
     const app = (await import('./config/app')).default
 

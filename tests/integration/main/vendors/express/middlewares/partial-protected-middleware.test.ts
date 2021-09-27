@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
+import { MongoAdapter } from '@/infra/adapters/database/mongo-adapter'
 
 import { makeGenerateAccessToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
@@ -17,7 +17,7 @@ describe('partialProtectedMiddleware', () => {
   let userCollection: Collection
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoAdapter.disconnect()
   })
 
   afterEach(async () => {
@@ -25,9 +25,9 @@ describe('partialProtectedMiddleware', () => {
   })
 
   beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+    await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoHelper.getCollection('users')
+    userCollection = MongoAdapter.getCollection('users')
 
     app.get('/partial-protected', partialProtectedMiddleware, (req, res) => {
       res.send()

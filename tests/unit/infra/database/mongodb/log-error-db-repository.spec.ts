@@ -2,8 +2,8 @@ import { ILogError } from '@/domain'
 
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories'
 
-import { MongoHelper } from '@/infra/database/mongodb/helper/mongo-helper'
-import { LogErrorDbRepository } from '@/infra/database/mongodb/repositories'
+import { MongoAdapter } from '@/infra/adapters/database/mongo-adapter'
+import { LogErrorDbRepository } from '@/infra/database/repositories'
 
 import { makeFakeLogError, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
@@ -30,13 +30,13 @@ describe('logErrorDbRepository', () => {
   let logCollection: Collection
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
+    await MongoAdapter.disconnect()
   })
 
   beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+    await MongoAdapter.connect(global.__MONGO_URI__)
 
-    logCollection = MongoHelper.getCollection('logs')
+    logCollection = MongoAdapter.getCollection('logs')
   })
 
   beforeEach(async () => {
