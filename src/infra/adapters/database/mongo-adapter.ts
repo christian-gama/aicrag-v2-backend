@@ -36,22 +36,22 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     }
   }
 
-  protected async deleteMany (doc: Document): Promise<number> {
-    const deleted = await this._collection.deleteMany(doc)
+  protected async deleteMany (filter: Document): Promise<number> {
+    const deleted = await this._collection.deleteMany(filter)
 
     if (deleted) return deleted.deletedCount
     else return 0
   }
 
-  protected async deleteOne (doc: Document): Promise<boolean> {
-    const deleted = await this._collection.deleteOne(doc)
+  protected async deleteOne (filter: Document): Promise<boolean> {
+    const deleted = await this._collection.deleteOne(filter)
 
     if (deleted.deletedCount > 0) return true
     else return false
   }
 
-  protected async findOne<T extends Document>(doc: Document): Promise<T | null> {
-    const foundDoc = await this._collection.findOne(doc)
+  protected async findOne<T extends Document>(filter: Document): Promise<T | null> {
+    const foundDoc = await this._collection.findOne(filter)
 
     return foundDoc
   }
@@ -65,10 +65,10 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
   }
 
   protected async updateOne<T extends Document>(
-    doc: Document,
+    filter: Document,
     update: Document
   ): Promise<T | null> {
-    await this._collection.updateOne(doc, { $set: update })
+    await this._collection.updateOne(filter, { $set: update })
 
     const updatedDoc = await this._collection.findOne(update)
 

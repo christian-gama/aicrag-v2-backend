@@ -3,11 +3,11 @@ export interface Document {
 }
 
 export interface CollectionProtocol {
-  deleteMany: (doc: Document) => Promise<number>
-  deleteOne: (doc: Document) => Promise<boolean>
-  findOne: <T extends Document>(doc: Document) => Promise<T | null>
+  deleteMany: (filter: Document) => Promise<number>
+  deleteOne: (filter: Document) => Promise<boolean>
+  findOne: <T extends Document>(filter: Document) => Promise<T | null>
   insertOne: <T extends Document>(doc: Document) => Promise<T>
-  updateOne: <T extends Document>(doc: Document, update: Document) => Promise<T | null>
+  updateOne: <T extends Document>(filter: Document, update: Document) => Promise<T | null>
 }
 
 export interface DbClientProtocol {
