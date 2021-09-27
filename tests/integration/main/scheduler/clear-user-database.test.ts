@@ -3,12 +3,12 @@ import { IUser } from '@/domain'
 import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database'
+import { CollectionProtocol } from '@/infra/database/protocols'
 
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 
 import { makeFakeUser, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
-
-import { Collection } from 'mongodb'
 
 interface SutTypes {
   sut: ClearUserDatabase
@@ -18,19 +18,21 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const error = new Error('any_message')
+  const database = makeMongoDb()
   const logErrorDbRepositoryStub = makeLogErrorDbRepositoryStub(error)
 
-  const sut = new ClearUserDatabase(logErrorDbRepositoryStub)
+  const sut = new ClearUserDatabase(database, logErrorDbRepositoryStub)
 
   return { error, logErrorDbRepositoryStub, sut }
 }
 
 describe('clearUserDatabase', () => {
+  const client = makeMongoDb()
   let fakeUser: IUser
-  let userCollection: Collection
+  let userCollection: CollectionProtocol
 
   afterAll(async () => {
-    await MongoAdapter.disconnect()
+    await client.disconnect()
   })
 
   afterEach(async () => {
@@ -43,7 +45,7 @@ describe('clearUserDatabase', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
-    userCollection = MongoAdapter.getCollection('users')
+    userCollection = client.collection('users')
   })
 
   it('should delete a inactive user that has createad an account more than 24 hours ago', async () => {

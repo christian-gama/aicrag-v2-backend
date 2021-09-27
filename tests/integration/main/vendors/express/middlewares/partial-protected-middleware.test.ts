@@ -1,23 +1,25 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongo-adapter'
+import { MongoAdapter } from '@/infra/adapters/database'
+import { CollectionProtocol } from '@/infra/database/protocols'
 
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { makeGenerateAccessToken } from '@/main/factories/providers/token'
 import app from '@/main/vendors/express/config/app'
 import { partialProtectedMiddleware } from '@/main/vendors/express/routes'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
-import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('partialProtectedMiddleware', () => {
+  const client = makeMongoDb()
   let accessToken: string
   let fakeUser: IUser
-  let userCollection: Collection
+  let userCollection: CollectionProtocol
 
   afterAll(async () => {
-    await MongoAdapter.disconnect()
+    await client.disconnect()
   })
 
   afterEach(async () => {
@@ -27,7 +29,7 @@ describe('partialProtectedMiddleware', () => {
   beforeAll(async () => {
     await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoAdapter.getCollection('users')
+    userCollection = client.collection('users')
 
     app.get('/partial-protected', partialProtectedMiddleware, (req, res) => {
       res.send()

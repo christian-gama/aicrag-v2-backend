@@ -1,18 +1,40 @@
-import { Collections } from '../../database/protocols'
+import {
+  ICollection,
+  DatabaseProtocol,
+  CollectionsName,
+  CollectionProtocol
+} from '../../database/protocols'
 
-import { Collection, MongoClient } from 'mongodb'
+import { MongoClient } from 'mongodb'
 
-export const MongoAdapter = {
-  client: MongoClient,
-  async connect (url: string): Promise<void> {
-    this.client = await MongoClient.connect(url)
-  },
+export class MongoAdapter extends ICollection implements DatabaseProtocol {
+  static client: any = null
+
+  collection (name: CollectionsName): CollectionProtocol {
+    if (!MongoAdapter.client) throw new Error('Database is not connected')
+
+    this._collection = MongoAdapter.client.db().collection(name)
+
+    return {
+      deleteMany: this.deleteMany.bind(this),
+      deleteOne: this.deleteOne.bind(this),
+      findOne: this.findOne.bind(this),
+      insertOne: this.insertOne.bind(this),
+      updateOne: this.updateOne.bind(this)
+    }
+  }
 
   async disconnect (): Promise<void> {
-    await this.client.close()
-  },
+    if (MongoAdapter.client) {
+      await MongoAdapter.client.close()
 
-  getCollection (name: Collections): Collection {
-    return this.client.db().collection(name)
+      MongoAdapter.client = null
+    } else {
+      throw new Error('Database is not connected')
+    }
+  }
+
+  static async connect (url: string): Promise<void> {
+    MongoAdapter.client = await MongoClient.connect(url)
   }
 }

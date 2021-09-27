@@ -3,21 +3,23 @@ import { IUser } from '@/domain'
 import { MailerServiceError } from '@/application/usecases/errors'
 
 import { MongoAdapter } from '@/infra/adapters/database'
+import { CollectionProtocol } from '@/infra/database/protocols'
 
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { ForgotPasswordEmail } from '@/main/mailer/forgot-password-email'
 import app from '@/main/vendors/express/config/app'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
-import { Collection } from 'mongodb'
 import request from 'supertest'
 
 describe('post /send-forgot-password-email', () => {
+  const client = makeMongoDb()
   let fakeUser: IUser
-  let userCollection: Collection
+  let userCollection: CollectionProtocol
 
   afterAll(async () => {
-    await MongoAdapter.disconnect()
+    await client.disconnect()
   })
 
   afterEach(async () => {
@@ -27,7 +29,7 @@ describe('post /send-forgot-password-email', () => {
   beforeAll(async () => {
     await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoAdapter.getCollection('users')
+    userCollection = client.collection('users')
   })
 
   beforeEach(async () => {

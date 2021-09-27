@@ -2,12 +2,13 @@ import { ILogError } from '@/domain'
 
 import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongo-adapter'
+import { MongoAdapter } from '@/infra/adapters/database'
+import { CollectionProtocol } from '@/infra/database/protocols'
 import { LogErrorDbRepository } from '@/infra/database/repositories'
 
-import { makeFakeLogError, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 
-import { Collection } from 'mongodb'
+import { makeFakeLogError, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   error: Error
@@ -17,26 +18,28 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
+  const database = makeMongoDb()
   const error = new Error('any_error')
   const fakeLogError = makeFakeLogError(error)
   const logErrorRepositoryStub = makeLogErrorRepositoryStub(fakeLogError)
 
-  const sut = new LogErrorDbRepository(logErrorRepositoryStub)
+  const sut = new LogErrorDbRepository(database, logErrorRepositoryStub)
 
   return { error, fakeLogError, logErrorRepositoryStub, sut }
 }
 
 describe('logErrorDbRepository', () => {
-  let logCollection: Collection
+  const client = makeMongoDb()
+  let logCollection: CollectionProtocol
 
   afterAll(async () => {
-    await MongoAdapter.disconnect()
+    await client.disconnect()
   })
 
   beforeAll(async () => {
     await MongoAdapter.connect(global.__MONGO_URI__)
 
-    logCollection = MongoAdapter.getCollection('logs')
+    logCollection = client.collection('logs')
   })
 
   beforeEach(async () => {

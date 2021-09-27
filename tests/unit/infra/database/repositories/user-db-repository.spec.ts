@@ -2,16 +2,17 @@ import { IUser } from '@/domain'
 
 import { UserRepositoryProtocol } from '@/application/protocols/repositories'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongo-adapter'
+import { MongoAdapter } from '@/infra/adapters/database'
+import { CollectionProtocol } from '@/infra/database/protocols'
 import { UserDbRepository } from '@/infra/database/repositories'
+
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 
 import {
   makeFakeUser,
   makeUserRepositoryStub,
   makeFakeSignUpUserCredentials
 } from '@/tests/__mocks__'
-
-import { Collection } from 'mongodb'
 
 interface SutTypes {
   fakeUser: IUser
@@ -20,20 +21,22 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
+  const database = makeMongoDb()
   const fakeUser = makeFakeUser()
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
-  const sut = new UserDbRepository(userRepositoryStub)
+  const sut = new UserDbRepository(database, userRepositoryStub)
 
   return { fakeUser, sut, userRepositoryStub }
 }
 
 describe('userDbRepository', () => {
+  const client = makeMongoDb()
   let user: IUser
-  let userCollection: Collection
+  let userCollection: CollectionProtocol
 
   afterAll(async () => {
-    await MongoAdapter.disconnect()
+    await client.disconnect()
   })
 
   afterEach(async () => {
@@ -43,7 +46,7 @@ describe('userDbRepository', () => {
   beforeAll(async () => {
     await MongoAdapter.connect(global.__MONGO_URI__)
 
-    userCollection = MongoAdapter.getCollection('users')
+    userCollection = client.collection('users')
   })
 
   beforeEach(async () => {
