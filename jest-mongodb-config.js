@@ -1,9 +1,9 @@
 module.exports = {
   mongodbMemoryServerOptions: {
+    autoStart: false,
     binary: {
       skipMD5: true
     },
-    autoStart: false,
     instance: {
       dbName: 'jest'
     }
