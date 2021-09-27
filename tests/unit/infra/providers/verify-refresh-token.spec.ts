@@ -11,7 +11,7 @@ import { makeFakeRefreshToken, makeFakeUser, makeDecoderStub, makeUserDbReposito
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
-  jwtRefreshTokenStub: DecoderProtocol
+  refreshTokenDecoderStub: DecoderProtocol
   sut: VerifyRefreshToken
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
@@ -19,12 +19,12 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const fakeRefreshToken = makeFakeRefreshToken()
   const fakeUser = makeFakeUser()
-  const jwtRefreshTokenStub = makeDecoderStub()
+  const refreshTokenDecoderStub = makeDecoderStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new VerifyRefreshToken(jwtRefreshTokenStub, userDbRepositoryStub)
+  const sut = new VerifyRefreshToken(refreshTokenDecoderStub, userDbRepositoryStub)
 
-  return { fakeRefreshToken, fakeUser, jwtRefreshTokenStub, sut, userDbRepositoryStub }
+  return { fakeRefreshToken, fakeUser, refreshTokenDecoderStub, sut, userDbRepositoryStub }
 }
 
 describe('verifyRefreshToken', () => {
@@ -39,11 +39,11 @@ describe('verifyRefreshToken', () => {
     expect(response).toStrictEqual(new TokenMissingError())
   })
 
-  it('should call jwtRefreshToken.decode with correct token', async () => {
+  it('should call refreshTokenDecoder.decode with correct token', async () => {
     expect.hasAssertions()
 
-    const { jwtRefreshTokenStub, sut } = makeSut()
-    const unauthorizedSpy = jest.spyOn(jwtRefreshTokenStub, 'decode')
+    const { refreshTokenDecoderStub, sut } = makeSut()
+    const unauthorizedSpy = jest.spyOn(refreshTokenDecoderStub, 'decode')
 
     await sut.verify('any_token')
 
@@ -75,8 +75,8 @@ describe('verifyRefreshToken', () => {
   it('should return an error if decode returns an error', async () => {
     expect.hasAssertions()
 
-    const { sut, jwtRefreshTokenStub } = makeSut()
-    jest.spyOn(jwtRefreshTokenStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
+    const { sut, refreshTokenDecoderStub } = makeSut()
+    jest.spyOn(refreshTokenDecoderStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.verify('any_token')
 
@@ -95,9 +95,9 @@ describe('verifyRefreshToken', () => {
   it('should return a user if succeds', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, jwtRefreshTokenStub, sut } = makeSut()
+    const { fakeUser, refreshTokenDecoderStub, sut } = makeSut()
     jest
-      .spyOn(jwtRefreshTokenStub, 'decode')
+      .spyOn(refreshTokenDecoderStub, 'decode')
       .mockReturnValueOnce(
         Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
       )

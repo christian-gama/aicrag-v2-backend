@@ -1,11 +1,11 @@
 import { GenerateRefreshToken } from '@/infra/providers/token'
 
-import { makeJwtRefreshToken } from '../../cryptography'
+import { makeRefreshTokenEncrypter } from '../../cryptography'
 import { makeUserDbRepository } from '../../repositories'
 
 export const makeGenerateRefreshToken = (): GenerateRefreshToken => {
-  const jwtRefreshToken = makeJwtRefreshToken()
+  const refreshTokenEncrypter = makeRefreshTokenEncrypter()
   const userDbRepository = makeUserDbRepository()
 
-  return new GenerateRefreshToken(jwtRefreshToken, userDbRepository)
+  return new GenerateRefreshToken(refreshTokenEncrypter, userDbRepository)
 }

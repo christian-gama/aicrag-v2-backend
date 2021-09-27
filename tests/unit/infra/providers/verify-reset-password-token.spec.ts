@@ -11,18 +11,18 @@ import { makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests
 interface SutTypes {
   sut: VerifyResetPasswordToken
   fakeUser: IUser
-  jwtAccessTokenStub: DecoderProtocol
+  accessTokenDecoder: DecoderProtocol
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const jwtAccessTokenStub = makeDecoderStub()
+  const accessTokenDecoder = makeDecoderStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new VerifyResetPasswordToken(jwtAccessTokenStub, userDbRepositoryStub)
+  const sut = new VerifyResetPasswordToken(accessTokenDecoder, userDbRepositoryStub)
 
-  return { fakeUser, jwtAccessTokenStub, sut, userDbRepositoryStub }
+  return { accessTokenDecoder, fakeUser, sut, userDbRepositoryStub }
 }
 
 describe('verifyResetPasswordToken', () => {
@@ -37,11 +37,11 @@ describe('verifyResetPasswordToken', () => {
     expect(response).toStrictEqual(new TokenMissingError())
   })
 
-  it('should call jwtAccessToken.decode with correct token', async () => {
+  it('should call accessTokenDecoder.decode with correct token', async () => {
     expect.hasAssertions()
 
-    const { jwtAccessTokenStub, sut } = makeSut()
-    const unauthorizedSpy = jest.spyOn(jwtAccessTokenStub, 'decode')
+    const { accessTokenDecoder, sut } = makeSut()
+    const unauthorizedSpy = jest.spyOn(accessTokenDecoder, 'decode')
 
     await sut.verify('any_token')
 
@@ -88,9 +88,9 @@ describe('verifyResetPasswordToken', () => {
   it('should return a user if succeds', async () => {
     expect.hasAssertions()
 
-    const { sut, fakeUser, jwtAccessTokenStub, userDbRepositoryStub } = makeSut()
+    const { accessTokenDecoder, fakeUser, sut, userDbRepositoryStub } = makeSut()
     jest
-      .spyOn(jwtAccessTokenStub, 'decode')
+      .spyOn(accessTokenDecoder, 'decode')
       .mockReturnValueOnce(
         Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
       )

@@ -1,6 +1,7 @@
 export * from './activate-account-validator-composite-factory'
 export * from './credentials-validator-composite-factory'
 export * from './credentials-validator-composite-factory'
+export * from './email-validator-factory'
 export * from './forgot-password-validator-composite-factory'
 export * from './send-welcome-validator-composite'
 export * from './update-password-validator-composite-factory'

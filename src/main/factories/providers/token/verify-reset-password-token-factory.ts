@@ -1,11 +1,11 @@
 import { VerifyResetPasswordToken } from '@/infra/providers/token'
 
-import { makeJwtAccessToken } from '../../cryptography'
+import { makeAccessTokenDecoder } from '../../cryptography'
 import { makeUserDbRepository } from '../../repositories'
 
 export const makeVerifyResetPasswordToken = (): VerifyResetPasswordToken => {
-  const jwtAccessToken = makeJwtAccessToken()
+  const accessTokenDecoder = makeAccessTokenDecoder()
   const userDbRepository = makeUserDbRepository()
 
-  return new VerifyResetPasswordToken(jwtAccessToken, userDbRepository)
+  return new VerifyResetPasswordToken(accessTokenDecoder, userDbRepository)
 }

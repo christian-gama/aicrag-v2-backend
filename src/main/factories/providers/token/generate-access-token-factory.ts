@@ -1,9 +1,9 @@
 import { GenerateAccessToken } from '@/infra/providers/token'
 
-import { makeJwtAccessToken } from '../../cryptography'
+import { makeAccessTokenEncrypter } from '../../cryptography'
 
 export const makeGenerateAccessToken = (): GenerateAccessToken => {
-  const jwtAccessToken = makeJwtAccessToken()
+  const accessTokenEncrypter = makeAccessTokenEncrypter()
 
-  return new GenerateAccessToken(jwtAccessToken)
+  return new GenerateAccessToken(accessTokenEncrypter)
 }

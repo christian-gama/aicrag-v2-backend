@@ -7,7 +7,7 @@ import { TokenMissingError, InvalidTokenError } from '@/application/usecases/err
 
 export class VerifyRefreshToken implements VerifyTokenProtocol {
   constructor (
-    private readonly jwtRefreshToken: DecoderProtocol,
+    private readonly refreshTokenDecoder: DecoderProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol
   ) {}
 
@@ -16,7 +16,7 @@ export class VerifyRefreshToken implements VerifyTokenProtocol {
       return new TokenMissingError()
     }
 
-    const decodedRefreshToken = await this.jwtRefreshToken.decode(token)
+    const decodedRefreshToken = await this.refreshTokenDecoder.decode(token)
 
     if (decodedRefreshToken instanceof Error) return decodedRefreshToken
 

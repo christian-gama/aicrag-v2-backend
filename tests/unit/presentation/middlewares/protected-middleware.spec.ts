@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-import { EncrypterProtocol, DecoderProtocol } from '@/application/protocols/cryptography'
+import { EncrypterProtocol } from '@/application/protocols/cryptography'
 import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
 import {
   ExpiredTokenError,
@@ -14,9 +14,9 @@ import { ProtectedMiddleware } from '@/presentation/middlewares'
 import { makeHttpHelper } from '@/main/factories/helpers'
 
 import {
+  makeEncrypterStub,
   makeFakeRefreshToken,
   makeFakeUser,
-  makeJwtAdapterStub,
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
 
@@ -24,7 +24,7 @@ interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
-  jwtAccessToken: EncrypterProtocol & DecoderProtocol
+  refreshTokenEncrypter: EncrypterProtocol
   request: HttpRequest
   sut: ProtectedMiddleware
   verifyAccessTokenStub: VerifyTokenProtocol
@@ -35,14 +35,14 @@ const makeSut = (): SutTypes => {
   const fakeRefreshToken = makeFakeRefreshToken()
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
-  const jwtAccessToken = makeJwtAdapterStub()
+  const refreshTokenEncrypter = makeEncrypterStub()
   const request: HttpRequest = { cookies: { accessToken: 'any_token', refreshToken: 'any_token' } }
   const verifyAccessTokenStub = makeVerifyTokenStub(fakeUser)
   const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new ProtectedMiddleware(
     httpHelper,
-    jwtAccessToken,
+    refreshTokenEncrypter,
     verifyAccessTokenStub,
     verifyRefreshTokenStub
   )
@@ -51,7 +51,7 @@ const makeSut = (): SutTypes => {
     fakeRefreshToken,
     fakeUser,
     httpHelper,
-    jwtAccessToken,
+    refreshTokenEncrypter,
     request,
     sut,
     verifyAccessTokenStub,
@@ -112,8 +112,8 @@ describe('protectedMiddleware', () => {
   it('should call encrypt if response is instance of ExpiredTokenError', async () => {
     expect.hasAssertions()
 
-    const { sut, fakeUser, jwtAccessToken, request, verifyAccessTokenStub } = makeSut()
-    const encryptSpy = jest.spyOn(jwtAccessToken, 'encrypt')
+    const { sut, fakeUser, refreshTokenEncrypter, request, verifyAccessTokenStub } = makeSut()
+    const encryptSpy = jest.spyOn(refreshTokenEncrypter, 'encrypt')
     jest
       .spyOn(verifyAccessTokenStub, 'verify')
       .mockReturnValueOnce(Promise.resolve(new ExpiredTokenError()))
