@@ -1,4 +1,4 @@
-interface Document {
+export interface Document {
   [key: string]: any
 }
 
@@ -23,41 +23,18 @@ export interface DatabaseProtocol {
 export abstract class ICollection {
   protected _collection: any
 
-  protected async deleteMany (doc: Document): Promise<number> {
-    const deleted = await this._collection.deleteMany(doc)
+  protected abstract deleteMany (doc: Document): Promise<number>
 
-    if (deleted) return deleted.deletedCount
-    else return 0
-  }
+  protected abstract deleteOne (doc: Document): Promise<boolean>
 
-  protected async deleteOne (doc: Document): Promise<boolean> {
-    const deleted = await this._collection.deleteOne(doc)
+  protected abstract findOne<T extends Document>(doc: Document): Promise<T | null>
 
-    if (deleted.deletedCount > 0) return true
-    else return false
-  }
+  protected abstract insertOne<T extends Document>(doc: Document): Promise<T>
 
-  protected async findOne<T extends Document>(doc: Document): Promise<T | null> {
-    const foundDoc = await this._collection.findOne(doc)
-
-    return foundDoc
-  }
-
-  protected async insertOne<T extends Document>(doc: Document): Promise<T> {
-    await this._collection.insertOne(doc)
-
-    const insertedDoc = await this._collection.findOne(doc)
-
-    return insertedDoc
-  }
-
-  protected async updateOne<T extends Document>(doc: Document, update: Document): Promise<T | null> {
-    await this._collection.updateOne(doc, { $set: update })
-
-    const updatedDoc = await this._collection.findOne(update)
-
-    return updatedDoc
-  }
+  protected abstract updateOne<T extends Document>(
+    doc: Document,
+    update: Document
+  ): Promise<T | null>
 }
 
 export type CollectionsName = 'logs' | 'users'
