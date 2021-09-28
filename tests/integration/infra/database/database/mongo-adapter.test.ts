@@ -27,6 +27,27 @@ describe('mongoAdapter', () => {
     })
   })
 
+  describe('disconnect', () => {
+    it('should throw if database is not connected', async () => {
+      expect.hasAssertions()
+
+      const db = MongoAdapter.client
+
+      try {
+        MongoAdapter.client = null
+
+        await client.disconnect()
+
+        expect(true).toBeFalsy()
+      } catch (error) {
+        MongoAdapter.client = db
+
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(error).toStrictEqual(new Error('Database is not connected'))
+      }
+    })
+  })
+
   describe('collection', () => {
     it('should return collections methods', async () => {
       expect.hasAssertions()
@@ -36,6 +57,25 @@ describe('mongoAdapter', () => {
       expect(collection).toHaveProperty('findOne')
       expect(collection).toHaveProperty('insertOne')
       expect(collection).toHaveProperty('updateOne')
+    })
+
+    it('should throw if database is not connected', async () => {
+      expect.hasAssertions()
+
+      const db = MongoAdapter.client
+
+      try {
+        MongoAdapter.client = null
+
+        client.collection('users')
+
+        expect(true).toBeFalsy()
+      } catch (error) {
+        MongoAdapter.client = db
+
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(error).toStrictEqual(new Error('Database is not connected'))
+      }
     })
   })
 
