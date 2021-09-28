@@ -39,8 +39,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
   protected async deleteMany (filter: Document): Promise<number> {
     const deleted = await this._collection.deleteMany(filter)
 
-    if (deleted) return deleted.deletedCount
-    else return 0
+    return deleted.deletedCount
   }
 
   protected async deleteOne (filter: Document): Promise<boolean> {
