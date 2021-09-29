@@ -4,6 +4,7 @@ import { MailerServiceError } from '@/application/usecases/errors'
 import { environment } from '../config/environment'
 
 import * as nodemailer from 'nodemailer'
+import { Transporter } from 'nodemailer'
 import sendgrid from 'nodemailer-sendgrid'
 
 export abstract class MailerService {
@@ -23,18 +24,29 @@ export abstract class MailerService {
     return true
   }
 
-  private get transporter (): nodemailer.Transporter {
-    if (environment.SERVER.NODE_ENV === 'development' || environment.SERVER.NODE_ENV === 'test') {
-      return nodemailer.createTransport({
-        auth: {
-          pass: environment.MAILER.MAILTRAP.PASSWORD,
-          user: environment.MAILER.MAILTRAP.USER
-        },
-        host: environment.MAILER.MAILTRAP.HOST,
-        port: +environment.MAILER.MAILTRAP.PORT
-      })
+  private get transporter (): Transporter {
+    switch (environment.SERVER.NODE_ENV) {
+      case 'development':
+        return this.mailtrap()
+      case 'production':
+        return this.sendgrid()
+      case 'test':
+        return this.mailtrap()
     }
+  }
 
+  private mailtrap (): nodemailer.Transporter {
+    return nodemailer.createTransport({
+      auth: {
+        pass: environment.MAILER.MAILTRAP.PASSWORD,
+        user: environment.MAILER.MAILTRAP.USER
+      },
+      host: environment.MAILER.MAILTRAP.HOST,
+      port: +environment.MAILER.MAILTRAP.PORT
+    })
+  }
+
+  private sendgrid (): Transporter {
     return nodemailer.createTransport(
       sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY as string })
     )
