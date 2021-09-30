@@ -13,8 +13,11 @@ export class ValidateEmailCode implements ValidatorProtocol {
     if (user == null) return new InvalidCodeError()
 
     if (user.temporary.tempEmailCodeExpiration == null) return new InvalidCodeError()
+    if (tempEmailCode == null) return new InvalidCodeError()
     if (tempEmailCode !== user.temporary.tempEmailCode) return new InvalidCodeError()
     if (!user.temporary.tempEmail) return new InvalidCodeError()
-    if (user.temporary.tempEmailCodeExpiration.getTime() < Date.now()) { return new CodeIsExpiredError() }
+    if (user.temporary.tempEmailCodeExpiration.getTime() < Date.now()) {
+      return new CodeIsExpiredError()
+    }
   }
 }
