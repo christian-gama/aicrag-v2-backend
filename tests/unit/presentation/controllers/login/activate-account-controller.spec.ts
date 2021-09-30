@@ -69,7 +69,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('loginController', () => {
+describe('activateAccountController', () => {
   it('should call validate with correct values', async () => {
     expect.hasAssertions()
 
