@@ -7,7 +7,7 @@ import { makeRequiredFields, makeValidateEmailCode } from '.'
 export const makeUpdateEmailByCodeValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
-  const fields = ['email', 'activationCode']
+  const fields = ['email', 'tempEmailCode']
   for (const field of fields) {
     validations.push(makeRequiredFields(field))
   }
