@@ -1,13 +1,17 @@
 import { controllerAdapter } from '../../../infra/adapters/express/controller-adapter'
 import { middlewareAdapter } from '../../../infra/adapters/express/middleware-adapter'
 
-import { makeLogoutController } from '@/factories/controllers/account'
-import { makeUpdateEmailByCodeController } from '@/factories/controllers/account/update-email-by-code-controller-factory'
-import { makeUpdatePersonalController } from '@/factories/controllers/account/update-personal-controller-factory'
-import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/helpers'
-import { makeSendEmailCodeController } from '@/factories/controllers/helpers/send-email-code-controller-factory'
-import { makeSendForgotPasswordEmailController } from '@/factories/controllers/helpers/send-forgot-password-email-controller-factory'
-import { makeSendWelcomeEmailController } from '@/factories/controllers/helpers/send-welcome-email-controller-factory,'
+import {
+  makeLogoutController,
+  makeUpdateEmailByCodeController,
+  makeUpdatePersonalController
+} from '@/factories/controllers/account'
+import {
+  makeVerifyResetPasswordTokenController,
+  makeSendEmailCodeController,
+  makeSendForgotPasswordEmailController,
+  makeSendWelcomeEmailController
+} from '@/factories/controllers/helpers'
 import {
   makeActivateAccountController,
   makeForgotPasswordController,
