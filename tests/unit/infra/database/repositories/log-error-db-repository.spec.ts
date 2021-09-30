@@ -1,14 +1,13 @@
 import { ILogError } from '@/domain'
-
-import { LogErrorRepositoryProtocol } from '@/application/protocols/repositories'
+import { LogErrorRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 import { LogErrorDbRepository } from '@/infra/database/repositories'
 
-import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
-
 import { makeFakeLogError, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
+
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 interface SutTypes {
   error: Error

@@ -1,17 +1,17 @@
 import { IUser } from '@/domain'
 
-import { MailerServiceError } from '@/application/usecases/errors'
+import { MailerServiceError } from '@/application/errors'
 
 import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
-import { makeGenerateAccessToken } from '@/main/factories/providers/token'
+import app from '@/main/express/config/app'
 import { WelcomeEmail } from '@/main/mailer/welcome-email'
-import app from '@/main/vendors/express/config/app'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
+import { makeGenerateAccessToken } from '@/factories/providers/token'
 import request from 'supertest'
 
 describe('post /send-welcome-email', () => {

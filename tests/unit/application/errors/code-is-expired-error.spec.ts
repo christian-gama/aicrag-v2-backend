@@ -1,4 +1,4 @@
-import { CodeIsExpiredError } from '@/application/usecases/errors'
+import { CodeIsExpiredError } from '@/application/errors'
 
 describe('codeIsExpiredError', () => {
   it('should be an instance of Error', () => {

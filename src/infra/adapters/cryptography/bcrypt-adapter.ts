@@ -1,4 +1,4 @@
-import { ComparerProtocol, HasherProtocol } from '@/application/protocols/cryptography'
+import { ComparerProtocol, HasherProtocol } from '@/domain/cryptography'
 
 import bcrypt from 'bcrypt'
 

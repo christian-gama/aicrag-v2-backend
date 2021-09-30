@@ -1,5 +1,6 @@
-import { MailerSettingsProtocol } from '@/application/protocols/mailer'
-import { MailerServiceError } from '@/application/usecases/errors'
+import { MailerSettingsProtocol } from '@/domain/mailer'
+
+import { MailerServiceError } from '@/application/errors'
 
 import { environment } from '../config/environment'
 

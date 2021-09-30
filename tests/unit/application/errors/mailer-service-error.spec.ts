@@ -1,4 +1,4 @@
-import { MailerServiceError } from '@/application/usecases/errors'
+import { MailerServiceError } from '@/application/errors'
 
 describe('mailerServiceError', () => {
   it('should be an instance of Error', () => {

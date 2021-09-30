@@ -1,6 +1,6 @@
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import { VerifyTokenProtocol } from '@/domain/providers'
 
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '../helpers/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '../http/protocols'
 import { MiddlewareProtocol } from './protocols/middleware-protocol'
 
 export class IsLoggedInMiddleware implements MiddlewareProtocol {

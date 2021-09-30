@@ -1,8 +1,9 @@
-import { HasherProtocol } from '@/application/protocols/cryptography'
-import { UuidProtocol } from '@/application/protocols/helpers'
-import { UserRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidationCode } from '@/application/usecases/helpers'
-import { UserRepository } from '@/application/usecases/repositories'
+import { HasherProtocol } from '@/domain/cryptography'
+import { UuidProtocol } from '@/domain/helpers'
+import { UserRepositoryProtocol } from '@/domain/repositories'
+
+import { ValidationCode } from '@/application/helpers'
+import { UserRepository } from '@/application/repositories'
 
 import {
   makeHasherStub,

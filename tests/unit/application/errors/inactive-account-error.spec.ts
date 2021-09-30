@@ -1,4 +1,4 @@
-import { InactiveAccountError } from '@/application/usecases/errors'
+import { InactiveAccountError } from '@/application/errors'
 
 describe('inactiveAccountError', () => {
   it('should be an instance of Error', () => {

@@ -1,9 +1,10 @@
+import { controllerAdapter } from '@/infra/adapters/express/controller-adapter'
+
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { environment } from '@/main/config/environment'
-import { controllerAdapter } from '@/main/vendors/express/adapters/controller-adapter'
-import app from '@/main/vendors/express/config/app'
-import { errorRequestHandler } from '@/main/vendors/express/middlewares/error-request-handler'
+import app from '@/main/express/config/app'
+import { errorRequestHandler } from '@/main/express/middlewares/error-request-handler'
 
 import request from 'supertest'
 

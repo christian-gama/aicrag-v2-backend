@@ -1,4 +1,4 @@
-import { MustLoginError } from '@/application/usecases/errors'
+import { MustLoginError } from '@/application/errors'
 
 describe('mustLoginError', () => {
   it('should be an instance of Error', () => {

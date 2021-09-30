@@ -1,4 +1,4 @@
-import { makeClearUserDatabase } from '../factories/schedulers/clear-user-database-factory'
+import { makeClearUserDatabase } from '../../factories/schedulers/clear-user-database-factory'
 
 export default (): void => {
   if (process.env.NODE_ENV !== 'test') {

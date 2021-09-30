@@ -1,4 +1,4 @@
-import { UserCredentialError } from '@/application/usecases/errors'
+import { UserCredentialError } from '@/application/errors'
 
 describe('userCredentialError', () => {
   it('should be an instance of Error', () => {

@@ -1,6 +1,5 @@
 import { ILogError } from '@/domain'
-
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
 
 import { DatabaseProtocol } from '@/infra/database/protocols'
 import { UserDbFilter } from '@/infra/database/protocols/update-user-options'

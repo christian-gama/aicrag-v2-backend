@@ -2,8 +2,9 @@ import {
   DecodedProtocol,
   DecoderProtocol,
   EncrypterProtocol
-} from '@/application/protocols/cryptography'
-import { ExpiredTokenError, InvalidTokenError } from '@/application/usecases/errors'
+} from '@/domain/cryptography'
+
+import { ExpiredTokenError, InvalidTokenError } from '@/application/errors'
 
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'

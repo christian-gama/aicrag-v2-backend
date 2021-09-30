@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
-
-import { MailerServiceProtocol, MailerSettingsProtocol } from '@/application/protocols/mailer'
+import { MailerServiceProtocol, MailerSettingsProtocol } from '@/domain/mailer'
 
 import { MailerService } from './mailer-service'
 

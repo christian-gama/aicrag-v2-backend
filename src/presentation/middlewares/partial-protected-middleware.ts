@@ -1,10 +1,10 @@
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import { VerifyTokenProtocol } from '@/domain/providers'
 
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
-} from '@/presentation/helpers/http/protocols'
+} from '@/presentation/http/protocols'
 
 import { MiddlewareProtocol } from './protocols/middleware-protocol'
 

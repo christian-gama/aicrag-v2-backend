@@ -1,14 +1,14 @@
 import { IUser } from '@/domain'
-
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 
 import { makeFakeUser, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
+
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 interface SutTypes {
   sut: ClearUserDatabase

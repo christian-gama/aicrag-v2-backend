@@ -1,14 +1,14 @@
 import { IUser } from '@/domain'
+import { VerifyTokenProtocol } from '@/domain/providers'
 
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
-import { InvalidTokenError, MustLogoutError } from '@/application/usecases/errors'
+import { InvalidTokenError, MustLogoutError } from '@/application/errors'
 
 import { VerifyResetPasswordTokenController } from '@/presentation/controllers/helpers'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakeUser: IUser

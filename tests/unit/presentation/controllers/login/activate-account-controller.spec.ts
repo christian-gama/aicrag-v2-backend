@@ -1,15 +1,13 @@
 import { IPublicUser, IUser } from '@/domain'
+import { FilterUserDataProtocol } from '@/domain/helpers'
+import { GenerateTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { GenerateTokenProtocol } from '@/application/protocols/providers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { InvalidCodeError } from '@/application/usecases/errors'
+import { InvalidCodeError } from '@/application/errors'
 
 import { ActivateAccountController } from '@/presentation/controllers/login'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import {
   makeValidatorStub,
@@ -19,6 +17,8 @@ import {
   makeGenerateTokenStub,
   makeUserDbRepositoryStub
 } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   activateAccountValidatorStub: ValidatorProtocol

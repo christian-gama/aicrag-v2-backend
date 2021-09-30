@@ -1,16 +1,16 @@
 import { IUser } from '@/domain'
+import { GenerateTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { GenerateTokenProtocol } from '@/application/protocols/providers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { MustLogoutError } from '@/application/usecases/errors'
-import { FilterUserData } from '@/application/usecases/helpers'
+import { MustLogoutError } from '@/application/errors'
+import { FilterUserData } from '@/application/helpers'
 
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
-} from '@/presentation/helpers/http/protocols'
+} from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 

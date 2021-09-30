@@ -1,14 +1,12 @@
 import { IUser } from '@/domain'
+import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/domain/helpers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/application/protocols/helpers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { ConflictParamError, MustLoginError } from '@/application/usecases/errors'
+import { ConflictParamError, MustLoginError } from '@/application/errors'
 
 import { UpdatePersonalController } from '@/presentation/controllers/account'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import {
   makeFakePublicUser,
@@ -18,6 +16,8 @@ import {
   makeValidationCodeStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   emailCodeStub: ValidationCodeProtocol

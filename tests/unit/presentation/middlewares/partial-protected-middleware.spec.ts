@@ -1,13 +1,12 @@
 import { IUser } from '@/domain'
+import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
 
-import { IRefreshToken, VerifyTokenProtocol } from '@/application/protocols/providers'
-
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { PartialProtectedMiddleware } from '@/presentation/middlewares'
 
-import { makeHttpHelper } from '@/main/factories/helpers'
-
 import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakeRefreshToken: IRefreshToken

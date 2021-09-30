@@ -1,4 +1,4 @@
-import { ExpiredTokenError } from '@/application/usecases/errors'
+import { ExpiredTokenError } from '@/application/errors'
 
 describe('expiredTokenError', () => {
   it('should be an instance of Error', () => {

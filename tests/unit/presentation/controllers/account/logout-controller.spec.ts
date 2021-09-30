@@ -1,14 +1,14 @@
 import { IUser } from '@/domain'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { MustLoginError } from '@/application/usecases/errors'
+import { MustLoginError } from '@/application/errors'
 
 import { LogoutController } from '@/presentation/controllers/account'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakeUser: IUser

@@ -1,17 +1,17 @@
 import { IUser } from '@/domain'
+import { HasherProtocol } from '@/domain/cryptography'
+import { FilterUserDataProtocol } from '@/domain/helpers'
+import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { HasherProtocol } from '@/application/protocols/cryptography'
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { MustLogoutError } from '@/application/usecases/errors'
+import { MustLogoutError } from '@/application/errors'
 
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
-} from '@/presentation/helpers/http/protocols'
+} from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 

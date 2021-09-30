@@ -1,6 +1,5 @@
 import { ILogError, IUser, ISignUpUserCredentials } from '@/domain'
-
-import { LogErrorDbRepositoryProtocol, UserDbRepositoryProtocol } from '@/application/protocols/repositories'
+import { LogErrorDbRepositoryProtocol, UserDbRepositoryProtocol } from '@/domain/repositories'
 
 import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
 

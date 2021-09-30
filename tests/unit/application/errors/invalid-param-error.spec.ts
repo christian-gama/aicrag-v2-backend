@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/usecases/errors'
+import { InvalidParamError } from '@/application/errors'
 
 describe('invalidParamError', () => {
   it('should be an instance of Error', () => {

@@ -1,4 +1,4 @@
-import { InvalidCodeError } from '@/application/usecases/errors'
+import { InvalidCodeError } from '@/application/errors'
 
 describe('invalidCodeError', () => {
   it('should be an instance of Error', () => {

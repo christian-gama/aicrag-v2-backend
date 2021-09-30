@@ -1,6 +1,7 @@
-import { controllerAdapter } from '@/main/vendors/express/adapters/controller-adapter'
-import app from '@/main/vendors/express/config/app'
-import { notFound } from '@/main/vendors/express/middlewares/not-found'
+import { controllerAdapter } from '@/infra/adapters/express/controller-adapter'
+
+import app from '@/main/express/config/app'
+import { notFound } from '@/main/express/middlewares/not-found'
 
 import { makeControllerStub } from '@/tests/__mocks__/mock-controllers'
 

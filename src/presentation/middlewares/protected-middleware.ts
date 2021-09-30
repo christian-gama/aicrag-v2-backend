@@ -1,16 +1,17 @@
-import { EncrypterProtocol } from '@/application/protocols/cryptography'
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
+import { EncrypterProtocol } from '@/domain/cryptography'
+import { VerifyTokenProtocol } from '@/domain/providers'
+
 import {
   ExpiredTokenError,
   InvalidTokenError,
   TokenMissingError
-} from '@/application/usecases/errors'
+} from '@/application/errors'
 
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
-} from '@/presentation/helpers/http/protocols'
+} from '@/presentation/http/protocols'
 
 import { MiddlewareProtocol } from './protocols/middleware-protocol'
 

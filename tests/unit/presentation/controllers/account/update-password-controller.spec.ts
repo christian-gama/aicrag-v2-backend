@@ -1,15 +1,12 @@
 import { IUser } from '@/domain'
-
-import { HasherProtocol } from '@/application/protocols/cryptography'
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { GenerateTokenProtocol } from '@/application/protocols/providers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
+import { HasherProtocol } from '@/domain/cryptography'
+import { FilterUserDataProtocol } from '@/domain/helpers'
+import { GenerateTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
 import { UpdatePasswordController } from '@/presentation/controllers/account'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import {
   makeFakePublicUser,
@@ -20,6 +17,8 @@ import {
   makeUserDbRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakeUser: IUser

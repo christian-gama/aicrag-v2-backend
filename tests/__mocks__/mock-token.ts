@@ -1,11 +1,11 @@
 import { IUser } from '@/domain'
-
 import {
   GenerateTokenProtocol,
   IRefreshToken,
   VerifyTokenProtocol
-} from '@/application/protocols/providers'
-import { InvalidTokenError } from '@/application/usecases/errors'
+} from '@/domain/providers'
+
+import { InvalidTokenError } from '@/application/errors'
 
 import faker from 'faker'
 

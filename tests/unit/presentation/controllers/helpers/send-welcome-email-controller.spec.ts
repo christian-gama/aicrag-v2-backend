@@ -1,14 +1,12 @@
 import { IUser } from '@/domain'
+import { MailerServiceProtocol } from '@/domain/mailer'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { MailerServiceProtocol } from '@/application/protocols/mailer'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/usecases/errors'
+import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
 
 import { SendWelcomeEmailController } from '@/presentation/controllers/helpers/send-welcome-email-controller'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import {
   makeFakeUser,
@@ -16,6 +14,8 @@ import {
   makeUserDbRepositoryStub,
   makeMailerServiceStub
 } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakeUser: IUser

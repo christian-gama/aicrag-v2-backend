@@ -1,6 +1,5 @@
 import { IPublicUser, IUser } from '@/domain'
-
-import { FilterUserDataProtocol, UuidProtocol, ValidationCodeProtocol } from '@/application/protocols/helpers'
+import { FilterUserDataProtocol, UuidProtocol, ValidationCodeProtocol } from '@/domain/helpers'
 
 import { makeFakePublicUser } from './mock-user'
 

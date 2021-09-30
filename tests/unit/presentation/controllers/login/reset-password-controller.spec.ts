@@ -1,16 +1,14 @@
 import { IUser, IPublicUser } from '@/domain'
+import { HasherProtocol } from '@/domain/cryptography'
+import { FilterUserDataProtocol } from '@/domain/helpers'
+import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { HasherProtocol } from '@/application/protocols/cryptography'
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/application/protocols/providers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { MustLogoutError, InvalidTokenError } from '@/application/usecases/errors'
+import { MustLogoutError, InvalidTokenError } from '@/application/errors'
 
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import {
   makeFakeUser,
@@ -22,6 +20,8 @@ import {
   makeUserDbRepositoryStub,
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakeUser: IUser

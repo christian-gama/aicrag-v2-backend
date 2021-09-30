@@ -1,5 +1,6 @@
-import { DecodedProtocol } from '@/application/protocols/cryptography'
-import { ExpiredTokenError, InvalidTokenError } from '@/application/usecases/errors'
+import { DecodedProtocol } from '@/domain/cryptography'
+
+import { ExpiredTokenError, InvalidTokenError } from '@/application/errors'
 
 import { JwtAdapter } from '@/infra/adapters/cryptography'
 

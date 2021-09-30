@@ -1,14 +1,14 @@
 import { IUser } from '@/domain'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import {
   InvalidCodeError,
   CodeIsExpiredError,
   AccountAlreadyActivatedError
-} from '@/application/usecases/errors'
-import { ValidateActivationCode } from '@/application/usecases/validators'
+} from '@/application/errors'
+import { ValidateActivationCode } from '@/application/validators'
 
-import { HttpRequest } from '@/presentation/helpers/http/protocols'
+import { HttpRequest } from '@/presentation/http/protocols'
 
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 

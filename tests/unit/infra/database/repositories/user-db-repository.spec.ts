@@ -1,18 +1,17 @@
 import { IUser } from '@/domain'
-
-import { UserRepositoryProtocol } from '@/application/protocols/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 import { UserDbRepository } from '@/infra/database/repositories'
-
-import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 
 import {
   makeFakeUser,
   makeUserRepositoryStub,
   makeFakeSignUpUserCredentials
 } from '@/tests/__mocks__'
+
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 interface SutTypes {
   fakeUser: IUser

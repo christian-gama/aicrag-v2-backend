@@ -1,4 +1,4 @@
-import { AccountAlreadyActivatedError } from '@/application/usecases/errors'
+import { AccountAlreadyActivatedError } from '@/application/errors'
 
 describe('accountAlreadyActivatedError', () => {
   it('should be an instance of Error', () => {

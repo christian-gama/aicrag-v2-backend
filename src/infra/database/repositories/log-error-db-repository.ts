@@ -1,7 +1,7 @@
 import { ILogError } from '@/domain'
+import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
 
-import { LogErrorDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { LogErrorRepository } from '@/application/usecases/repositories'
+import { LogErrorRepository } from '@/application/repositories'
 
 import { DatabaseProtocol } from '../protocols'
 

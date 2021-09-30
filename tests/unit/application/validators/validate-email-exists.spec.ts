@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { UserCredentialError } from '@/application/usecases/errors'
-import { ValidateEmailExists } from '@/application/usecases/validators'
+import { UserCredentialError } from '@/application/errors'
+import { ValidateEmailExists } from '@/application/validators'
 
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 

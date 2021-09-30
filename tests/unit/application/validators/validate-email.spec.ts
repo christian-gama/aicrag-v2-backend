@@ -1,6 +1,7 @@
-import { ValidatorProtocol, EmailValidatorProtocol } from '@/application/protocols/validators'
-import { InvalidParamError } from '@/application/usecases/errors'
-import { ValidateEmail } from '@/application/usecases/validators'
+import { ValidatorProtocol, EmailValidatorProtocol } from '@/domain/validators'
+
+import { InvalidParamError } from '@/application/errors'
+import { ValidateEmail } from '@/application/validators'
 
 import { makeEmailValidatorStub } from '@/tests/__mocks__'
 

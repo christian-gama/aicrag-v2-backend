@@ -1,19 +1,17 @@
 import { IPublicUser, IUser } from '@/domain'
+import { FilterUserDataProtocol } from '@/domain/helpers'
+import { GenerateTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { GenerateTokenProtocol } from '@/application/protocols/providers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
 import {
   ConflictParamError,
   InvalidParamError,
   MustLogoutError
-} from '@/application/usecases/errors'
+} from '@/application/errors'
 
 import { SignUpController } from '@/presentation/controllers/signup'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
-
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import {
   makeFakeUser,
@@ -23,6 +21,8 @@ import {
   makeUserDbRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
+
+import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakePublicUser: IPublicUser

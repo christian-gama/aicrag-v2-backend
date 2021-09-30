@@ -1,5 +1,6 @@
-import { ValidationCodeProtocol } from '@/application/protocols/helpers'
-import { ValidationCode } from '@/application/usecases/helpers'
+import { ValidationCodeProtocol } from '@/domain/helpers'
+
+import { ValidationCode } from '@/application/helpers'
 
 interface SutTypes {
   sut: ValidationCodeProtocol

@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/application/protocols/validators'
+import { ValidatorProtocol } from '@/domain/validators'
 
 export const makeValidatorStub = (): ValidatorProtocol => {
   class ValidatorStub implements ValidatorProtocol {

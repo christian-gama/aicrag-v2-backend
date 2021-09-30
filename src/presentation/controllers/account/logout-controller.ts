@@ -1,7 +1,8 @@
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { MustLoginError } from '@/application/usecases/errors'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/helpers/http/protocols'
+import { MustLoginError } from '@/application/errors'
+
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 

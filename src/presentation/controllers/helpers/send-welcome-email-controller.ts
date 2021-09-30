@@ -1,15 +1,15 @@
 import { IUser } from '@/domain'
+import { MailerServiceProtocol } from '@/domain/mailer'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { MailerServiceProtocol } from '@/application/protocols/mailer'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/usecases/errors'
+import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
 
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
-} from '@/presentation/helpers/http/protocols'
+} from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 

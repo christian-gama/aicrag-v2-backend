@@ -1,4 +1,4 @@
-import app from '@/main/vendors/express/config/app'
+import app from '@/main/express/config/app'
 
 import request from 'supertest'
 

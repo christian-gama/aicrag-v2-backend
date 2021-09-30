@@ -1,4 +1,4 @@
-import { InternalError } from '@/application/usecases/errors'
+import { InternalError } from '@/application/errors'
 
 describe('internalError', () => {
   it('should be an instance of Error', () => {

@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
+import { FilterUserDataProtocol } from '@/domain/helpers'
 
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { FilterUserData } from '@/application/usecases/helpers'
+import { FilterUserData } from '@/application/helpers'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 

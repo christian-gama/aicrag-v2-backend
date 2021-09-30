@@ -1,14 +1,14 @@
 import { IPublicUser, IUser } from '@/domain'
+import { FilterUserDataProtocol } from '@/domain/helpers'
+import { GenerateTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { FilterUserDataProtocol } from '@/application/protocols/helpers'
-import { GenerateTokenProtocol } from '@/application/protocols/providers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { UserCredentialError, InvalidParamError, MissingParamError, InactiveAccountError, MustLogoutError } from '@/application/usecases/errors'
+import { UserCredentialError, InvalidParamError, MissingParamError, InactiveAccountError, MustLogoutError } from '@/application/errors'
 
 import { LoginController } from '@/presentation/controllers/login'
-import { HttpHelper } from '@/presentation/helpers/http/http-helper'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
+import { HttpHelper } from '@/presentation/http/http-helper'
+import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeValidatorStub, makeFakeUser, makeFakePublicUser, makeFilterUserDataStub, makeGenerateTokenStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 

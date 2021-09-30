@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
+import { MailerServiceProtocol } from '@/domain/mailer'
 
-import { MailerServiceProtocol } from '@/application/protocols/mailer'
-import { MailerServiceError } from '@/application/usecases/errors'
+import { MailerServiceError } from '@/application/errors'
 
 export const makeMailerServiceStub = (): MailerServiceProtocol => {
   class MailerServiceStub implements MailerServiceProtocol {

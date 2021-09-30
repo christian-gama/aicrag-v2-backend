@@ -1,4 +1,4 @@
-import { ConflictParamError } from '@/application/usecases/errors'
+import { ConflictParamError } from '@/application/errors'
 
 describe('conflictParamError', () => {
   it('should be an instance of Error', () => {

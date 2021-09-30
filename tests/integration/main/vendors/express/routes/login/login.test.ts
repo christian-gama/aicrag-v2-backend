@@ -3,12 +3,12 @@ import { IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
-import { makeGenerateRefreshToken } from '@/main/factories/providers/token'
-import app from '@/main/vendors/express/config/app'
+import app from '@/main/express/config/app'
 
 import { makeFakeUser } from '@/tests/__mocks__/mock-user'
 
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
+import { makeGenerateRefreshToken } from '@/factories/providers/token'
 import { hash } from 'bcrypt'
 import request from 'supertest'
 

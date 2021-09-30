@@ -1,15 +1,15 @@
 import { IUser } from '@/domain'
+import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/domain/helpers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { ValidatorProtocol } from '@/domain/validators'
 
-import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/application/protocols/helpers'
-import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { ValidatorProtocol } from '@/application/protocols/validators'
-import { ConflictParamError, MustLoginError } from '@/application/usecases/errors'
+import { ConflictParamError, MustLoginError } from '@/application/errors'
 
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
-} from '@/presentation/helpers/http/protocols'
+} from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 

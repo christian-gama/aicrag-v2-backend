@@ -1,11 +1,12 @@
-import { VerifyTokenProtocol } from '@/application/protocols/providers'
-import { MustLogoutError } from '@/application/usecases/errors'
+import { VerifyTokenProtocol } from '@/domain/providers'
+
+import { MustLogoutError } from '@/application/errors'
 
 import {
   HttpHelperProtocol,
   HttpRequest,
   HttpResponse
-} from '@/presentation/helpers/http/protocols'
+} from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
