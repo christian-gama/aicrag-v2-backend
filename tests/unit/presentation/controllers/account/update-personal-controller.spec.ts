@@ -179,7 +179,7 @@ describe('updatePersonalProtocol', () => {
     expect(response).toStrictEqual(httpHelper.conflict(new ConflictParamError('email')))
   })
 
-  it('should call updateUser 3 times if changes name and email', async () => {
+  it('should call updateUser 4 times if changes name and email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userDbRepositoryStub } = makeSut()
