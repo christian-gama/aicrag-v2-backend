@@ -6,7 +6,7 @@ import { GenerateTokenProtocol } from '@/application/protocols/providers'
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
 import { ValidatorProtocol } from '@/application/protocols/validators'
 
-import { UpdatePasswordController } from '@/presentation/controllers/account/update-password-controller'
+import { UpdatePasswordController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/helpers/http/protocols'
 
 import { makeHttpHelper } from '@/main/factories/helpers'
