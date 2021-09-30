@@ -5,7 +5,7 @@ import { makeActivateAccountValidatorComposite, makeRequiredFields, makeValidate
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 
-describe('activateAccountValidator Factory', () => {
+describe('activateAccountValidatorComposite', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 

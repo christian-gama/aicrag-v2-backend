@@ -10,7 +10,7 @@ import {
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 
-describe('credentialsValidator Factory', () => {
+describe('sendWelcomeEmail', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 

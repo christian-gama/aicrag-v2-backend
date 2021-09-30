@@ -5,7 +5,7 @@ import { makeForgotPasswordValidatorComposite, makeRequiredFields, makeValidateE
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 
-describe('credentialsValidator Factory', () => {
+describe('forgotPasswordValidatorComposite', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 

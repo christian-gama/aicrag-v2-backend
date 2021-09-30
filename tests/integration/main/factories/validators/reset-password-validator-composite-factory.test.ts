@@ -10,7 +10,7 @@ import { makeResetPasswordValidatorComposite } from '@/main/factories/validators
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 
-describe('credentialsValidator Factory', () => {
+describe('resetPasswordValidatorComposite', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 

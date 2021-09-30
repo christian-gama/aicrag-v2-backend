@@ -5,7 +5,7 @@ import { makeUserValidatorComposite, makeRequiredFields, makeValidateName, makeV
 
 jest.mock('../../../../../src/application/usecases/validators/validation-composite.ts')
 
-describe('userValidator Factory', () => {
+describe('userValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
