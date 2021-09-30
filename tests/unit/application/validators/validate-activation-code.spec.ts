@@ -1,7 +1,11 @@
 import { IUser } from '@/domain'
 
 import { UserDbRepositoryProtocol } from '@/application/protocols/repositories'
-import { InvalidCodeError, CodeIsExpiredError, AccountAlreadyActivatedError } from '@/application/usecases/errors'
+import {
+  InvalidCodeError,
+  CodeIsExpiredError,
+  AccountAlreadyActivatedError
+} from '@/application/usecases/errors'
 import { ValidateActivationCode } from '@/application/usecases/validators'
 
 import { HttpRequest } from '@/presentation/helpers/http/protocols'
@@ -58,11 +62,8 @@ describe('validateEmailCode', () => {
   it('should return an InvalidCode if activation code is different from user activation code', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.activationCode = null
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const value = await sut.validate(request.body)
 
@@ -72,11 +73,8 @@ describe('validateEmailCode', () => {
   it('should return a CodeIsExpiredError if activation code is expired', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const value = await sut.validate(request.body)
 
@@ -86,11 +84,8 @@ describe('validateEmailCode', () => {
   it('should return an InvalidCodeError if there is no tempCodeExpiration', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.activationCodeExpiration = null
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const value = await sut.validate(request.body)
 
@@ -100,11 +95,8 @@ describe('validateEmailCode', () => {
   it('should return an AccountAlreadyActivatedError if there is no tempCodeExpiration', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut } = makeSut()
     fakeUser.settings.accountActivated = true
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const value = await sut.validate(request.body)
 

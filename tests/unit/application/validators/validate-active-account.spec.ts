@@ -27,11 +27,8 @@ describe('validateCredentials', () => {
   it('should return a InactiveAccountError if user account is inactive', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, sut } = makeSut()
     fakeUser.settings.accountActivated = false
-    jest
-      .spyOn(userDbRepositoryStub, 'saveUser')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const result = await sut.validate(fakeUser)
 

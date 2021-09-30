@@ -100,11 +100,8 @@ describe('signUpController', () => {
   it('should return conflict if email exists', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()
+    const { httpHelper, request, sut } = makeSut()
     const error = new ConflictParamError('email')
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const response = await sut.handle(request)
 
@@ -208,6 +205,8 @@ describe('signUpController', () => {
 
     const response = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', user: fakePublicUser }))
+    expect(response).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', user: fakePublicUser })
+    )
   })
 })

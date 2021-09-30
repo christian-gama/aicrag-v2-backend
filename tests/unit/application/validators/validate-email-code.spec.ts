@@ -59,11 +59,8 @@ describe('validateEmailCode', () => {
   it('should return an InvalidCode if there is no temporary email', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.tempEmail = null
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const value = await sut.validate(request.body)
 
@@ -73,11 +70,8 @@ describe('validateEmailCode', () => {
   it('should return a CodeIsExpiredError if temporary email code is expired', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.tempEmailCodeExpiration = new Date(Date.now() - 1000)
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const value = await sut.validate(request.body)
 
@@ -87,11 +81,8 @@ describe('validateEmailCode', () => {
   it('should return an InvalidCodeError if there is no tempCodeExpiration', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.tempEmailCodeExpiration = null
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(fakeUser))
 
     const value = await sut.validate(request.body)
 
