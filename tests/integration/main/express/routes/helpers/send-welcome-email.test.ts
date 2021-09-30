@@ -11,12 +11,10 @@ import { WelcomeEmail } from '@/main/mailer/welcome-email'
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateAccessToken } from '@/factories/providers/token'
 import request from 'supertest'
 
 describe('post /send-welcome-email', () => {
   const client = makeMongoDb()
-  let accessToken: string
   let fakeUser: IUser
   let userCollection: CollectionProtocol
 
@@ -36,7 +34,6 @@ describe('post /send-welcome-email', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
-    accessToken = makeGenerateAccessToken().generate(fakeUser)
   })
 
   const agent = request.agent(app)
@@ -48,7 +45,6 @@ describe('post /send-welcome-email', () => {
 
     await agent
       .post('/api/v1/helpers/send-welcome-email')
-      .set('Cookie', `accessToken=${accessToken}`)
       .send({ email: 'invalid_email' })
       .expect(400)
   })
@@ -61,7 +57,6 @@ describe('post /send-welcome-email', () => {
 
     await agent
       .post('/api/v1/helpers/send-welcome-email')
-      .set('Cookie', `accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email })
       .expect(403)
   })
@@ -77,7 +72,6 @@ describe('post /send-welcome-email', () => {
 
     await agent
       .post('/api/v1/helpers/send-welcome-email')
-      .set('Cookie', `accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email })
       .expect(500)
   })
@@ -91,7 +85,6 @@ describe('post /send-welcome-email', () => {
 
     await agent
       .post('/api/v1/helpers/send-welcome-email')
-      .set('Cookie', `accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email })
       .expect(200)
   })
