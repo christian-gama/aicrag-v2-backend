@@ -67,6 +67,17 @@ describe('validateEmailCode', () => {
     expect(value).toStrictEqual(new InvalidCodeError())
   })
 
+  it('should return an InvalidCode if there is no temporary email code', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut } = makeSut()
+    fakeUser.temporary.tempEmailCode = null
+
+    const value = await sut.validate(request.body)
+
+    expect(value).toStrictEqual(new InvalidCodeError())
+  })
+
   it('should return a CodeIsExpiredError if temporary email code is expired', async () => {
     expect.hasAssertions()
 
