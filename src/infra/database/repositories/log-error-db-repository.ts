@@ -6,7 +6,10 @@ import { LogErrorRepository } from '@/application/repositories'
 import { DatabaseProtocol } from '../protocols'
 
 export class LogErrorDbRepository implements LogErrorDbRepositoryProtocol {
-  constructor (private readonly database: DatabaseProtocol, private readonly logErrorRepository: LogErrorRepository) {}
+  constructor (
+    private readonly database: DatabaseProtocol,
+    private readonly logErrorRepository: LogErrorRepository
+  ) {}
 
   async saveLog (error: Error): Promise<ILogError> {
     const log = this.logErrorRepository.createLog(error)

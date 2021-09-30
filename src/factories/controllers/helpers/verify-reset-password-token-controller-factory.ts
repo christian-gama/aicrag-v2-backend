@@ -9,7 +9,10 @@ export const makeVerifyResetPasswordTokenController = (): ControllerProtocol => 
   const httpHelper = makeHttpHelper()
   const verifyResetPasswordToken = makeVerifyResetPasswordToken()
 
-  const verifyResetPasswordTokenController = new VerifyResetPasswordTokenController(httpHelper, verifyResetPasswordToken)
+  const verifyResetPasswordTokenController = new VerifyResetPasswordTokenController(
+    httpHelper,
+    verifyResetPasswordToken
+  )
 
   return makeTryCatchDecorator(verifyResetPasswordTokenController)
 }

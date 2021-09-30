@@ -7,11 +7,7 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLogoutError } from '@/application/errors'
 
-import {
-  HttpHelperProtocol,
-  HttpRequest,
-  HttpResponse
-} from '@/presentation/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 

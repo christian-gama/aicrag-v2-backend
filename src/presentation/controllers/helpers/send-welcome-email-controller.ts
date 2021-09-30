@@ -5,11 +5,7 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
 
-import {
-  HttpHelperProtocol,
-  HttpRequest,
-  HttpResponse
-} from '@/presentation/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
@@ -30,7 +26,7 @@ export class SendWelcomeEmailController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
-    if (user.settings.accountActivated) return this.httpHelper.forbidden(new AccountAlreadyActivatedError())
+    if (user.settings.accountActivated) { return this.httpHelper.forbidden(new AccountAlreadyActivatedError()) }
 
     const mailerResponse = await this.welcomeEmail.send(user)
 

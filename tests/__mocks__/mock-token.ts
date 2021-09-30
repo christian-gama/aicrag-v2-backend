@@ -1,9 +1,5 @@
 import { IUser } from '@/domain'
-import {
-  GenerateTokenProtocol,
-  IRefreshToken,
-  VerifyTokenProtocol
-} from '@/domain/providers'
+import { GenerateTokenProtocol, IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
 
 import { InvalidTokenError } from '@/application/errors'
 

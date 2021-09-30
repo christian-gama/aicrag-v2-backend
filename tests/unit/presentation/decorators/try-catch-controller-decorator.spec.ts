@@ -44,7 +44,9 @@ describe('logDecorator', () => {
       name: error.name,
       stack: error.stack
     }
-    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(async () => await Promise.reject(error))
+    jest
+      .spyOn(controllerStub, 'handle')
+      .mockImplementationOnce(async () => await Promise.reject(error))
 
     const promise = await sut.handle({})
 

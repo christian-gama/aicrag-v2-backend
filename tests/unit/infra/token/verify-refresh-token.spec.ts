@@ -7,7 +7,12 @@ import { InvalidTokenError, TokenMissingError } from '@/application/errors'
 
 import { VerifyRefreshToken } from '@/infra/token/verify-refresh-token'
 
-import { makeFakeRefreshToken, makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+import {
+  makeFakeRefreshToken,
+  makeFakeUser,
+  makeDecoderStub,
+  makeUserDbRepositoryStub
+} from '@/tests/__mocks__'
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser

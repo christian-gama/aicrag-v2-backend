@@ -7,11 +7,18 @@ import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
 import { FindOptions } from 'mongodb'
 
 export class ClearUserDatabase {
-  constructor (private readonly database: DatabaseProtocol, private readonly logErrorDbRepository: LogErrorDbRepositoryProtocol) {}
+  constructor (
+    private readonly database: DatabaseProtocol,
+    private readonly logErrorDbRepository: LogErrorDbRepositoryProtocol
+  ) {}
 
   async deleteInactiveUsers (): Promise<number | ILogError> {
     try {
-      console.log(`[${new Date(Date.now()).toLocaleString()}] ClearUserDatabase: Looking for inactive users...`)
+      console.log(
+        `[${new Date(
+          Date.now()
+        ).toLocaleString()}] ClearUserDatabase: Looking for inactive users...`
+      )
 
       const userCollection = this.database.collection('users')
 
@@ -23,7 +30,11 @@ export class ClearUserDatabase {
       const deletedCount = await userCollection.deleteMany(filter)
 
       if (deletedCount > 0) {
-        console.log(`[${new Date(Date.now()).toLocaleString()}] ClearUserDatabase: ${deletedCount} inactive users were deleted.`)
+        console.log(
+          `[${new Date(
+            Date.now()
+          ).toLocaleString()}] ClearUserDatabase: ${deletedCount} inactive users were deleted.`
+        )
       }
 
       return deletedCount

@@ -1,8 +1,5 @@
 import { ISignUpUserCredentials, IUser } from '@/domain'
-import {
-  UserDbRepositoryProtocol,
-  UserRepositoryProtocol
-} from '@/domain/repositories'
+import { UserDbRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
 
 import { DatabaseProtocol, UserDbFilter } from '../protocols'
 

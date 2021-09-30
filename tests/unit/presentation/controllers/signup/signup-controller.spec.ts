@@ -4,11 +4,7 @@ import { GenerateTokenProtocol } from '@/domain/providers'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import {
-  ConflictParamError,
-  InvalidParamError,
-  MustLogoutError
-} from '@/application/errors'
+import { ConflictParamError, InvalidParamError, MustLogoutError } from '@/application/errors'
 
 import { SignUpController } from '@/presentation/controllers/signup'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'

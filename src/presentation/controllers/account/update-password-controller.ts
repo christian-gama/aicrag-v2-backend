@@ -5,11 +5,7 @@ import { GenerateTokenProtocol } from '@/domain/providers'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import {
-  HttpHelperProtocol,
-  HttpRequest,
-  HttpResponse
-} from '@/presentation/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
@@ -31,9 +27,11 @@ export class UpdatePasswordController implements ControllerProtocol {
 
     const hashedPassword = await this.hasher.hash(credentials.password)
 
-    const user = await this.userDbRepository.findUserByEmail(credentials.email) as IUser
+    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
-    const updatedUser = await this.userDbRepository.updateUser(user, { 'personal.password': hashedPassword }) as IUser
+    const updatedUser = (await this.userDbRepository.updateUser(user, {
+      'personal.password': hashedPassword
+    })) as IUser
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 

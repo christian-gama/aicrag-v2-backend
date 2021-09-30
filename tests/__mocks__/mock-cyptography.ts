@@ -1,4 +1,10 @@
-import { HasherProtocol, ComparerProtocol, DecoderProtocol, DecodedProtocol, EncrypterProtocol } from '@/domain/cryptography'
+import {
+  HasherProtocol,
+  ComparerProtocol,
+  DecoderProtocol,
+  DecodedProtocol,
+  EncrypterProtocol
+} from '@/domain/cryptography'
 
 export const makeComparerStub = (): ComparerProtocol => {
   class ComparerStub implements ComparerProtocol {

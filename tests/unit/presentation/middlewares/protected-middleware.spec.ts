@@ -2,11 +2,7 @@ import { IUser } from '@/domain'
 import { EncrypterProtocol } from '@/domain/cryptography'
 import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
 
-import {
-  ExpiredTokenError,
-  InvalidTokenError,
-  TokenMissingError
-} from '@/application/errors'
+import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { ProtectedMiddleware } from '@/presentation/middlewares'

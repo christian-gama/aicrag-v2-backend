@@ -1,4 +1,9 @@
-import { partialProtectedMiddleware, sendForgotPasswordEmailController, sendWelcomeEmailController, verifyResetPasswordTokenController } from '.'
+import {
+  partialProtectedMiddleware,
+  sendForgotPasswordEmailController,
+  sendWelcomeEmailController,
+  verifyResetPasswordTokenController
+} from '.'
 
 import { Router } from 'express'
 

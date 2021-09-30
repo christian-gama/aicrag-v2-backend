@@ -2,7 +2,12 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators'
 
-import { makeRequiredFields, makeValidateEmail, makeValidateEmailExists, makeValidateTempEmail } from '.'
+import {
+  makeRequiredFields,
+  makeValidateEmail,
+  makeValidateEmailExists,
+  makeValidateTempEmail
+} from '.'
 
 export const makeSendEmailCodeValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []

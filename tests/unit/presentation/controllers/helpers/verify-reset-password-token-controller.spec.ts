@@ -24,10 +24,7 @@ const makeSut = (): SutTypes => {
   const request = { params: { token: 'param_token' } }
   const verifyResetPasswordTokenStub = makeVerifyTokenStub(fakeUser)
 
-  const sut = new VerifyResetPasswordTokenController(
-    httpHelper,
-    verifyResetPasswordTokenStub
-  )
+  const sut = new VerifyResetPasswordTokenController(httpHelper, verifyResetPasswordTokenStub)
 
   return {
     fakeUser,

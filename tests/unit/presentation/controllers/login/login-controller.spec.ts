@@ -4,13 +4,26 @@ import { GenerateTokenProtocol } from '@/domain/providers'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { UserCredentialError, InvalidParamError, MissingParamError, InactiveAccountError, MustLogoutError } from '@/application/errors'
+import {
+  UserCredentialError,
+  InvalidParamError,
+  MissingParamError,
+  InactiveAccountError,
+  MustLogoutError
+} from '@/application/errors'
 
 import { LoginController } from '@/presentation/controllers/login'
 import { HttpHelper } from '@/presentation/http/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
-import { makeValidatorStub, makeFakeUser, makeFakePublicUser, makeFilterUserDataStub, makeGenerateTokenStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+import {
+  makeValidatorStub,
+  makeFakeUser,
+  makeFakePublicUser,
+  makeFilterUserDataStub,
+  makeGenerateTokenStub,
+  makeUserDbRepositoryStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   credentialsValidatorStub: ValidatorProtocol
@@ -119,7 +132,9 @@ describe('loginController', () => {
 
     const response = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', message: error.message }))
+    expect(response).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', message: error.message })
+    )
   })
 
   it('should call generate with correct user', async () => {

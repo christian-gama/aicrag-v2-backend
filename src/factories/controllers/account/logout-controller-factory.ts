@@ -9,10 +9,7 @@ export const makeLogoutController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
   const userDbRepository = makeUserDbRepository()
 
-  const logoutController = new LogoutController(
-    httpHelper,
-    userDbRepository
-  )
+  const logoutController = new LogoutController(httpHelper, userDbRepository)
 
   return makeTryCatchDecorator(logoutController)
 }

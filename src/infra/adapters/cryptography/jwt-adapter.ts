@@ -1,8 +1,4 @@
-import {
-  DecodedProtocol,
-  DecoderProtocol,
-  EncrypterProtocol
-} from '@/domain/cryptography'
+import { DecodedProtocol, DecoderProtocol, EncrypterProtocol } from '@/domain/cryptography'
 
 import { ExpiredTokenError, InvalidTokenError } from '@/application/errors'
 

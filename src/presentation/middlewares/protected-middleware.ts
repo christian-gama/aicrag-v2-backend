@@ -1,17 +1,9 @@
 import { EncrypterProtocol } from '@/domain/cryptography'
 import { VerifyTokenProtocol } from '@/domain/providers'
 
-import {
-  ExpiredTokenError,
-  InvalidTokenError,
-  TokenMissingError
-} from '@/application/errors'
+import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 
-import {
-  HttpHelperProtocol,
-  HttpRequest,
-  HttpResponse
-} from '@/presentation/http/protocols'
+import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { MiddlewareProtocol } from './protocols/middleware-protocol'
 
@@ -42,7 +34,9 @@ export class ProtectedMiddleware implements MiddlewareProtocol {
       case TokenMissingError:
         return this.httpHelper.unauthorized(accessTokenResponse as Error)
       case ExpiredTokenError:
-        accessToken = this.accessTokenEncrypter.encrypt({ userId: refreshTokenResponse.personal.id })
+        accessToken = this.accessTokenEncrypter.encrypt({
+          userId: refreshTokenResponse.personal.id
+        })
         break
     }
 

@@ -17,6 +17,6 @@ export class ValidateActivationCode implements ValidatorProtocol {
     if (user.temporary.activationCodeExpiration == null) return new InvalidCodeError()
     if (activationCode !== user.temporary.activationCode) return new InvalidCodeError()
     if (user.settings.accountActivated) return new AccountAlreadyActivatedError()
-    if (user.temporary.activationCodeExpiration.getTime() < Date.now()) return new CodeIsExpiredError()
+    if (user.temporary.activationCodeExpiration.getTime() < Date.now()) { return new CodeIsExpiredError() }
   }
 }
