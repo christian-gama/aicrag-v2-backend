@@ -74,6 +74,19 @@ describe('protectedMiddleware', () => {
   it('should return unauthorized if refresh token response is instance of InvalidTokenError', async () => {
     expect.hasAssertions()
 
+    const { httpHelper, request, sut, verifyRefreshTokenStub } = makeSut()
+    jest
+      .spyOn(verifyRefreshTokenStub, 'verify')
+      .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+
+    const response = await sut.handle(request)
+
+    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
+  })
+
+  it('should return unauthorized if access token response is instance of InvalidTokenError', async () => {
+    expect.hasAssertions()
+
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest
       .spyOn(verifyAccessTokenStub, 'verify')

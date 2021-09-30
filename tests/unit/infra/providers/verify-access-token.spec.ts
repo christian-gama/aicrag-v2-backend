@@ -59,6 +59,17 @@ describe('verifyAccessToken', () => {
     expect(findUserByIdSpy).toHaveBeenCalledWith('any_id')
   })
 
+  it('should return error if decode fails', async () => {
+    expect.hasAssertions()
+
+    const { sut, accessTokenDecoderStub } = makeSut()
+    jest.spyOn(accessTokenDecoderStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
+
+    const response = await sut.verify('any_token')
+
+    expect(response).toStrictEqual(new Error())
+  })
+
   it('should return InvalidTokenError if there is no user', async () => {
     expect.hasAssertions()
 

@@ -11,18 +11,18 @@ import { makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests
 interface SutTypes {
   sut: VerifyResetPasswordToken
   fakeUser: IUser
-  accessTokenDecoder: DecoderProtocol
+  accessTokenDecoderStub: DecoderProtocol
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const accessTokenDecoder = makeDecoderStub()
+  const accessTokenDecoderStub = makeDecoderStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new VerifyResetPasswordToken(accessTokenDecoder, userDbRepositoryStub)
+  const sut = new VerifyResetPasswordToken(accessTokenDecoderStub, userDbRepositoryStub)
 
-  return { accessTokenDecoder, fakeUser, sut, userDbRepositoryStub }
+  return { accessTokenDecoderStub, fakeUser, sut, userDbRepositoryStub }
 }
 
 describe('verifyResetPasswordToken', () => {
@@ -40,12 +40,23 @@ describe('verifyResetPasswordToken', () => {
   it('should call accessTokenDecoder.decode with correct token', async () => {
     expect.hasAssertions()
 
-    const { accessTokenDecoder, sut } = makeSut()
-    const unauthorizedSpy = jest.spyOn(accessTokenDecoder, 'decode')
+    const { accessTokenDecoderStub, sut } = makeSut()
+    const unauthorizedSpy = jest.spyOn(accessTokenDecoderStub, 'decode')
 
     await sut.verify('any_token')
 
     expect(unauthorizedSpy).toHaveBeenCalledWith('any_token')
+  })
+
+  it('should return error if decode fails', async () => {
+    expect.hasAssertions()
+
+    const { sut, accessTokenDecoderStub } = makeSut()
+    jest.spyOn(accessTokenDecoderStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
+
+    const response = await sut.verify('any_token')
+
+    expect(response).toStrictEqual(new Error())
   })
 
   it('should call userDbRepository.findUserById with correct user id', async () => {
@@ -88,9 +99,9 @@ describe('verifyResetPasswordToken', () => {
   it('should return a user if succeds', async () => {
     expect.hasAssertions()
 
-    const { accessTokenDecoder, fakeUser, sut, userDbRepositoryStub } = makeSut()
+    const { accessTokenDecoderStub, fakeUser, sut, userDbRepositoryStub } = makeSut()
     jest
-      .spyOn(accessTokenDecoder, 'decode')
+      .spyOn(accessTokenDecoderStub, 'decode')
       .mockReturnValueOnce(
         Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
       )
