@@ -7,6 +7,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
   preset: '@shelf/jest-mongodb',
+  maxWorkers: 1,
   transform: {
     '.+\\.ts$': 'ts-jest'
   },

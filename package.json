@@ -15,10 +15,10 @@
     "restart": "yarn build && docker-compose restart",
     "test": "yarn test:unit && yarn test:integration",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
-    "test:verbose": "jest --passWithNoTests --detectOpenHandles --maxWorkers=1",
-    "test:unit": "yarn test:silent -c jest-unit-config.js --maxWorkers=6",
-    "test:integration": "yarn test:silent -c jest-integration-config.js --maxWorkers=1",
-    "test:ci": "jest --clearCache && yarn test:verbose --coverage"
+    "test:verbose": "jest --passWithNoTests --detectOpenHandles",
+    "test:unit": "yarn test:silent -c jest-unit-config.js",
+    "test:integration": "yarn test:silent -c jest-integration-config.js",
+    "test:ci": "jest --clearCache && yarn test:silent --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
