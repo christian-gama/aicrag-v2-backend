@@ -2,6 +2,7 @@ import { controllerAdapter } from '../../../infra/adapters/express/controller-ad
 import { middlewareAdapter } from '../../../infra/adapters/express/middleware-adapter'
 
 import { makeLogoutController } from '@/factories/controllers/account'
+import { makeUpdateEmailByCodeController } from '@/factories/controllers/account/update-email-by-code-controller-factory'
 import { makeUpdatePersonalController } from '@/factories/controllers/account/update-personal-controller-factory'
 import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/helpers'
 import { makeSendEmailCodeController } from '@/factories/controllers/helpers/send-email-code-controller-factory'
@@ -23,6 +24,7 @@ import {
 /* ******* Controllers ******* */
 // Account Routes
 export const logoutController = controllerAdapter(makeLogoutController())
+export const updateEmailByCodeController = controllerAdapter(makeUpdateEmailByCodeController())
 export const updatePersonalController = controllerAdapter(makeUpdatePersonalController())
 
 // Helpers Routes
