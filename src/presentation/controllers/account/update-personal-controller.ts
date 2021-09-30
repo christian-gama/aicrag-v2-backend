@@ -49,6 +49,9 @@ export class UpdatePersonalController implements ControllerProtocol {
       updatedUser = await this.userDbRepository.updateUser(user, {
         'temporary.tempEmailCode': this.emailCode.generate()
       })
+      updatedUser = await this.userDbRepository.updateUser(user, {
+        'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+      })
     }
 
     if (!updatedUser) return this.httpHelper.ok({ message: 'No changes were made' })

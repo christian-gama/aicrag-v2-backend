@@ -190,7 +190,7 @@ describe('updatePersonalProtocol', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledTimes(3)
+    expect(updateUserSpy).toHaveBeenCalledTimes(4)
   })
 
   it('should call filter with correct user', async () => {
