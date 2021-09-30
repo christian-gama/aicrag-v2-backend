@@ -8,11 +8,12 @@ import app from '@/main/express/config/app'
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateRefreshToken } from '@/factories/providers/token'
+import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
 import request from 'supertest'
 
 describe('get /logout', () => {
   const client = makeMongoDb()
+  let accessToken: string
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: CollectionProtocol
@@ -33,6 +34,7 @@ describe('get /logout', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
@@ -45,13 +47,13 @@ describe('get /logout', () => {
 
     await agent
       .get('/api/v1/account/logout')
-      .set('Cookie', `refreshToken=${refreshToken}`)
+      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)
   })
 
   it('should return 401 if user is logged out', async () => {
     expect.assertions(0)
 
-    await agent.get('/api/v1/account/logout').expect(403)
+    await agent.get('/api/v1/account/logout').expect(401)
   })
 })

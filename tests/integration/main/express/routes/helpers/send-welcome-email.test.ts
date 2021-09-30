@@ -41,12 +41,6 @@ describe('post /send-welcome-email', () => {
 
   const agent = request.agent(app)
 
-  it('should return 401 if there is no access token', async () => {
-    expect.assertions(0)
-
-    await agent.post('/api/v1/helpers/send-welcome-email').send().expect(401)
-  })
-
   it('should return 400 if validation fails', async () => {
     expect.assertions(0)
 

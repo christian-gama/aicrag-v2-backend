@@ -2,7 +2,9 @@ import { controllerAdapter } from '../../../infra/adapters/express/controller-ad
 import { middlewareAdapter } from '../../../infra/adapters/express/middleware-adapter'
 
 import { makeLogoutController } from '@/factories/controllers/account'
+import { makeUpdatePersonalController } from '@/factories/controllers/account/update-personal-controller-factory'
 import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/helpers'
+import { makeSendEmailCodeController } from '@/factories/controllers/helpers/send-email-code-controller-factory'
 import { makeSendForgotPasswordEmailController } from '@/factories/controllers/helpers/send-forgot-password-email-controller-factory'
 import { makeSendWelcomeEmailController } from '@/factories/controllers/helpers/send-welcome-email-controller-factory,'
 import {
@@ -21,11 +23,13 @@ import {
 /* ******* Controllers ******* */
 // Account Routes
 export const logoutController = controllerAdapter(makeLogoutController())
+export const updatePersonalController = controllerAdapter(makeUpdatePersonalController())
 
 // Helpers Routes
 export const sendForgotPasswordEmailController = controllerAdapter(
   makeSendForgotPasswordEmailController()
 )
+export const sendEmailCodeController = controllerAdapter(makeSendEmailCodeController())
 export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 export const verifyResetPasswordTokenController = controllerAdapter(
   makeVerifyResetPasswordTokenController()
