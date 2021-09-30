@@ -13,12 +13,12 @@ export const makeUpdateEmailByCodeController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
   const userDbRepository = makeUserDbRepository()
 
-  const activateUserController = new UpdateEmailByCodeController(
+  const updateEmailByCodeController = new UpdateEmailByCodeController(
     updateEmailByCodeValidator,
     filterUserData,
     httpHelper,
     userDbRepository
   )
 
-  return makeTryCatchDecorator(activateUserController)
+  return makeTryCatchDecorator(updateEmailByCodeController)
 }
