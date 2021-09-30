@@ -33,7 +33,7 @@ export class SendEmailCodeController implements ControllerProtocol {
     }
 
     return this.httpHelper.ok({
-      message: `An email with your code has been sent to ${user.personal.email}`
+      message: `An email with your code has been sent to ${user.temporary.tempEmail as string}`
     })
   }
 }

@@ -115,12 +115,13 @@ describe('sendEmailCodeController', () => {
     expect.hasAssertions()
 
     const { sut, fakeUser, httpHelper, request } = makeSut()
+    fakeUser.temporary.tempEmail = 'any_email@mail.com'
 
     const response = await sut.handle(request)
 
     expect(response).toStrictEqual(
       httpHelper.ok({
-        message: `An email with your code has been sent to ${fakeUser.personal.email}`
+        message: `An email with your code has been sent to ${fakeUser.temporary.tempEmail}`
       })
     )
   })
