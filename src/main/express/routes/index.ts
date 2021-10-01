@@ -4,7 +4,7 @@ import { middlewareAdapter } from '../../../infra/adapters/express/middleware-ad
 import {
   makeLogoutController,
   makeUpdateEmailByCodeController,
-  makeUpdatePersonalController
+  makeUpdateUserController
 } from '@/factories/controllers/account'
 import {
   makeVerifyResetPasswordTokenController,
@@ -29,7 +29,7 @@ import {
 // Account Routes
 export const logoutController = controllerAdapter(makeLogoutController())
 export const updateEmailByCodeController = controllerAdapter(makeUpdateEmailByCodeController())
-export const updatePersonalController = controllerAdapter(makeUpdatePersonalController())
+export const updateUserController = controllerAdapter(makeUpdateUserController())
 
 // Helpers Routes
 export const sendForgotPasswordEmailController = controllerAdapter(

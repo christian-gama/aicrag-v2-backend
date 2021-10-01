@@ -5,7 +5,7 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { ConflictParamError, MustLoginError } from '@/application/errors'
 
-import { UpdatePersonalController } from '@/presentation/controllers/account'
+import { UpdateUserController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import {
@@ -25,7 +25,7 @@ interface SutTypes {
   filterUserDataStub: FilterUserDataProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
-  sut: UpdatePersonalController
+  sut: UpdateUserController
   userDbRepositoryStub: UserDbRepositoryProtocol
   validateEmailStub: ValidatorProtocol
   validateNameStub: ValidatorProtocol
@@ -44,7 +44,7 @@ const makeSut = (): SutTypes => {
   const validateEmailStub = makeValidatorStub()
   const validateNameStub = makeValidatorStub()
 
-  const sut = new UpdatePersonalController(
+  const sut = new UpdateUserController(
     emailCodeStub,
     filterUserDataStub,
     httpHelper,
@@ -66,7 +66,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('updatePersonalProtocol', () => {
+describe('updateUserProtocol', () => {
   it('should return unauthorized if user is not logged in', async () => {
     expect.hasAssertions()
 

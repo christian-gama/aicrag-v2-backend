@@ -2,7 +2,7 @@ import {
   logoutController,
   protectedMiddleware,
   updateEmailByCodeController,
-  updatePersonalController
+  updateUserController
 } from '.'
 
 import { Router } from 'express'
@@ -11,6 +11,6 @@ const router = Router()
 
 router.get('/logout', protectedMiddleware, logoutController)
 router.patch('/update-email-by-code', protectedMiddleware, updateEmailByCodeController)
-router.patch('/update-personal', protectedMiddleware, updatePersonalController)
+router.patch('/update-user', protectedMiddleware, updateUserController)
 
 export default router

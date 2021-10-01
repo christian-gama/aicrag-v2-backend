@@ -1,4 +1,4 @@
-import { UpdatePersonalController } from '@/presentation/controllers/account/update-personal-controller'
+import { UpdateUserController } from '@/presentation/controllers/account/update-user-controller'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'
@@ -6,7 +6,7 @@ import { makeFilterUserData, makeHttpHelper, makeValidationCode } from '../../he
 import { makeUserDbRepository } from '../../repositories'
 import { makeValidateEmail, makeValidateName } from '../../validators'
 
-export const makeUpdatePersonalController = (): ControllerProtocol => {
+export const makeUpdateUserController = (): ControllerProtocol => {
   const emailCode = makeValidationCode()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
@@ -14,7 +14,7 @@ export const makeUpdatePersonalController = (): ControllerProtocol => {
   const validateEmail = makeValidateEmail()
   const validateName = makeValidateName()
 
-  const updatePersonalController = new UpdatePersonalController(
+  const updateUserController = new UpdateUserController(
     emailCode,
     filterUserData,
     httpHelper,
@@ -23,5 +23,5 @@ export const makeUpdatePersonalController = (): ControllerProtocol => {
     validateName
   )
 
-  return makeTryCatchDecorator(updatePersonalController)
+  return makeTryCatchDecorator(updateUserController)
 }

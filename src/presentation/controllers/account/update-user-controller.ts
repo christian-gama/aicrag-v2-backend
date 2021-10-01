@@ -9,7 +9,7 @@ import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/ht
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
 
-export class UpdatePersonalController implements ControllerProtocol {
+export class UpdateUserController implements ControllerProtocol {
   constructor (
     private readonly emailCode: ValidationCodeProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
