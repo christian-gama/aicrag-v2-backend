@@ -44,7 +44,7 @@ describe('get /verify-reset-password-token', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .get('/api/v1/helpers/verify-reset-password-token/any_token')
+      .get('/api/v1/token/verify-reset-password-token/any_token')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
       .then(() => expect(403))
@@ -54,7 +54,7 @@ describe('get /verify-reset-password-token', () => {
     expect.assertions(0)
 
     await agent
-      .get('/api/v1/helpers/verify-reset-password-token/invalid_token')
+      .get('/api/v1/token/verify-reset-password-token/invalid_token')
       .then(() => expect(401))
   })
 
@@ -68,7 +68,7 @@ describe('get /verify-reset-password-token', () => {
     const differentResetPasswordToken = makeGenerateAccessToken().generate(makeFakeUser())
 
     await agent
-      .get(`/api/v1/helpers/verify-reset-password-token/${differentResetPasswordToken}`)
+      .get(`/api/v1/token/verify-reset-password-token/${differentResetPasswordToken}`)
       .then(() => expect(401))
   })
 
@@ -80,7 +80,7 @@ describe('get /verify-reset-password-token', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .get(`/api/v1/helpers/verify-reset-password-token/${resetPasswordToken}`)
+      .get(`/api/v1/token/verify-reset-password-token/${resetPasswordToken}`)
       .then(() => expect(200))
   })
 })

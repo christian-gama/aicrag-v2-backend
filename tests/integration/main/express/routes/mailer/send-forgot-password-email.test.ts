@@ -6,14 +6,14 @@ import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
 import app from '@/main/express/config/app'
-import { EmailCode } from '@/main/mailer'
+import { ForgotPasswordEmail } from '@/main/mailer/forgot-password-email'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import request from 'supertest'
 
-describe('post /send-email-code', () => {
+describe('post /send-forgot-password-email', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let userCollection: CollectionProtocol
@@ -44,35 +44,22 @@ describe('post /send-email-code', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/helpers/send-email-code')
+      .post('/api/v1/mailer/send-forgot-password-email')
       .send({ email: 'invalid_email' })
-      .then(() => expect(400))
-  })
-
-  it('should return 400 if temp email does not exist', async () => {
-    expect.assertions(0)
-
-    fakeUser.temporary.tempEmail = null
-    await userCollection.insertOne(fakeUser)
-
-    await agent
-      .post('/api/v1/helpers/send-email-code')
-      .send({ email: fakeUser.personal.email })
       .then(() => expect(400))
   })
 
   it('should return 500 if email is not sent', async () => {
     expect.assertions(0)
 
-    fakeUser.temporary.tempEmail = 'any_email'
     await userCollection.insertOne(fakeUser)
 
     jest
-      .spyOn(EmailCode.prototype, 'send')
+      .spyOn(ForgotPasswordEmail.prototype, 'send')
       .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     await agent
-      .post('/api/v1/helpers/send-email-code')
+      .post('/api/v1/mailer/send-forgot-password-email')
       .send({ email: fakeUser.personal.email })
       .then(() => expect(500))
   })
@@ -80,13 +67,11 @@ describe('post /send-email-code', () => {
   it('should return 200 if email is sent', async () => {
     expect.assertions(0)
 
-    fakeUser.temporary.tempEmail = 'any_email'
     await userCollection.insertOne(fakeUser)
-
-    jest.spyOn(EmailCode.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+    jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 
     await agent
-      .post('/api/v1/helpers/send-email-code')
+      .post('/api/v1/mailer/send-forgot-password-email')
       .send({ email: fakeUser.personal.email })
       .then(() => expect(200))
   })

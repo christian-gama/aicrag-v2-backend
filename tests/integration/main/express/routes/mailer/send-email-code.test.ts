@@ -6,14 +6,14 @@ import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
 import app from '@/main/express/config/app'
-import { WelcomeEmail } from '@/main/mailer/welcome-email'
+import { EmailCode } from '@/main/mailer'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import request from 'supertest'
 
-describe('post /send-welcome-email', () => {
+describe('post /send-email-code', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let userCollection: CollectionProtocol
@@ -44,34 +44,35 @@ describe('post /send-welcome-email', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/helpers/send-welcome-email')
+      .post('/api/v1/mailer/send-email-code')
       .send({ email: 'invalid_email' })
       .then(() => expect(400))
   })
 
-  it('should return 403 if account is already activated', async () => {
+  it('should return 400 if temp email does not exist', async () => {
     expect.assertions(0)
 
-    fakeUser.settings.accountActivated = true
+    fakeUser.temporary.tempEmail = null
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/helpers/send-welcome-email')
+      .post('/api/v1/mailer/send-email-code')
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(403))
+      .then(() => expect(400))
   })
 
   it('should return 500 if email is not sent', async () => {
     expect.assertions(0)
 
+    fakeUser.temporary.tempEmail = 'any_email'
     await userCollection.insertOne(fakeUser)
 
     jest
-      .spyOn(WelcomeEmail.prototype, 'send')
+      .spyOn(EmailCode.prototype, 'send')
       .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     await agent
-      .post('/api/v1/helpers/send-welcome-email')
+      .post('/api/v1/mailer/send-email-code')
       .send({ email: fakeUser.personal.email })
       .then(() => expect(500))
   })
@@ -79,12 +80,13 @@ describe('post /send-welcome-email', () => {
   it('should return 200 if email is sent', async () => {
     expect.assertions(0)
 
+    fakeUser.temporary.tempEmail = 'any_email'
     await userCollection.insertOne(fakeUser)
 
-    jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+    jest.spyOn(EmailCode.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 
     await agent
-      .post('/api/v1/helpers/send-welcome-email')
+      .post('/api/v1/mailer/send-email-code')
       .send({ email: fakeUser.personal.email })
       .then(() => expect(200))
   })

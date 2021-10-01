@@ -6,14 +6,14 @@ import { MongoAdapter } from '@/infra/adapters/database'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
 import app from '@/main/express/config/app'
-import { ForgotPasswordEmail } from '@/main/mailer/forgot-password-email'
+import { WelcomeEmail } from '@/main/mailer/welcome-email'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import request from 'supertest'
 
-describe('post /send-forgot-password-email', () => {
+describe('post /send-welcome-email', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let userCollection: CollectionProtocol
@@ -44,9 +44,21 @@ describe('post /send-forgot-password-email', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/helpers/send-forgot-password-email')
+      .post('/api/v1/mailer/send-welcome-email')
       .send({ email: 'invalid_email' })
       .then(() => expect(400))
+  })
+
+  it('should return 403 if account is already activated', async () => {
+    expect.assertions(0)
+
+    fakeUser.settings.accountActivated = true
+    await userCollection.insertOne(fakeUser)
+
+    await agent
+      .post('/api/v1/mailer/send-welcome-email')
+      .send({ email: fakeUser.personal.email })
+      .then(() => expect(403))
   })
 
   it('should return 500 if email is not sent', async () => {
@@ -55,11 +67,11 @@ describe('post /send-forgot-password-email', () => {
     await userCollection.insertOne(fakeUser)
 
     jest
-      .spyOn(ForgotPasswordEmail.prototype, 'send')
+      .spyOn(WelcomeEmail.prototype, 'send')
       .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     await agent
-      .post('/api/v1/helpers/send-forgot-password-email')
+      .post('/api/v1/mailer/send-welcome-email')
       .send({ email: fakeUser.personal.email })
       .then(() => expect(500))
   })
@@ -68,10 +80,11 @@ describe('post /send-forgot-password-email', () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
-    jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+
+    jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 
     await agent
-      .post('/api/v1/helpers/send-forgot-password-email')
+      .post('/api/v1/mailer/send-welcome-email')
       .send({ email: fakeUser.personal.email })
       .then(() => expect(200))
   })
