@@ -1,5 +1,4 @@
-import { controllerAdapter } from '@/infra/adapters/express/controller-adapter'
-
+import { controllerAdapter } from '@/main/express/adapters/controller-adapter'
 import app from '@/main/express/config/app'
 import { notFound } from '@/main/express/middlewares/not-found'
 

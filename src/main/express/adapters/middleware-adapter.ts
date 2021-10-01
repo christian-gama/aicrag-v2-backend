@@ -3,7 +3,7 @@ import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middlew
 
 import { environment } from '@/main/config/environment'
 
-import { defaultResponse } from '../../../main/express/handlers/express-responses'
+import { defaultResponse } from '../handlers/express-responses'
 
 import { Request, Response, NextFunction } from 'express'
 

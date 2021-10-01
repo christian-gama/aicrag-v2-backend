@@ -1,5 +1,5 @@
-import { controllerAdapter } from '../../../infra/adapters/express/controller-adapter'
-import { middlewareAdapter } from '../../../infra/adapters/express/middleware-adapter'
+import { controllerAdapter } from '../adapters/controller-adapter'
+import { middlewareAdapter } from '../adapters/middleware-adapter'
 
 import {
   makeLogoutController,

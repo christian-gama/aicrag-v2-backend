@@ -7,7 +7,7 @@ import {
   accessTokenResponse,
   productionErrorResponse,
   defaultResponse
-} from '../../../main/express/handlers/express-responses'
+} from '../handlers/express-responses'
 
 import { NextFunction, Request, Response } from 'express'
 
