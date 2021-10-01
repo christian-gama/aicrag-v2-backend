@@ -11,7 +11,7 @@ import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { makeGenerateRefreshToken, makeGenerateAccessToken } from '@/factories/providers/token'
 import request from 'supertest'
 
-describe('post /reset-password', () => {
+describe('patch /update-user', () => {
   const client = makeMongoDb()
   let accessToken: string
   let fakeUser: IUser
