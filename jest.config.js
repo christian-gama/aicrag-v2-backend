@@ -1,7 +1,11 @@
 /* eslint-disable sort-keys */
 module.exports = {
   roots: ['<rootDir>/tests'],
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/main/**'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/main/**',
+    '!<rootDir>/src/factories/**'
+  ],
   modulePathIgnorePatterns: ['protocols'],
   watchPathIgnorePatterns: ['globalConfig'],
   coverageDirectory: 'coverage',
