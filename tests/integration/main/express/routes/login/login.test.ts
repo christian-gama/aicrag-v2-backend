@@ -8,12 +8,13 @@ import app from '@/main/express/config/app'
 import { makeFakeUser } from '@/tests/__mocks__/mock-user'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateRefreshToken } from '@/factories/providers/token'
+import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
 import { hash } from 'bcrypt'
 import request from 'supertest'
 
 describe('post /login', () => {
   const client = makeMongoDb()
+  let accessToken: string
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: CollectionProtocol
@@ -34,6 +35,7 @@ describe('post /login', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
@@ -46,9 +48,9 @@ describe('post /login', () => {
 
     await agent
       .post('/api/v1/login')
-      .set('Cookie', `refreshToken=${refreshToken}`)
+      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send()
-      .expect(403)
+      .then(() => expect(403))
   })
 
   it('should return 401 if credentials are invalid', async () => {
@@ -57,7 +59,7 @@ describe('post /login', () => {
     await agent
       .post('/api/v1/login')
       .send({ email: 'invalid_email@email.com', password: 'invalid_password' })
-      .expect(401)
+      .then(() => expect(401))
   })
 
   it('should return 400 if miss a param or param is invalid', async () => {
@@ -80,7 +82,7 @@ describe('post /login', () => {
     await agent
       .post('/api/v1/login')
       .send({ email: fakeUser.personal.email, password: userPassword })
-      .expect(200)
+      .then(() => expect(200))
   })
 
   it('should return 200 if all validations succeds', async () => {
@@ -95,6 +97,6 @@ describe('post /login', () => {
     await agent
       .post('/api/v1/login')
       .send({ email: fakeUser.personal.email, password: userPassword })
-      .expect(200)
+      .then(() => expect(200))
   })
 })

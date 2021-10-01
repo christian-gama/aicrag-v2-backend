@@ -49,7 +49,7 @@ describe('post /reset-password', () => {
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
-      .expect(403)
+      .then(() => expect(403))
   })
 
   it('should return 401 if token is missing', async () => {
@@ -67,7 +67,7 @@ describe('post /reset-password', () => {
     await agent
       .patch('/api/v1/login/reset-password')
       .set('Cookie', 'accessToken=invalid_token')
-      .expect(401)
+      .then(() => expect(401))
   })
 
   it('should return 400 if params are missing', async () => {
@@ -80,7 +80,7 @@ describe('post /reset-password', () => {
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send()
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 400 if params are invalid', async () => {
@@ -93,7 +93,7 @@ describe('post /reset-password', () => {
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123', passwordConfirmation: '1234' })
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 200 if params are valid', async () => {
@@ -106,6 +106,6 @@ describe('post /reset-password', () => {
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123456', passwordConfirmation: '123456' })
-      .expect(200)
+      .then(() => expect(200))
   })
 })

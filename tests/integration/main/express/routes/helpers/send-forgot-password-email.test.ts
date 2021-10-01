@@ -46,7 +46,7 @@ describe('post /send-forgot-password-email', () => {
     await agent
       .post('/api/v1/helpers/send-forgot-password-email')
       .send({ email: 'invalid_email' })
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 500 if email is not sent', async () => {
@@ -61,7 +61,7 @@ describe('post /send-forgot-password-email', () => {
     await agent
       .post('/api/v1/helpers/send-forgot-password-email')
       .send({ email: fakeUser.personal.email })
-      .expect(500)
+      .then(() => expect(500))
   })
 
   it('should return 200 if email is sent', async () => {
@@ -73,6 +73,6 @@ describe('post /send-forgot-password-email', () => {
     await agent
       .post('/api/v1/helpers/send-forgot-password-email')
       .send({ email: fakeUser.personal.email })
-      .expect(200)
+      .then(() => expect(200))
   })
 })

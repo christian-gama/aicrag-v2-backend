@@ -49,7 +49,7 @@ describe('post /activate-account', () => {
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
-      .expect(200)
+      .then(() => expect(200))
   })
 
   it('should return 401 if user does not have access token', async () => {
@@ -72,7 +72,7 @@ describe('post /activate-account', () => {
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: 'invalid_code', email: fakeUser.personal.email })
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 400 if code is expired', async () => {
@@ -86,7 +86,7 @@ describe('post /activate-account', () => {
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 400 if misses any field', async () => {
@@ -98,7 +98,7 @@ describe('post /activate-account', () => {
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send()
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 400 if account is already activated', async () => {
@@ -112,6 +112,6 @@ describe('post /activate-account', () => {
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
-      .expect(400)
+      .then(() => expect(400))
   })
 })

@@ -47,7 +47,7 @@ describe('post /signup', () => {
       .post('/api/v1/signup')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
-      .expect(403)
+      .then(() => expect(403))
   })
 
   it('should return 400 if validation fails', async () => {

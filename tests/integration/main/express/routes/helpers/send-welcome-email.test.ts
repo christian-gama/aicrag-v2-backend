@@ -46,7 +46,7 @@ describe('post /send-welcome-email', () => {
     await agent
       .post('/api/v1/helpers/send-welcome-email')
       .send({ email: 'invalid_email' })
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 403 if account is already activated', async () => {
@@ -58,7 +58,7 @@ describe('post /send-welcome-email', () => {
     await agent
       .post('/api/v1/helpers/send-welcome-email')
       .send({ email: fakeUser.personal.email })
-      .expect(403)
+      .then(() => expect(403))
   })
 
   it('should return 500 if email is not sent', async () => {
@@ -73,7 +73,7 @@ describe('post /send-welcome-email', () => {
     await agent
       .post('/api/v1/helpers/send-welcome-email')
       .send({ email: fakeUser.personal.email })
-      .expect(500)
+      .then(() => expect(500))
   })
 
   it('should return 200 if email is sent', async () => {
@@ -86,6 +86,6 @@ describe('post /send-welcome-email', () => {
     await agent
       .post('/api/v1/helpers/send-welcome-email')
       .send({ email: fakeUser.personal.email })
-      .expect(200)
+      .then(() => expect(200))
   })
 })

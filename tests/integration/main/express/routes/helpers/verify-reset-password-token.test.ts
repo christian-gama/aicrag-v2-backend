@@ -47,7 +47,7 @@ describe('get /verify-reset-password-token', () => {
       .get('/api/v1/helpers/verify-reset-password-token/any_token')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
-      .expect(403)
+      .then(() => expect(403))
   })
 
   it('should return 401 if token is invalid', async () => {

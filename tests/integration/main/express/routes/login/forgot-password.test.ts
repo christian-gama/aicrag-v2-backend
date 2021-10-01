@@ -46,7 +46,7 @@ describe('post /forgot-password', () => {
     await agent
       .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
-      .expect(200)
+      .then(() => expect(200))
   })
 
   it('should return 400 if email does not exist', async () => {
@@ -55,7 +55,7 @@ describe('post /forgot-password', () => {
     await agent
       .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 403 if user is logged in', async () => {
@@ -67,6 +67,6 @@ describe('post /forgot-password', () => {
       .post('/api/v1/login/forgot-password')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send({ email: fakeUser.personal.email })
-      .expect(403)
+      .then(() => expect(403))
   })
 })
