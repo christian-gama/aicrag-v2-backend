@@ -46,7 +46,7 @@ describe('post /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/activate-account')
+      .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(200)
@@ -58,7 +58,7 @@ describe('post /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/activate-account')
+      .patch('/api/v1/login/activate-account')
       .send()
       .then(() => expect(401))
   })
@@ -69,7 +69,7 @@ describe('post /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/activate-account')
+      .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: 'invalid_code', email: fakeUser.personal.email })
       .expect(400)
@@ -83,7 +83,7 @@ describe('post /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/activate-account')
+      .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(400)
@@ -95,7 +95,7 @@ describe('post /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/activate-account')
+      .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send()
       .expect(400)
@@ -109,7 +109,7 @@ describe('post /activate-account', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/activate-account')
+      .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(400)

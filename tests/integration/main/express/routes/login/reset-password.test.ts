@@ -46,7 +46,7 @@ describe('post /reset-password', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/reset-password')
+      .patch('/api/v1/login/reset-password')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
       .expect(403)
@@ -56,7 +56,7 @@ describe('post /reset-password', () => {
     expect.assertions(0)
 
     await agent
-      .post('/api/v1/login/reset-password')
+      .patch('/api/v1/login/reset-password')
       .send()
       .then(() => expect(401))
   })
@@ -65,7 +65,7 @@ describe('post /reset-password', () => {
     expect.assertions(0)
 
     await agent
-      .post('/api/v1/login/reset-password')
+      .patch('/api/v1/login/reset-password')
       .set('Cookie', 'accessToken=invalid_token')
       .expect(401)
   })
@@ -77,7 +77,7 @@ describe('post /reset-password', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/reset-password')
+      .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send()
       .expect(400)
@@ -90,7 +90,7 @@ describe('post /reset-password', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/reset-password')
+      .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123', passwordConfirmation: '1234' })
       .expect(400)
@@ -103,7 +103,7 @@ describe('post /reset-password', () => {
     await userCollection.insertOne(fakeUser)
 
     await agent
-      .post('/api/v1/login/reset-password')
+      .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123456', passwordConfirmation: '123456' })
       .expect(200)

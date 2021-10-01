@@ -11,8 +11,8 @@ import { Router } from 'express'
 const router = Router()
 
 router.post('/', loginController)
-router.post('/activate-account', partialProtectedMiddleware, activateAccountController)
+router.patch('/activate-account', partialProtectedMiddleware, activateAccountController)
 router.post('/forgot-password', forgotPasswordController)
-router.post('/reset-password', resetPasswordController)
+router.patch('/reset-password', resetPasswordController)
 
 export default router
