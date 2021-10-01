@@ -63,7 +63,10 @@ describe('post /login', () => {
   it('should return 400 if miss a param or param is invalid', async () => {
     expect.assertions(0)
 
-    await agent.post('/api/v1/login').send().expect(400)
+    await agent
+      .post('/api/v1/login')
+      .send()
+      .then(() => expect(400))
   })
 
   it('should return 200 if account is not activated', async () => {

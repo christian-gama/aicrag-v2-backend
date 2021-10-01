@@ -53,7 +53,9 @@ describe('get /verify-reset-password-token', () => {
   it('should return 401 if token is invalid', async () => {
     expect.assertions(0)
 
-    await agent.get('/api/v1/helpers/verify-reset-password-token/invalid_token').expect(401)
+    await agent
+      .get('/api/v1/helpers/verify-reset-password-token/invalid_token')
+      .then(() => expect(401))
   })
 
   it("should return 401 if param's token does not match user's token", async () => {
@@ -67,7 +69,7 @@ describe('get /verify-reset-password-token', () => {
 
     await agent
       .get(`/api/v1/helpers/verify-reset-password-token/${differentResetPasswordToken}`)
-      .expect(401)
+      .then(() => expect(401))
   })
 
   it('should return 200 if token is valid', async () => {
@@ -77,6 +79,8 @@ describe('get /verify-reset-password-token', () => {
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)
 
-    await agent.get(`/api/v1/helpers/verify-reset-password-token/${resetPasswordToken}`).expect(200)
+    await agent
+      .get(`/api/v1/helpers/verify-reset-password-token/${resetPasswordToken}`)
+      .then(() => expect(200))
   })
 })

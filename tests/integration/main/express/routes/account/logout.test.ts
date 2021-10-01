@@ -48,12 +48,12 @@ describe('get /logout', () => {
     await agent
       .get('/api/v1/account/logout')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .expect(200)
+      .then(() => expect(200))
   })
 
   it('should return 401 if user is logged out', async () => {
     expect.assertions(0)
 
-    await agent.get('/api/v1/account/logout').expect(401)
+    await agent.get('/api/v1/account/logout').then(() => expect(401))
   })
 })

@@ -57,7 +57,10 @@ describe('post /activate-account', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent.post('/api/v1/login/activate-account').send().expect(401)
+    await agent
+      .post('/api/v1/login/activate-account')
+      .send()
+      .then(() => expect(401))
   })
 
   it('should return 400 if code is invalid', async () => {

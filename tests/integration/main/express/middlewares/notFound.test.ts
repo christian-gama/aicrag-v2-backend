@@ -18,7 +18,7 @@ describe('errorHandler', () => {
   it('should return 404', async () => {
     expect.assertions(0)
 
-    await agent.get('/notFound').expect(404)
+    await agent.get('/notFound').then(() => expect(404))
   })
 
   it('should return a default error message', async () => {
@@ -26,6 +26,6 @@ describe('errorHandler', () => {
 
     await agent
       .get('/notFound')
-      .expect({ data: { message: 'Cannotfindthepath:/notFound', status: 'fail' } })
+      .then(() => expect({ data: { message: 'Cannotfindthepath:/notFound', status: 'fail' } }))
   })
 })

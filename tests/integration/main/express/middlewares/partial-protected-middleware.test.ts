@@ -46,7 +46,7 @@ describe('partialProtectedMiddleware', () => {
   it('should return 401 if fails', async () => {
     expect.assertions(0)
 
-    await agent.get('/partial-protected').expect(401)
+    await agent.get('/partial-protected').then(() => expect(401))
   })
 
   it('should return 200 if succeds', async () => {
@@ -54,6 +54,9 @@ describe('partialProtectedMiddleware', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent.get('/partial-protected').set('Cookie', `accessToken=${accessToken}`).expect(200)
+    await agent
+      .get('/partial-protected')
+      .set('Cookie', `accessToken=${accessToken}`)
+      .then(() => expect(200))
   })
 })

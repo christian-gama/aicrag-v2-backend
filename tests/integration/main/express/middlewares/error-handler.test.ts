@@ -36,7 +36,10 @@ describe('errorRequestHandler', () => {
   it('should return statusCode 500', async () => {
     expect.assertions(0)
 
-    await agent.post('/error_handler').send({}).expect(500)
+    await agent
+      .post('/error_handler')
+      .send({})
+      .then(() => expect(500))
   })
 
   it('should return a full error if environment is on development', async () => {
@@ -47,10 +50,12 @@ describe('errorRequestHandler', () => {
     await agent
       .post('/error_handler')
       .send({})
-      .expect({
-        data: { error: { message: error.message, name: error.name, stack: error.stack } },
-        status: 'fail'
-      })
+      .then(() =>
+        expect({
+          data: { error: { message: error.message, name: error.name, stack: error.stack } },
+          status: 'fail'
+        })
+      )
   })
 
   it('should return a shorten error if environment is on production', async () => {
@@ -61,9 +66,11 @@ describe('errorRequestHandler', () => {
     await agent
       .post('/error_handler')
       .send({})
-      .expect({
-        data: { message: 'Internal error: Try again later' },
-        status: 'fail'
-      })
+      .then(() =>
+        expect({
+          data: { message: 'Internal error: Try again later' },
+          status: 'fail'
+        })
+      )
   })
 })

@@ -43,7 +43,10 @@ describe('post /send-email-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent.post('/api/v1/helpers/send-email-code').send({ email: 'invalid_email' }).expect(400)
+    await agent
+      .post('/api/v1/helpers/send-email-code')
+      .send({ email: 'invalid_email' })
+      .then(() => expect(400))
   })
 
   it('should return 400 if temp email does not exist', async () => {
@@ -55,7 +58,7 @@ describe('post /send-email-code', () => {
     await agent
       .post('/api/v1/helpers/send-email-code')
       .send({ email: fakeUser.personal.email })
-      .expect(400)
+      .then(() => expect(400))
   })
 
   it('should return 500 if email is not sent', async () => {
@@ -71,7 +74,7 @@ describe('post /send-email-code', () => {
     await agent
       .post('/api/v1/helpers/send-email-code')
       .send({ email: fakeUser.personal.email })
-      .expect(500)
+      .then(() => expect(500))
   })
 
   it('should return 200 if email is sent', async () => {
@@ -85,6 +88,6 @@ describe('post /send-email-code', () => {
     await agent
       .post('/api/v1/helpers/send-email-code')
       .send({ email: fakeUser.personal.email })
-      .expect(200)
+      .then(() => expect(200))
   })
 })

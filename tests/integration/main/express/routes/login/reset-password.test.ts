@@ -55,7 +55,10 @@ describe('post /reset-password', () => {
   it('should return 401 if token is missing', async () => {
     expect.assertions(0)
 
-    await agent.post('/api/v1/login/reset-password').send().expect(401)
+    await agent
+      .post('/api/v1/login/reset-password')
+      .send()
+      .then(() => expect(401))
   })
 
   it('should return 401 if token is invalid', async () => {

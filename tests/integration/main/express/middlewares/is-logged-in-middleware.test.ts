@@ -47,7 +47,7 @@ describe('isLoggedInMiddleware', () => {
   it('should not return a user if fails', async () => {
     expect.assertions(0)
 
-    await agent.get('/is-logged-in').expect('no_user')
+    await agent.get('/is-logged-in').then(() => expect('no_user'))
   })
 
   it('should return a user if succeds', async () => {
@@ -55,6 +55,9 @@ describe('isLoggedInMiddleware', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent.get('/is-logged-in').set('Cookie', `refreshToken=${refreshToken}`).expect('user')
+    await agent
+      .get('/is-logged-in')
+      .set('Cookie', `refreshToken=${refreshToken}`)
+      .then(() => expect('user'))
   })
 })

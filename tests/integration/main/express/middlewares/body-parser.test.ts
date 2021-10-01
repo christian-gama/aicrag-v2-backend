@@ -14,6 +14,9 @@ describe('bodyParser', () => {
   it('should parse body', async () => {
     expect.assertions(0)
 
-    await agent.post('/use_body_parser').send({ name: 'any_name' }).expect({ name: 'any_name' })
+    await agent
+      .post('/use_body_parser')
+      .send({ name: 'any_name' })
+      .then(() => expect({ name: 'any_name' }))
   })
 })

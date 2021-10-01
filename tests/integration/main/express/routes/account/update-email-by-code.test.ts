@@ -54,7 +54,7 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode })
-      .then((response) => expect(200))
+      .then(() => expect(200))
   })
 
   it('should return 401 if user does not have access token', async () => {
@@ -65,7 +65,7 @@ describe('patch /update-email-by-code', () => {
     await agent
       .patch('/api/v1/account/update-email-by-code')
       .send()
-      .then((response) => expect(401))
+      .then(() => expect(401))
   })
 
   it('should return 400 if code is invalid', async () => {
@@ -77,7 +77,7 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'invalid_code' })
-      .then((response) => expect(400))
+      .then(() => expect(400))
   })
 
   it('should return 400 if code is expired', async () => {
@@ -92,7 +92,7 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode })
-      .then((response) => expect(400))
+      .then(() => expect(400))
   })
 
   it('should return 400 if misses any field', async () => {
@@ -104,7 +104,7 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send()
-      .then((response) => expect(400))
+      .then(() => expect(400))
   })
 
   it('should return 400 if temporary email is null', async () => {
@@ -118,7 +118,7 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
-      .then((response) => expect(400))
+      .then(() => expect(400))
   })
 
   it('should return 400 if temporary email code is null', async () => {
@@ -132,7 +132,7 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
-      .then((response) => expect(400))
+      .then(() => expect(400))
   })
 
   it('should return 400 if temporary email code expiration is null', async () => {
@@ -146,7 +146,7 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
-      .then((response) => expect(400))
+      .then(() => expect(400))
   })
 
   it('should return 400 if email does not exist', async () => {
@@ -158,6 +158,6 @@ describe('patch /update-email-by-code', () => {
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: 'invalid_email', tempEmailCode: 'any_code' })
-      .then((response) => expect(400))
+      .then(() => expect(400))
   })
 })
