@@ -28,7 +28,8 @@ export class UpdateUserController implements ControllerProtocol {
 
     let updatedUser: IUser | undefined
     if (data.currency) {
-      await this.validateCurrency.validate(data)
+      const error = await this.validateCurrency.validate(data)
+      if (error) return this.httpHelper.badRequest(error)
     }
 
     if (data.email) {
