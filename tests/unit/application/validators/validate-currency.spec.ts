@@ -35,4 +35,15 @@ describe('validateCurrency', () => {
 
     expect(value).toBeUndefined()
   })
+
+  it('should return undefined if currency is equal to BRL', () => {
+    expect.hasAssertions()
+
+    const { sut } = makeSut()
+    const data = { currency: 'BRL' }
+
+    const value = sut.validate(data)
+
+    expect(value).toBeUndefined()
+  })
 })
