@@ -63,6 +63,18 @@ describe('patch /update-user', () => {
       .then(() => expect(400))
   })
 
+  it('should return 400 if currency is invalid', async () => {
+    expect.assertions(0)
+
+    await userCollection.insertOne(fakeUser)
+
+    await agent
+      .patch('/api/v1/account/update-user')
+      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .send({ currency: 'invalid_currency' })
+      .then(() => expect(400))
+  })
+
   it('should return 400 if email is invalid', async () => {
     expect.assertions(0)
 
@@ -107,7 +119,7 @@ describe('patch /update-user', () => {
     await agent
       .patch('/api/v1/account/update-user')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: 'example@mail.com', name: 'Example' })
+      .send({ currency: 'BRL', email: 'example@mail.com', name: 'Example' })
       .then(() => expect(200))
   })
 })
