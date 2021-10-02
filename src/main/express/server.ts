@@ -1,6 +1,6 @@
 import 'module-alias/register'
 
-import { MongoAdapter } from '@/infra/adapters/database'
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 
 import { environment } from '@/main/config/environment'
 

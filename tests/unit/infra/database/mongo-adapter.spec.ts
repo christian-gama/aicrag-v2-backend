@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database'
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
 import { makeFakeUser } from '@/tests/__mocks__'

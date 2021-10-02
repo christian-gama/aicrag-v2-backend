@@ -1,7 +1,7 @@
 import { ILogError } from '@/domain'
 import { LogErrorRepositoryProtocol } from '@/domain/repositories'
 
-import { MongoAdapter } from '@/infra/adapters/database'
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 import { LogErrorDbRepository } from '@/infra/database/repositories'
 

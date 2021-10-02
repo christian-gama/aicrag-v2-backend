@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 import { UserRepositoryProtocol } from '@/domain/repositories'
 
-import { MongoAdapter } from '@/infra/adapters/database'
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 import { UserDbRepository } from '@/infra/database/repositories'
 

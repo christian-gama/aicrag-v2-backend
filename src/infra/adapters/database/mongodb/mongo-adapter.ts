@@ -4,7 +4,7 @@ import {
   DatabaseProtocol,
   Document,
   ICollection
-} from '../../database/protocols'
+} from '../../../database/protocols'
 
 import { MongoClient } from 'mongodb'
 
