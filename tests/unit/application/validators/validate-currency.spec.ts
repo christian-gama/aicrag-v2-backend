@@ -24,4 +24,15 @@ describe('validateCurrency', () => {
 
     expect(value).toStrictEqual(new InvalidParamError('currency'))
   })
+
+  it('should return undefined if currency is equal to USD', () => {
+    expect.hasAssertions()
+
+    const { sut } = makeSut()
+    const data = { currency: 'USD' }
+
+    const value = sut.validate(data)
+
+    expect(value).toBeUndefined()
+  })
 })
