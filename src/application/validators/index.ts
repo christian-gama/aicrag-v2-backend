@@ -1,5 +1,6 @@
 export * from './validate-activation-code'
 export * from './validate-active-account'
+export * from './validate-currency'
 export * from './validate-email-code'
 export * from './validate-email-exists'
 export * from './validate-email'
