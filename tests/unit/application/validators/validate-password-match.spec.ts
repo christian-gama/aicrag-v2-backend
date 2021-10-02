@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
   return { comparerStub, fakeUser, sut, userDbRepositoryStub }
 }
 
-describe('validatePasswordMatches', () => {
+describe('validatePasswordMatch', () => {
   it('should return a UserCredentialError if email does not exists', async () => {
     expect.hasAssertions()
 

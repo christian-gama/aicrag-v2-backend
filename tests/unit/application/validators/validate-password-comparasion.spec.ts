@@ -15,7 +15,7 @@ const makeSut = (): SutTypes => {
   return { sut }
 }
 
-describe('validateName', () => {
+describe('validatePasswordComparasion', () => {
   it('should return InvalidParamError if passwords are not equal', () => {
     expect.hasAssertions()
 

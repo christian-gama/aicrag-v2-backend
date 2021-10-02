@@ -18,7 +18,7 @@ const makeSut = (): SutTypes => {
   return { sut, validationStubs }
 }
 
-describe('validationCompose', () => {
+describe('validationComposite', () => {
   it('should return an error if validate returns an error', async () => {
     expect.hasAssertions()
 

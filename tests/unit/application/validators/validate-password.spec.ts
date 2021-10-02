@@ -15,7 +15,7 @@ const makeSut = (): SutTypes => {
   return { sut }
 }
 
-describe('validateName', () => {
+describe('validatePassword', () => {
   it('should return InvalidParamError if password is lesser than 6 characters', () => {
     expect.hasAssertions()
 

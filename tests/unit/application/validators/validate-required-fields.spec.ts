@@ -15,7 +15,7 @@ const makeSut = (): SutTypes => {
   return { fakeField, sut }
 }
 
-describe('requiredFields', () => {
+describe('validateRequiredFields', () => {
   it('should return MissingParamError if field is missing', () => {
     expect.hasAssertions()
 

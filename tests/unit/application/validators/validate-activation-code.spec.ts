@@ -36,7 +36,7 @@ const makeSut = (): SutTypes => {
   return { fakeUser, request, sut, userDbRepositoryStub }
 }
 
-describe('validateEmailCode', () => {
+describe('validateActivationCode', () => {
   it('should call findUserByEmail with correct email', async () => {
     expect.hasAssertions()
 
