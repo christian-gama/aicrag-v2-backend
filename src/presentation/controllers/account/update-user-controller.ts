@@ -15,42 +15,47 @@ export class UpdateUserController implements ControllerProtocol {
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly userDbRepository: UserDbRepositoryProtocol,
+    private readonly validateCurrency: ValidatorProtocol,
     private readonly validateEmail: ValidatorProtocol,
     private readonly validateName: ValidatorProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = httpRequest.user
-    const credentials = httpRequest.body
+    const data = httpRequest.body
 
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     let updatedUser: IUser | undefined
-    if (credentials.name) {
-      const error = await this.validateName.validate(credentials)
-      if (error) return this.httpHelper.badRequest(error)
-
-      updatedUser = await this.userDbRepository.updateUser(user, {
-        'personal.name': credentials.name
-      })
+    if (data.currency) {
+      await this.validateCurrency.validate(data)
     }
 
-    if (credentials.email) {
-      const error = await this.validateEmail.validate(credentials)
+    if (data.email) {
+      const error = await this.validateEmail.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      const userExists = await this.userDbRepository.findUserByEmail(credentials.email)
+      const userExists = await this.userDbRepository.findUserByEmail(data.email)
 
       if (userExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
       updatedUser = await this.userDbRepository.updateUser(user, {
-        'temporary.tempEmail': credentials.email
+        'temporary.tempEmail': data.email
       })
       updatedUser = await this.userDbRepository.updateUser(user, {
         'temporary.tempEmailCode': this.emailCode.generate()
       })
       updatedUser = await this.userDbRepository.updateUser(user, {
         'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+      })
+    }
+
+    if (data.name) {
+      const error = await this.validateName.validate(data)
+      if (error) return this.httpHelper.badRequest(error)
+
+      updatedUser = await this.userDbRepository.updateUser(user, {
+        'personal.name': data.name
       })
     }
 
