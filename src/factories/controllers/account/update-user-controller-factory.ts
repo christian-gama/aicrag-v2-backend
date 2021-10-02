@@ -6,11 +6,14 @@ import { makeFilterUserData, makeHttpHelper, makeValidationCode } from '../../he
 import { makeUserDbRepository } from '../../repositories'
 import { makeValidateEmail, makeValidateName } from '../../validators'
 
+import { makeValidateCurrency } from '@/factories/validators/validate-currency-factory'
+
 export const makeUpdateUserController = (): ControllerProtocol => {
   const emailCode = makeValidationCode()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
   const userDbRepository = makeUserDbRepository()
+  const validateCurrency = makeValidateCurrency()
   const validateEmail = makeValidateEmail()
   const validateName = makeValidateName()
 
@@ -19,6 +22,7 @@ export const makeUpdateUserController = (): ControllerProtocol => {
     filterUserData,
     httpHelper,
     userDbRepository,
+    validateCurrency,
     validateEmail,
     validateName
   )
