@@ -27,6 +27,7 @@ interface SutTypes {
   request: HttpRequest
   sut: UpdateUserController
   userDbRepositoryStub: UserDbRepositoryProtocol
+  validateCurrencyStub: ValidatorProtocol
   validateEmailStub: ValidatorProtocol
   validateNameStub: ValidatorProtocol
 }
@@ -37,10 +38,11 @@ const makeSut = (): SutTypes => {
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = {
-    body: { email: fakeUser.personal.email, name: fakeUser.personal.name },
+    body: { currency: 'BRL', email: fakeUser.personal.email, name: fakeUser.personal.name },
     user: fakeUser
   }
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const validateCurrencyStub = makeValidatorStub()
   const validateEmailStub = makeValidatorStub()
   const validateNameStub = makeValidatorStub()
 
@@ -49,6 +51,7 @@ const makeSut = (): SutTypes => {
     filterUserDataStub,
     httpHelper,
     userDbRepositoryStub,
+    validateCurrencyStub,
     validateEmailStub,
     validateNameStub
   )
@@ -61,12 +64,13 @@ const makeSut = (): SutTypes => {
     request,
     sut,
     userDbRepositoryStub,
+    validateCurrencyStub,
     validateEmailStub,
     validateNameStub
   }
 }
 
-describe('updateUserProtocol', () => {
+describe('updateUserController', () => {
   it('should return unauthorized if user is not logged in', async () => {
     expect.hasAssertions()
 
@@ -78,11 +82,34 @@ describe('updateUserProtocol', () => {
     expect(result).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
-  it('should call validate name with correct credentials', async () => {
+  it('should call validate currency with correct data', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, validateCurrencyStub } = makeSut()
+    const validateSpy = jest.spyOn(validateCurrencyStub, 'validate')
+
+    await sut.handle(request)
+
+    expect(validateSpy).toHaveBeenCalledWith(request.body)
+  })
+
+  it('should return badRequest if currency validation fails', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, validateCurrencyStub } = makeSut()
+    jest.spyOn(validateCurrencyStub, 'validate').mockReturnValueOnce(new Error())
+
+    const response = await sut.handle(request)
+
+    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('should call validate name with correct data', async () => {
     expect.hasAssertions()
 
     const { request, sut, validateNameStub } = makeSut()
     const validateSpy = jest.spyOn(validateNameStub, 'validate')
+    request.body.email = undefined
 
     await sut.handle(request)
 
@@ -94,6 +121,7 @@ describe('updateUserProtocol', () => {
 
     const { httpHelper, request, sut, validateNameStub } = makeSut()
     jest.spyOn(validateNameStub, 'validate').mockReturnValueOnce(new Error())
+    request.body.email = undefined
 
     const response = await sut.handle(request)
 
@@ -147,7 +175,7 @@ describe('updateUserProtocol', () => {
     expect(validateSpy).toHaveBeenCalledTimes(0)
   })
 
-  it('should call validate email with correct credentials', async () => {
+  it('should call validate email with correct data', async () => {
     expect.hasAssertions()
 
     const { request, sut, validateEmailStub } = makeSut()
@@ -216,6 +244,7 @@ describe('updateUserProtocol', () => {
       .mockReturnValueOnce(Promise.resolve(undefined))
     request.body.email = undefined
     request.body.name = undefined
+    request.body.currency = undefined
 
     const response = await sut.handle(request)
 
