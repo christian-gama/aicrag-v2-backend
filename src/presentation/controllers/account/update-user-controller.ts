@@ -30,6 +30,10 @@ export class UpdateUserController implements ControllerProtocol {
     if (data.currency) {
       const error = await this.validateCurrency.validate(data)
       if (error) return this.httpHelper.badRequest(error)
+
+      updatedUser = await this.userDbRepository.updateUser(user, {
+        'settings.currency': data.currency
+      })
     }
 
     if (data.email) {
