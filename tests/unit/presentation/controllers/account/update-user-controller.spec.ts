@@ -207,7 +207,7 @@ describe('updateUserController', () => {
     expect(response).toStrictEqual(httpHelper.conflict(new ConflictParamError('email')))
   })
 
-  it('should call updateUser 4 times if changes name and email', async () => {
+  it('should call updateUser 5 times if changes name and email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userDbRepositoryStub } = makeSut()
@@ -218,7 +218,7 @@ describe('updateUserController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledTimes(4)
+    expect(updateUserSpy).toHaveBeenCalledTimes(5)
   })
 
   it('should call filter with correct user', async () => {
