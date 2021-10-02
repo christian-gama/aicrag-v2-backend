@@ -2,10 +2,10 @@
 module.exports = {
   roots: ['<rootDir>/tests'],
   collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/factories/**',
     '!<rootDir>/src/main/**',
-    '!<rootDir>/src/schemas/**',
-    '<rootDir>/src/**/*.ts'
+    '!<rootDir>/src/schemas/**'
   ],
   modulePathIgnorePatterns: ['protocols'],
   watchPathIgnorePatterns: ['globalConfig'],
