@@ -39,4 +39,14 @@ describe('validateCommentary', () => {
 
     expect(error).toBeUndefined()
   })
+
+  it('should return undefined if commentary is valid', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+
+    const error = sut.validate(request.body)
+
+    expect(error).toBeUndefined()
+  })
 })
