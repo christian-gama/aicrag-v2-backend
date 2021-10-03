@@ -3,11 +3,11 @@ import { IUser } from '..'
 export interface ITask {
   commentary: string | null
   date: {
-    day: string
+    day: number
     full: Date
     hours: string
-    month: string
-    year: string
+    month: number
+    year: number
   }
   duration: number
   id: string
