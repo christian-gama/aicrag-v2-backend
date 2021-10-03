@@ -1,9 +1,9 @@
-import { ITask, ITaskData } from '@/domain'
+import { ITask, ITaskData, IUser } from '@/domain'
 
 export interface TaskDbRepositoryProtocol extends FindTaskByIdDbProtocol, SaveTaskDbProtocol {}
 
 export interface FindTaskByIdDbProtocol {
-  saveTask: (taskData: ITaskData) => Promise<ITask>
+  findTaskById: (id: string, user: IUser) => Promise<ITask>
 }
 
 export interface SaveTaskDbProtocol {
