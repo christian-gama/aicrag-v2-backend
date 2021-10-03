@@ -65,4 +65,22 @@ describe('validateDuration', () => {
 
     expect(error).toStrictEqual(new InvalidParamError('duration'))
   })
+
+  it('should return InvalidParamError if type is QA and duration is lesser equal to 0', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.duration = 0
+    request.body.type = 'QA'
+
+    let error = sut.validate(request.body)
+
+    expect(error).toStrictEqual(new InvalidParamError('duration'))
+
+    request.body.duration = -1
+
+    error = sut.validate(request.body)
+
+    expect(error).toStrictEqual(new InvalidParamError('duration'))
+  })
 })
