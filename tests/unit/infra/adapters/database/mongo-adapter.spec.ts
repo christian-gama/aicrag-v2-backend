@@ -1,3 +1,4 @@
+/* eslint-disable jest/prefer-expect-assertions */
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
@@ -21,16 +22,12 @@ describe('mongoAdapter', () => {
 
   describe('connect', () => {
     it('should be connected to database', async () => {
-      expect.hasAssertions()
-
       expect(MongoAdapter.client).not.toBeNull()
     })
   })
 
   describe('disconnect', () => {
     it('should throw if database is not connected', async () => {
-      expect.hasAssertions()
-
       const db = MongoAdapter.client
 
       try {
@@ -50,8 +47,6 @@ describe('mongoAdapter', () => {
 
   describe('collection', () => {
     it('should return collections methods', async () => {
-      expect.hasAssertions()
-
       expect(collection).toHaveProperty('deleteMany')
       expect(collection).toHaveProperty('deleteOne')
       expect(collection).toHaveProperty('findOne')
@@ -60,8 +55,6 @@ describe('mongoAdapter', () => {
     })
 
     it('should throw if database is not connected', async () => {
-      expect.hasAssertions()
-
       const db = MongoAdapter.client
 
       try {
@@ -81,8 +74,6 @@ describe('mongoAdapter', () => {
 
   describe('deleteMany', () => {
     it('should return the deleted count greater than 0 if deletes a document', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
 
       await collection.insertOne(fakeUser)
@@ -93,8 +84,6 @@ describe('mongoAdapter', () => {
     })
 
     it('should return the deleted count equal to 0 if does not delete a document', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
 
       const deletedCount = await collection.deleteMany({ 'personal.id': fakeUser.personal.id })
@@ -107,8 +96,6 @@ describe('mongoAdapter', () => {
 
   describe('deleteOne', () => {
     it('should return true if deleted one document', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
 
       await collection.insertOne(fakeUser)
@@ -121,8 +108,6 @@ describe('mongoAdapter', () => {
     })
 
     it('should return false if does not deleted a document', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
 
       const deleted = await collection.deleteOne({ 'personal.id': fakeUser.personal.id })
@@ -135,8 +120,6 @@ describe('mongoAdapter', () => {
 
   describe('findOne', () => {
     it('should return a document if found', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
       await collection.insertOne(fakeUser)
 
@@ -148,8 +131,6 @@ describe('mongoAdapter', () => {
     })
 
     it('should return null if does not find a document', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
       await collection.insertOne({ any_field: 'any_value' })
 
@@ -163,8 +144,6 @@ describe('mongoAdapter', () => {
 
   describe('insertOne', () => {
     it('should return the inserted document', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
 
       const insertedUser = await collection.insertOne(fakeUser)
@@ -177,8 +156,6 @@ describe('mongoAdapter', () => {
 
   describe('updateOne', () => {
     it('should return the updated user', async () => {
-      expect.hasAssertions()
-
       const fakeUser = makeFakeUser()
       await collection.insertOne(fakeUser)
 
