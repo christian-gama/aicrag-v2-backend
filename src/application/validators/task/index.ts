@@ -1,3 +1,4 @@
+export * from './validate-commentary'
 export * from './validate-date'
 export * from './validate-duration'
 export * from './validate-status'
