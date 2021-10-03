@@ -1,4 +1,4 @@
-import { ITask, ITaskData } from '@/domain'
+import { ITask, ITaskData, IUser } from '@/domain'
 import { TaskRepositoryProtocol } from '@/domain/repositories'
 import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
 
@@ -10,11 +10,19 @@ export class TaskDbRepository implements TaskDbRepositoryProtocol {
     private readonly taskRepository: TaskRepositoryProtocol
   ) {}
 
+  async findTaskById (id: string, user: IUser): Promise<ITask | undefined> {
+    const taskCollection = this.database.collection('tasks')
+
+    const task = await taskCollection.findOne<ITask>({ id, user })
+
+    if (task) return task
+  }
+
   async saveTask (taskData: ITaskData): Promise<ITask> {
-    const taskCollection = this.database.collection('users')
+    const taskCollection = this.database.collection('tasks')
 
-    const user = this.taskRepository.createTask(taskData)
+    const task = this.taskRepository.createTask(taskData)
 
-    return await taskCollection.insertOne(user)
+    return await taskCollection.insertOne(task)
   }
 }
