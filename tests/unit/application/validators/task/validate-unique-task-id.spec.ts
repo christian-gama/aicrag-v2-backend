@@ -46,4 +46,15 @@ describe('validateUniqueTaskId', () => {
 
     expect(response).toBeUndefined()
   })
+
+  it('should return undefined if task does not exist', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, taskDbRepositoryStub } = makeSut()
+    jest.spyOn(taskDbRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(undefined))
+
+    const response = await sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })
