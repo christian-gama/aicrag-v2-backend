@@ -11,6 +11,10 @@ export interface ITask {
   }
   duration: number
   id: string
+  logs: {
+    createdAt: Date
+    updatedAt: Date | null
+  }
   taskId: string | null
   type: 'QA' | 'TX'
   user: IUser
