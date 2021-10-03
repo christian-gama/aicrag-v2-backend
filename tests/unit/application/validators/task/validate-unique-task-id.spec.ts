@@ -35,4 +35,15 @@ describe('validateUniqueTaskId', () => {
 
     expect(error).toStrictEqual(new ConflictParamError('taskId'))
   })
+
+  it('should return undefined if taskId is null', async () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.taskId = null
+
+    const response = await sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })
