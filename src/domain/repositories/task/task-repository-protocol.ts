@@ -1,6 +1,5 @@
-import { IPartialTask } from '@/domain/task/partial-task-protocol'
-import { ITask } from '@/domain/task/task-protocol'
+import { ITaskData, ITask } from '@/domain/task'
 
 export interface TaskRepositoryProtocol {
-  createTask: (taskData: IPartialTask) => ITask
+  createTask: (taskData: ITaskData) => ITask
 }

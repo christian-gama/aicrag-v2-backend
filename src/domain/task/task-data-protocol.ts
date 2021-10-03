@@ -1,6 +1,6 @@
 import { IUser } from '..'
 
-export interface IPartialTask {
+export interface ITaskData {
   commentary: string | null
   date: Date
   duration: number
