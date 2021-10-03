@@ -9,7 +9,7 @@ export class ValidateDuration implements ValidatorProtocol {
         if (input.duration > 30 || input.duration <= 0) return new InvalidParamError('duration')
         break
       case 'QA':
-        if (input.duration > 2.5) return new InvalidParamError('duration')
+        if (input.duration > 2.5 || input.duration <= 0) return new InvalidParamError('duration')
         break
     }
   }
