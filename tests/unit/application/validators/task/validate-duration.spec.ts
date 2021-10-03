@@ -43,4 +43,14 @@ describe('validateDuration', () => {
 
     expect(error).toStrictEqual(new InvalidParamError('duration'))
   })
+
+  it('should return undefined if type is TX and duration is equal to 30', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+
+    const response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })
