@@ -1,6 +1,6 @@
 import { IUser } from '..'
 
-export interface TaskProtocol {
+export interface ITask {
   commentary: string | null
   date: {
     day: string
