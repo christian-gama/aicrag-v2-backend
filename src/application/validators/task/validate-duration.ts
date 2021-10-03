@@ -7,6 +7,7 @@ export class ValidateDuration implements ValidatorProtocol {
     switch (input.type) {
       case 'TX':
         if (input.duration > 30) return new InvalidParamError('duration')
+        if (input.duration <= 0) return new InvalidParamError('duration')
         break
     }
   }
