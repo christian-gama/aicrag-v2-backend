@@ -95,15 +95,15 @@ describe('userDbRepository', () => {
   })
 
   describe('saveUser', () => {
-    it('should create a user on success', async () => {
+    it('should return a user on success', async () => {
       expect.hasAssertions()
 
       const { fakeUser, sut } = makeSut()
+
       const user = await sut.saveUser(makeFakeSignUpUserCredentials())
 
       expect(user).toHaveProperty('_id')
 
-      expect(Object.keys(user.logs)).toHaveLength(4)
       expect(user.logs).toStrictEqual({
         createdAt: fakeUser.logs.createdAt,
         lastLoginAt: fakeUser.logs.lastLoginAt,
@@ -111,7 +111,6 @@ describe('userDbRepository', () => {
         updatedAt: fakeUser.logs.updatedAt
       })
 
-      expect(Object.keys(user.personal)).toHaveLength(4)
       expect(user.personal).toStrictEqual({
         email: fakeUser.personal.email,
         id: fakeUser.personal.id,
@@ -119,14 +118,12 @@ describe('userDbRepository', () => {
         password: fakeUser.personal.password
       })
 
-      expect(Object.keys(user.settings)).toHaveLength(3)
       expect(user.settings).toStrictEqual({
         accountActivated: fakeUser.settings.accountActivated,
         currency: fakeUser.settings.currency,
         handicap: fakeUser.settings.handicap
       })
 
-      expect(Object.keys(user.temporary)).toHaveLength(6)
       expect(user.temporary).toStrictEqual({
         activationCode: fakeUser.temporary.activationCode,
         activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
