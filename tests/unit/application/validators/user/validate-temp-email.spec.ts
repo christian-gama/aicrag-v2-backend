@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
 import { UserCredentialError } from '@/application/errors'
-import { ValidateTempEmail } from '@/application/validators'
+import { ValidateTempEmail } from '@/application/validators/user'
 
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 

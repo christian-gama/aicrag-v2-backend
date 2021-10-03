@@ -1,4 +1,4 @@
-import { ValidateEmailCode } from '@/application/validators'
+import { ValidateEmailCode } from '@/application/validators/user'
 
 import { makeUserDbRepository } from '../repositories'
 

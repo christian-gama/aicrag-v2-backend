@@ -1,6 +1,6 @@
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { ValidationComposite } from '@/application/validators'
+import { ValidationComposite } from '@/application/validators/user'
 
 import {
   makeUpdateEmailByCodeValidatorComposite,

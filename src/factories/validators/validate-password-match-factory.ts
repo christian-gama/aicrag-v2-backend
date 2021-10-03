@@ -1,4 +1,4 @@
-import { ValidatePasswordMatch } from '@/application/validators'
+import { ValidatePasswordMatch } from '@/application/validators/user'
 
 import { makeBcryptAdapter } from '../cryptography'
 import { makeUserDbRepository } from '../repositories'

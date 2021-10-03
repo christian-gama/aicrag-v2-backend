@@ -1,7 +1,7 @@
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { InvalidParamError } from '@/application/errors'
-import { ValidateCurrency } from '@/application/validators'
+import { ValidateCurrency } from '@/application/validators/user'
 
 interface SutTypes {
   sut: ValidatorProtocol

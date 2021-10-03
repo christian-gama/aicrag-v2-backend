@@ -3,7 +3,7 @@ import { ComparerProtocol } from '@/domain/cryptography'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { UserCredentialError } from '../errors'
+import { UserCredentialError } from '../../errors'
 
 export class ValidatePasswordMatch implements ValidatorProtocol {
   constructor (

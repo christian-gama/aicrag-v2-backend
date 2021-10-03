@@ -1,4 +1,4 @@
-import { ValidateActiveAccount } from '@/application/validators'
+import { ValidateActiveAccount } from '@/application/validators/user'
 
 import { makeUserDbRepository } from '../repositories'
 

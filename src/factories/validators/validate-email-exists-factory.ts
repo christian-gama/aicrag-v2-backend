@@ -1,4 +1,4 @@
-import { ValidateEmailExists } from '@/application/validators'
+import { ValidateEmailExists } from '@/application/validators/user'
 
 import { makeUserDbRepository } from '../repositories'
 

@@ -3,7 +3,7 @@ import { ComparerProtocol } from '@/domain/cryptography'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
 import { UserCredentialError } from '@/application/errors'
-import { ValidatePasswordMatch } from '@/application/validators'
+import { ValidatePasswordMatch } from '@/application/validators/user'
 
 import { makeFakeUser, makeUserDbRepositoryStub, makeComparerStub } from '@/tests/__mocks__'
 

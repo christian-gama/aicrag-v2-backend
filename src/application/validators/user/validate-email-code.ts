@@ -1,7 +1,7 @@
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { InvalidCodeError, CodeIsExpiredError } from '../errors'
+import { InvalidCodeError, CodeIsExpiredError } from '../../errors'
 
 export class ValidateEmailCode implements ValidatorProtocol {
   constructor (private readonly userDbRepository: UserDbRepositoryProtocol) {}

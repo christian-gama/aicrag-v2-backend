@@ -1,4 +1,4 @@
-import { ValidateEmail } from '@/application/validators'
+import { ValidateEmail } from '@/application/validators/user'
 
 import { makeEmailValidator } from '.'
 

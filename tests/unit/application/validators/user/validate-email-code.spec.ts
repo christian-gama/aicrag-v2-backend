@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
 import { InvalidCodeError, CodeIsExpiredError } from '@/application/errors'
-import { ValidateEmailCode } from '@/application/validators'
+import { ValidateEmailCode } from '@/application/validators/user'
 
 import { HttpRequest } from '@/presentation/http/protocols'
 

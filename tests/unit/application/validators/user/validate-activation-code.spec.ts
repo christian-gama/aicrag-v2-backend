@@ -6,7 +6,7 @@ import {
   CodeIsExpiredError,
   AccountAlreadyActivatedError
 } from '@/application/errors'
-import { ValidateActivationCode } from '@/application/validators'
+import { ValidateActivationCode } from '@/application/validators/user'
 
 import { HttpRequest } from '@/presentation/http/protocols'
 

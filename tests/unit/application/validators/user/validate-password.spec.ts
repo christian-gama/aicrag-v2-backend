@@ -1,7 +1,7 @@
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { InvalidParamError } from '@/application/errors'
-import { ValidatePassword } from '@/application/validators'
+import { ValidatePassword } from '@/application/validators/user'
 
 import faker from 'faker'
 

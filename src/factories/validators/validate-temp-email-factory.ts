@@ -1,4 +1,4 @@
-import { ValidateTempEmail } from '@/application/validators'
+import { ValidateTempEmail } from '@/application/validators/user'
 
 import { makeUserDbRepository } from '../repositories'
 

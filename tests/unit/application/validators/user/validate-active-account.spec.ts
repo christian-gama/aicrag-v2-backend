@@ -3,7 +3,7 @@ import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { InactiveAccountError } from '@/application/errors'
-import { ValidateActiveAccount } from '@/application/validators'
+import { ValidateActiveAccount } from '@/application/validators/user'
 
 import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
