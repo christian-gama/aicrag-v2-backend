@@ -53,4 +53,16 @@ describe('validateDuration', () => {
 
     expect(response).toBeUndefined()
   })
+
+  it('should return InvalidParamError if type is QA and duration is longer than 2.5', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.duration = 2.6
+    request.body.type = 'QA'
+
+    const error = sut.validate(request.body)
+
+    expect(error).toStrictEqual(new InvalidParamError('duration'))
+  })
 })
