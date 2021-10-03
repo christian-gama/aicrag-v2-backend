@@ -61,11 +61,15 @@ describe('logErrorDbRepository', () => {
 
     const { error, fakeLogError, sut } = makeSut()
 
-    const value = await sut.saveLog(error)
+    const log = await sut.saveLog(error)
 
-    expect(value.date).toStrictEqual(fakeLogError.date)
-    expect(value.message).toStrictEqual(fakeLogError.message)
-    expect(value.name).toStrictEqual(fakeLogError.name)
-    expect(value.stack).toStrictEqual(fakeLogError.stack)
+    const { _id, ...obj } = log as any
+
+    expect(obj).toStrictEqual({
+      date: fakeLogError.date,
+      message: fakeLogError.message,
+      name: fakeLogError.name,
+      stack: fakeLogError.stack
+    })
   })
 })

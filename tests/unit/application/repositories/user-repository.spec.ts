@@ -12,6 +12,7 @@ import {
   makeFakeSignUpUserCredentials
 } from '@/tests/__mocks__'
 
+import MockDate from 'mockdate'
 interface SutTypes {
   sut: UserRepositoryProtocol
   activationCodeStub: ValidationCode
@@ -30,6 +31,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('userRepository', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should return a user with correct values', async () => {
     expect.hasAssertions()
 
@@ -41,13 +50,13 @@ describe('userRepository', () => {
 
     const user = await sut.createUser(fakeSignUpUserCredentials)
 
-    expect(Object.keys(user.logs)).toHaveLength(4)
-    expect(typeof user.logs.createdAt).toBe('object')
-    expect(user.logs.lastLoginAt).toBeNull()
-    expect(user.logs.lastSeenAt).toBeNull()
-    expect(user.logs.updatedAt).toBeNull()
+    expect(user.logs).toStrictEqual({
+      createdAt: new Date(Date.now()),
+      lastLoginAt: null,
+      lastSeenAt: null,
+      updatedAt: null
+    })
 
-    expect(Object.keys(user.personal)).toHaveLength(4)
     expect(user.personal).toStrictEqual({
       email: fakeSignUpUserCredentials.email,
       id: fakeId,
@@ -55,16 +64,16 @@ describe('userRepository', () => {
       password: fakeHashedPassword
     })
 
-    expect(Object.keys(user.settings)).toHaveLength(3)
     expect(user.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1 })
 
-    expect(Object.keys(user.temporary)).toHaveLength(6)
-    expect(typeof user.temporary.activationCodeExpiration).toBe('object')
-    expect(user.temporary.activationCode).toBe(fakeActivationCode)
-    expect(user.temporary.resetPasswordToken).toBeNull()
-    expect(user.temporary.tempEmail).toBeNull()
-    expect(user.temporary.tempEmailCode).toBeNull()
-    expect(user.temporary.tempEmailCodeExpiration).toBeNull()
+    expect(user.temporary).toStrictEqual({
+      activationCode: fakeActivationCode,
+      activationCodeExpiration: new Date(Date.now() + 10 * 60 * 1000),
+      resetPasswordToken: null,
+      tempEmail: null,
+      tempEmailCode: null,
+      tempEmailCodeExpiration: null
+    })
 
     expect(user.tokenVersion).toBe(0)
   })
