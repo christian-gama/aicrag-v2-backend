@@ -29,6 +29,7 @@ const makeSut = (): SutTypes => {
 
 describe('taskDbRepository', () => {
   const client = makeMongoDb()
+  let task: ITask
   let taskCollection: CollectionProtocol
 
   afterAll(async () => {
@@ -43,6 +44,11 @@ describe('taskDbRepository', () => {
     await MongoAdapter.connect(global.__MONGO_URI__)
 
     taskCollection = client.collection('tasks')
+  })
+
+  beforeEach(async () => {
+    task = makeFakeTask()
+    await taskCollection.insertOne(task)
   })
 
   describe('saveTask', () => {
@@ -86,6 +92,18 @@ describe('taskDbRepository', () => {
       await sut.saveTask(fakeTaskData)
 
       expect(createTaskSpy).toHaveBeenCalledWith(fakeTaskData)
+    })
+  })
+
+  describe('findTaskById', () => {
+    it('should call createTask with correct value', async () => {
+      expect.hasAssertions()
+
+      const { sut } = makeSut()
+
+      const found = await sut.findTaskById(task.id, task.user)
+
+      expect(found).toStrictEqual(task)
     })
   })
 })
