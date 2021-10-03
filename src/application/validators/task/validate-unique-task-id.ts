@@ -7,6 +7,8 @@ export class ValidateUniqueTaskId implements ValidatorProtocol {
   constructor (private readonly taskDbRepository: TaskDbRepositoryProtocol) {}
 
   async validate (input: any): Promise<ConflictParamError | undefined> {
+    if (input.taskId == null) return
+
     const task = await this.taskDbRepository.findTaskById(input.taskId, input.user)
 
     if (task) return new ConflictParamError('taskId')
