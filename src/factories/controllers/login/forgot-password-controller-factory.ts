@@ -5,7 +5,7 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
-import { makeForgotPasswordValidatorComposite } from '../../validators'
+import { makeForgotPasswordValidatorComposite } from '../../validators/user'
 
 export const makeForgotPasswordController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()

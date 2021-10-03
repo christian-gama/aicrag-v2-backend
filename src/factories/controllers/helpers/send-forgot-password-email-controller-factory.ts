@@ -5,7 +5,7 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeForgotPasswordEmail } from '../../mailer'
 import { makeUserDbRepository } from '../../repositories'
-import { makeForgotPasswordValidatorComposite } from '../../validators'
+import { makeForgotPasswordValidatorComposite } from '../../validators/user'
 
 export const makeSendForgotPasswordEmailController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()

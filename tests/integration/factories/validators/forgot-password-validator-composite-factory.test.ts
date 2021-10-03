@@ -7,7 +7,7 @@ import {
   makeRequiredFields,
   makeValidateEmail,
   makeValidateEmailExists
-} from '@/factories/validators'
+} from '@/factories/validators/user'
 
 jest.mock('../../../../src/application/validators/validation-composite.ts')
 

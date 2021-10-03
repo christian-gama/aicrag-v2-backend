@@ -5,7 +5,7 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
-import { makeUserValidatorComposite } from '../../validators'
+import { makeUserValidatorComposite } from '../../validators/user'
 
 export const makeSignUpController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()

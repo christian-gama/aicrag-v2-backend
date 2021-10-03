@@ -6,7 +6,7 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateRefreshToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
-import { makeUpdatePasswordValidatorComposite } from '../../validators'
+import { makeUpdatePasswordValidatorComposite } from '../../validators/user'
 
 export const makeUpdatePasswordController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()

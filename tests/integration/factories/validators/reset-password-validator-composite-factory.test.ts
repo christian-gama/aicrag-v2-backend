@@ -6,8 +6,8 @@ import {
   makeRequiredFields,
   makeValidatePassword,
   makeValidatePasswordComparasion
-} from '@/factories/validators'
-import { makeResetPasswordValidatorComposite } from '@/factories/validators/reset-password-validator-composite-factory'
+} from '@/factories/validators/user'
+import { makeResetPasswordValidatorComposite } from '@/factories/validators/user/reset-password-validator-composite-factory'
 
 jest.mock('../../../../src/application/validators/validation-composite.ts')
 

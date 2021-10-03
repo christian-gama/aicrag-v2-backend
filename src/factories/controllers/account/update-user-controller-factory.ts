@@ -4,9 +4,9 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper, makeValidationCode } from '../../helpers'
 import { makeUserDbRepository } from '../../repositories'
-import { makeValidateEmail, makeValidateName } from '../../validators'
+import { makeValidateEmail, makeValidateName } from '../../validators/user'
 
-import { makeValidateCurrency } from '@/factories/validators/validate-currency-factory'
+import { makeValidateCurrency } from '@/factories/validators/user/validate-currency-factory'
 
 export const makeUpdateUserController = (): ControllerProtocol => {
   const emailCode = makeValidationCode()

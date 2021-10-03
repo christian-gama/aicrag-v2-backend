@@ -7,7 +7,7 @@ import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateRefreshToken } from '../../providers/token'
 import { makeVerifyResetPasswordToken } from '../../providers/token/verify-reset-password-token-factory'
 import { makeUserDbRepository } from '../../repositories'
-import { makeResetPasswordValidatorComposite } from '../../validators/reset-password-validator-composite-factory'
+import { makeResetPasswordValidatorComposite } from '../../validators/user/reset-password-validator-composite-factory'
 
 export const makeResetPasswordController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()

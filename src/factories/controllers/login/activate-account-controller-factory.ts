@@ -5,7 +5,7 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
-import { makeActivateAccountValidatorComposite } from '../../validators'
+import { makeActivateAccountValidatorComposite } from '../../validators/user'
 
 export const makeActivateAccountController = (): ControllerProtocol => {
   const activateAccountValidator = makeActivateAccountValidatorComposite()
