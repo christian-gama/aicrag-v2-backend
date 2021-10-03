@@ -15,22 +15,30 @@ const makeSut = (): SutTypes => {
     body: { taskId: faker.random.alphaNumeric(100) }
   }
 
-  console.log(request.body.taskId)
-
   const sut = new ValidateTaskId()
 
   return { request, sut }
 }
 
 describe('validateTaskId', () => {
-  it('should return InvalidParamError if taskId length is greater than 120', async () => {
+  it('should return InvalidParamError if taskId length is greater than 120', () => {
     expect.hasAssertions()
 
     const { request, sut } = makeSut()
     request.body.taskId = faker.random.alphaNumeric(121)
 
-    const error = await sut.validate(request.body)
+    const error = sut.validate(request.body)
 
     expect(error).toStrictEqual(new InvalidParamError('taskId'))
+  })
+
+  it('should return undefined if succeds', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+
+    const response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
   })
 })
