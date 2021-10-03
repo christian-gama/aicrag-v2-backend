@@ -47,7 +47,7 @@ describe('validateCredentials', () => {
     expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
   })
 
-  it('should return nothing if succeds', async () => {
+  it('should return nothing if succeeds', async () => {
     expect.hasAssertions()
 
     const { sut } = makeSut()

@@ -85,7 +85,7 @@ describe('post /signup', () => {
       .then(() => expect(400))
   })
 
-  it('should return 200 if all validations succeds', async () => {
+  it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
     await agent

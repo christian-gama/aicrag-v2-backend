@@ -85,7 +85,7 @@ describe('post /login', () => {
       .then(() => expect(200))
   })
 
-  it('should return 200 if all validations succeds', async () => {
+  it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
     const hashedPassword = await hash(fakeUser.personal.password, 2)

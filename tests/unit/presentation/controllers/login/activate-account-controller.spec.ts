@@ -153,7 +153,7 @@ describe('activateAccountController', () => {
     })
   })
 
-  it('should activate account if validation succeds', async () => {
+  it('should activate account if validation succeeds', async () => {
     expect.hasAssertions()
 
     const { sut, fakeUser, request } = makeSut()
@@ -163,7 +163,7 @@ describe('activateAccountController', () => {
     expect(fakeUser.settings.accountActivated).toBe(true)
   })
 
-  it('should clear temporaries if validation succeds', async () => {
+  it('should clear temporaries if validation succeeds', async () => {
     expect.hasAssertions()
 
     const { sut, fakeUser, request } = makeSut()

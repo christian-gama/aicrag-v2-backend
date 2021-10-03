@@ -123,7 +123,7 @@ describe('updateEmailByCodeController', () => {
     })
   })
 
-  it('should change email if validation succeds', async () => {
+  it('should change email if validation succeeds', async () => {
     expect.hasAssertions()
 
     const { sut, fakeUser, request } = makeSut()
@@ -134,7 +134,7 @@ describe('updateEmailByCodeController', () => {
     expect(fakeUser.personal.email).toBe(newEmail)
   })
 
-  it('should clear temporaries if validation succeds', async () => {
+  it('should clear temporaries if validation succeeds', async () => {
     expect.hasAssertions()
 
     const { sut, fakeUser, request } = makeSut()

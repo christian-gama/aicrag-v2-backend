@@ -32,7 +32,7 @@ describe('validateTaskId', () => {
     expect(error).toStrictEqual(new InvalidParamError('taskId'))
   })
 
-  it('should return undefined if succeds', () => {
+  it('should return undefined if succeeds', () => {
     expect.hasAssertions()
 
     const { request, sut } = makeSut()

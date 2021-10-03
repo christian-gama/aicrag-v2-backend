@@ -49,7 +49,7 @@ describe('partialProtectedMiddleware', () => {
     await agent.get('/partial-protected').then(() => expect(401))
   })
 
-  it('should return 200 if succeds', async () => {
+  it('should return 200 if succeeds', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)

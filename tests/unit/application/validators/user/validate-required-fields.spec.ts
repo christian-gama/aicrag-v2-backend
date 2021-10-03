@@ -36,7 +36,7 @@ describe('validateRequiredFields', () => {
     expect(value).toStrictEqual(new MissingParamError(fakeField))
   })
 
-  it('should return nothing if succeds', () => {
+  it('should return nothing if succeeds', () => {
     expect.hasAssertions()
 
     const { sut, fakeField } = makeSut()

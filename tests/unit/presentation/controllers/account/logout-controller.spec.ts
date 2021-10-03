@@ -52,7 +52,7 @@ describe('logoutController', () => {
     expect(updateUser).toHaveBeenCalledWith(fakeUser, { tokenVersion: fakeUser.tokenVersion })
   })
 
-  it('should return ok if succeds', async () => {
+  it('should return ok if succeeds', async () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut } = makeSut()

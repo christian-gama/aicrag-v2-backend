@@ -30,7 +30,7 @@ describe('validatePasswordComparasion', () => {
     expect(value).toStrictEqual(new InvalidParamError('passwordConfirmation'))
   })
 
-  it('should return nothing if succeds', () => {
+  it('should return nothing if succeeds', () => {
     expect.hasAssertions()
 
     const { sut } = makeSut()

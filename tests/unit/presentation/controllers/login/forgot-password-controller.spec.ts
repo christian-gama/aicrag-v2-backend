@@ -142,7 +142,7 @@ describe('forgot Password', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('should return ok with user if succeds', async () => {
+  it('should return ok with user if succeeds', async () => {
     expect.hasAssertions()
 
     const { fakeUser, httpHelper, request, sut } = makeSut()

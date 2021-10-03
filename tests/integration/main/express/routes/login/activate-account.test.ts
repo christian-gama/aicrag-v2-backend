@@ -38,7 +38,7 @@ describe('patch /activate-account', () => {
 
   const agent = request.agent(app)
 
-  it('should return 200 if all validations succeds', async () => {
+  it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
     const activationCode = fakeUser.temporary.activationCode

@@ -191,7 +191,7 @@ describe('signUpController', () => {
     expect(okSpy).toHaveBeenCalledWith({ accessToken: 'any_token', user: fakePublicUser })
   })
 
-  it('should return ok if validation succeds', async () => {
+  it('should return ok if validation succeeds', async () => {
     expect.hasAssertions()
 
     const { fakePublicUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()

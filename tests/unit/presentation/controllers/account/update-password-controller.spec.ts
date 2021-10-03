@@ -150,7 +150,7 @@ describe('updatePasswordController', () => {
     expect(generateSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('should return ok if succeds', async () => {
+  it('should return ok if succeeds', async () => {
     expect.hasAssertions()
 
     const { fakeUser, httpHelper, request, sut } = makeSut()

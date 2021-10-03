@@ -184,7 +184,7 @@ describe('resetPasswordController', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('should return ok if succeds', async () => {
+  it('should return ok if succeeds', async () => {
     expect.hasAssertions()
 
     const { filteredUser, filterUserDataStub, httpHelper, request, sut } = makeSut()

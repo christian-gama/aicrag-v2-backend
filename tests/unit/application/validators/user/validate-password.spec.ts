@@ -49,7 +49,7 @@ describe('validatePassword', () => {
     expect(value).toStrictEqual(new InvalidParamError('password'))
   })
 
-  it('should return nothing if succeds', () => {
+  it('should return nothing if succeeds', () => {
     expect.hasAssertions()
 
     const { sut } = makeSut()

@@ -59,7 +59,7 @@ describe('partialProtectedMiddleware', () => {
     expect(response).toStrictEqual(httpHelper.unauthorized(new Error()))
   })
 
-  it('should return ok if succeds', async () => {
+  it('should return ok if succeeds', async () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut } = makeSut()

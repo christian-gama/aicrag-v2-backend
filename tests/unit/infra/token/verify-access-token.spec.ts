@@ -81,7 +81,7 @@ describe('verifyAccessToken', () => {
     expect(response).toStrictEqual(new InvalidTokenError())
   })
 
-  it('should return a user if succeds', async () => {
+  it('should return a user if succeeds', async () => {
     expect.hasAssertions()
 
     const { accessTokenDecoderStub, fakeUser, sut } = makeSut()

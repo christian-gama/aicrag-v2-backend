@@ -56,7 +56,7 @@ describe('validateEmail', () => {
     expect(sut.validate).toThrow('')
   })
 
-  it('should return nothing if succeds', () => {
+  it('should return nothing if succeeds', () => {
     expect.hasAssertions()
 
     const { sut } = makeSut()

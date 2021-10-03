@@ -53,7 +53,7 @@ describe('logDecorator', () => {
     expect(promise).toStrictEqual(httpHelper.serverError(errorData))
   })
 
-  it('should return a http response if succeds', async () => {
+  it('should return a http response if succeeds', async () => {
     expect.hasAssertions()
 
     const { httpHelper, sut } = makeSut()

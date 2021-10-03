@@ -235,7 +235,7 @@ describe('updateUserController', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('should return ok if succeds with no changes', async () => {
+  it('should return ok if succeeds with no changes', async () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, userDbRepositoryStub } = makeSut()
@@ -251,7 +251,7 @@ describe('updateUserController', () => {
     expect(response).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
   })
 
-  it('should return ok if succeds', async () => {
+  it('should return ok if succeeds', async () => {
     expect.hasAssertions()
 
     const { fakeUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()

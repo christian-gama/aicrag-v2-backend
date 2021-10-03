@@ -48,7 +48,7 @@ describe('validationComposite', () => {
     expect(error).toStrictEqual(new MissingParamError('first_error'))
   })
 
-  it('should return nothing if succeds', async () => {
+  it('should return nothing if succeeds', async () => {
     expect.hasAssertions()
 
     const { sut } = makeSut()

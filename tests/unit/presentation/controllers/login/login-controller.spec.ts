@@ -218,7 +218,7 @@ describe('loginController', () => {
     })
   })
 
-  it('should return ok if validation succeds', async () => {
+  it('should return ok if validation succeeds', async () => {
     expect.hasAssertions()
 
     const { fakePublicUser, httpHelper, request, sut } = makeSut()

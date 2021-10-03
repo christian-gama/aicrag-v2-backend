@@ -50,7 +50,7 @@ describe('isLoggedInMiddleware', () => {
     await agent.get('/is-logged-in').then(() => expect('no_user'))
   })
 
-  it('should return a user if succeds', async () => {
+  it('should return a user if succeeds', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)

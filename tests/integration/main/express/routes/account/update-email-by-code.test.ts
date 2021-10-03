@@ -43,7 +43,7 @@ describe('patch /update-email-by-code', () => {
 
   const agent = request.agent(app)
 
-  it('should return 200 if all validations succeds', async () => {
+  it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
     const tempEmailCode = fakeUser.temporary.tempEmailCode
