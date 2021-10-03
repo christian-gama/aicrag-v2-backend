@@ -8,7 +8,7 @@ import {
   makeValidateName,
   makeValidateEmail,
   makeValidatePassword,
-  makeValidatePasswordComparasion
+  makeValidatePasswordComparison
 } from '@/factories/validators/user'
 
 jest.mock('../../../../src/application/validators/validation-composite.ts')
@@ -29,7 +29,7 @@ describe('userValidator', () => {
     validations.push(makeValidateName())
     validations.push(makeValidateEmail())
     validations.push(makeValidatePassword())
-    validations.push(makeValidatePasswordComparasion())
+    validations.push(makeValidatePasswordComparison())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

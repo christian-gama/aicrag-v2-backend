@@ -7,7 +7,7 @@ import {
   makeValidateEmail,
   makeValidatePassword,
   makeValidateEmailExists,
-  makeValidatePasswordComparasion
+  makeValidatePasswordComparison
 } from '.'
 
 export const makeUpdatePasswordValidatorComposite = (): ValidatorProtocol => {
@@ -22,7 +22,7 @@ export const makeUpdatePasswordValidatorComposite = (): ValidatorProtocol => {
   validations.push(makeValidateEmail())
   validations.push(makeValidatePassword())
   validations.push(makeValidateEmailExists())
-  validations.push(makeValidatePasswordComparasion())
+  validations.push(makeValidatePasswordComparison())
 
   const updatePasswordValidatorComposite = new ValidationComposite(validations)
 

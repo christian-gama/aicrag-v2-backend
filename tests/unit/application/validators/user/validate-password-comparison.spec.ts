@@ -1,7 +1,7 @@
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { InvalidParamError } from '@/application/errors'
-import { ValidatePasswordComparasion } from '@/application/validators/user'
+import { ValidatePasswordComparison } from '@/application/validators/user'
 
 import faker from 'faker'
 
@@ -10,12 +10,12 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new ValidatePasswordComparasion()
+  const sut = new ValidatePasswordComparison()
 
   return { sut }
 }
 
-describe('validatePasswordComparasion', () => {
+describe('validatePasswordComparison', () => {
   it('should return InvalidParamError if passwords are not equal', () => {
     expect.hasAssertions()
 

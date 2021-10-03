@@ -5,7 +5,7 @@ import { ValidationComposite } from '@/application/validators/user'
 import {
   makeRequiredFields,
   makeValidatePassword,
-  makeValidatePasswordComparasion
+  makeValidatePasswordComparison
 } from '@/factories/validators/user'
 import { makeResetPasswordValidatorComposite } from '@/factories/validators/user/reset-password-validator-composite-factory'
 
@@ -25,7 +25,7 @@ describe('resetPasswordValidatorComposite', () => {
     }
 
     validations.push(makeValidatePassword())
-    validations.push(makeValidatePasswordComparasion())
+    validations.push(makeValidatePasswordComparison())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
