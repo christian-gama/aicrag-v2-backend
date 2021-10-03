@@ -1,5 +1,7 @@
 import { LogErrorRepository } from '@/application/repositories'
 
+import MockDate from 'mockdate'
+
 interface SutTypes {
   sut: LogErrorRepository
 }
@@ -11,6 +13,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('logErrorRepository', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should return a ILogError', () => {
     expect.hasAssertions()
 
@@ -19,9 +29,11 @@ describe('logErrorRepository', () => {
 
     const value = sut.createLog(error)
 
-    expect(new Date(value.date).getTime()).not.toBe(NaN)
-    expect(value.message).toBe(error.message)
-    expect(value.name).toBe(error.name)
-    expect(value.stack).toBe(error.stack)
+    expect(value).toStrictEqual({
+      date: new Date(Date.now()).toLocaleString(),
+      message: error.message,
+      name: error.name,
+      stack: error.stack
+    })
   })
 })
