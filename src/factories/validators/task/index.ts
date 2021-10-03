@@ -1,3 +1,4 @@
+export * from '../validate-required-fields-factory'
 export * from './validate-date-factory'
 export * from './validate-duration-factory'
 export * from './validate-status-factory'
