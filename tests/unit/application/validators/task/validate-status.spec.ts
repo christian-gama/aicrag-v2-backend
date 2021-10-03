@@ -26,4 +26,14 @@ describe('validateStatus', () => {
 
     expect(error).toStrictEqual(new InvalidParamError('status'))
   })
+
+  it('should return undefined if is a valid status', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+
+    const response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })
