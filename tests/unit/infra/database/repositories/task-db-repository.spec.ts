@@ -76,5 +76,16 @@ describe('taskDbRepository', () => {
         user: fakeTask.user
       })
     })
+
+    it('should call createTask with correct value', async () => {
+      expect.hasAssertions()
+
+      const { fakeTaskData, sut, taskRepository } = makeSut()
+      const createTaskSpy = jest.spyOn(taskRepository, 'createTask')
+
+      await sut.saveTask(fakeTaskData)
+
+      expect(createTaskSpy).toHaveBeenCalledWith(fakeTaskData)
+    })
   })
 })
