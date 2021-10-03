@@ -41,4 +41,15 @@ describe('validateTaskId', () => {
 
     expect(response).toBeUndefined()
   })
+
+  it('should return undefined if taskId is null', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.taskId = null
+
+    const response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })
