@@ -37,4 +37,4 @@ export abstract class ICollection {
   ): Promise<T | null>
 }
 
-export type CollectionsName = 'logs' | 'users'
+export type CollectionsName = 'logs' | 'tasks' | 'users'
