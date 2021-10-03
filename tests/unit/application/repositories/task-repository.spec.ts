@@ -61,4 +61,36 @@ describe('taskRepository', () => {
       user
     })
   })
+
+  it('should return a task with correct values if commentary and taskId are null', async () => {
+    expect.hasAssertions()
+
+    const { fakeTaskData, sut, uuidStub } = makeSut()
+    const { date, duration, type, user } = fakeTaskData
+    const fakeId = uuidStub.generate()
+    fakeTaskData.commentary = null
+    fakeTaskData.taskId = null
+
+    const task = sut.createTask(fakeTaskData)
+
+    expect(task).toStrictEqual({
+      commentary: null,
+      date: {
+        day: date.getDate(),
+        full: date,
+        hours: date.toLocaleTimeString(),
+        month: date.getMonth(),
+        year: date.getFullYear()
+      },
+      duration,
+      id: fakeId,
+      logs: {
+        createdAt: new Date(Date.now()),
+        updatedAt: null
+      },
+      taskId: null,
+      type,
+      user
+    })
+  })
 })
