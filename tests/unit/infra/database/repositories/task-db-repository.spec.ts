@@ -96,7 +96,7 @@ describe('taskDbRepository', () => {
   })
 
   describe('findTaskById', () => {
-    it('should call createTask with correct value', async () => {
+    it('should return a task if finds it', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
@@ -104,6 +104,16 @@ describe('taskDbRepository', () => {
       const found = await sut.findTaskById(task.id, task.user)
 
       expect(found).toStrictEqual(task)
+    })
+
+    it('should return undefined if does not find a task', async () => {
+      expect.hasAssertions()
+
+      const { sut } = makeSut()
+
+      const found = await sut.findTaskById('invalid_id', task.user)
+
+      expect(found).toBeUndefined()
     })
   })
 })
