@@ -7,19 +7,9 @@ import { UserDbFilter } from '@/infra/database/protocols'
  */
 export interface UserDbRepositoryProtocol
   extends SaveUserDbProtocol,
-  UpdateUserDbProtocol,
   FindUserByEmailDbProtocol,
-  FindUserByIdDbProtocol {}
-
-export interface SaveUserDbProtocol {
-  /**
-   * @async Asynchronous method.
-   * @description Receive an user and then save a user on database.
-   * @param user User that will be saved as a user.
-   * @returns Return a user from database.
-   */
-  saveUser: (user: ISignUpUserCredentials) => Promise<IUser>
-}
+  FindUserByIdDbProtocol,
+  UpdateUserDbProtocol {}
 
 export interface FindUserByEmailDbProtocol {
   /**
@@ -39,6 +29,16 @@ export interface FindUserByIdDbProtocol {
    * @returns Return a user if finds it or undefined if does not.
    */
   findUserById: (id: string) => Promise<IUser | undefined>
+}
+
+export interface SaveUserDbProtocol {
+  /**
+   * @async Asynchronous method.
+   * @description Receive an user and then save a user on database.
+   * @param user User that will be saved as a user.
+   * @returns Return a user from database.
+   */
+  saveUser: (user: ISignUpUserCredentials) => Promise<IUser>
 }
 
 export interface UpdateUserDbProtocol {
