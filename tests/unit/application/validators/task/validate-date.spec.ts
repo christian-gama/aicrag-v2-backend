@@ -26,4 +26,14 @@ describe('validateDate', () => {
 
     expect(error).toStrictEqual(new InvalidParamError('date'))
   })
+
+  it('should return undefined if is a valid date', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+
+    const response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })
