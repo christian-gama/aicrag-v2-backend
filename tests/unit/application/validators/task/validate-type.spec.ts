@@ -27,4 +27,20 @@ describe('validateType', () => {
 
     expect(error).toStrictEqual(new InvalidParamError('type'))
   })
+
+  it('should return undefined if type is equal to QA or TX', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+
+    let response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+
+    request.body.type = 'TX'
+
+    response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })
