@@ -28,4 +28,15 @@ describe('validateCommentary', () => {
 
     expect(error).toStrictEqual(new InvalidParamError('commentary'))
   })
+
+  it('should return undefined if commentary is null', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.commentary = null
+
+    const error = sut.validate(request.body)
+
+    expect(error).toBeUndefined()
+  })
 })
