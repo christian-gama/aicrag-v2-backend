@@ -4,6 +4,7 @@ import { middlewareAdapter } from '../adapters/middleware-adapter'
 import {
   makeLogoutController,
   makeUpdateEmailByCodeController,
+  makeUpdatePasswordController,
   makeUpdateUserController
 } from '@/factories/controllers/account'
 import {
@@ -29,6 +30,7 @@ import {
 // Account Routes
 export const logoutController = controllerAdapter(makeLogoutController())
 export const updateEmailByCodeController = controllerAdapter(makeUpdateEmailByCodeController())
+export const updatePassword = controllerAdapter(makeUpdatePasswordController())
 export const updateUserController = controllerAdapter(makeUpdateUserController())
 
 // Helpers Routes
