@@ -77,6 +77,7 @@ describe('taskDbRepository', () => {
           createdAt: fakeTask.logs.createdAt,
           updatedAt: fakeTask.logs.updatedAt
         },
+        status: 'completed',
         taskId: fakeTask.taskId,
         type: fakeTask.type,
         user: fakeTask.user

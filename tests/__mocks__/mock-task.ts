@@ -9,6 +9,7 @@ export const makeFakeTaskData = (): ITaskData => {
     commentary: faker.lorem.words(10),
     date: new Date(Date.now()),
     duration: 30,
+    status: 'completed',
     taskId: faker.datatype.uuid(),
     type: 'TX',
     user: makeFakeUser()
@@ -33,6 +34,7 @@ export const makeFakeTask = (): ITask => {
       createdAt: date,
       updatedAt: null
     },
+    status: 'completed',
     taskId: faker.datatype.uuid(),
     type: 'TX',
     user: makeFakeUser()

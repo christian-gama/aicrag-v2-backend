@@ -36,7 +36,7 @@ describe('taskRepository', () => {
     expect.hasAssertions()
 
     const { fakeTaskData, sut, uuidStub } = makeSut()
-    const { commentary, date, duration, taskId, type, user } = fakeTaskData
+    const { commentary, date, duration, taskId, status, type, user } = fakeTaskData
     const fakeId = uuidStub.generate()
 
     const task = sut.createTask(fakeTaskData)
@@ -56,6 +56,7 @@ describe('taskRepository', () => {
         createdAt: new Date(Date.now()),
         updatedAt: null
       },
+      status,
       taskId,
       type,
       user
@@ -66,7 +67,7 @@ describe('taskRepository', () => {
     expect.hasAssertions()
 
     const { fakeTaskData, sut, uuidStub } = makeSut()
-    const { date, duration, type, user } = fakeTaskData
+    const { date, duration, status, type, user } = fakeTaskData
     const fakeId = uuidStub.generate()
     fakeTaskData.commentary = null
     fakeTaskData.taskId = null
@@ -88,6 +89,7 @@ describe('taskRepository', () => {
         createdAt: new Date(Date.now()),
         updatedAt: null
       },
+      status,
       taskId: null,
       type,
       user

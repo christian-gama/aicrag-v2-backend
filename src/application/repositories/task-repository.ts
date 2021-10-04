@@ -6,7 +6,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
   constructor (private readonly uuid: UuidProtocol) {}
 
   createTask (taskData: ITaskData): ITask {
-    const { commentary, date, duration, taskId, type, user } = taskData
+    const { commentary, date, duration, status, taskId, type, user } = taskData
 
     const id = this.uuid.generate()
 
@@ -25,6 +25,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
         createdAt: new Date(Date.now()),
         updatedAt: null
       },
+      status,
       taskId: taskId ?? null,
       type,
       user

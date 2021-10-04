@@ -15,6 +15,7 @@ export interface ITask {
     createdAt: Date
     updatedAt: Date | null
   }
+  status: 'in_progress' | 'completed'
   taskId: string | null
   type: 'QA' | 'TX'
   user: IUser
