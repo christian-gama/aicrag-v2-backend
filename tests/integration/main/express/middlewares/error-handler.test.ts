@@ -1,4 +1,6 @@
 
+import { InternalError } from '@/application/errors'
+
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { environment } from '@/main/config/environment'
@@ -68,7 +70,7 @@ describe('errorRequestHandler', () => {
       .send({})
       .then(() =>
         expect({
-          data: { message: 'Internal error: Try again later' },
+          data: { message: new InternalError().message },
           status: 'fail'
         })
       )
