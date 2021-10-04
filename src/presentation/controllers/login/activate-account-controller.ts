@@ -26,14 +26,17 @@ export class ActivateAccountController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
-    await this.activateAccount(user)
-    await this.clearTemporary(user)
+    const update = {}
+    Object.assign(update, this.activateAccount(user))
+    Object.assign(update, this.clearTemporary(user))
+
+    const updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
 
     const accessToken = this.generateAccessToken.generate(user) as string
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 
-    const filteredUser = this.filterUserData.filter(user)
+    const filteredUser = this.filterUserData.filter(updatedUser)
 
     return this.httpHelper.ok({
       accessToken,
@@ -42,21 +45,26 @@ export class ActivateAccountController implements ControllerProtocol {
     })
   }
 
-  private async activateAccount (user: IUser): Promise<void> {
+  private activateAccount (user: IUser): Record<string, any> {
     user.settings.accountActivated = true
 
-    await this.userDbRepository.updateUser(user, {
+    const update = {
       'settings.accountActivated': user.settings.accountActivated
-    })
+    }
+
+    return update
   }
 
-  private async clearTemporary (user: IUser): Promise<void> {
+  private clearTemporary (user: IUser): Record<string, any> {
     user.temporary.activationCode = null
     user.temporary.activationCodeExpiration = null
 
-    await this.userDbRepository.updateUser(user, {
+    const update = {
+      'logs.updatedAt': new Date(Date.now()),
       'temporary.activationCode': user.temporary.activationCode,
       'temporary.activationCodeExpiration': user.temporary.activationCode
-    })
+    }
+
+    return update
   }
 }

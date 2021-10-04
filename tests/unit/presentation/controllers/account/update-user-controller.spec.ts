@@ -18,6 +18,7 @@ import {
 } from '@/tests/__mocks__'
 
 import { makeHttpHelper } from '@/factories/helpers'
+import MockDate from 'mockdate'
 
 interface SutTypes {
   emailCodeStub: ValidationCodeProtocol
@@ -71,6 +72,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('updateUserController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should return unauthorized if user is not logged in', async () => {
     expect.hasAssertions()
 
@@ -207,10 +216,69 @@ describe('updateUserController', () => {
     expect(response).toStrictEqual(httpHelper.conflict(new ConflictParamError('email')))
   })
 
-  it('should call updateUser 3 times if changes name and email', async () => {
+  it('should call updateUser with correct values if only currency is changed', async () => {
     expect.hasAssertions()
 
-    const { request, sut, userDbRepositoryStub } = makeSut()
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    jest
+      .spyOn(userDbRepositoryStub, 'findUserByEmail')
+      .mockReturnValueOnce(Promise.resolve(undefined))
+    request.body.email = undefined
+    request.body.name = undefined
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
+      'settings.currency': request.body.currency
+    })
+  })
+
+  it('should call updateUser with correct values if only name is changed', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    jest
+      .spyOn(userDbRepositoryStub, 'findUserByEmail')
+      .mockReturnValueOnce(Promise.resolve(undefined))
+    request.body.currency = undefined
+    request.body.email = undefined
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
+      'personal.name': request.body.name
+    })
+  })
+
+  it('should call updateUser with correct values if only email is changed', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    jest
+      .spyOn(userDbRepositoryStub, 'findUserByEmail')
+      .mockReturnValueOnce(Promise.resolve(undefined))
+    request.body.currency = undefined
+    request.body.name = undefined
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
+      'temporary.tempEmail': request.body.email,
+      'temporary.tempEmailCode': 'any_code',
+      'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+    })
+  })
+
+  it('should call updateUser with correct values if currency, email and name are changed', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
@@ -218,7 +286,14 @@ describe('updateUserController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledTimes(3)
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
+      'personal.name': request.body.name,
+      'settings.currency': request.body.currency,
+      'temporary.tempEmail': request.body.email,
+      'temporary.tempEmailCode': 'any_code',
+      'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+    })
   })
 
   it('should call filter with correct user', async () => {

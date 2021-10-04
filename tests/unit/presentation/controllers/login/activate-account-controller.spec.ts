@@ -19,6 +19,7 @@ import {
 } from '@/tests/__mocks__'
 
 import { makeHttpHelper } from '@/factories/helpers'
+import MockDate from 'mockdate'
 
 interface SutTypes {
   activateAccountValidatorStub: ValidatorProtocol
@@ -70,6 +71,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('activateAccountController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should call validate with correct values', async () => {
     expect.hasAssertions()
 
@@ -174,14 +183,19 @@ describe('activateAccountController', () => {
     expect(fakeUser.temporary.activationCodeExpiration).toBeNull()
   })
 
-  it('should call updateUser twice', async () => {
+  it('should call updateUser with correct values', async () => {
     expect.hasAssertions()
 
-    const { sut, request, userDbRepositoryStub } = makeSut()
+    const { fakeUser, sut, request, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledTimes(2)
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
+      'settings.accountActivated': fakeUser.settings.accountActivated,
+      'temporary.activationCode': fakeUser.temporary.activationCode,
+      'temporary.activationCodeExpiration': fakeUser.temporary.activationCode
+    })
   })
 })

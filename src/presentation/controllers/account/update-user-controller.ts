@@ -26,16 +26,12 @@ export class UpdateUserController implements ControllerProtocol {
 
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
-    let updatedUser: IUser | undefined
+    const update = {}
     if (data.currency) {
       const error = await this.validateCurrency.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      const update = {
-        'logs.updatedAt': new Date(Date.now()),
-        'settings.currency': data.currency
-      }
-      updatedUser = await this.userDbRepository.updateUser(user, update)
+      update['settings.currency'] = data.currency
     }
 
     if (data.email) {
@@ -46,26 +42,22 @@ export class UpdateUserController implements ControllerProtocol {
 
       if (userExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
-      const update = {
-        'temporary.tempEmail': data.email,
-        'temporary.tempEmailCode': this.emailCode.generate(),
-        'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
-      }
-      updatedUser = await this.userDbRepository.updateUser(user, update)
+      update['temporary.tempEmail'] = data.email
+      update['temporary.tempEmailCode'] = this.emailCode.generate()
+      update['temporary.tempEmailCodeExpiration'] = new Date(Date.now() + 10 * 60 * 1000)
     }
 
     if (data.name) {
       const error = await this.validateName.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      const update = {
-        'logs.updatedAt': new Date(Date.now()),
-        'personal.name': data.name
-      }
-      updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
+      update['personal.name'] = data.name
     }
 
-    if (!updatedUser) return this.httpHelper.ok({ message: 'No changes were made' })
+    if (Object.keys(update).length === 0) return this.httpHelper.ok({ message: 'No changes were made' })
+    else update['logs.updatedAt'] = new Date(Date.now())
+
+    const updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 

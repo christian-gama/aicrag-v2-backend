@@ -23,8 +23,11 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
-    const updatedUser = await this.updateEmail(user)
-    await this.clearTemporary(user)
+    const update = {}
+    Object.assign(update, this.updateEmail(user))
+    Object.assign(update, this.clearTemporary(user))
+
+    const updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
@@ -33,27 +36,28 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
     })
   }
 
-  private async updateEmail (user: IUser): Promise<IUser> {
+  private updateEmail (user: IUser): Record<string, any> {
     user.personal.email = user.temporary.tempEmail as string
 
     const update = {
-      'logs.updatedAt': new Date(Date.now()),
       'personal.email': user.personal.email
     }
-    const updatedUser = await this.userDbRepository.updateUser(user, update)
 
-    return updatedUser as IUser
+    return update
   }
 
-  private async clearTemporary (user: IUser): Promise<void> {
+  private clearTemporary (user: IUser): Record<string, any> {
     user.temporary.tempEmail = null
     user.temporary.tempEmailCode = null
     user.temporary.tempEmailCodeExpiration = null
 
-    await this.userDbRepository.updateUser(user, {
+    const update = {
+      'logs.updatedAt': new Date(Date.now()),
       'temporary.tempEmail': user.temporary.tempEmail,
       'temporary.tempEmailCode': user.temporary.tempEmailCode,
       'temporary.tempEmailCodeExpiration': user.temporary.tempEmailCodeExpiration
-    })
+    }
+
+    return update
   }
 }

@@ -17,6 +17,7 @@ import {
 } from '@/tests/__mocks__'
 
 import { makeHttpHelper } from '@/factories/helpers'
+import MockDate from 'mockdate'
 
 interface SutTypes {
   fakePublicUser: IPublicUser
@@ -62,6 +63,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('updateEmailByCodeController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should call validate with correct values', async () => {
     expect.hasAssertions()
 
@@ -146,14 +155,20 @@ describe('updateEmailByCodeController', () => {
     expect(fakeUser.temporary.tempEmailCodeExpiration).toBeNull()
   })
 
-  it('should call updateUser twice', async () => {
+  it('should call updateUser with correct values', async () => {
     expect.hasAssertions()
 
-    const { sut, request, userDbRepositoryStub } = makeSut()
+    const { fakeUser, sut, request, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledTimes(2)
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
+      'personal.email': fakeUser.personal.email,
+      'temporary.tempEmail': fakeUser.temporary.tempEmail,
+      'temporary.tempEmailCode': fakeUser.temporary.tempEmailCode,
+      'temporary.tempEmailCodeExpiration': fakeUser.temporary.tempEmailCodeExpiration
+    })
   })
 })
