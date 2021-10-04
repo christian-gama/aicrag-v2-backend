@@ -4,15 +4,18 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 
 import { environment } from '@/main/config/environment'
 
-import { CreateLogSchema } from '@/schemas/mongodb/log-schema.ts'
-import { CreateUserSchema } from '@/schemas/mongodb/user-schema'
+import { createSchema } from '@/schemas/mongodb/create-schema'
+import { LogSchema } from '@/schemas/mongodb/log-schema.ts'
+import { TaskSchema } from '@/schemas/mongodb/task-schema'
+import { UserSchema } from '@/schemas/mongodb/user-schema'
 
 MongoAdapter.connect(environment.DB.MONGO_URL)
   .then(async () => {
     const app = (await import('./config/app')).default
 
-    await CreateUserSchema()
-    await CreateLogSchema()
+    await createSchema('logs', LogSchema)
+    await createSchema('tasks', TaskSchema)
+    await createSchema('users', UserSchema)
 
     app.listen(environment.SERVER.PORT, () => {
       console.log(`Environment: ${environment.SERVER.NODE_ENV}`)
