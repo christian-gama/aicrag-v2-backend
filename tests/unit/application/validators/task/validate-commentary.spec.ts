@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateCommentary } from '@/application/validators/task'
 
 import { HttpRequest } from '@/presentation/http/protocols'
@@ -18,6 +18,17 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateCommentary', () => {
+  it('should return InvalidTypeError if commentary is not a string', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.commentary = 123
+
+    const error = sut.validate(request.body)
+
+    expect(error).toStrictEqual(new InvalidTypeError('commentary'))
+  })
+
   it('should return InvalidParamError if commentary length is greater than 400', () => {
     expect.hasAssertions()
 

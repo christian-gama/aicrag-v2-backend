@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
-import { InvalidCodeError, CodeIsExpiredError } from '@/application/errors'
+import { InvalidCodeError, CodeIsExpiredError, InvalidTypeError } from '@/application/errors'
 import { ValidateEmailCode } from '@/application/validators/user'
 
 import { HttpRequest } from '@/presentation/http/protocols'
@@ -34,6 +34,17 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateEmailCode', () => {
+  it('should return InvalidTypeError if tempEmailCode is not a string', async () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.tempEmailCode = 123
+
+    const error = await sut.validate(request.body)
+
+    expect(error).toStrictEqual(new InvalidTypeError('tempEmailCode'))
+  })
+
   it('should call findUserByEmail with correct email', async () => {
     expect.hasAssertions()
 
@@ -49,7 +60,7 @@ describe('validateEmailCode', () => {
     expect.hasAssertions()
 
     const { request, sut } = makeSut()
-    request.body.tempEmailCode = null
+    request.body.tempEmailCode = '123'
 
     const value = await sut.validate(request.body)
 

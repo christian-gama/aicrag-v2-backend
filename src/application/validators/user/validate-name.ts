@@ -1,9 +1,13 @@
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { InvalidParamError } from '../../errors'
+import { InvalidParamError, InvalidTypeError } from '../../errors'
 
 export class ValidateName implements ValidatorProtocol {
-  validate (input: any): InvalidParamError | undefined {
-    if (input.name.match(/[^a-zA-Z .']/g)) return new InvalidParamError('name')
+  validate (input: any): InvalidParamError | InvalidTypeError | undefined {
+    const { name } = input
+
+    if (typeof name !== 'string') return new InvalidTypeError('name')
+
+    if (name.match(/[^a-zA-Z .']/g)) return new InvalidParamError('name')
   }
 }

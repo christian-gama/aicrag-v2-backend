@@ -4,7 +4,8 @@ import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import {
   InvalidCodeError,
   CodeIsExpiredError,
-  AccountAlreadyActivatedError
+  AccountAlreadyActivatedError,
+  InvalidTypeError
 } from '@/application/errors'
 import { ValidateActivationCode } from '@/application/validators/user'
 
@@ -37,6 +38,17 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateActivationCode', () => {
+  it('should return InvalidTypeError if activationCode is not a string', async () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.activationCode = 123
+
+    const error = await sut.validate(request.body)
+
+    expect(error).toStrictEqual(new InvalidTypeError('activationCode'))
+  })
+
   it('should call findUserByEmail with correct email', async () => {
     expect.hasAssertions()
 
@@ -46,17 +58,6 @@ describe('validateActivationCode', () => {
     await sut.validate(request.body)
 
     expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
-  })
-
-  it('should return an InvalidCodeError if actiavtion code is not valid', async () => {
-    expect.hasAssertions()
-
-    const { request, sut } = makeSut()
-    request.body.activationCode = null
-
-    const value = await sut.validate(request.body)
-
-    expect(value).toStrictEqual(new InvalidCodeError())
   })
 
   it('should return an InvalidCode if activation code is different from user activation code', async () => {

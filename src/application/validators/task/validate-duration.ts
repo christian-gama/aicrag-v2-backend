@@ -1,9 +1,11 @@
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
 export class ValidateDuration implements ValidatorProtocol {
-  validate (input: any): InvalidParamError | undefined {
+  validate (input: any): InvalidParamError | InvalidTypeError | undefined {
+    if (typeof input.duration !== 'number') return new InvalidTypeError('duration')
+
     switch (input.type) {
       case 'TX':
         if (input.duration > 30 || input.duration <= 0) return new InvalidParamError('duration')

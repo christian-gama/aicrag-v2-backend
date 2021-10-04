@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateDuration } from '@/application/validators/task'
 
 import { HttpRequest } from '@/presentation/http/protocols'
@@ -16,6 +16,17 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateDuration', () => {
+  it('should return InvalidTypeError if duration is not a number', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.duration = '123'
+
+    const error = sut.validate(request.body)
+
+    expect(error).toStrictEqual(new InvalidTypeError('duration'))
+  })
+
   it('should return InvalidParamError if type is TX and duration is longer than 30', () => {
     expect.hasAssertions()
 
