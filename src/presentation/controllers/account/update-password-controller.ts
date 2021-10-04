@@ -21,19 +21,18 @@ export class UpdatePasswordController implements ControllerProtocol {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const credentials = httpRequest.body
+    const user = httpRequest.user as IUser
 
     const error = await this.updatePasswordValidator.validate(credentials)
     if (error) return this.httpHelper.badRequest(error)
 
-    const hashedPassword = await this.hasher.hash(credentials.password)
-
-    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
+    const hashedPassword = await this.hasher.hash(credentials.newPassword)
 
     const update = {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': hashedPassword
     }
-    const updatedUser = await this.userDbRepository.updateUser(user, update) as IUser
+    const updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 
