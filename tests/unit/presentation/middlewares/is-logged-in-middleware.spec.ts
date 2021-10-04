@@ -1,12 +1,19 @@
 import { IUser } from '@/domain'
 import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
+import { UserDbRepositoryProtocol } from '@/domain/repositories'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { IsLoggedInMiddleware } from '@/presentation/middlewares'
 
-import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
+import {
+  makeFakeRefreshToken,
+  makeFakeUser,
+  makeUserDbRepositoryStub,
+  makeVerifyTokenStub
+} from '@/tests/__mocks__'
 
 import { makeHttpHelper } from '@/factories/helpers'
+import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
@@ -15,6 +22,7 @@ interface SutTypes {
   request: HttpRequest
   sut: IsLoggedInMiddleware
   verifyRefreshTokenStub: VerifyTokenProtocol
+  userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -23,8 +31,9 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { cookies: { refreshToken: 'any_token' } }
   const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
+  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
-  const sut = new IsLoggedInMiddleware(httpHelper, verifyRefreshTokenStub)
+  const sut = new IsLoggedInMiddleware(httpHelper, userDbRepositoryStub, verifyRefreshTokenStub)
 
   return {
     fakeRefreshToken,
@@ -32,11 +41,20 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
+    userDbRepositoryStub,
     verifyRefreshTokenStub
   }
 }
 
 describe('isLoggedInMiddleware', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should call verify with correct token', async () => {
     expect.hasAssertions()
 
@@ -57,6 +75,19 @@ describe('isLoggedInMiddleware', () => {
     const response = await sut.handle(request)
 
     expect(response).toStrictEqual(httpHelper.ok({ user: undefined }))
+  })
+
+  it('should call updateUser with correct values', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.lastSeenAt': new Date(Date.now())
+    })
   })
 
   it('should return ok if succeeds', async () => {
