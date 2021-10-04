@@ -23,22 +23,26 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
-    await this.updateEmail(user)
+    const updatedUser = await this.updateEmail(user)
     await this.clearTemporary(user)
 
-    const filteredUser = this.filterUserData.filter(user)
+    const filteredUser = this.filterUserData.filter(updatedUser)
 
     return this.httpHelper.ok({
       user: filteredUser
     })
   }
 
-  private async updateEmail (user: IUser): Promise<void> {
+  private async updateEmail (user: IUser): Promise<IUser> {
     user.personal.email = user.temporary.tempEmail as string
 
-    await this.userDbRepository.updateUser(user, {
+    const update = {
+      'logs.updatedAt': new Date(Date.now()),
       'personal.email': user.personal.email
-    })
+    }
+    const updatedUser = await this.userDbRepository.updateUser(user, update)
+
+    return updatedUser as IUser
   }
 
   private async clearTemporary (user: IUser): Promise<void> {

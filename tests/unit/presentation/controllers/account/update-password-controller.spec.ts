@@ -19,6 +19,7 @@ import {
 } from '@/tests/__mocks__'
 
 import { makeHttpHelper } from '@/factories/helpers'
+import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeUser: IUser
@@ -71,6 +72,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('updatePasswordController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should call validate with correct credentials', async () => {
     expect.hasAssertions()
 
@@ -125,7 +134,10 @@ describe('updatePasswordController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, { 'personal.password': 'hashed_value' })
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
+      'personal.password': 'hashed_value'
+    })
   })
 
   it('should call filter with correct user', async () => {

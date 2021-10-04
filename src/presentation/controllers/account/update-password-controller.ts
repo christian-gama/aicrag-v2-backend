@@ -29,9 +29,11 @@ export class UpdatePasswordController implements ControllerProtocol {
 
     const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
-    const updatedUser = (await this.userDbRepository.updateUser(user, {
+    const update = {
+      'logs.updatedAt': new Date(Date.now()),
       'personal.password': hashedPassword
-    })) as IUser
+    }
+    const updatedUser = await this.userDbRepository.updateUser(user, update) as IUser
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 

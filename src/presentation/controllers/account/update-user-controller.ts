@@ -31,9 +31,11 @@ export class UpdateUserController implements ControllerProtocol {
       const error = await this.validateCurrency.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      updatedUser = await this.userDbRepository.updateUser(user, {
+      const update = {
+        'logs.updatedAt': new Date(Date.now()),
         'settings.currency': data.currency
-      })
+      }
+      updatedUser = await this.userDbRepository.updateUser(user, update)
     }
 
     if (data.email) {
@@ -44,24 +46,23 @@ export class UpdateUserController implements ControllerProtocol {
 
       if (userExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
-      updatedUser = await this.userDbRepository.updateUser(user, {
-        'temporary.tempEmail': data.email
-      })
-      updatedUser = await this.userDbRepository.updateUser(user, {
-        'temporary.tempEmailCode': this.emailCode.generate()
-      })
-      updatedUser = await this.userDbRepository.updateUser(user, {
+      const update = {
+        'temporary.tempEmail': data.email,
+        'temporary.tempEmailCode': this.emailCode.generate(),
         'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
-      })
+      }
+      updatedUser = await this.userDbRepository.updateUser(user, update)
     }
 
     if (data.name) {
       const error = await this.validateName.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      updatedUser = await this.userDbRepository.updateUser(user, {
+      const update = {
+        'logs.updatedAt': new Date(Date.now()),
         'personal.name': data.name
-      })
+      }
+      updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
     }
 
     if (!updatedUser) return this.httpHelper.ok({ message: 'No changes were made' })

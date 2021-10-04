@@ -22,6 +22,7 @@ import {
 } from '@/tests/__mocks__'
 
 import { makeHttpHelper } from '@/factories/helpers'
+import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeUser: IUser
@@ -78,6 +79,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('resetPasswordController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should return forbidden if user is logged in', async () => {
     expect.hasAssertions()
 
@@ -122,6 +131,7 @@ describe('resetPasswordController', () => {
     await sut.handle(request)
 
     expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.updatedAt': new Date(Date.now()),
       'personal.password': 'hashed_value',
       'temporary.resetPasswordToken': null
     })
