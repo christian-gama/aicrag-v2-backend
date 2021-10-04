@@ -44,7 +44,11 @@ export class LoginController implements ControllerProtocol {
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 
-    const filteredUser = this.filterUserData.filter(user)
+    const updatedUser = await this.userDbRepository.updateUser(user, {
+      'logs.lastLoginAt': new Date(Date.now())
+    }) as IUser
+
+    const filteredUser = this.filterUserData.filter(updatedUser)
 
     return this.httpHelper.ok({
       accessToken,

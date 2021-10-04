@@ -25,6 +25,8 @@ import {
   makeUserDbRepositoryStub
 } from '@/tests/__mocks__'
 
+import MockDate from 'mockdate'
+
 interface SutTypes {
   credentialsValidatorStub: ValidatorProtocol
   fakePublicUser: IPublicUser
@@ -73,6 +75,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('loginController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should call validate with correct values', async () => {
     expect.hasAssertions()
 
@@ -123,7 +133,7 @@ describe('loginController', () => {
     expect(badRequestSpy).toHaveBeenCalledWith(error)
   })
 
-  it('should return ok with accessToken only if account is not activated with the correct value if it is an InactiveAccountError', async () => {
+  it('should return ok with accessToken only if account is not activated', async () => {
     expect.hasAssertions()
 
     const { credentialsValidatorStub, httpHelper, request, sut } = makeSut()
@@ -215,6 +225,19 @@ describe('loginController', () => {
       accessToken: 'any_token',
       refreshToken: 'any_token',
       user: fakePublicUser
+    })
+  })
+
+  it('should call updateUser with correct values', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+
+    await sut.handle(request)
+
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+      'logs.lastLoginAt': new Date(Date.now())
     })
   })
 
