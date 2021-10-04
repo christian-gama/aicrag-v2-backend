@@ -1,6 +1,10 @@
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 
-export const createSchema = async (collection: string, schema: Record<string, any>): Promise<any> => {
+import { LogSchema } from './log-schema.ts'
+import { TaskSchema } from './task-schema'
+import { UserSchema } from './user-schema'
+
+const createSchema = async (collection: string, schema: Record<string, any>): Promise<any> => {
   await MongoAdapter.client
     .db()
     .listCollections({ name: collection })
@@ -14,4 +18,10 @@ export const createSchema = async (collection: string, schema: Record<string, an
         }
       }
     })
+}
+
+export const createSchemas = async (): Promise<void> => {
+  await createSchema('logs', LogSchema)
+  await createSchema('tasks', TaskSchema)
+  await createSchema('users', UserSchema)
 }
