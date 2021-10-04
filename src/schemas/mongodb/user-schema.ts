@@ -58,7 +58,7 @@ export const UserSchema = {
               description: 'must be a boolean and is required'
             },
             currency: {
-              bsonType: 'string',
+              enum: ['BRL', 'USD'],
               description: 'must be a string and is required'
             },
             handicap: {
