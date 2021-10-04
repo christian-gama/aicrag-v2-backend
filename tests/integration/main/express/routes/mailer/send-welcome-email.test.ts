@@ -36,17 +36,15 @@ describe('post /send-welcome-email', () => {
     fakeUser = makeFakeUser()
   })
 
-  const agent = request.agent(app)
-
   it('should return 400 if validation fails', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/mailer/send-welcome-email')
       .send({ email: 'invalid_email' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 403 if account is already activated', async () => {
@@ -55,10 +53,10 @@ describe('post /send-welcome-email', () => {
     fakeUser.settings.accountActivated = true
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/mailer/send-welcome-email')
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(403))
+      .expect(403)
   })
 
   it('should return 500 if email is not sent', async () => {
@@ -70,10 +68,10 @@ describe('post /send-welcome-email', () => {
       .spyOn(WelcomeEmail.prototype, 'send')
       .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
-    await agent
+    await request(app)
       .post('/api/v1/mailer/send-welcome-email')
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(500))
+      .expect(500)
   })
 
   it('should return 200 if email is sent', async () => {
@@ -83,9 +81,9 @@ describe('post /send-welcome-email', () => {
 
     jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 
-    await agent
+    await request(app)
       .post('/api/v1/mailer/send-welcome-email')
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(200))
+      .expect(200)
   })
 })

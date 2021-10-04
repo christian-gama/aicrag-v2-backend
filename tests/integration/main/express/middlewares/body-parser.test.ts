@@ -9,14 +9,12 @@ describe('bodyParser', () => {
     })
   })
 
-  const agent = request.agent(app)
-
   it('should parse body', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .post('/use_body_parser')
       .send({ name: 'any_name' })
-      .then(() => expect({ name: 'any_name' }))
+      .expect({ name: 'any_name' })
   })
 })

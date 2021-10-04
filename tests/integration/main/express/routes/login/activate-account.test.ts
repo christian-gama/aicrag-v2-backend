@@ -36,8 +36,6 @@ describe('patch /activate-account', () => {
     accessToken = makeGenerateAccessToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
@@ -45,11 +43,11 @@ describe('patch /activate-account', () => {
     fakeUser.settings.accountActivated = false
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
-      .then(() => expect(200))
+      .expect(200)
   })
 
   it('should return 401 if user does not have access token', async () => {
@@ -57,10 +55,10 @@ describe('patch /activate-account', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/activate-account')
       .send()
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 400 if code is invalid', async () => {
@@ -68,11 +66,11 @@ describe('patch /activate-account', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: 'invalid_code', email: fakeUser.personal.email })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if code is expired', async () => {
@@ -82,11 +80,11 @@ describe('patch /activate-account', () => {
     fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if misses any field', async () => {
@@ -94,11 +92,11 @@ describe('patch /activate-account', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send()
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if account is already activated', async () => {
@@ -108,10 +106,10 @@ describe('patch /activate-account', () => {
     fakeUser.settings.accountActivated = true
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/activate-account')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
-      .then(() => expect(400))
+      .expect(400)
   })
 })

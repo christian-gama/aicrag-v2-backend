@@ -26,6 +26,6 @@ describe('cookieParser', () => {
   it('should send cookies', async () => {
     expect.assertions(0)
 
-    await agent.get('/send_cookie').then(() => expect('any_value'))
+    await agent.get('/send_cookie').expect('any_value')
   })
 })

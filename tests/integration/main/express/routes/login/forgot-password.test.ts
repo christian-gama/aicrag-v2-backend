@@ -36,26 +36,24 @@ describe('post /forgot-password', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(200))
+      .expect(200)
   })
 
   it('should return 400 if email does not exist', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .post('/api/v1/login/forgot-password')
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 403 if user is logged in', async () => {
@@ -63,10 +61,10 @@ describe('post /forgot-password', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/login/forgot-password')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(403))
+      .expect(403)
   })
 })

@@ -38,22 +38,20 @@ describe('get /logout', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 200 if user is logged in', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .get('/api/v1/account/logout')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .then(() => expect(200))
+      .expect(200)
   })
 
   it('should return 401 if user is logged out', async () => {
     expect.assertions(0)
 
-    await agent.get('/api/v1/account/logout').then(() => expect(401))
+    await request(app).get('/api/v1/account/logout').expect(401)
   })
 })

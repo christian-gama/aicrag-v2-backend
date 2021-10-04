@@ -1,4 +1,3 @@
-
 import { InternalError } from '@/application/errors'
 
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
@@ -33,15 +32,10 @@ describe('errorRequestHandler', () => {
     app.use(errorRequestHandler)
   })
 
-  const agent = request.agent(app)
-
   it('should return statusCode 500', async () => {
     expect.assertions(0)
 
-    await agent
-      .post('/error_handler')
-      .send({})
-      .then(() => expect(500))
+    await request(app).post('/error_handler').send({}).expect(500)
   })
 
   it('should return a full error if environment is on development', async () => {
@@ -49,15 +43,13 @@ describe('errorRequestHandler', () => {
 
     environment.SERVER.NODE_ENV = 'development'
 
-    await agent
+    await request(app)
       .post('/error_handler')
       .send({})
-      .then(() =>
-        expect({
-          data: { error: { message: error.message, name: error.name, stack: error.stack } },
-          status: 'fail'
-        })
-      )
+      .expect({
+        data: { error: { message: error.message, name: error.name, stack: error.stack } },
+        status: 'fail'
+      })
   })
 
   it('should return a shorten error if environment is on production', async () => {
@@ -65,14 +57,12 @@ describe('errorRequestHandler', () => {
 
     environment.SERVER.NODE_ENV = 'production'
 
-    await agent
+    await request(app)
       .post('/error_handler')
       .send({})
-      .then(() =>
-        expect({
-          data: { message: new InternalError().message },
-          status: 'fail'
-        })
-      )
+      .expect({
+        data: { message: new InternalError().message },
+        status: 'fail'
+      })
   })
 })

@@ -36,26 +36,24 @@ describe('get /verify-reset-password-token', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 403 if user is logged in', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .get('/api/v1/token/verify-reset-password-token/any_token')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
-      .then(() => expect(403))
+      .expect(403)
   })
 
   it('should return 401 if token is invalid', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .get('/api/v1/token/verify-reset-password-token/invalid_token')
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it("should return 401 if param's token does not match user's token", async () => {
@@ -67,9 +65,9 @@ describe('get /verify-reset-password-token', () => {
 
     const differentResetPasswordToken = makeGenerateAccessToken().generate(makeFakeUser())
 
-    await agent
+    await request(app)
       .get(`/api/v1/token/verify-reset-password-token/${differentResetPasswordToken}`)
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 200 if token is valid', async () => {
@@ -79,8 +77,8 @@ describe('get /verify-reset-password-token', () => {
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .get(`/api/v1/token/verify-reset-password-token/${resetPasswordToken}`)
-      .then(() => expect(200))
+      .expect(200)
   })
 })

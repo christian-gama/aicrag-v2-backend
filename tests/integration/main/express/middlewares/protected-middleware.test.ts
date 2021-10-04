@@ -43,12 +43,10 @@ describe('protectedMiddleware', () => {
     accessToken = makeGenerateAccessToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 401 if refresh token is invalid', async () => {
     expect.assertions(0)
 
-    await agent.get('/protected').then(() => expect(401))
+    await request(app).get('/protected').expect(401)
   })
 
   it('should return 401 if access token is invalid', async () => {
@@ -56,10 +54,10 @@ describe('protectedMiddleware', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .get('/protected')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=invalid_token`)
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 200 if refresh token and access token are valid', async () => {
@@ -67,9 +65,9 @@ describe('protectedMiddleware', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .get('/protected')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .then(() => expect(200))
+      .expect(200)
   })
 })

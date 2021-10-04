@@ -38,36 +38,34 @@ describe('patch /reset-password', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 403 if user is logged in', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
-      .then(() => expect(403))
+      .expect(403)
   })
 
   it('should return 401 if token is missing', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/reset-password')
       .send()
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 401 if token is invalid', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/reset-password')
       .set('Cookie', 'accessToken=invalid_token')
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 400 if params are missing', async () => {
@@ -76,11 +74,11 @@ describe('patch /reset-password', () => {
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send()
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if params are invalid', async () => {
@@ -89,11 +87,11 @@ describe('patch /reset-password', () => {
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123', passwordConfirmation: '1234' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 200 if params are valid', async () => {
@@ -102,10 +100,10 @@ describe('patch /reset-password', () => {
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/login/reset-password')
       .set('Cookie', `accessToken=${accessToken}`)
       .send({ password: '123456', passwordConfirmation: '123456' })
-      .then(() => expect(200))
+      .expect(200)
   })
 })

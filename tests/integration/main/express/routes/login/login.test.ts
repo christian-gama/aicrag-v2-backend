@@ -39,36 +39,34 @@ describe('post /login', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 403 if user is logged in', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/login')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send()
-      .then(() => expect(403))
+      .expect(403)
   })
 
   it('should return 401 if credentials are invalid', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .post('/api/v1/login')
       .send({ email: 'invalid_email@email.com', password: 'invalid_password' })
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 400 if miss a param or param is invalid', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .post('/api/v1/login')
       .send()
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 200 if account is not activated', async () => {
@@ -79,10 +77,10 @@ describe('post /login', () => {
     fakeUser.personal.password = hashedPassword
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/login')
       .send({ email: fakeUser.personal.email, password: userPassword })
-      .then(() => expect(200))
+      .expect(200)
   })
 
   it('should return 200 if all validations succeeds', async () => {
@@ -94,9 +92,9 @@ describe('post /login', () => {
     fakeUser.settings.accountActivated = true
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/login')
       .send({ email: fakeUser.personal.email, password: userPassword })
-      .then(() => expect(200))
+      .expect(200)
   })
 })

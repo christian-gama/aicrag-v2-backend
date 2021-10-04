@@ -36,27 +36,25 @@ describe('post /signup', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 403 if user is already logged in', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/signup')
       .set('Cookie', `refreshToken=${refreshToken}`)
       .send()
-      .then(() => expect(403))
+      .expect(403)
   })
 
   it('should return 400 if validation fails', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .post('/api/v1/signup')
       .send({})
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 409 if email already exists', async () => {
@@ -70,27 +68,27 @@ describe('post /signup', () => {
     }
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .post('/api/v1/signup')
       .send(fakeSignUpUserCredentials)
-      .then(() => expect(409))
+      .expect(409)
   })
 
   it('should return 400 if miss a param or param is invalid', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .post('/api/v1/signup')
       .send()
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .post('/api/v1/signup')
       .send(makeFakeSignUpUserCredentials())
-      .then(() => expect(200))
+      .expect(200)
   }, 12000)
 })

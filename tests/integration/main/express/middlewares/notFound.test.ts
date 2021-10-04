@@ -12,19 +12,17 @@ describe('errorHandler', () => {
     app.get('/notFound', controllerAdapter(makeControllerStub()))
   })
 
-  const agent = request.agent(app)
-
   it('should return 404', async () => {
     expect.assertions(0)
 
-    await agent.get('/notFound').then(() => expect(404))
+    await request(app).get('/notFound').expect(404)
   })
 
   it('should return a default error message', async () => {
     expect.assertions(0)
 
-    await agent
+    await request(app)
       .get('/notFound')
-      .then(() => expect({ data: { message: 'Cannotfindthepath:/notFound', status: 'fail' } }))
+      .expect({ data: { message: 'Cannot find the path: /notFound', status: 'fail' } })
   })
 })

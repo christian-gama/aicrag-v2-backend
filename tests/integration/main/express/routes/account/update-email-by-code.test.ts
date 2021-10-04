@@ -41,8 +41,6 @@ describe('patch /update-email-by-code', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
@@ -50,11 +48,11 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode })
-      .then(() => expect(200))
+      .expect(200)
   })
 
   it('should return 401 if user does not have access token', async () => {
@@ -62,10 +60,10 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .send()
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 400 if code is invalid', async () => {
@@ -73,11 +71,11 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'invalid_code' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if code is expired', async () => {
@@ -88,11 +86,11 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if misses any field', async () => {
@@ -100,11 +98,11 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send()
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if temporary email is null', async () => {
@@ -114,11 +112,11 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if temporary email code is null', async () => {
@@ -128,11 +126,11 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if temporary email code expiration is null', async () => {
@@ -142,11 +140,11 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if email does not exist', async () => {
@@ -154,10 +152,10 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: 'invalid_email', tempEmailCode: 'any_code' })
-      .then(() => expect(400))
+      .expect(400)
   })
 })

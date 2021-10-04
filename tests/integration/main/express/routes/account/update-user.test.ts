@@ -38,17 +38,15 @@ describe('patch /update-user', () => {
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
-  const agent = request.agent(app)
-
   it('should return 401 if user is not logged in', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-user')
       .send()
-      .then(() => expect(401))
+      .expect(401)
   })
 
   it('should return 400 if name is invalid', async () => {
@@ -56,11 +54,11 @@ describe('patch /update-user', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-user')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ name: '1nv@lid_name' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if currency is invalid', async () => {
@@ -68,11 +66,11 @@ describe('patch /update-user', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-user')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ currency: 'invalid_currency' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 400 if email is invalid', async () => {
@@ -80,11 +78,11 @@ describe('patch /update-user', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-user')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: 'invalid_email' })
-      .then(() => expect(400))
+      .expect(400)
   })
 
   it('should return 409 if email already exists', async () => {
@@ -92,11 +90,11 @@ describe('patch /update-user', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-user')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ email: fakeUser.personal.email })
-      .then(() => expect(409))
+      .expect(409)
   })
 
   it('should return 200 if nothing is changed', async () => {
@@ -104,11 +102,11 @@ describe('patch /update-user', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-user')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send()
-      .then(() => expect(200))
+      .expect(200)
   })
 
   it('should return 200 if changes are made', async () => {
@@ -116,10 +114,10 @@ describe('patch /update-user', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await agent
+    await request(app)
       .patch('/api/v1/account/update-user')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .send({ currency: 'BRL', email: 'example@mail.com', name: 'Example' })
-      .then(() => expect(200))
+      .expect(200)
   })
 })

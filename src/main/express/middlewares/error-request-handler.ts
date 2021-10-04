@@ -17,7 +17,7 @@ export const errorRequestHandler: ErrorRequestHandler = (err, req, res, next) =>
 
   // Production
   return res.status(error.statusCode).json({
-    data: { error: { message: error.message } },
+    data: { message: error.message },
     status: 'fail'
   })
 }
