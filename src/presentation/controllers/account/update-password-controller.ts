@@ -22,11 +22,12 @@ export class UpdatePasswordController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const credentials = httpRequest.body
     const user = httpRequest.user as IUser
+    credentials.user = user
 
     const error = await this.updatePasswordValidator.validate(credentials)
     if (error) return this.httpHelper.badRequest(error)
 
-    const hashedPassword = await this.hasher.hash(credentials.newPassword)
+    const hashedPassword = await this.hasher.hash(credentials.password)
 
     const update = {
       'logs.updatedAt': new Date(Date.now()),

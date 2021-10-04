@@ -41,10 +41,11 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = {
     body: {
-      email: fakeUser.personal.email,
+      currentPassword: fakeUser.personal.password,
       password: fakeUser.personal.password,
       passwordConfirmation: fakeUser.personal.password
-    }
+    },
+    user: fakeUser
   }
   const updatePasswordValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
@@ -115,26 +116,15 @@ describe('updatePasswordController', () => {
     expect(hashSpy).toHaveBeenCalledWith(request.body.password)
   })
 
-  it('should call findUserByEmail with correct password', async () => {
-    expect.hasAssertions()
-
-    const { request, sut, userDbRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
-
-    await sut.handle(request)
-
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
-  })
-
   it('should call updateUser with correct password', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
+    const { request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(request.user, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': 'hashed_value'
     })
