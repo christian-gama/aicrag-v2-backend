@@ -6,7 +6,7 @@ import { makeValidateUniqueTaskId, makeValidateType, makeValidateDate, makeValid
 import { makeValidateCommentary } from '@/factories/validators/task/validate-commentary-factory'
 import { makeRequiredFields } from '@/factories/validators/validate-required-fields-factory'
 
-jest.mock('../../../../src/application/validators/validation-composite.ts')
+jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
 describe('createTaskValidatorComposite', () => {
   it('should create factory with all validations', () => {

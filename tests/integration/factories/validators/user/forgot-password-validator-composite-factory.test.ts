@@ -3,35 +3,30 @@ import { ValidatorProtocol } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
-  makeCredentialsValidatorComposite,
+  makeForgotPasswordValidatorComposite,
   makeRequiredFields,
   makeValidateEmail,
-  makeValidatePassword,
-  makeValidateEmailExists,
-  makeValidatePasswordMatch,
-  makeValidateActiveAccount
+  makeValidateEmailExists
 } from '@/factories/validators/user'
 
-jest.mock('../../../../src/application/validators/validation-composite.ts')
+jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('credentialsValidatorComposite', () => {
+describe('forgotPasswordValidatorComposite', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeCredentialsValidatorComposite()
+    makeForgotPasswordValidatorComposite()
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['email', 'password']
+    const fields = ['email']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
+    // Must have this exact validation order
     validations.push(makeValidateEmail())
-    validations.push(makeValidatePassword())
     validations.push(makeValidateEmailExists())
-    validations.push(makeValidatePasswordMatch())
-    validations.push(makeValidateActiveAccount())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

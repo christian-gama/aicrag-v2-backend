@@ -3,30 +3,31 @@ import { ValidatorProtocol } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
-  makeForgotPasswordValidatorComposite,
+  makeUpdateEmailByCodeValidatorComposite,
   makeRequiredFields,
-  makeValidateEmail,
-  makeValidateEmailExists
+  makeValidateEmailCode,
+  makeValidateEmailExists,
+  makeValidateEmail
 } from '@/factories/validators/user'
 
-jest.mock('../../../../src/application/validators/validation-composite.ts')
+jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('forgotPasswordValidatorComposite', () => {
+describe('updateEmailByCodeValidatorComposite', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeForgotPasswordValidatorComposite()
+    makeUpdateEmailByCodeValidatorComposite()
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['email']
+    const fields = ['email', 'tempEmailCode']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
-    // Must have this exact validation order
     validations.push(makeValidateEmail())
     validations.push(makeValidateEmailExists())
+    validations.push(makeValidateEmailCode())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
