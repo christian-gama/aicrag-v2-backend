@@ -12,6 +12,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 export class UpdatePasswordController implements ControllerProtocol {
   constructor (
     private readonly filterUserData: FilterUserDataProtocol,
+    private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly generateRefreshToken: GenerateTokenProtocol,
     private readonly hasher: HasherProtocol,
     private readonly httpHelper: HttpHelperProtocol,
@@ -35,10 +36,12 @@ export class UpdatePasswordController implements ControllerProtocol {
     }
     const updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
 
+    const accessToken = this.generateAccessToken.generate(user) as string
+
     const refreshToken = await this.generateRefreshToken.generate(user)
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
-    return this.httpHelper.ok({ refreshToken, user: filteredUser })
+    return this.httpHelper.ok({ accessToken, refreshToken, user: filteredUser })
   }
 }

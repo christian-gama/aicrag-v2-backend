@@ -24,6 +24,7 @@ import MockDate from 'mockdate'
 interface SutTypes {
   fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
+  generateAccessTokenStub: GenerateTokenProtocol
   generateRefreshTokenStub: GenerateTokenProtocol
   hasherStub: HasherProtocol
   httpHelper: HttpHelperProtocol
@@ -36,6 +37,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
+  const generateAccessTokenStub = makeGenerateTokenStub()
   const generateRefreshTokenStub = makeGenerateTokenStub()
   const hasherStub = makeHasherStub()
   const httpHelper = makeHttpHelper()
@@ -52,6 +54,7 @@ const makeSut = (): SutTypes => {
 
   const sut = new UpdatePasswordController(
     filterUserDataStub,
+    generateAccessTokenStub,
     generateRefreshTokenStub,
     hasherStub,
     httpHelper,
@@ -62,6 +65,7 @@ const makeSut = (): SutTypes => {
   return {
     fakeUser,
     filterUserDataStub,
+    generateAccessTokenStub,
     generateRefreshTokenStub,
     hasherStub,
     httpHelper,
@@ -141,6 +145,17 @@ describe('updatePasswordController', () => {
     expect(filterSpy).toHaveBeenCalledWith(fakeUser)
   })
 
+  it('should call generate from access token with correct user', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, generateAccessTokenStub, request, sut } = makeSut()
+    const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
+
+    await sut.handle(request)
+
+    expect(generateSpy).toHaveBeenCalledWith(fakeUser)
+  })
+
   it('should call generate with correct user', async () => {
     expect.hasAssertions()
 
@@ -160,7 +175,7 @@ describe('updatePasswordController', () => {
     const response = await sut.handle(request)
 
     expect(response).toStrictEqual(
-      httpHelper.ok({ refreshToken: 'any_token', user: makeFakePublicUser(fakeUser) })
+      httpHelper.ok({ accessToken: 'any_token', refreshToken: 'any_token', user: makeFakePublicUser(fakeUser) })
     )
   })
 })

@@ -4,12 +4,13 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { makeBcryptAdapter } from '../../cryptography'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
-import { makeGenerateRefreshToken } from '../../providers/token'
+import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
 import { makeUpdatePasswordValidatorComposite } from '../../validators/user'
 
 export const makeUpdatePasswordController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()
+  const generateAccessToken = makeGenerateAccessToken()
   const generateRefreshToken = makeGenerateRefreshToken()
   const hasher = makeBcryptAdapter()
   const httpHelper = makeHttpHelper()
@@ -18,6 +19,7 @@ export const makeUpdatePasswordController = (): ControllerProtocol => {
 
   const updatePasswordController = new UpdatePasswordController(
     filterUserData,
+    generateAccessToken,
     generateRefreshToken,
     hasher,
     httpHelper,
