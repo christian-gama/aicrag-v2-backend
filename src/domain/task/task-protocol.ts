@@ -1,5 +1,8 @@
 import { IUser } from '..'
 
+/**
+ * @description Interface for a task.
+ */
 export interface ITask {
   commentary: string | null
   date: {

@@ -9,6 +9,9 @@ import {
   UserCredentialError
 } from '@/application/errors'
 
+/**
+ * @description Errors that can be returned by validator.
+ */
 export type ValidatorErrorProtocol =
   | AccountAlreadyActivatedError
   | CodeIsExpiredError

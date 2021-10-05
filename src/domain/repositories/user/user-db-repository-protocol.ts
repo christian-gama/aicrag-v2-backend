@@ -36,7 +36,7 @@ export interface SaveUserDbProtocol {
    * @async Asynchronous method.
    * @description Receive an user and then save a user on database.
    * @param user User that will be saved as a user.
-   * @returns Return a user from database.
+   * @returns Return the saved user.
    */
   saveUser: (user: ISignUpUserCredentials) => Promise<IUser>
 }
