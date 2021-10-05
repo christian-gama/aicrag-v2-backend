@@ -53,4 +53,16 @@ describe('createTaskController', () => {
 
     expect(error).toStrictEqual(httpHelper.badRequest(new Error()))
   })
+
+  it('should call validate with correct data', async () => {
+    expect.hasAssertions()
+
+    const { request, sut, createTaskValidatorStub } = makeSut()
+    const data = Object.assign({ user: request.user }, request.body)
+    const validateSpy = jest.spyOn(createTaskValidatorStub, 'validate')
+
+    await sut.handle(request)
+
+    expect(validateSpy).toHaveBeenCalledWith(data)
+  })
 })
