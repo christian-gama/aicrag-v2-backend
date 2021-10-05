@@ -2,7 +2,7 @@ import { ITask, ITaskData, IUser } from '@/domain'
 import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { MustLoginError } from '@/application/errors'
+import { ConflictParamError, MustLoginError } from '@/application/errors'
 
 import { CreateTaskController } from '@/presentation/controllers/task'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
@@ -70,7 +70,20 @@ describe('createTaskController', () => {
     expect(error).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
-  it('should return badRequest if validation fails', async () => {
+  it('should return conflict if validation fails and is a ConflictParamError', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, createTaskValidatorStub } = makeSut()
+    jest
+      .spyOn(createTaskValidatorStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new ConflictParamError('any_field')))
+
+    const error = await sut.handle(request)
+
+    expect(error).toStrictEqual(httpHelper.conflict(new ConflictParamError('any_field')))
+  })
+
+  it('should return badRequest if validation returns a generic error', async () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, createTaskValidatorStub } = makeSut()
