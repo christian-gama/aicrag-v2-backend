@@ -16,10 +16,10 @@ export class CreateTaskController implements ControllerProtocol {
     const data = httpRequest.body
     const user = httpRequest.user
 
+    if (!user) return this.httpHelper.unauthorized(new MustLoginError())
+
     const error = await this.createTaskValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
-
-    if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     return this.httpHelper.ok({})
   }
