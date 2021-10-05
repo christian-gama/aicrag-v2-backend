@@ -6,7 +6,7 @@ export const TaskSchema = {
       required: ['commentary', 'date', 'duration', 'id', 'logs', 'taskId', 'type', 'user'],
       properties: {
         commentary: {
-          bsonType: ['string', 'null'],
+          bsonType: 'string',
           maxLength: 400,
           description: 'must be a string and is required'
         },
@@ -61,7 +61,7 @@ export const TaskSchema = {
           description: 'can only be one of the enum values and is required'
         },
         taskId: {
-          bsonType: ['string', 'null'],
+          bsonType: 'string',
           maxLength: 120,
           description: 'must be a string and is required'
         },

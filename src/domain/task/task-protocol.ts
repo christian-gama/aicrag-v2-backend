@@ -2,7 +2,7 @@
  * @description Interface for a task.
  */
 export interface ITask {
-  commentary: string | null
+  commentary: string
   date: {
     day: number
     full: Date
@@ -17,7 +17,7 @@ export interface ITask {
     updatedAt: Date | null
   }
   status: 'in_progress' | 'completed'
-  taskId: string | null
+  taskId: string
   type: 'QA' | 'TX'
   usd: number
   userId: string

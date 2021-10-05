@@ -14,7 +14,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
     const usd = type === 'TX' ? (duration / 60) * 65 * handicap : (duration / 60) * 112.5 * handicap
 
     return {
-      commentary: commentary ?? null,
+      commentary: commentary ?? '',
       date: {
         day: d.getDate(),
         full: d,
@@ -29,7 +29,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
         updatedAt: null
       },
       status,
-      taskId: taskId ?? null,
+      taskId: taskId ?? '',
       type,
       usd,
       userId: user.personal.id

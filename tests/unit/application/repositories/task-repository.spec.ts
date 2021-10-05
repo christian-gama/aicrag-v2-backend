@@ -70,7 +70,7 @@ describe('taskRepository', () => {
     })
   })
 
-  it('should return a task with correct values if commentary and taskId are null', async () => {
+  it('should return a task with correct values if commentary and taskId are falsy', async () => {
     expect.hasAssertions()
 
     const { fakeTaskData, sut, uuidStub } = makeSut()
@@ -87,7 +87,7 @@ describe('taskRepository', () => {
     const task = sut.createTask(fakeTaskData)
 
     expect(task).toStrictEqual({
-      commentary: null,
+      commentary: '',
       date: {
         day: d.getDate(),
         full: d,
@@ -102,7 +102,7 @@ describe('taskRepository', () => {
         updatedAt: null
       },
       status,
-      taskId: null,
+      taskId: '',
       type,
       usd,
       userId: user.personal.id
