@@ -22,7 +22,11 @@ export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProto
       return await Promise.resolve(fakeTask)
     }
 
-    async findTaskById (id: string, user: IUser): Promise<ITask | undefined> {
+    async findTaskById (id: string, userId: string): Promise<ITask | undefined> {
+      return await Promise.resolve(fakeTask)
+    }
+
+    async findTaskByTaskId (taskId: string, userId: string): Promise<ITask | undefined> {
       return await Promise.resolve(fakeTask)
     }
   }

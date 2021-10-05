@@ -1,26 +1,28 @@
-import { ITaskData } from '@/domain'
+import { ITaskData, IUser } from '@/domain'
 import { UuidProtocol } from '@/domain/helpers'
 
 import { TaskRepository } from '@/application/repositories'
 
-import { makeUuidStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeUuidStub } from '@/tests/__mocks__'
 import { makeFakeTaskData } from '@/tests/__mocks__/mock-task'
 
 import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeTaskData: ITaskData
+  fakeUser: IUser
   sut: TaskRepository
   uuidStub: UuidProtocol
 }
 
 const makeSut = (): SutTypes => {
-  const fakeTaskData = makeFakeTaskData()
+  const fakeUser = makeFakeUser()
+  const fakeTaskData = makeFakeTaskData(fakeUser)
   const uuidStub = makeUuidStub()
 
   const sut = new TaskRepository(uuidStub)
 
-  return { fakeTaskData, sut, uuidStub }
+  return { fakeTaskData, fakeUser, sut, uuidStub }
 }
 
 describe('taskRepository', () => {
@@ -37,22 +39,22 @@ describe('taskRepository', () => {
 
     const { fakeTaskData, sut, uuidStub } = makeSut()
     const { commentary, date, duration, taskId, status, type, user } = fakeTaskData
+    const d = new Date(Date.parse(date))
     const fakeId = uuidStub.generate()
     const usd =
       type === 'TX'
         ? (duration / 60) * 65 * user.settings.handicap
         : (duration / 60) * 112.5 * user.settings.handicap
-
     const task = sut.createTask(fakeTaskData)
 
     expect(task).toStrictEqual({
       commentary,
       date: {
-        day: date.getDate(),
-        full: date,
-        hours: date.toLocaleTimeString(),
-        month: date.getMonth(),
-        year: date.getFullYear()
+        day: d.getDate(),
+        full: d,
+        hours: d.toLocaleTimeString(),
+        month: d.getMonth(),
+        year: d.getFullYear()
       },
       duration,
       id: fakeId,
@@ -64,7 +66,7 @@ describe('taskRepository', () => {
       taskId,
       type,
       usd,
-      user
+      userId: user.personal.id
     })
   })
 
@@ -73,24 +75,25 @@ describe('taskRepository', () => {
 
     const { fakeTaskData, sut, uuidStub } = makeSut()
     const { date, duration, status, type, user } = fakeTaskData
+    const d = new Date(Date.parse(date))
     const fakeId = uuidStub.generate()
-    fakeTaskData.commentary = null
-    fakeTaskData.taskId = null
     const usd =
       type === 'TX'
         ? (duration / 60) * 65 * user.settings.handicap
         : (duration / 60) * 112.5 * user.settings.handicap
+    fakeTaskData.commentary = null
+    fakeTaskData.taskId = null
 
     const task = sut.createTask(fakeTaskData)
 
     expect(task).toStrictEqual({
       commentary: null,
       date: {
-        day: date.getDate(),
-        full: date,
-        hours: date.toLocaleTimeString(),
-        month: date.getMonth(),
-        year: date.getFullYear()
+        day: d.getDate(),
+        full: d,
+        hours: d.toLocaleTimeString(),
+        month: d.getMonth(),
+        year: d.getFullYear()
       },
       duration,
       id: fakeId,
@@ -102,7 +105,7 @@ describe('taskRepository', () => {
       taskId: null,
       type,
       usd,
-      user
+      userId: user.personal.id
     })
   })
 

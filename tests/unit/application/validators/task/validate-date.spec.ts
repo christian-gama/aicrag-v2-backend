@@ -36,4 +36,15 @@ describe('validateDate', () => {
 
     expect(response).toBeUndefined()
   })
+
+  it('should return undefined if is a valid date as string', () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.body.date = request.body.date.toString()
+
+    const response = sut.validate(request.body)
+
+    expect(response).toBeUndefined()
+  })
 })

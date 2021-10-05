@@ -29,17 +29,18 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const createTaskValidatorStub = makeValidatorStub()
-  const fakeTask = makeFakeTask()
+  const fakeUser = makeFakeUser()
+  const fakeTask = makeFakeTask(fakeUser)
   const fakeTaskData: ITaskData = {
     commentary: fakeTask.commentary,
-    date: fakeTask.date.full,
+    date: fakeTask.date.full.toString(),
     duration: fakeTask.duration,
     status: fakeTask.status,
     taskId: fakeTask.taskId,
     type: fakeTask.type,
-    user: fakeTask.user
+    user: fakeUser
   }
-  const fakeUser = makeFakeUser()
+
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: fakeTaskData, user: fakeUser }
   const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)

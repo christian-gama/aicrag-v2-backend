@@ -5,7 +5,7 @@ import { IUser } from '..'
  */
 export interface ITaskData {
   commentary: string | null
-  date: Date
+  date: string
   duration: number
   status: 'in_progress' | 'completed'
   taskId: string | null

@@ -1,5 +1,3 @@
-import { IUser } from '..'
-
 /**
  * @description Interface for a task.
  */
@@ -22,5 +20,5 @@ export interface ITask {
   taskId: string | null
   type: 'QA' | 'TX'
   usd: number
-  user: IUser
+  userId: string
 }

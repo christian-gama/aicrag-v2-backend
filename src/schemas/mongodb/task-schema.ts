@@ -69,9 +69,9 @@ export const TaskSchema = {
           enum: ['QA', 'TX'],
           description: 'can only be one of the enum values and is required'
         },
-        user: {
-          bsonType: 'objectId',
-          description: 'must be an objectId and is required'
+        userId: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
         }
       }
     }

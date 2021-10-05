@@ -1,24 +1,21 @@
-import { ITask, ITaskData } from '@/domain'
-
-import { makeFakeUser } from '.'
+import { ITask, ITaskData, IUser } from '@/domain'
 
 import faker from 'faker'
 
-export const makeFakeTaskData = (): ITaskData => {
+export const makeFakeTaskData = (fakeUser: IUser): ITaskData => {
   return {
     commentary: faker.lorem.words(10),
-    date: new Date(Date.now()),
+    date: new Date(Date.now()).toString(),
     duration: 30,
     status: 'completed',
     taskId: faker.datatype.uuid(),
     type: 'TX',
-    user: makeFakeUser()
+    user: fakeUser
   }
 }
 
-export const makeFakeTask = (): ITask => {
+export const makeFakeTask = (fakeUser: IUser): ITask => {
   const date = new Date(Date.now())
-  const user = makeFakeUser()
 
   return {
     commentary: faker.lorem.words(10),
@@ -38,7 +35,7 @@ export const makeFakeTask = (): ITask => {
     status: 'completed',
     taskId: faker.datatype.uuid(),
     type: 'TX',
-    usd: (30 / 60) * 65 * user.settings.handicap,
-    user
+    usd: (30 / 60) * 65 * fakeUser.settings.handicap,
+    userId: fakeUser.personal.id
   }
 }

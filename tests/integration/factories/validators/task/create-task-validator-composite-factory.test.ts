@@ -16,7 +16,7 @@ describe('createTaskValidatorComposite', () => {
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['commentary', 'date', 'duration', 'status', 'taskId', 'type']
+    const fields = ['date', 'duration', 'status', 'type']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }

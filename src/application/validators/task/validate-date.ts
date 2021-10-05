@@ -4,6 +4,6 @@ import { InvalidParamError } from '@/application/errors'
 
 export class ValidateDate implements ValidatorProtocol {
   validate (input: any): InvalidParamError | undefined {
-    if (!(input.date instanceof Date)) return new InvalidParamError('date')
+    if (isNaN(Date.parse(input.date))) return new InvalidParamError('date')
   }
 }

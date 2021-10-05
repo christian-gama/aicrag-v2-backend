@@ -8,6 +8,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
   createTask (taskData: ITaskData): ITask {
     const { commentary, date, duration, status, taskId, type, user } = taskData
 
+    const d = new Date(Date.parse(date))
     const handicap = user.settings.handicap
     const id = this.uuid.generate()
     const usd = type === 'TX' ? (duration / 60) * 65 * handicap : (duration / 60) * 112.5 * handicap
@@ -15,11 +16,11 @@ export class TaskRepository implements TaskRepositoryProtocol {
     return {
       commentary: commentary ?? null,
       date: {
-        day: date.getDate(),
-        full: date,
-        hours: date.toLocaleTimeString(),
-        month: date.getMonth(),
-        year: date.getFullYear()
+        day: d.getDate(),
+        full: d,
+        hours: d.toLocaleTimeString(),
+        month: d.getMonth(),
+        year: d.getFullYear()
       },
       duration,
       id,
@@ -31,7 +32,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
       taskId: taskId ?? null,
       type,
       usd,
-      user
+      userId: user.personal.id
     }
   }
 }

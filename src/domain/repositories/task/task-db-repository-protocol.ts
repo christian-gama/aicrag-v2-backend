@@ -1,17 +1,27 @@
-import { ITask, ITaskData, IUser } from '@/domain'
+import { ITask, ITaskData } from '@/domain'
 
 import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
 
-export interface TaskDbRepositoryProtocol extends FindTaskByIdDbProtocol, SaveTaskDbProtocol {}
+export interface TaskDbRepositoryProtocol extends FindTaskByIdDbProtocol, FindTaskByTaskIdDbProtocol, SaveTaskDbProtocol {}
 
 export interface FindTaskByIdDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an task id and tries to find it on database.
-   * @param id The task id that will be searched for.
+   * @param id The task unique id that will be searched for.
    * @returns Return a task if finds it or undefined if does not.
    */
-  findTaskById: (id: string, user: IUser) => Promise<ITask | undefined>
+  findTaskById: (id: string, userId: string) => Promise<ITask | undefined>
+}
+
+export interface FindTaskByTaskIdDbProtocol {
+  /**
+   * @async Asynchronous method.
+   * @description Receive an task id and tries to find it on database.
+   * @param taskId The taskId that will be searched for.
+   * @returns Return a task if finds it or undefined if does not.
+   */
+  findTaskByTaskId: (taskId: string | null, userId: string) => Promise<ITask | undefined>
 }
 
 export interface SaveTaskDbProtocol {

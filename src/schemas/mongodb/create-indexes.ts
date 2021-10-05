@@ -14,7 +14,6 @@ const createIndex = async (
 
 export const createIndexes = async (): Promise<void> => {
   await createIndex(1, 'tasks', 'id')
-  await createIndex(1, 'tasks', 'taskId')
   await createIndex(1, 'users', 'personal.email')
   await createIndex(1, 'users', 'personal.id')
 }
