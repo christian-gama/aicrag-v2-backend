@@ -29,12 +29,7 @@ export class TaskDbRepository implements TaskDbRepositoryProtocol {
   async saveTask (taskData: ITaskData): Promise<ITask> {
     const taskCollection = this.database.collection('tasks')
 
-    let task: any = null
-    try {
-      task = this.taskRepository.createTask(taskData)
-    } catch (error) {
-      console.log(error)
-    }
+    const task = this.taskRepository.createTask(taskData)
 
     return await taskCollection.insertOne(task)
   }
