@@ -21,7 +21,14 @@ export class CreateTaskController implements ControllerProtocol {
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     const error = await this.createTaskValidator.validate(data)
-    if (error) return this.httpHelper.badRequest(error)
+    if (error) {
+      switch (error.name) {
+        case 'ConflictParamError':
+          return this.httpHelper.conflict(error)
+        default:
+          return this.httpHelper.badRequest(error)
+      }
+    }
 
     const task = await this.taskDbRepository.saveTask(data)
 
