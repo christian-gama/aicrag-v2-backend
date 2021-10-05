@@ -17,6 +17,7 @@
           "/^@/infra/",
           "/^@/presentation/",
           "/^@/main/",
+          "/^@/factories/",
           "/^@/tests/",
           ["parent", "sibling", "index"],
           "module"
