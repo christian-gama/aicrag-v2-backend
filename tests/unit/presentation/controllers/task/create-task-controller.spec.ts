@@ -120,13 +120,13 @@ describe('createTaskController', () => {
     expect(saveTaskSpy).toHaveBeenCalledWith(data)
   })
 
-  it('should return ok with correct task if succeeds', async () => {
+  it('should return created with correct task if succeeds', async () => {
     expect.hasAssertions()
 
     const { fakeTask, httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ task: fakeTask }))
+    expect(response).toStrictEqual(httpHelper.created({ task: fakeTask }))
   })
 })

@@ -32,6 +32,6 @@ export class CreateTaskController implements ControllerProtocol {
 
     const task = await this.taskDbRepository.saveTask(data)
 
-    return this.httpHelper.ok({ task })
+    return this.httpHelper.created({ task })
   }
 }
