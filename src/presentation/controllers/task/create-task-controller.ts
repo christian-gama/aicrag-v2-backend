@@ -23,8 +23,8 @@ export class CreateTaskController implements ControllerProtocol {
     const error = await this.createTaskValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    await this.taskDbRepository.saveTask(data)
+    const task = await this.taskDbRepository.saveTask(data)
 
-    return this.httpHelper.ok({})
+    return this.httpHelper.ok({ task })
   }
 }
