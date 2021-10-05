@@ -46,7 +46,16 @@ const makeSut = (): SutTypes => {
 
   const sut = new CreateTaskController(createTaskValidatorStub, httpHelper, taskDbRepositoryStub)
 
-  return { createTaskValidatorStub, fakeTask, fakeTaskData, fakeUser, httpHelper, request, sut, taskDbRepositoryStub }
+  return {
+    createTaskValidatorStub,
+    fakeTask,
+    fakeTaskData,
+    fakeUser,
+    httpHelper,
+    request,
+    sut,
+    taskDbRepositoryStub
+  }
 }
 
 describe('createTaskController', () => {
@@ -96,5 +105,15 @@ describe('createTaskController', () => {
     await sut.handle(request)
 
     expect(saveTaskSpy).toHaveBeenCalledWith(data)
+  })
+
+  it('should return ok with correct task if succeeds', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, httpHelper, request, sut } = makeSut()
+
+    const response = await sut.handle(request)
+
+    expect(response).toStrictEqual(httpHelper.ok({ task: fakeTask }))
   })
 })
