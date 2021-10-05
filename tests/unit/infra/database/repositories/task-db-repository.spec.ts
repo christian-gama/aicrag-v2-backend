@@ -37,6 +37,7 @@ const makeSut = (): SutTypes => {
 describe('taskDbRepository', () => {
   const client = makeMongoDb()
   let task: ITask
+  let taskData: ITaskData
   let taskCollection: CollectionProtocol
 
   afterAll(async () => {
@@ -54,9 +55,12 @@ describe('taskDbRepository', () => {
   })
 
   beforeEach(async () => {
-    const { fakeTask } = makeSut()
+    const { fakeTask, fakeTaskData } = makeSut()
 
-    await taskCollection.insertOne(fakeTask)
+    task = fakeTask
+    taskData = fakeTaskData
+
+    await taskCollection.insertOne(task)
   })
 
   it('should return a task on success', async () => {
@@ -106,9 +110,9 @@ describe('taskDbRepository', () => {
   it('should return a task if finds it', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, fakeTaskData, sut } = makeSut()
+    const { sut } = makeSut()
 
-    const found = await sut.findTaskById(fakeTask.id, fakeTaskData.user.personal.id)
+    const found = await sut.findTaskById(task.id, taskData.user.personal.id)
 
     expect(found).toStrictEqual(task)
   })
@@ -126,9 +130,9 @@ describe('taskDbRepository', () => {
   it('should return a task if finds a task by taskId', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, fakeTaskData, sut } = makeSut()
+    const { sut } = makeSut()
 
-    const found = await sut.findTaskByTaskId(fakeTask.taskId, fakeTaskData.user.personal.id)
+    const found = await sut.findTaskByTaskId(task.taskId, taskData.user.personal.id)
 
     expect(found).toStrictEqual(task)
   })
