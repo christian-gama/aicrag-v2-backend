@@ -1,5 +1,7 @@
 import { ITask, ITaskData, IUser } from '@/domain'
 
+import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
+
 export interface TaskDbRepositoryProtocol extends FindTaskByIdDbProtocol, SaveTaskDbProtocol {}
 
 export interface FindTaskByIdDbProtocol {
@@ -20,4 +22,15 @@ export interface SaveTaskDbProtocol {
    * @returns Return the saved task.
    */
   saveTask: (taskData: ITaskData) => Promise<ITask>
+}
+
+export interface UpdateTaskDbProtocol {
+  /**
+   * @async Asynchronous method.
+   * @description Receive an task and then update it based on its id.
+   * @param task Task that will be updated on database.
+   * @param update Properties that will be updated.
+   * @returns Return the updated task or undefined.
+   */
+  updateTask: <T extends ITask | undefined>(task: T, update: TaskDbFilter) => Promise<T>
 }

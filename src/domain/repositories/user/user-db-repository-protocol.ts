@@ -49,5 +49,5 @@ export interface UpdateUserDbProtocol {
    * @param update Object that contains the changes to be updated.
    * @returns Return a user if updates it or undefined if does not.
    */
-  updateUser: (user: IUser, update: UserDbFilter) => Promise<IUser | undefined>
+  updateUser: <T extends IUser | undefined>(user: T, update: UserDbFilter) => Promise<T>
 }
