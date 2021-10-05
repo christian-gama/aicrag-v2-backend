@@ -1,4 +1,4 @@
-import { IPublicUser, ISignUpUserCredentials, IUser } from '@/domain'
+import { IPublicUser, ISignUpUserData, IUser } from '@/domain'
 
 import faker from 'faker'
 
@@ -11,7 +11,7 @@ export const makeFakePublicUser = (user: IUser): IPublicUser => {
   }
 }
 
-export const makeFakeSignUpUserCredentials = (): ISignUpUserCredentials => {
+export const makeFakeSignUpUserCredentials = (): ISignUpUserData => {
   const password = faker.internet.password()
   return {
     email: faker.internet.email().toLowerCase(),

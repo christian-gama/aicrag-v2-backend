@@ -1,4 +1,4 @@
-import { ISignUpUserCredentials, IUser } from '@/domain'
+import { ISignUpUserData, IUser } from '@/domain'
 import { UserDbRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
 
 import { DatabaseProtocol, UserDbFilter } from '../protocols'
@@ -27,7 +27,7 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
     if (user) return user
   }
 
-  async saveUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
+  async saveUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
     const userCollection = this.database.collection('users')
 
     const user = await this.userRepository.createUser(signUpUserCredentials)

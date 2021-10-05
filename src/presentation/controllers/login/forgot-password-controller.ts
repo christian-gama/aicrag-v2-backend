@@ -22,13 +22,13 @@ export class ForgotPasswordController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
 
-    const credential = httpRequest.body
+    const data = httpRequest.body
 
-    const error = await this.forgotPasswordValidator.validate(credential)
+    const error = await this.forgotPasswordValidator.validate(data)
 
     if (error != null) return this.httpHelper.badRequest(error)
 
-    let user = (await this.userDbRepository.findUserByEmail(credential.email)) as IUser
+    let user = (await this.userDbRepository.findUserByEmail(data.email)) as IUser
 
     const resetPasswordToken = await this.generateAccessToken.generate(user)
 

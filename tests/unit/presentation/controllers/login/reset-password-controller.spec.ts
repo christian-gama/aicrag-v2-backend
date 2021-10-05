@@ -138,7 +138,7 @@ describe('resetPasswordController', () => {
     })
   })
 
-  it('should call validate with correct credentials', async () => {
+  it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
     const { sut, request, resetPasswordValidatorStub } = makeSut()

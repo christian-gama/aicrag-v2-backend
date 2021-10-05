@@ -28,20 +28,20 @@ import {
 import MockDate from 'mockdate'
 
 interface SutTypes {
-  credentialsValidatorStub: ValidatorProtocol
   fakePublicUser: IPublicUser
   fakeUser: IUser
   filterUserDataStub: FilterUserDataProtocol
   generateAccessTokenStub: GenerateTokenProtocol
   generateRefreshTokenStub: GenerateTokenProtocol
   httpHelper: HttpHelperProtocol
+  loginValidatorStub: ValidatorProtocol
   request: HttpRequest
   sut: LoginController
   userDbRepositoryStub: UserDbRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
-  const credentialsValidatorStub = makeValidatorStub()
+  const loginValidatorStub = makeValidatorStub()
   const fakeUser = makeFakeUser()
   const fakePublicUser = makeFakePublicUser(fakeUser)
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
@@ -52,7 +52,7 @@ const makeSut = (): SutTypes => {
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
   const sut = new LoginController(
-    credentialsValidatorStub,
+    loginValidatorStub,
     filterUserDataStub,
     generateAccessTokenStub,
     generateRefreshTokenStub,
@@ -61,13 +61,13 @@ const makeSut = (): SutTypes => {
   )
 
   return {
-    credentialsValidatorStub,
     fakePublicUser,
     fakeUser,
     filterUserDataStub,
     generateAccessTokenStub,
     generateRefreshTokenStub,
     httpHelper,
+    loginValidatorStub,
     request,
     sut,
     userDbRepositoryStub
@@ -86,8 +86,8 @@ describe('loginController', () => {
   it('should call validate with correct values', async () => {
     expect.hasAssertions()
 
-    const { credentialsValidatorStub, request, sut } = makeSut()
-    const validateSpy = jest.spyOn(credentialsValidatorStub, 'validate')
+    const { loginValidatorStub, request, sut } = makeSut()
+    const validateSpy = jest.spyOn(loginValidatorStub, 'validate')
 
     await sut.handle(request)
 
@@ -97,10 +97,10 @@ describe('loginController', () => {
   it('should call unauthorized with the correct value', async () => {
     expect.hasAssertions()
 
-    const { credentialsValidatorStub, httpHelper, request, sut } = makeSut()
+    const { loginValidatorStub, httpHelper, request, sut } = makeSut()
     const error = new UserCredentialError()
     const unauthorizedSpy = jest.spyOn(httpHelper, 'unauthorized')
-    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
+    jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)
 
@@ -110,10 +110,10 @@ describe('loginController', () => {
   it('should call badRequest with the correct value if it is an InvalidParamError', async () => {
     expect.hasAssertions()
 
-    const { credentialsValidatorStub, httpHelper, request, sut } = makeSut()
+    const { loginValidatorStub, httpHelper, request, sut } = makeSut()
     const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
     const error = new InvalidParamError('email')
-    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
+    jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)
 
@@ -123,10 +123,10 @@ describe('loginController', () => {
   it('should call badRequest with the correct value if it is a MissingParamError', async () => {
     expect.hasAssertions()
 
-    const { credentialsValidatorStub, httpHelper, request, sut } = makeSut()
+    const { loginValidatorStub, httpHelper, request, sut } = makeSut()
     const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
     const error = new MissingParamError('email')
-    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
+    jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)
 
@@ -136,9 +136,9 @@ describe('loginController', () => {
   it('should return ok with accessToken only if account is not activated', async () => {
     expect.hasAssertions()
 
-    const { credentialsValidatorStub, httpHelper, request, sut } = makeSut()
+    const { loginValidatorStub, httpHelper, request, sut } = makeSut()
     const error = new InactiveAccountError()
-    jest.spyOn(credentialsValidatorStub, 'validate').mockReturnValueOnce(error)
+    jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
 
     const response = await sut.handle(request)
 

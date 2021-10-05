@@ -52,7 +52,7 @@ describe('post /login', () => {
       .expect(403)
   })
 
-  it('should return 401 if credentials are invalid', async () => {
+  it('should return 401 if data is invalid', async () => {
     expect.assertions(0)
 
     await request(app)

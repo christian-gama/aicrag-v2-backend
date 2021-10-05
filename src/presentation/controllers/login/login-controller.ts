@@ -12,7 +12,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class LoginController implements ControllerProtocol {
   constructor (
-    private readonly credentialsValidator: ValidatorProtocol,
+    private readonly loginValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly generateRefreshToken: GenerateTokenProtocol,
@@ -23,15 +23,15 @@ export class LoginController implements ControllerProtocol {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
 
-    const credentials = httpRequest.body
+    const data = httpRequest.body
 
-    const error = await this.credentialsValidator.validate(credentials)
+    const error = await this.loginValidator.validate(data)
 
     if (error?.name === 'InvalidParamError') return this.httpHelper.badRequest(error)
     if (error?.name === 'MissingParamError') return this.httpHelper.badRequest(error)
     if (error?.name === 'UserCredentialError') return this.httpHelper.unauthorized(error)
 
-    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
+    const user = (await this.userDbRepository.findUserByEmail(data.email)) as IUser
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

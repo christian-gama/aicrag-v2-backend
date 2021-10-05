@@ -26,12 +26,12 @@ describe('validateTempEmail', () => {
     expect.hasAssertions()
 
     const { sut, userDbRepositoryStub } = makeSut()
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
 
-    const error = await sut.validate(credentials)
+    const error = await sut.validate(data)
 
     expect(error).toStrictEqual(new UserCredentialError())
   })
@@ -40,10 +40,10 @@ describe('validateTempEmail', () => {
     expect.hasAssertions()
 
     const { fakeUser, sut } = makeSut()
-    const credentials = { email: 'invalid_email@email.com' }
+    const data = { email: 'invalid_email@email.com' }
     fakeUser.temporary.tempEmail = null
 
-    const error = await sut.validate(credentials)
+    const error = await sut.validate(data)
 
     expect(error).toStrictEqual(new UserCredentialError())
   })
@@ -52,10 +52,10 @@ describe('validateTempEmail', () => {
     expect.hasAssertions()
 
     const { fakeUser, sut } = makeSut()
-    const credentials = { email: 'invalid_email@email.com' }
+    const data = { email: 'invalid_email@email.com' }
     fakeUser.temporary.tempEmail = 'any_email@mail.com'
 
-    const response = await sut.validate(credentials)
+    const response = await sut.validate(data)
 
     expect(response).toBeUndefined()
   })
@@ -64,11 +64,11 @@ describe('validateTempEmail', () => {
     expect.hasAssertions()
 
     const { sut, userDbRepositoryStub } = makeSut()
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
-    await sut.validate(credentials)
+    await sut.validate(data)
 
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(data.email)
   })
 })

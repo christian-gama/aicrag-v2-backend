@@ -29,12 +29,12 @@ describe('validatePasswordMatch', () => {
     expect.hasAssertions()
 
     const { sut, userDbRepositoryStub } = makeSut()
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(undefined))
 
-    const error = await sut.validate(credentials)
+    const error = await sut.validate(data)
 
     expect(error).toStrictEqual(new UserCredentialError())
   })
@@ -43,22 +43,22 @@ describe('validatePasswordMatch', () => {
     expect.hasAssertions()
 
     const { sut, userDbRepositoryStub } = makeSut()
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
-    await sut.validate(credentials)
+    await sut.validate(data)
 
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(data.email)
   })
 
   it('should return a UserCredentialError if password does not match', async () => {
     expect.hasAssertions()
 
     const { sut, comparerStub } = makeSut()
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(comparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
 
-    const result = await sut.validate(credentials)
+    const result = await sut.validate(data)
 
     expect(result).toStrictEqual(new UserCredentialError())
   })
@@ -68,10 +68,10 @@ describe('validatePasswordMatch', () => {
 
     const { sut, comparerStub, fakeUser } = makeSut()
     const compareSpy = jest.spyOn(comparerStub, 'compare')
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
 
-    await sut.validate(credentials)
+    await sut.validate(data)
 
-    expect(compareSpy).toHaveBeenCalledWith(credentials.password, fakeUser.personal.password)
+    expect(compareSpy).toHaveBeenCalledWith(data.password, fakeUser.personal.password)
   })
 })

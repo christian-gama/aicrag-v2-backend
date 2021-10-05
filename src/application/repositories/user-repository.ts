@@ -1,4 +1,4 @@
-import { ISignUpUserCredentials, IUser } from '@/domain'
+import { ISignUpUserData, IUser } from '@/domain'
 import { HasherProtocol } from '@/domain/cryptography'
 import { ValidationCodeProtocol, UuidProtocol } from '@/domain/helpers'
 import { UserRepositoryProtocol } from '@/domain/repositories'
@@ -10,7 +10,7 @@ export class UserRepository implements UserRepositoryProtocol {
     private readonly uuid: UuidProtocol
   ) {}
 
-  async createUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
+  async createUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
     const activationCode = this.activationCode.generate()
     const activationCodeExpirationMinutes = 10 * 60 * 1000
     const dateNow = new Date(Date.now())

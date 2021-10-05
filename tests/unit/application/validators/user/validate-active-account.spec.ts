@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
   return { fakeUser, sut, userDbRepositoryStub }
 }
 
-describe('validateCredentials', () => {
+describe('validatedata', () => {
   it('should return a InactiveAccountError if user account is inactive', async () => {
     expect.hasAssertions()
 
@@ -39,21 +39,21 @@ describe('validateCredentials', () => {
     expect.hasAssertions()
 
     const { sut, userDbRepositoryStub } = makeSut()
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
 
-    await sut.validate(credentials)
+    await sut.validate(data)
 
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(credentials.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(data.email)
   })
 
   it('should return nothing if succeeds', async () => {
     expect.hasAssertions()
 
     const { sut } = makeSut()
-    const credentials = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com', password: 'any_password' }
 
-    const value = await sut.validate(credentials)
+    const value = await sut.validate(data)
 
     expect(value).toBeUndefined()
   })

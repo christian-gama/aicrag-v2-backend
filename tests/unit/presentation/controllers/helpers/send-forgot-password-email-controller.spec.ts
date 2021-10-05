@@ -54,7 +54,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('sendForgotPasswordEmail', () => {
-  it('should call validate with correct credentials', async () => {
+  it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
     const { forgotPasswordValidatorStub, request, sut } = makeSut()

@@ -18,13 +18,13 @@ export class SendEmailCodeController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const credentials = httpRequest.body
+    const data = httpRequest.body
 
-    const error = await this.sendEmailCodeValidator.validate(credentials)
+    const error = await this.sendEmailCodeValidator.validate(data)
 
     if (error != null) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
+    const user = (await this.userDbRepository.findUserByEmail(data.email)) as IUser
 
     const mailerResponse = await this.emailCode.send(user)
 

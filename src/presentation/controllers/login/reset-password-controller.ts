@@ -29,12 +29,12 @@ export class ResetPasswordController implements ControllerProtocol {
       return this.httpHelper.unauthorized(response)
     }
 
-    const credentials = httpRequest.body
+    const data = httpRequest.body
 
-    const error = await this.resetPasswordValidator.validate(credentials)
+    const error = await this.resetPasswordValidator.validate(data)
     if (error != null) return this.httpHelper.badRequest(error)
 
-    const hashedPassword = await this.hasher.hash(credentials.password)
+    const hashedPassword = await this.hasher.hash(data.password)
 
     const update = {
       'logs.updatedAt': new Date(Date.now()),

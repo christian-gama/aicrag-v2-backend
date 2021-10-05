@@ -1,4 +1,4 @@
-import { ILogError, ISignUpUserCredentials, ITask, ITaskData, IUser } from '@/domain'
+import { ILogError, ISignUpUserData, ITask, ITaskData, IUser } from '@/domain'
 import { LogErrorRepositoryProtocol, TaskRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
 
 export const makeLogErrorRepositoryStub = (fakeLogError: ILogError): LogErrorRepositoryProtocol => {
@@ -23,7 +23,7 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol 
 
 export const makeUserRepositoryStub = (fakeUser: IUser): UserRepositoryProtocol => {
   class UserRepositoryStub implements UserRepositoryProtocol {
-    async createUser (signUpUserCredentials: ISignUpUserCredentials): Promise<IUser> {
+    async createUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
       return await Promise.resolve(fakeUser)
     }
   }

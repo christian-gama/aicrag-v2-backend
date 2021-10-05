@@ -5,10 +5,10 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
 import { makeUserDbRepository } from '../../repositories'
-import { makeCredentialsValidatorComposite } from '../../validators/user'
+import { makeLoginValidatorComposite } from '../../validators/user'
 
 export const makeLoginController = (): ControllerProtocol => {
-  const credentialsValidator = makeCredentialsValidatorComposite()
+  const loginValidator = makeLoginValidatorComposite()
   const filterUserData = makeFilterUserData()
   const generateAccessToken = makeGenerateAccessToken()
   const generateRefreshToken = makeGenerateRefreshToken()
@@ -16,7 +16,7 @@ export const makeLoginController = (): ControllerProtocol => {
   const userDbRepository = makeUserDbRepository()
 
   const loginController = new LoginController(
-    credentialsValidator,
+    loginValidator,
     filterUserData,
     generateAccessToken,
     generateRefreshToken,

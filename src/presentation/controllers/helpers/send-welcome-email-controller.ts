@@ -18,13 +18,13 @@ export class SendWelcomeEmailController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const credentials = httpRequest.body
+    const data = httpRequest.body
 
-    const error = await this.sendWelcomeValidator.validate(credentials)
+    const error = await this.sendWelcomeValidator.validate(data)
 
     if (error != null) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
+    const user = (await this.userDbRepository.findUserByEmail(data.email)) as IUser
 
     if (user.settings.accountActivated) { return this.httpHelper.forbidden(new AccountAlreadyActivatedError()) }
 

@@ -1,4 +1,4 @@
-import { ISignUpUserCredentials, IUser } from '@/domain'
+import { ISignUpUserData, IUser } from '@/domain'
 
 import { UserDbFilter } from '@/infra/database/protocols'
 
@@ -38,7 +38,7 @@ export interface SaveUserDbProtocol {
    * @param user User that will be saved as a user.
    * @returns Return the saved user.
    */
-  saveUser: (user: ISignUpUserCredentials) => Promise<IUser>
+  saveUser: (user: ISignUpUserData) => Promise<IUser>
 }
 
 export interface UpdateUserDbProtocol {

@@ -11,7 +11,7 @@ import {
   makeValidateActiveAccount
 } from '.'
 
-export const makeCredentialsValidatorComposite = (): ValidatorProtocol => {
+export const makeLoginValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['email', 'password']
@@ -26,7 +26,7 @@ export const makeCredentialsValidatorComposite = (): ValidatorProtocol => {
   validations.push(makeValidatePasswordMatch())
   validations.push(makeValidateActiveAccount())
 
-  const credentialsValidationComposite = new ValidationComposite(validations)
+  const dataValidationComposite = new ValidationComposite(validations)
 
-  return credentialsValidationComposite
+  return dataValidationComposite
 }
