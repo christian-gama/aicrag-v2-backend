@@ -5,6 +5,8 @@ import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { IsLoggedInMiddleware } from '@/presentation/middlewares'
 
+import { makeHttpHelper } from '@/factories/helpers'
+
 import {
   makeFakeRefreshToken,
   makeFakeUser,
@@ -12,7 +14,6 @@ import {
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
 
-import { makeHttpHelper } from '@/factories/helpers'
 import MockDate from 'mockdate'
 
 interface SutTypes {

@@ -5,13 +5,13 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 import { UserDbRepository } from '@/infra/database/repositories'
 
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
+
 import {
   makeFakeUser,
   makeUserRepositoryStub,
   makeFakeSignUpUserCredentials
 } from '@/tests/__mocks__'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 interface SutTypes {
   fakeUser: IUser

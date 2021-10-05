@@ -9,6 +9,8 @@ import { ConflictParamError, InvalidParamError, MustLogoutError } from '@/applic
 import { SignUpController } from '@/presentation/controllers/signup'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
+import { makeHttpHelper } from '@/factories/helpers'
+
 import {
   makeFakeUser,
   makeFakePublicUser,
@@ -17,8 +19,6 @@ import {
   makeUserDbRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
-
-import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakePublicUser: IPublicUser

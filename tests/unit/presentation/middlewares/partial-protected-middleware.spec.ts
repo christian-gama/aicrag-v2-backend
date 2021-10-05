@@ -4,9 +4,9 @@ import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { PartialProtectedMiddleware } from '@/presentation/middlewares'
 
-import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
-
 import { makeHttpHelper } from '@/factories/helpers'
+
+import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeRefreshToken: IRefreshToken

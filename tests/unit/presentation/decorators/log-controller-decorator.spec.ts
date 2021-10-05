@@ -4,9 +4,9 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { LogDecorator } from '@/presentation/decorators'
 import { HttpHelper } from '@/presentation/http/http-helper'
 
-import { makeControllerStub, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
-
 import { makeHttpHelper } from '@/factories/helpers'
+
+import { makeControllerStub, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   controllerStub: ControllerProtocol

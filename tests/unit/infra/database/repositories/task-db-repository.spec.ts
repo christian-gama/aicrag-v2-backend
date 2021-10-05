@@ -5,9 +5,9 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 import { TaskDbRepository } from '@/infra/database/repositories'
 
-import { makeFakeTask, makeFakeTaskData, makeTaskRepositoryStub } from '@/tests/__mocks__'
-
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
+
+import { makeFakeTask, makeFakeTaskData, makeTaskRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeTask: ITask

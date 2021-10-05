@@ -1,5 +1,3 @@
-import { controllerAdapter } from '../adapters/controller-adapter'
-import { middlewareAdapter } from '../adapters/middleware-adapter'
 
 import {
   makeLogoutController,
@@ -25,6 +23,9 @@ import {
   makeIsLoggedInMiddleware,
   makeProtectedMiddleware
 } from '@/factories/middlewares'
+
+import { controllerAdapter } from '../adapters/controller-adapter'
+import { middlewareAdapter } from '../adapters/middleware-adapter'
 
 /* ******* Controllers ******* */
 // Account Routes

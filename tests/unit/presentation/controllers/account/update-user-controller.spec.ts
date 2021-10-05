@@ -8,6 +8,8 @@ import { ConflictParamError, MustLoginError } from '@/application/errors'
 import { UpdateUserController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
+import { makeHttpHelper } from '@/factories/helpers'
+
 import {
   makeFakePublicUser,
   makeFakeUser,
@@ -17,7 +19,6 @@ import {
   makeValidatorStub
 } from '@/tests/__mocks__'
 
-import { makeHttpHelper } from '@/factories/helpers'
 import MockDate from 'mockdate'
 
 interface SutTypes {

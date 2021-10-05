@@ -8,14 +8,14 @@ import { MailerServiceError } from '@/application/errors'
 import { SendEmailCodeController } from '@/presentation/controllers/helpers'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
+import { makeHttpHelper } from '@/factories/helpers'
+
 import {
   makeFakeUser,
   makeValidatorStub,
   makeUserDbRepositoryStub,
   makeMailerServiceStub
 } from '@/tests/__mocks__'
-
-import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   emailCodeStub: MailerServiceProtocol

@@ -6,9 +6,9 @@ import { InvalidTokenError, MustLogoutError } from '@/application/errors'
 import { VerifyResetPasswordTokenController } from '@/presentation/controllers/helpers'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
-import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
-
 import { makeHttpHelper } from '@/factories/helpers'
+
+import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser

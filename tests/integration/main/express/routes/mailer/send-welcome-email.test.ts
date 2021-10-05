@@ -8,9 +8,10 @@ import { CollectionProtocol } from '@/infra/database/protocols'
 import app from '@/main/express/config/app'
 import { WelcomeEmail } from '@/main/mailer/welcome-email'
 
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
+
 import { makeFakeUser } from '@/tests/__mocks__'
 
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import request from 'supertest'
 
 describe('post /send-welcome-email', () => {

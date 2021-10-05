@@ -6,9 +6,9 @@ import { CollectionProtocol } from '@/infra/database/protocols'
 
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 
-import { makeFakeUser, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
-
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
+
+import { makeFakeUser, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ClearUserDatabase

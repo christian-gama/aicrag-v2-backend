@@ -5,10 +5,11 @@ import { CollectionProtocol } from '@/infra/database/protocols'
 
 import app from '@/main/express/config/app'
 
-import { makeFakeUser } from '@/tests/__mocks__'
-
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { makeGenerateRefreshToken, makeGenerateAccessToken } from '@/factories/providers/token'
+
+import { makeFakeUser } from '@/tests/__mocks__'
+
 import request from 'supertest'
 
 describe('patch /reset-password', () => {

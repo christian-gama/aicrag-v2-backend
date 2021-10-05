@@ -2,9 +2,9 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { TryCatchDecorator } from '@/presentation/decorators'
 import { HttpHelper } from '@/presentation/http/http-helper'
 
-import { makeControllerStub } from '@/tests/__mocks__'
-
 import { makeHttpHelper } from '@/factories/helpers'
+
+import { makeControllerStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   controllerStub: ControllerProtocol

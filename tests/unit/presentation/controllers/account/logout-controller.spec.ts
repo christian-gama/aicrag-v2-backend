@@ -6,9 +6,9 @@ import { MustLoginError } from '@/application/errors'
 import { LogoutController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
-import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
-
 import { makeHttpHelper } from '@/factories/helpers'
+
+import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser

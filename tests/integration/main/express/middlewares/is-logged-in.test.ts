@@ -6,10 +6,11 @@ import { CollectionProtocol } from '@/infra/database/protocols'
 import app from '@/main/express/config/app'
 import { isLoggedInMiddleware } from '@/main/express/routes'
 
-import { makeFakeUser } from '@/tests/__mocks__'
-
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { makeGenerateRefreshToken } from '@/factories/providers/token'
+
+import { makeFakeUser } from '@/tests/__mocks__'
+
 import { Request } from 'express'
 import request from 'supertest'
 

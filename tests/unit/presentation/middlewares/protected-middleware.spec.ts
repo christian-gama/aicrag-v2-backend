@@ -7,14 +7,14 @@ import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/appli
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { ProtectedMiddleware } from '@/presentation/middlewares'
 
+import { makeHttpHelper } from '@/factories/helpers'
+
 import {
   makeEncrypterStub,
   makeFakeRefreshToken,
   makeFakeUser,
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
-
-import { makeHttpHelper } from '@/factories/helpers'
 
 interface SutTypes {
   fakeRefreshToken: IRefreshToken

@@ -10,6 +10,8 @@ import { MustLogoutError, InvalidTokenError } from '@/application/errors'
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
+import { makeHttpHelper } from '@/factories/helpers'
+
 import {
   makeFakeUser,
   makeFilterUserDataStub,
@@ -21,7 +23,6 @@ import {
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
 
-import { makeHttpHelper } from '@/factories/helpers'
 import MockDate from 'mockdate'
 
 interface SutTypes {

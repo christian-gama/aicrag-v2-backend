@@ -9,6 +9,8 @@ import { InvalidCodeError } from '@/application/errors'
 import { ActivateAccountController } from '@/presentation/controllers/login'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
+import { makeHttpHelper } from '@/factories/helpers'
+
 import {
   makeValidatorStub,
   makeFakeUser,
@@ -18,7 +20,6 @@ import {
   makeUserDbRepositoryStub
 } from '@/tests/__mocks__'
 
-import { makeHttpHelper } from '@/factories/helpers'
 import MockDate from 'mockdate'
 
 interface SutTypes {
