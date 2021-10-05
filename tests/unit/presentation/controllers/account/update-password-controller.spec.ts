@@ -5,6 +5,8 @@ import { GenerateTokenProtocol } from '@/domain/providers'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
+import { MustLoginError } from '@/application/errors'
+
 import { UpdatePasswordController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
@@ -86,15 +88,27 @@ describe('updatePasswordController', () => {
     MockDate.set(new Date())
   })
 
-  it('should call validate with correct credentials', async () => {
+  it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
-    const { request, sut, updatePasswordValidatorStub } = makeSut()
+    const { fakeUser, request, sut, updatePasswordValidatorStub } = makeSut()
+    const data = Object.assign({ user: fakeUser }, request.body)
     const validateSpy = jest.spyOn(updatePasswordValidatorStub, 'validate')
 
     await sut.handle(request)
 
-    expect(validateSpy).toHaveBeenCalledWith(request.body)
+    expect(validateSpy).toHaveBeenCalledWith(data)
+  })
+
+  it('should return unauthorized if there is no user', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut } = makeSut()
+    request.user = undefined
+
+    const response = await sut.handle(request)
+
+    expect(response).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
   it('should return badRequest if validation fails', async () => {
@@ -176,7 +190,11 @@ describe('updatePasswordController', () => {
     const response = await sut.handle(request)
 
     expect(response).toStrictEqual(
-      httpHelper.ok({ accessToken: 'any_token', refreshToken: 'any_token', user: makeFakePublicUser(fakeUser) })
+      httpHelper.ok({
+        accessToken: 'any_token',
+        refreshToken: 'any_token',
+        user: makeFakePublicUser(fakeUser)
+      })
     )
   })
 })
