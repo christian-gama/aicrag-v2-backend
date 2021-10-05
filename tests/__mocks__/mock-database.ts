@@ -44,8 +44,8 @@ export const makeUserDbRepositoryStub = (fakeUser: IUser): UserDbRepositoryProto
       return await Promise.resolve(fakeUser)
     }
 
-    async updateUser (user: IUser, update: UserDbFilter): Promise<IUser | undefined> {
-      return await Promise.resolve(fakeUser)
+    async updateUser <T extends IUser | undefined>(user: T, update: UserDbFilter): Promise<T> {
+      return await Promise.resolve(fakeUser) as T
     }
   }
 

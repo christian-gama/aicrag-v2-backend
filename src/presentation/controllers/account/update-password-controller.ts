@@ -34,7 +34,7 @@ export class UpdatePasswordController implements ControllerProtocol {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': hashedPassword
     }
-    const updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
+    const updatedUser = (await this.userDbRepository.updateUser(user, update))
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

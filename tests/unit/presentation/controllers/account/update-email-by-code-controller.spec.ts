@@ -3,7 +3,7 @@ import { FilterUserDataProtocol } from '@/domain/helpers'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { InvalidCodeError } from '@/application/errors'
+import { InvalidCodeError, MustLoginError } from '@/application/errors'
 
 import { UpdateEmailByCodeController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
@@ -35,12 +35,14 @@ const makeSut = (): SutTypes => {
   const updateEmailByCodeValidatorStub = makeValidatorStub()
   const fakeUser = makeFakeUser()
   fakeUser.temporary.tempEmail = 'any_email@mail.com'
+  fakeUser.temporary.tempEmailCode = 'any_code'
   const fakePublicUser = makeFakePublicUser(fakeUser)
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
 
   const httpHelper = makeHttpHelper()
   const request = {
-    body: { email: fakeUser.personal.email, emailCode: fakeUser.temporary.tempEmailCode }
+    body: { emailCode: fakeUser.temporary.tempEmailCode },
+    user: fakeUser
   }
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
 
@@ -77,10 +79,11 @@ describe('updateEmailByCodeController', () => {
 
     const { updateEmailByCodeValidatorStub, request, sut } = makeSut()
     const validateSpy = jest.spyOn(updateEmailByCodeValidatorStub, 'validate')
+    const data = Object.assign({ user: request.user }, request.body)
 
     await sut.handle(request)
 
-    expect(validateSpy).toHaveBeenCalledWith(request.body)
+    expect(validateSpy).toHaveBeenCalledWith(data)
   })
 
   it('should return badRequest if validation fails', async () => {
@@ -95,15 +98,15 @@ describe('updateEmailByCodeController', () => {
     expect(response).toStrictEqual(httpHelper.badRequest(error))
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should return unauthorized if there is no user', async () => {
     expect.hasAssertions()
 
-    const { request, sut, userDbRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
+    const { httpHelper, request, sut } = makeSut()
+    request.user = undefined
 
-    await sut.handle(request)
+    const response = await sut.handle(request)
 
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
+    expect(response).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
   it('should call filter with correct user', async () => {

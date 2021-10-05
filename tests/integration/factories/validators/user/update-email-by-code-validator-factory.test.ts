@@ -5,9 +5,7 @@ import { ValidationComposite } from '@/application/validators/user'
 import {
   makeUpdateEmailByCodeValidatorComposite,
   makeRequiredFields,
-  makeValidateEmailCode,
-  makeValidateEmailExists,
-  makeValidateEmail
+  makeValidateEmailCode
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
@@ -20,13 +18,11 @@ describe('updateEmailByCodeValidatorComposite', () => {
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['email', 'tempEmailCode']
+    const fields = ['emailCode']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
-    validations.push(makeValidateEmail())
-    validations.push(makeValidateEmailExists())
     validations.push(makeValidateEmailCode())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)

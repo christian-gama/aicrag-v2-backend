@@ -52,7 +52,7 @@ describe('patch /update-email-by-code', () => {
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: fakeUser.personal.email, tempEmailCode })
+      .send({ emailCode: tempEmailCode })
       .expect(200)
   })
 
@@ -61,10 +61,7 @@ describe('patch /update-email-by-code', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .patch('/api/v1/account/update-email-by-code')
-      .send()
-      .expect(401)
+    await request(app).patch('/api/v1/account/update-email-by-code').send().expect(401)
   })
 
   it('should return 400 if code is invalid', async () => {
@@ -75,7 +72,7 @@ describe('patch /update-email-by-code', () => {
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: fakeUser.personal.email, tempEmailCode: 'invalid_code' })
+      .send({ emailCode: 'invalid_code' })
       .expect(400)
   })
 
@@ -90,7 +87,7 @@ describe('patch /update-email-by-code', () => {
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: fakeUser.personal.email, tempEmailCode })
+      .send({ emailCode: tempEmailCode })
       .expect(400)
   })
 
@@ -116,7 +113,7 @@ describe('patch /update-email-by-code', () => {
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
+      .send({ emailCode: 'any_code' })
       .expect(400)
   })
 
@@ -130,7 +127,7 @@ describe('patch /update-email-by-code', () => {
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
+      .send({ emailCode: 'any_code' })
       .expect(400)
   })
 
@@ -144,19 +141,7 @@ describe('patch /update-email-by-code', () => {
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: fakeUser.personal.email, tempEmailCode: 'any_code' })
-      .expect(400)
-  })
-
-  it('should return 400 if email does not exist', async () => {
-    expect.assertions(0)
-
-    await userCollection.insertOne(fakeUser)
-
-    await request(app)
-      .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .send({ email: 'invalid_email', tempEmailCode: 'any_code' })
+      .send({ emailCode: 'any_code' })
       .expect(400)
   })
 })

@@ -3,6 +3,8 @@ import { FilterUserDataProtocol } from '@/domain/helpers'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
+import { MustLoginError } from '@/application/errors'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { ControllerProtocol } from '../protocols/controller-protocol'
@@ -16,18 +18,19 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const credentials = httpRequest.body
+    const user = httpRequest.user
+    const data = Object.assign({ user }, httpRequest.body)
 
-    const error = await this.updateEmailByCodeValidator.validate(credentials)
+    if (!user) return this.httpHelper.unauthorized(new MustLoginError())
+
+    const error = await this.updateEmailByCodeValidator.validate(data)
     if (error != null) return this.httpHelper.badRequest(error)
-
-    const user = (await this.userDbRepository.findUserByEmail(credentials.email)) as IUser
 
     const update = {}
     Object.assign(update, this.updateEmail(user))
     Object.assign(update, this.clearTemporary(user))
 
-    const updatedUser = (await this.userDbRepository.updateUser(user, update)) as IUser
+    const updatedUser = await this.userDbRepository.updateUser(user, update)
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
