@@ -13,8 +13,8 @@ export class CreateTaskController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const data = httpRequest.body
     const user = httpRequest.user
+    const data = Object.assign({ user }, httpRequest.body)
 
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
