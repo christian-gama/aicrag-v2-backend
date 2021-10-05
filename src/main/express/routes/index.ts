@@ -16,6 +16,7 @@ import {
   makeSendWelcomeEmailController
 } from '@/factories/controllers/mailer'
 import { makeSignUpController } from '@/factories/controllers/signup'
+import { makeCreateTaskController } from '@/factories/controllers/task/create-task-controller-factory'
 import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/token'
 import {
   makePartialProtectedMiddleware,
@@ -33,6 +34,12 @@ export const updateEmailByCodeController = controllerAdapter(makeUpdateEmailByCo
 export const updatePassword = controllerAdapter(makeUpdatePasswordController())
 export const updateUserController = controllerAdapter(makeUpdateUserController())
 
+// Login Routes
+export const activateAccountController = controllerAdapter(makeActivateAccountController())
+export const forgotPasswordController = controllerAdapter(makeForgotPasswordController())
+export const loginController = controllerAdapter(makeLoginController())
+export const resetPasswordController = controllerAdapter(makeResetPasswordController())
+
 // Mailer Routes
 export const sendForgotPasswordEmailController = controllerAdapter(
   makeSendForgotPasswordEmailController()
@@ -40,21 +47,17 @@ export const sendForgotPasswordEmailController = controllerAdapter(
 export const sendEmailCodeController = controllerAdapter(makeSendEmailCodeController())
 export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 
-// Token Routes
-export const verifyResetPasswordTokenController = controllerAdapter(
-  makeVerifyResetPasswordTokenController()
-)
-
-// Login Routes
-export const activateAccountController = controllerAdapter(makeActivateAccountController())
-export const forgotPasswordController = controllerAdapter(makeForgotPasswordController())
-export const loginController = controllerAdapter(makeLoginController())
-export const resetPasswordController = controllerAdapter(makeResetPasswordController())
-
 // SignUp Routes
 export const signUpController = controllerAdapter(makeSignUpController())
 /* **** End of Controllers **** */
 
+// Task Routes
+export const createTaskController = controllerAdapter(makeCreateTaskController())
+
+// Token Routes
+export const verifyResetPasswordTokenController = controllerAdapter(
+  makeVerifyResetPasswordTokenController()
+)
 /* ********** Middlewares *********** */
 export const isLoggedInMiddleware = middlewareAdapter(makeIsLoggedInMiddleware())
 export const partialProtectedMiddleware = middlewareAdapter(makePartialProtectedMiddleware())
