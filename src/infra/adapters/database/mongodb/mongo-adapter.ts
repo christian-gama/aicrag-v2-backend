@@ -17,12 +17,17 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
 
     this._collection = MongoAdapter.client.db().collection(name)
 
+    /* Ensure collection return methods bound to a new instance of MongoAdapter
+    to avoid replacing this._collection if use multiple collections */
+    const mongoAdapter = new MongoAdapter()
+    mongoAdapter._collection = this._collection
+
     return {
-      deleteMany: this.deleteMany.bind(this),
-      deleteOne: this.deleteOne.bind(this),
-      findOne: this.findOne.bind(this),
-      insertOne: this.insertOne.bind(this),
-      updateOne: this.updateOne.bind(this)
+      deleteMany: this.deleteMany.bind(mongoAdapter),
+      deleteOne: this.deleteOne.bind(mongoAdapter),
+      findOne: this.findOne.bind(mongoAdapter),
+      insertOne: this.insertOne.bind(mongoAdapter),
+      updateOne: this.updateOne.bind(mongoAdapter)
     }
   }
 
