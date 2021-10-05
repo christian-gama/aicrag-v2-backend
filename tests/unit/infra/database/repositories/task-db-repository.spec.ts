@@ -80,6 +80,7 @@ describe('taskDbRepository', () => {
         status: 'completed',
         taskId: fakeTask.taskId,
         type: fakeTask.type,
+        usd: fakeTask.usd,
         user: fakeTask.user
       })
     })

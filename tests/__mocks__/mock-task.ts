@@ -18,6 +18,7 @@ export const makeFakeTaskData = (): ITaskData => {
 
 export const makeFakeTask = (): ITask => {
   const date = new Date(Date.now())
+  const user = makeFakeUser()
 
   return {
     commentary: faker.lorem.words(10),
@@ -37,6 +38,7 @@ export const makeFakeTask = (): ITask => {
     status: 'completed',
     taskId: faker.datatype.uuid(),
     type: 'TX',
-    user: makeFakeUser()
+    usd: (30 / 60) * 65 * user.settings.handicap,
+    user
   }
 }

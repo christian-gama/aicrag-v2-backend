@@ -8,7 +8,9 @@ export class TaskRepository implements TaskRepositoryProtocol {
   createTask (taskData: ITaskData): ITask {
     const { commentary, date, duration, status, taskId, type, user } = taskData
 
+    const handicap = user.settings.handicap
     const id = this.uuid.generate()
+    const usd = type === 'TX' ? (duration / 60) * 65 * handicap : (duration / 60) * 112.5 * handicap
 
     return {
       commentary: commentary ?? null,
@@ -28,6 +30,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
       status,
       taskId: taskId ?? null,
       type,
+      usd,
       user
     }
   }

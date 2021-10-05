@@ -38,6 +38,10 @@ describe('taskRepository', () => {
     const { fakeTaskData, sut, uuidStub } = makeSut()
     const { commentary, date, duration, taskId, status, type, user } = fakeTaskData
     const fakeId = uuidStub.generate()
+    const usd =
+      type === 'TX'
+        ? (duration / 60) * 65 * user.settings.handicap
+        : (duration / 60) * 112.5 * user.settings.handicap
 
     const task = sut.createTask(fakeTaskData)
 
@@ -59,6 +63,7 @@ describe('taskRepository', () => {
       status,
       taskId,
       type,
+      usd,
       user
     })
   })
@@ -71,6 +76,10 @@ describe('taskRepository', () => {
     const fakeId = uuidStub.generate()
     fakeTaskData.commentary = null
     fakeTaskData.taskId = null
+    const usd =
+      type === 'TX'
+        ? (duration / 60) * 65 * user.settings.handicap
+        : (duration / 60) * 112.5 * user.settings.handicap
 
     const task = sut.createTask(fakeTaskData)
 
@@ -92,7 +101,31 @@ describe('taskRepository', () => {
       status,
       taskId: null,
       type,
+      usd,
       user
     })
+  })
+
+  it('should return correct usd value if type is TX', async () => {
+    expect.hasAssertions()
+
+    const { fakeTaskData, sut } = makeSut()
+    fakeTaskData.type = 'TX'
+
+    const task = sut.createTask(fakeTaskData)
+
+    expect(task.usd).toBe(32.5)
+  })
+
+  it('should return correct usd value if type is QA', async () => {
+    expect.hasAssertions()
+
+    const { fakeTaskData, sut } = makeSut()
+    fakeTaskData.duration = 2.4
+    fakeTaskData.type = 'QA'
+
+    const task = sut.createTask(fakeTaskData)
+
+    expect(task.usd).toBe(4.5)
   })
 })

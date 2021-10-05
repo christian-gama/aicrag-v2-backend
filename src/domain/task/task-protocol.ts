@@ -21,5 +21,6 @@ export interface ITask {
   status: 'in_progress' | 'completed'
   taskId: string | null
   type: 'QA' | 'TX'
+  usd: number
   user: IUser
 }
