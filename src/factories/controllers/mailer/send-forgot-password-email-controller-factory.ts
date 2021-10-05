@@ -1,4 +1,4 @@
-import { SendForgotPasswordEmailController } from '@/presentation/controllers/helpers'
+import { SendForgotPasswordEmailController } from '@/presentation/controllers/mailer'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'

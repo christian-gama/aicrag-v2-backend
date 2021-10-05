@@ -1,4 +1,3 @@
-
 import {
   makeLogoutController,
   makeUpdateEmailByCodeController,
@@ -6,18 +5,18 @@ import {
   makeUpdateUserController
 } from '@/factories/controllers/account'
 import {
-  makeVerifyResetPasswordTokenController,
-  makeSendEmailCodeController,
-  makeSendForgotPasswordEmailController,
-  makeSendWelcomeEmailController
-} from '@/factories/controllers/helpers'
-import {
   makeActivateAccountController,
   makeForgotPasswordController,
   makeLoginController
 } from '@/factories/controllers/login'
 import { makeResetPasswordController } from '@/factories/controllers/login/reset-password-controller-factory'
+import {
+  makeSendEmailCodeController,
+  makeSendForgotPasswordEmailController,
+  makeSendWelcomeEmailController
+} from '@/factories/controllers/mailer'
 import { makeSignUpController } from '@/factories/controllers/signup'
+import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/token'
 import {
   makePartialProtectedMiddleware,
   makeIsLoggedInMiddleware,
@@ -34,12 +33,14 @@ export const updateEmailByCodeController = controllerAdapter(makeUpdateEmailByCo
 export const updatePassword = controllerAdapter(makeUpdatePasswordController())
 export const updateUserController = controllerAdapter(makeUpdateUserController())
 
-// Helpers Routes
+// Mailer Routes
 export const sendForgotPasswordEmailController = controllerAdapter(
   makeSendForgotPasswordEmailController()
 )
 export const sendEmailCodeController = controllerAdapter(makeSendEmailCodeController())
 export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
+
+// Token Routes
 export const verifyResetPasswordTokenController = controllerAdapter(
   makeVerifyResetPasswordTokenController()
 )

@@ -3,7 +3,7 @@ import { VerifyTokenProtocol } from '@/domain/providers'
 
 import { InvalidTokenError, MustLogoutError } from '@/application/errors'
 
-import { VerifyResetPasswordTokenController } from '@/presentation/controllers/helpers'
+import { VerifyResetPasswordTokenController } from '@/presentation/controllers/token'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'

@@ -5,7 +5,7 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { MailerServiceError } from '@/application/errors'
 
-import { SendEmailCodeController } from '@/presentation/controllers/helpers'
+import { SendEmailCodeController } from '@/presentation/controllers/mailer'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'

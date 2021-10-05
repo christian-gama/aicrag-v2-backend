@@ -3,9 +3,9 @@ import { MailerServiceProtocol } from '@/domain/mailer'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { MailerServiceError } from '@/application/errors'
+import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
 
-import { SendForgotPasswordEmailController } from '@/presentation/controllers/helpers'
+import { SendWelcomeEmailController } from '@/presentation/controllers/mailer/send-welcome-email-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
@@ -19,46 +19,46 @@ import {
 
 interface SutTypes {
   fakeUser: IUser
-  forgotPasswordEmailStub: MailerServiceProtocol
-  forgotPasswordValidatorStub: ValidatorProtocol
   httpHelper: HttpHelperProtocol
   request: HttpRequest
-  sut: SendForgotPasswordEmailController
+  sendWelcomeValidatorStub: ValidatorProtocol
+  sut: SendWelcomeEmailController
   userDbRepositoryStub: UserDbRepositoryProtocol
+  welcomeEmailStub: MailerServiceProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const forgotPasswordEmailStub = makeMailerServiceStub()
-  const forgotPasswordValidatorStub = makeValidatorStub()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: { email: fakeUser.personal.email } }
+  const sendWelcomeValidatorStub = makeValidatorStub()
   const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const welcomeEmailStub = makeMailerServiceStub()
 
-  const sut = new SendForgotPasswordEmailController(
-    forgotPasswordEmailStub,
-    forgotPasswordValidatorStub,
+  const sut = new SendWelcomeEmailController(
     httpHelper,
-    userDbRepositoryStub
+    sendWelcomeValidatorStub,
+    userDbRepositoryStub,
+    welcomeEmailStub
   )
 
   return {
     fakeUser,
-    forgotPasswordEmailStub,
-    forgotPasswordValidatorStub,
     httpHelper,
     request,
+    sendWelcomeValidatorStub,
     sut,
-    userDbRepositoryStub
+    userDbRepositoryStub,
+    welcomeEmailStub
   }
 }
 
-describe('sendForgotPasswordEmail', () => {
+describe('sendWelcomeEmailController', () => {
   it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
-    const { forgotPasswordValidatorStub, request, sut } = makeSut()
-    const validateSpy = jest.spyOn(forgotPasswordValidatorStub, 'validate')
+    const { request, sendWelcomeValidatorStub, sut } = makeSut()
+    const validateSpy = jest.spyOn(sendWelcomeValidatorStub, 'validate')
 
     await sut.handle(request)
 
@@ -68,14 +68,29 @@ describe('sendForgotPasswordEmail', () => {
   it('should return badRequest if validation fails', async () => {
     expect.hasAssertions()
 
-    const { forgotPasswordValidatorStub, httpHelper, request, sut } = makeSut()
+    const { httpHelper, request, sendWelcomeValidatorStub, sut } = makeSut()
     jest
-      .spyOn(forgotPasswordValidatorStub, 'validate')
+      .spyOn(sendWelcomeValidatorStub, 'validate')
       .mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
     expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('should return forbidden if account is already activated', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockImplementationOnce(async () => {
+      fakeUser.settings.accountActivated = true
+
+      return fakeUser
+    })
+
+    const response = await sut.handle(request)
+
+    expect(response).toStrictEqual(httpHelper.forbidden(new AccountAlreadyActivatedError()))
   })
 
   it('should call findUserByEmail with correct email', async () => {
@@ -92,8 +107,8 @@ describe('sendForgotPasswordEmail', () => {
   it('should call send with correct user', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, forgotPasswordEmailStub, request, sut } = makeSut()
-    const sendSpy = jest.spyOn(forgotPasswordEmailStub, 'send')
+    const { sut, fakeUser, request, welcomeEmailStub } = makeSut()
+    const sendSpy = jest.spyOn(welcomeEmailStub, 'send')
 
     await sut.handle(request)
 
@@ -103,9 +118,9 @@ describe('sendForgotPasswordEmail', () => {
   it('should return serverError if mailer fails', async () => {
     expect.hasAssertions()
 
-    const { forgotPasswordEmailStub, request, sut } = makeSut()
+    const { sut, request, welcomeEmailStub } = makeSut()
     jest
-      .spyOn(forgotPasswordEmailStub, 'send')
+      .spyOn(welcomeEmailStub, 'send')
       .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     const response = await sut.handle(request)
@@ -116,13 +131,13 @@ describe('sendForgotPasswordEmail', () => {
   it('should return ok if send email', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, httpHelper, request, sut } = makeSut()
+    const { sut, fakeUser, httpHelper, request } = makeSut()
 
     const response = await sut.handle(request)
 
     expect(response).toStrictEqual(
       httpHelper.ok({
-        message: `Instructions to reset your password were sent to ${fakeUser.personal.email}`
+        message: `A welcome email with activation code has been sent to ${fakeUser.personal.email}`
       })
     )
   })

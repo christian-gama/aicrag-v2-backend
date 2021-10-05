@@ -1,4 +1,4 @@
-import { SendEmailCodeController } from '@/presentation/controllers/helpers'
+import { SendEmailCodeController } from '@/presentation/controllers/mailer'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'
