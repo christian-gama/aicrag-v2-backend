@@ -1,4 +1,3 @@
-import { IUser } from '@/domain'
 import { HasherProtocol } from '@/domain/cryptography'
 import { FilterUserDataProtocol } from '@/domain/helpers'
 import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
@@ -42,7 +41,7 @@ export class ResetPasswordController implements ControllerProtocol {
       'personal.password': hashedPassword,
       'temporary.resetPasswordToken': null
     }
-    const updatedUser = (await this.userDbRepository.updateUser(response, update)) as IUser
+    const updatedUser = await this.userDbRepository.updateUser(response, update)
 
     const refreshToken = await this.generateRefreshToken.generate(updatedUser)
 

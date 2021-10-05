@@ -46,7 +46,7 @@ export class LoginController implements ControllerProtocol {
 
     const updatedUser = await this.userDbRepository.updateUser(user, {
       'logs.lastLoginAt': new Date(Date.now())
-    }) as IUser
+    })
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
