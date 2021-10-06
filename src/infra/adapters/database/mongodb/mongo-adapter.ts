@@ -25,6 +25,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     return {
       deleteMany: this.deleteMany.bind(mongoAdapter),
       deleteOne: this.deleteOne.bind(mongoAdapter),
+      findAll: this.findAll.bind(mongoAdapter),
       findOne: this.findOne.bind(mongoAdapter),
       insertOne: this.insertOne.bind(mongoAdapter),
       updateOne: this.updateOne.bind(mongoAdapter)
@@ -54,10 +55,22 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     else return false
   }
 
+  protected async findAll<T extends Document>(filter: Document): Promise<T[] | []> {
+    const foundDocs: T[] = []
+
+    await this._collection.find(filter).forEach((doc) => {
+      foundDocs.push(doc)
+    })
+
+    if (foundDocs.length > 0) return foundDocs
+    else return []
+  }
+
   protected async findOne<T extends Document>(filter: Document): Promise<T | null> {
     const foundDoc = await this._collection.findOne(filter)
 
-    return foundDoc
+    if (foundDoc) return foundDoc as T
+    else return null
   }
 
   protected async insertOne<T extends Document>(doc: Document): Promise<T> {
