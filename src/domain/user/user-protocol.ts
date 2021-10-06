@@ -21,7 +21,6 @@ export interface IUser {
     currency: 'USD' | 'BRL'
     handicap: RangeNumbers
   }
-
   temporary: {
     activationCode: string | null
     activationCodeExpiration: Date | null
