@@ -19,21 +19,15 @@ export class SignUpController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
+    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
     const signUpUserCredentials = httpRequest.body
 
     const error = await this.userValidator.validate(signUpUserCredentials)
-
-    if (error != null) {
-      return this.httpHelper.badRequest(error)
-    }
+    if (error) return this.httpHelper.badRequest(error)
 
     const emailExists = await this.userDbRepository.findUserByEmail(signUpUserCredentials.email)
-
-    if (emailExists != null) {
-      return this.httpHelper.conflict(new ConflictParamError('email'))
-    }
+    if (emailExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
     const user = await this.userDbRepository.saveUser(signUpUserCredentials)
 
