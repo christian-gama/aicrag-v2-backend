@@ -54,7 +54,14 @@ describe('validateTaskParam', () => {
 
     const { request, sut } = makeSut()
 
-    const response = sut.validate(request.params)
+    let response = sut.validate(request.params)
+
+    expect(response).toBeUndefined()
+
+    // Test with {12} characters too
+    request.params.id = `${request.params.id as string}x`
+
+    response = sut.validate(request.params)
 
     expect(response).toBeUndefined()
   })

@@ -11,7 +11,7 @@ export class ValidateTaskParam implements ValidatorProtocol {
     if (typeof id !== 'string') return new InvalidTypeError('id')
 
     // Verify if id matches a valid UUID xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx
-    if (!id.match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{11}$/)) {
+    if (!id.match(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-([0-9a-z]{11}|[0-9a-z]{12})$/)) {
       return new InvalidParamError('id')
     }
   }
