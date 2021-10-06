@@ -9,7 +9,8 @@ import {
   InvalidParamError,
   MissingParamError,
   InactiveAccountError,
-  MustLogoutError
+  MustLogoutError,
+  InvalidTypeError
 } from '@/application/errors'
 
 import { LoginController } from '@/presentation/controllers/login'
@@ -113,6 +114,19 @@ describe('loginController', () => {
     const { loginValidatorStub, httpHelper, request, sut } = makeSut()
     const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
     const error = new InvalidParamError('email')
+    jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
+
+    await sut.handle(request)
+
+    expect(badRequestSpy).toHaveBeenCalledWith(error)
+  })
+
+  it('should call badRequest with the correct value if it is an InvalidTypeError', async () => {
+    expect.hasAssertions()
+
+    const { loginValidatorStub, httpHelper, request, sut } = makeSut()
+    const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
+    const error = new InvalidTypeError('email')
     jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)

@@ -21,13 +21,14 @@ export class LoginController implements ControllerProtocol {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
+    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
     const data = httpRequest.body
 
     const error = await this.loginValidator.validate(data)
 
     if (error?.name === 'InvalidParamError') return this.httpHelper.badRequest(error)
+    if (error?.name === 'InvalidTypeError') return this.httpHelper.badRequest(error)
     if (error?.name === 'MissingParamError') return this.httpHelper.badRequest(error)
     if (error?.name === 'UserCredentialError') return this.httpHelper.unauthorized(error)
 
