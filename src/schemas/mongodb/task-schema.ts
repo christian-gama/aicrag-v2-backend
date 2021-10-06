@@ -3,7 +3,7 @@ export const TaskSchema = {
   validator: {
     $jsonSchema: {
       bsonType: 'object',
-      required: ['commentary', 'date', 'duration', 'id', 'logs', 'taskId', 'type', 'user'],
+      required: ['commentary', 'date', 'duration', 'id', 'logs', 'taskId', 'type', 'userId'],
       properties: {
         commentary: {
           bsonType: 'string',

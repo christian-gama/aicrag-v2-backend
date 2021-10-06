@@ -3,7 +3,7 @@ export const UserSchema = {
   validator: {
     $jsonSchema: {
       bsonType: 'object',
-      required: ['logs', 'personal', 'settings', 'temporary'],
+      required: ['logs', 'personal', 'settings', 'temporary', 'tokenVersion'],
       properties: {
         logs: {
           bsonType: 'object',
@@ -62,8 +62,8 @@ export const UserSchema = {
               description: 'must be a string and is required'
             },
             handicap: {
-              bsonType: 'int',
-              description: 'must be a int32 and is required'
+              bsonType: 'decimal',
+              description: 'must be a decimal and is required'
             }
           }
         },
@@ -103,6 +103,10 @@ export const UserSchema = {
               description: 'must be a date or null and is required'
             }
           }
+        },
+        tokenVersion: {
+          bsonType: 'int',
+          description: 'must be a int is required'
         }
       }
     }
