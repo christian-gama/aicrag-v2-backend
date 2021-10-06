@@ -4,7 +4,7 @@ import { IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import { makeFakeUser } from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
 
 describe('mongoAdapter', () => {
   const client = new MongoAdapter()
@@ -104,6 +104,61 @@ describe('mongoAdapter', () => {
     const deleted = await collection.deleteOne({ 'personal.id': fakeUser.personal.id })
 
     expect(deleted).toBe(false)
+
+    await collection.deleteMany({})
+  })
+
+  it('should return an array of length 2 if find 2 documents', async () => {
+    const fakeUser = makeFakeUser()
+    const fakeUser2 = makeFakeUser()
+    const fakeTask = makeFakeTask(fakeUser)
+    const fakeTask2 = makeFakeTask(fakeUser)
+    const fakeTask3 = makeFakeTask(fakeUser2)
+
+    await collection.insertOne(fakeTask)
+    await collection.insertOne(fakeTask2)
+    await collection.insertOne(fakeTask3)
+
+    const document = await collection.findAll({ userId: fakeUser.personal.id })
+
+    expect(document).toHaveLength(2)
+
+    await collection.deleteMany({})
+  })
+
+  it('should return an array of length 3 if find all documents', async () => {
+    const fakeUser = makeFakeUser()
+    const fakeUser2 = makeFakeUser()
+    const fakeTask = makeFakeTask(fakeUser)
+    const fakeTask2 = makeFakeTask(fakeUser)
+    const fakeTask3 = makeFakeTask(fakeUser2)
+
+    await collection.insertOne(fakeTask)
+    await collection.insertOne(fakeTask2)
+    await collection.insertOne(fakeTask3)
+
+    const document = await collection.findAll({})
+
+    expect(document).toHaveLength(3)
+
+    await collection.deleteMany({})
+  })
+
+  it('should return an array', async () => {
+    const document = await collection.findAll({})
+
+    expect(Array.isArray(document)).toBeTruthy()
+
+    await collection.deleteMany({})
+  })
+
+  it('should return an array of length 0 if does not find a document', async () => {
+    const fakeUser = makeFakeUser()
+    await collection.insertOne({ any_field: 'any_value' })
+
+    const document = await collection.findAll(fakeUser)
+
+    expect(document).toHaveLength(0)
 
     await collection.deleteMany({})
   })
