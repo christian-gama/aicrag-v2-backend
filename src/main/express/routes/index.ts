@@ -16,7 +16,7 @@ import {
   makeSendWelcomeEmailController
 } from '@/factories/controllers/mailer'
 import { makeSignUpController } from '@/factories/controllers/signup'
-import { makeCreateTaskController } from '@/factories/controllers/task/create-task-controller-factory'
+import { makeCreateTaskController, makeFindOneTaskController } from '@/factories/controllers/task'
 import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/token'
 import {
   makePartialProtectedMiddleware,
@@ -53,6 +53,7 @@ export const signUpController = controllerAdapter(makeSignUpController())
 
 // Task Routes
 export const createTaskController = controllerAdapter(makeCreateTaskController())
+export const findOneTaskController = controllerAdapter(makeFindOneTaskController())
 
 // Token Routes
 export const verifyResetPasswordTokenController = controllerAdapter(
