@@ -1,3 +1,5 @@
+import { QueryProtocol, QueryResultProtocol } from './queries-protocol'
+
 export interface Document {
   [key: string]: any
 }
@@ -5,7 +7,10 @@ export interface Document {
 export interface CollectionProtocol {
   deleteMany: (filter: Document) => Promise<number>
   deleteOne: (filter: Document) => Promise<boolean>
-  findAll: <T extends Document>(filter: Document) => Promise<T[] | []>
+  findAll: <T extends Document>(
+    filter: Document,
+    query: QueryProtocol
+  ) => Promise<QueryResultProtocol<T>>
   findOne: <T extends Document>(filter: Document) => Promise<T | null>
   insertOne: <T extends Document>(doc: Document) => Promise<T>
   updateOne: <T extends Document>(filter: Document, update: Document) => Promise<T | null>

@@ -1,4 +1,10 @@
 import {
+  QueryMethodsProtocol,
+  QueryProtocol,
+  QueryResultProtocol
+} from '@/infra/database/protocols/queries-protocol'
+
+import {
   CollectionProtocol,
   CollectionsName,
   DatabaseProtocol,
@@ -12,6 +18,10 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
   protected _collection: any
   static client: any = null
 
+  constructor (private readonly queries: QueryMethodsProtocol) {
+    super()
+  }
+
   collection (name: CollectionsName): CollectionProtocol {
     if (!MongoAdapter.client) throw new Error('Database is not connected')
 
@@ -19,7 +29,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
 
     /* Ensure collection return methods bound to a new instance of MongoAdapter
     to avoid replacing this._collection if use multiple collections */
-    const mongoAdapter = new MongoAdapter()
+    const mongoAdapter = new MongoAdapter(this.queries)
     mongoAdapter._collection = this._collection
 
     return {
@@ -55,15 +65,24 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     else return false
   }
 
-  protected async findAll<T extends Document>(filter: Document): Promise<T[] | []> {
-    const foundDocs: T[] = []
+  protected async findAll<T extends Document>(
+    filter: Document,
+    query?: QueryProtocol
+  ): Promise<QueryResultProtocol<T>> {
+    const fields = this.queries.fields(query)
+    const limit = this.queries.limit(query)
+    const skip = this.queries.page(query)
+    const sort = this.queries.sort(query)
 
-    await this._collection.find(filter).forEach((doc) => {
-      foundDocs.push(doc)
-    })
+    const cursor = this._collection.find(filter, { projection: fields })
 
-    if (foundDocs.length > 0) return foundDocs
-    else return []
+    const count = await cursor.count()
+    const documents = await cursor.limit(limit).skip(skip).sort(sort).toArray()
+
+    const currentPage = skip / limit + 1
+    const totalPages = Math.ceil(count / limit)
+
+    return { count, currentPage, documents, totalPages }
   }
 
   protected async findOne<T extends Document>(filter: Document): Promise<T | null> {
