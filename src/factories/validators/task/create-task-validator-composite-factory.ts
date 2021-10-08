@@ -2,8 +2,16 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
-import { makeRequiredFields, makeValidateDate, makeValidateDuration, makeValidateStatus, makeValidateTaskId, makeValidateType, makeValidateUniqueTaskId } from '.'
-import { makeValidateCommentary } from './validate-commentary-factory'
+import {
+  makeRequiredFields,
+  makeValidateDate,
+  makeValidateDuration,
+  makeValidateStatus,
+  makeValidateTaskId,
+  makeValidateType,
+  makeValidateUniqueTaskId
+  , makeValidateCommentary
+} from '.'
 
 export const makeCreateTaskValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
