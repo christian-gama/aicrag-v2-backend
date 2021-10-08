@@ -1,13 +1,16 @@
+/* eslint-disable jest/no-conditional-expect */
 /* eslint-disable jest/prefer-expect-assertions */
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
+import { makeMongoDb } from '@/factories/database/mongo-db-factory'
+
 import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
 
 describe('mongoAdapter', () => {
-  const client = new MongoAdapter()
+  const client = makeMongoDb()
   let collection: CollectionProtocol
 
   afterAll(async () => {
@@ -36,7 +39,6 @@ describe('mongoAdapter', () => {
     } catch (error) {
       MongoAdapter.client = db
 
-      // eslint-disable-next-line jest/no-conditional-expect
       expect(error).toStrictEqual(new Error('Database is not connected'))
     }
   })
@@ -44,6 +46,7 @@ describe('mongoAdapter', () => {
   it('should return collections methods', async () => {
     expect(collection).toHaveProperty('deleteMany')
     expect(collection).toHaveProperty('deleteOne')
+    expect(collection).toHaveProperty('findAll')
     expect(collection).toHaveProperty('findOne')
     expect(collection).toHaveProperty('insertOne')
     expect(collection).toHaveProperty('updateOne')
@@ -61,7 +64,6 @@ describe('mongoAdapter', () => {
     } catch (error) {
       MongoAdapter.client = db
 
-      // eslint-disable-next-line jest/no-conditional-expect
       expect(error).toStrictEqual(new Error('Database is not connected'))
     }
   })
@@ -108,46 +110,129 @@ describe('mongoAdapter', () => {
     await collection.deleteMany({})
   })
 
-  it('should return an array of length 2 if find 2 documents', async () => {
+  it('should return a document without duration property', async () => {
+    expect.hasAssertions()
+
     const fakeUser = makeFakeUser()
-    const fakeUser2 = makeFakeUser()
+    const fakeTask = makeFakeTask(fakeUser)
+
+    await collection.insertOne(fakeTask)
+
+    const query = { fields: '-duration' }
+
+    const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+
+    expect(result.documents[0]).not.toHaveProperty('duration')
+
+    await collection.deleteMany({})
+  })
+
+  it('should return a document with only duration property', async () => {
+    expect.hasAssertions()
+
+    const fakeUser = makeFakeUser()
+    const fakeTask = makeFakeTask(fakeUser)
+
+    await collection.insertOne(fakeTask)
+
+    const query = { fields: 'duration,-_id' }
+
+    const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+
+    expect(Object.keys(result.documents[0])).toHaveLength(1)
+
+    await collection.deleteMany({})
+  })
+
+  it('should return a sorted document', async () => {
+    expect.hasAssertions()
+
+    const fakeUser = makeFakeUser()
     const fakeTask = makeFakeTask(fakeUser)
     const fakeTask2 = makeFakeTask(fakeUser)
-    const fakeTask3 = makeFakeTask(fakeUser2)
+    const fakeTask3 = makeFakeTask(fakeUser)
 
     await collection.insertOne(fakeTask)
     await collection.insertOne(fakeTask2)
     await collection.insertOne(fakeTask3)
 
-    const document = await collection.findAll({ userId: fakeUser.personal.id })
+    const query = { fields: 'duration', sort: 'duration,-usd' }
 
-    expect(document).toHaveLength(2)
+    const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+
+    expect(result.documents[1].duration).toBeGreaterThanOrEqual(result.documents[0].duration)
 
     await collection.deleteMany({})
   })
 
-  it('should return an array of length 3 if find all documents', async () => {
+  it('should return paginated document', async () => {
+    expect.hasAssertions()
+
     const fakeUser = makeFakeUser()
-    const fakeUser2 = makeFakeUser()
     const fakeTask = makeFakeTask(fakeUser)
     const fakeTask2 = makeFakeTask(fakeUser)
-    const fakeTask3 = makeFakeTask(fakeUser2)
+    const fakeTask3 = makeFakeTask(fakeUser)
+    const fakeTask4 = makeFakeTask(fakeUser)
+    const fakeTask5 = makeFakeTask(fakeUser)
+    const fakeTask6 = makeFakeTask(fakeUser)
 
     await collection.insertOne(fakeTask)
     await collection.insertOne(fakeTask2)
     await collection.insertOne(fakeTask3)
+    await collection.insertOne(fakeTask4)
+    await collection.insertOne(fakeTask5)
+    await collection.insertOne(fakeTask6)
 
-    const document = await collection.findAll({})
+    const query = { limit: '2', page: '1' }
 
-    expect(document).toHaveLength(3)
+    const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+
+    expect(result.documents).toHaveLength(2)
 
     await collection.deleteMany({})
   })
 
-  it('should return an array', async () => {
-    const document = await collection.findAll({})
+  it('should return paginated document even without limit and page params', async () => {
+    expect.hasAssertions()
 
-    expect(Array.isArray(document)).toBeTruthy()
+    const fakeUser = makeFakeUser()
+    const fakeTask = makeFakeTask(fakeUser)
+    const fakeTask2 = makeFakeTask(fakeUser)
+    const fakeTask3 = makeFakeTask(fakeUser)
+    const fakeTask4 = makeFakeTask(fakeUser)
+    const fakeTask5 = makeFakeTask(fakeUser)
+    const fakeTask6 = makeFakeTask(fakeUser)
+
+    await collection.insertOne(fakeTask)
+    await collection.insertOne(fakeTask2)
+    await collection.insertOne(fakeTask3)
+    await collection.insertOne(fakeTask4)
+    await collection.insertOne(fakeTask5)
+    await collection.insertOne(fakeTask6)
+
+    const result = await collection.findAll({ userId: fakeUser.personal.id }, {})
+
+    expect(result.documents).toHaveLength(6)
+
+    await collection.deleteMany({})
+  })
+
+  it('should return a QueryResult with correct values', async () => {
+    const fakeUser = makeFakeUser()
+    const fakeTask = makeFakeTask(fakeUser)
+    const fakeTask2 = makeFakeTask(fakeUser)
+
+    const insertedDoc = await collection.insertOne(fakeTask)
+    const insertedDoc2 = await collection.insertOne(fakeTask2)
+
+    const result = await collection.findAll({}, {})
+
+    expect(result).toStrictEqual({
+      count: 2,
+      currentPage: 1,
+      documents: [insertedDoc, insertedDoc2],
+      totalPages: 1
+    })
 
     await collection.deleteMany({})
   })
@@ -156,9 +241,9 @@ describe('mongoAdapter', () => {
     const fakeUser = makeFakeUser()
     await collection.insertOne({ any_field: 'any_value' })
 
-    const document = await collection.findAll(fakeUser)
+    const result = await collection.findAll(fakeUser, {})
 
-    expect(document).toHaveLength(0)
+    expect(result.documents).toHaveLength(0)
 
     await collection.deleteMany({})
   })
