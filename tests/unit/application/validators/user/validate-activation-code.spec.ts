@@ -110,7 +110,7 @@ describe('validateActivationCode', () => {
     const { request, sut, userDbRepositoryStub } = makeSut()
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
 
     const value = await sut.validate(request.body)
 

@@ -22,20 +22,20 @@ export class TaskDbRepository implements TaskDbRepositoryProtocol {
     return result as QueryResultProtocol<T>
   }
 
-  async findTaskById (id: string, userId: string): Promise<ITask | undefined> {
+  async findTaskById (id: string, userId: string): Promise<ITask | null> {
     const taskCollection = this.database.collection('tasks')
 
     const task = await taskCollection.findOne<ITask>({ id, userId })
 
-    if (task) return task
+    return task
   }
 
-  async findTaskByTaskId (taskId: string | null, userId: string): Promise<ITask | undefined> {
+  async findTaskByTaskId (taskId: string | null, userId: string): Promise<ITask | null> {
     const taskCollection = this.database.collection('tasks')
 
     const task = await taskCollection.findOne<ITask>({ taskId, userId })
 
-    if (task) return task
+    return task
   }
 
   async saveTask (taskData: ITaskData): Promise<ITask> {

@@ -111,7 +111,7 @@ describe('signUpController', () => {
     const saveUserSpy = jest.spyOn(userDbRepositoryStub, 'saveUser')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -125,7 +125,7 @@ describe('signUpController', () => {
     const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -139,7 +139,7 @@ describe('signUpController', () => {
     const validateSpy = jest.spyOn(userValidatorStub, 'validate')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -154,7 +154,7 @@ describe('signUpController', () => {
     const error = new Error('any_error')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
     jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)
@@ -169,7 +169,7 @@ describe('signUpController', () => {
     const error = new InvalidParamError('any_field')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
     jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
 
     const response = await sut.handle(request)
@@ -184,7 +184,7 @@ describe('signUpController', () => {
     const okSpy = jest.spyOn(httpHelper, 'ok')
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -197,7 +197,7 @@ describe('signUpController', () => {
     const { fakePublicUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.handle(request)
 

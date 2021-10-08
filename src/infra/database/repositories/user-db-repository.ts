@@ -9,22 +9,22 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
     private readonly userRepository: UserRepositoryProtocol
   ) {}
 
-  async findUserByEmail (email: string): Promise<IUser | undefined> {
+  async findUserByEmail (email: string): Promise<IUser | null> {
     const userCollection = this.database.collection('users')
 
     const filter: UserDbFilter = { 'personal.email': email.toLowerCase() }
     const user = await userCollection.findOne<IUser>(filter)
 
-    if (user) return user
+    return user
   }
 
-  async findUserById (id: string): Promise<IUser | undefined> {
+  async findUserById (id: string): Promise<IUser | null> {
     const userCollection = this.database.collection('users')
 
     const filter: UserDbFilter = { 'personal.id': id }
     const user = await userCollection.findOne<IUser>(filter)
 
-    if (user) return user
+    return user
   }
 
   async saveUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
@@ -35,13 +35,12 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
     return await userCollection.insertOne(user)
   }
 
-  async updateUser <T extends IUser | undefined>(user: T, update: UserDbFilter): Promise<T> {
+  async updateUser <T extends IUser | null>(user: T, update: UserDbFilter): Promise<T> {
     const userCollection = this.database.collection('users')
 
     const filter = { 'personal.id': user?.personal.id }
     const updatedUser = await userCollection.updateOne<IUser>(filter, update)
 
-    if (updatedUser) return updatedUser as T
-    else return undefined as T
+    return updatedUser as T
   }
 }

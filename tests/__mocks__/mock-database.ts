@@ -28,11 +28,11 @@ export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProto
       })) as QueryResultProtocol<T>
     }
 
-    async findTaskById (id: string, userId: string): Promise<ITask | undefined> {
+    async findTaskById (id: string, userId: string): Promise<ITask | null> {
       return await Promise.resolve(fakeTask)
     }
 
-    async findTaskByTaskId (taskId: string, userId: string): Promise<ITask | undefined> {
+    async findTaskByTaskId (taskId: string, userId: string): Promise<ITask | null> {
       return await Promise.resolve(fakeTask)
     }
 
@@ -50,15 +50,15 @@ export const makeUserDbRepositoryStub = (fakeUser: IUser): UserDbRepositoryProto
       return await Promise.resolve(fakeUser)
     }
 
-    async findUserByEmail (email: string): Promise<IUser | undefined> {
+    async findUserByEmail (email: string): Promise<IUser | null> {
       return await Promise.resolve(fakeUser)
     }
 
-    async findUserById (id: string): Promise<IUser | undefined> {
+    async findUserById (id: string): Promise<IUser | null> {
       return await Promise.resolve(fakeUser)
     }
 
-    async updateUser<T extends IUser | undefined>(user: T, update: UserDbFilter): Promise<T> {
+    async updateUser<T extends IUser | null>(user: T, update: UserDbFilter): Promise<T> {
       return (await Promise.resolve(fakeUser)) as T
     }
   }

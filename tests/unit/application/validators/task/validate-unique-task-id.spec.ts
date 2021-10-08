@@ -53,7 +53,7 @@ describe('validateUniqueTaskId', () => {
     expect.hasAssertions()
 
     const { request, sut, taskDbRepositoryStub } = makeSut()
-    jest.spyOn(taskDbRepositoryStub, 'findTaskByTaskId').mockReturnValueOnce(Promise.resolve(undefined))
+    jest.spyOn(taskDbRepositoryStub, 'findTaskByTaskId').mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.validate(request.body)
 

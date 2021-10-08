@@ -74,7 +74,7 @@ describe('verifyAccessToken', () => {
     expect.hasAssertions()
 
     const { sut, userDbRepositoryStub } = makeSut()
-    jest.spyOn(userDbRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(undefined))
+    jest.spyOn(userDbRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.verify('any_token')
 

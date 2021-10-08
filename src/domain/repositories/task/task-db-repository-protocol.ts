@@ -15,7 +15,7 @@ export interface FindAllTasksDbProtocol {
    * @description Receive a user id and tries to find all tasks that belongs to that user.
    * @param userId The user id which belongs to the task
    * @param query Query that will refine the final result of the search.
-   * @returns Return all tasks that belongs to that user or undefined if there is no task.
+   * @returns Return all tasks that belongs to that user or null if there is no task.
    */
   findAllTasks: <T extends ITask>(userId: string, query: QueryProtocol) => Promise<QueryResultProtocol<T>>
 }
@@ -26,9 +26,9 @@ export interface FindTaskByIdDbProtocol {
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
    * @param id The task unique id that will be searched for.
    * @param userId The user id which belongs to the task
-   * @returns Return a task if finds it or undefined if does not.
+   * @returns Return a task if finds it or null if does not.
    */
-  findTaskById: (id: string, userId: string) => Promise<ITask | undefined>
+  findTaskById: (id: string, userId: string) => Promise<ITask | null>
 }
 
 export interface FindTaskByTaskIdDbProtocol {
@@ -37,9 +37,9 @@ export interface FindTaskByTaskIdDbProtocol {
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
    * @param taskId The taskId that will be searched for.
    * @param userId The user id which belongs to the task
-   * @returns Return a task if finds it or undefined if does not.
+   * @returns Return a task if finds it or null if does not.
    */
-  findTaskByTaskId: (taskId: string | null, userId: string) => Promise<ITask | undefined>
+  findTaskByTaskId: (taskId: string | null, userId: string) => Promise<ITask | null>
 }
 
 export interface SaveTaskDbProtocol {
@@ -58,7 +58,7 @@ export interface UpdateTaskDbProtocol {
    * @description Receive a task and then update it based on its id.
    * @param task Task that will be updated on database.
    * @param update Properties that will be updated.
-   * @returns Return the updated task or undefined.
+   * @returns Return the updated task or null.
    */
-  updateTask: (id: string, update: TaskDbFilter) => Promise<ITask | undefined>
+  updateTask: (id: string, update: TaskDbFilter) => Promise<ITask | null>
 }

@@ -16,9 +16,9 @@ export interface FindUserByEmailDbProtocol {
    * @async Asynchronous method.
    * @description Receive an email and tries to find it on database.
    * @param email The email that will be searched for.
-   * @returns Return a user if finds it or undefined if does not.
+   * @returns Return a user if finds it or null if does not.
    */
-  findUserByEmail: (email: string) => Promise<IUser | undefined>
+  findUserByEmail: (email: string) => Promise<IUser | null>
 }
 
 export interface FindUserByIdDbProtocol {
@@ -26,9 +26,9 @@ export interface FindUserByIdDbProtocol {
    * @async Asynchronous method.
    * @description Receive an user id and tries to find it on database.
    * @param id The user id that will be searched for.
-   * @returns Return a user if finds it or undefined if does not.
+   * @returns Return a user if finds it or null if does not.
    */
-  findUserById: (id: string) => Promise<IUser | undefined>
+  findUserById: (id: string) => Promise<IUser | null>
 }
 
 export interface SaveUserDbProtocol {
@@ -47,7 +47,7 @@ export interface UpdateUserDbProtocol {
    * @description Receive a user and tries to update it.
    * @param user The user that will be updated.
    * @param update Object that contains the changes to be updated.
-   * @returns Return a user if updates it or undefined if does not.
+   * @returns Return a user if updates it or null if does not.
    */
-  updateUser: <T extends IUser | undefined>(user: T, update: UserDbFilter) => Promise<T>
+  updateUser: <T extends IUser | null>(user: T, update: UserDbFilter) => Promise<T>
 }

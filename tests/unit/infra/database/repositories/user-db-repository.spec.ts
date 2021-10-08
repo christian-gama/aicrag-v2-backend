@@ -64,13 +64,13 @@ describe('userDbRepository', () => {
       expect(foundUser).toHaveProperty('_id')
     })
 
-    it('should return undefined if does not findUserByEmail finds a user', async () => {
+    it('should return null if does not findUserByEmail finds a user', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
       const foundUser = await sut.findUserByEmail('non_existent@email.com')
 
-      expect(foundUser).toBeUndefined()
+      expect(foundUser).toBeNull()
     })
   })
 
@@ -84,13 +84,13 @@ describe('userDbRepository', () => {
       expect(foundUser).toHaveProperty('_id')
     })
 
-    it('should return undefined if does not findUserById finds a user', async () => {
+    it('should return null if does not findUserById finds a user', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
       const foundUser = await sut.findUserById('invalid_id')
 
-      expect(foundUser).toBeUndefined()
+      expect(foundUser).toBeNull()
     })
   })
 
@@ -172,14 +172,14 @@ describe('userDbRepository', () => {
       expect(updatedUser?.personal.email).toBe('changed_email')
     })
 
-    it('should return undefined if does not updateUser finds a user', async () => {
+    it('should return null if does not updateUser finds a user', async () => {
       expect.hasAssertions()
 
       const { fakeUser, sut } = makeSut()
 
       const updatedUser = await sut.updateUser(fakeUser, { 'personal.name': 'any_name' })
 
-      expect(updatedUser).toBeUndefined()
+      expect(updatedUser).toBeNull()
     })
   })
 })

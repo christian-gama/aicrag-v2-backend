@@ -74,7 +74,7 @@ describe('findOneTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, taskDbRepositoryStub } = makeSut()
-    jest.spyOn(taskDbRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(undefined))
+    jest.spyOn(taskDbRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
 
     const error = await sut.handle(request)
 

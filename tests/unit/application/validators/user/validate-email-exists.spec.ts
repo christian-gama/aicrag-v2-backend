@@ -29,7 +29,7 @@ describe('validateEmailExists', () => {
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest
       .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(undefined))
+      .mockReturnValueOnce(Promise.resolve(null))
 
     const error = await sut.validate(data)
 
