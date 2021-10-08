@@ -107,6 +107,16 @@ describe('taskDbRepository', () => {
     expect(createTaskSpy).toHaveBeenCalledWith(fakeTaskData)
   })
 
+  it('should return a result if finds one or more tasks', async () => {
+    expect.hasAssertions()
+
+    const { sut } = makeSut()
+
+    const result = await sut.findAllTasks(taskData.user.personal.id, {})
+
+    expect(result).toStrictEqual({ count: 1, currentPage: 1, documents: [task], totalPages: 1 })
+  })
+
   it('should return a task if finds it', async () => {
     expect.hasAssertions()
 
