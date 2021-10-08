@@ -15,7 +15,8 @@ export const makeFakeTaskData = (fakeUser: IUser): ITaskData => {
 }
 
 export const makeFakeTask = (fakeUser: IUser): ITask => {
-  const date = new Date(Date.now())
+  const date = faker.date.recent(Math.random() * 27)
+  const duration = Math.random() * 30
 
   return {
     commentary: faker.lorem.words(10),
@@ -26,7 +27,7 @@ export const makeFakeTask = (fakeUser: IUser): ITask => {
       month: date.getMonth(),
       year: date.getFullYear()
     },
-    duration: 30,
+    duration,
     id: faker.datatype.uuid(),
     logs: {
       createdAt: date,
@@ -35,7 +36,7 @@ export const makeFakeTask = (fakeUser: IUser): ITask => {
     status: 'completed',
     taskId: faker.datatype.uuid(),
     type: 'TX',
-    usd: (30 / 60) * 65 * fakeUser.settings.handicap,
+    usd: (duration / 60) * 65 * fakeUser.settings.handicap,
     userId: fakeUser.personal.id
   }
 }
