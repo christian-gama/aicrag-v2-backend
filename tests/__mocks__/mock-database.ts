@@ -2,6 +2,7 @@ import { ILogError, IUser, ISignUpUserData, ITask, ITaskData } from '@/domain'
 import { LogErrorDbRepositoryProtocol, UserDbRepositoryProtocol } from '@/domain/repositories'
 import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
 
+import { QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
 import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
 
 import { makeFakeLogError } from './mock-log-error'
@@ -18,8 +19,13 @@ export const makeLogErrorDbRepositoryStub = (error: Error): LogErrorDbRepository
 
 export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProtocol => {
   class TaskDbRepositoryStub implements TaskDbRepositoryProtocol {
-    async saveTask (taskData: ITaskData): Promise<ITask> {
-      return await Promise.resolve(fakeTask)
+    async findAllTasks<T extends ITask>(userId: string): Promise<QueryResultProtocol<T>> {
+      return (await Promise.resolve({
+        count: 1,
+        currentPage: 1,
+        documents: [fakeTask],
+        totalPages: 1
+      })) as QueryResultProtocol<T>
     }
 
     async findTaskById (id: string, userId: string): Promise<ITask | undefined> {
@@ -27,6 +33,10 @@ export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProto
     }
 
     async findTaskByTaskId (taskId: string, userId: string): Promise<ITask | undefined> {
+      return await Promise.resolve(fakeTask)
+    }
+
+    async saveTask (taskData: ITaskData): Promise<ITask> {
       return await Promise.resolve(fakeTask)
     }
   }
@@ -48,8 +58,8 @@ export const makeUserDbRepositoryStub = (fakeUser: IUser): UserDbRepositoryProto
       return await Promise.resolve(fakeUser)
     }
 
-    async updateUser <T extends IUser | undefined>(user: T, update: UserDbFilter): Promise<T> {
-      return await Promise.resolve(fakeUser) as T
+    async updateUser<T extends IUser | undefined>(user: T, update: UserDbFilter): Promise<T> {
+      return (await Promise.resolve(fakeUser)) as T
     }
   }
 
