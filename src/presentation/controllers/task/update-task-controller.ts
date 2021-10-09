@@ -41,6 +41,14 @@ export class UpdateTaskController implements ControllerProtocol {
     if (data.date) {
       const error = await this.validateDate.validate(data)
       if (error) return this.httpHelper.badRequest(error)
+
+      const date = data.date
+
+      update['date.day'] = date.getDate()
+      update['date.full'] = data.date
+      update['date.hours'] = date.toLocaleTimeString()
+      update['date.month'] = date.getMonth()
+      update['date.year'] = date.getYear()
     }
 
     const updatedTask = await this.taskDbRepository.updateTask(task, update)
