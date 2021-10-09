@@ -28,11 +28,17 @@ export class UpdateTaskController implements ControllerProtocol {
     const task = await this.taskDbRepository.findTaskById(params.id, user.personal.id)
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 
+    const update: Record<string, any> = {}
+
     if (data.commentary) {
       const error = await this.validateCommentary.validate(data)
       if (error) return this.httpHelper.badRequest(error)
+
+      update.commentary = data.commentary
     }
 
-    return this.httpHelper.ok({ task: '' })
+    const updatedTask = await this.taskDbRepository.updateTask(task, update)
+
+    return this.httpHelper.ok({ task: updatedTask })
   }
 }
