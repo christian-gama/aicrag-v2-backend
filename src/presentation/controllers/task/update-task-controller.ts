@@ -1,6 +1,7 @@
+import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { MustLoginError } from '@/application/errors'
+import { MustLoginError, TaskNotFoundError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
@@ -9,6 +10,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 export class UpdateTaskController implements ControllerProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
+    private readonly taskDbRepository: TaskDbRepositoryProtocol,
     private readonly validateTaskParam: ValidatorProtocol
   ) {}
 
@@ -20,6 +22,9 @@ export class UpdateTaskController implements ControllerProtocol {
 
     const error = await this.validateTaskParam.validate(params)
     if (error) return this.httpHelper.badRequest(error)
+
+    const task = await this.taskDbRepository.findTaskById(params.id, user.personal.id)
+    if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 
     return this.httpHelper.ok({ task: '' })
   }
