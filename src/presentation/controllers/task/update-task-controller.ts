@@ -14,6 +14,7 @@ export class UpdateTaskController implements ControllerProtocol {
     private readonly validateCommentary: ValidatorProtocol,
     private readonly validateDate: ValidatorProtocol,
     private readonly validateDuration: ValidatorProtocol,
+    private readonly validateStatus: ValidatorProtocol,
     private readonly validateTaskParam: ValidatorProtocol,
     private readonly validateType: ValidatorProtocol
   ) {}
@@ -69,6 +70,13 @@ export class UpdateTaskController implements ControllerProtocol {
         data.type === 'TX'
           ? (data.duration / 60) * 65 * user.settings.handicap
           : (data.duration / 60) * 112.5 * user.settings.handicap
+    }
+
+    if (data.status) {
+      const error = await this.validateStatus.validate(data)
+      if (error) return this.httpHelper.badRequest(error)
+
+      update.status = data.status
     }
 
     const isEmpty = Object.keys(update).length === 0
