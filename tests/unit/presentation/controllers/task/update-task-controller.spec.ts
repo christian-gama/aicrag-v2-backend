@@ -26,6 +26,7 @@ interface SutTypes {
   validateCommentaryStub: ValidatorProtocol
   validateDateStub: ValidatorProtocol
   validateDurationStub: ValidatorProtocol
+  validateStatusStub: ValidatorProtocol
   validateTaskParamStub: ValidatorProtocol
   validateTypeStub: ValidatorProtocol
 }
@@ -39,6 +40,7 @@ const makeSut = (): SutTypes => {
   const validateCommentaryStub = makeValidatorStub()
   const validateDateStub = makeValidatorStub()
   const validateDurationStub = makeValidatorStub()
+  const validateStatusStub = makeValidatorStub()
   const validateTaskParamStub = makeValidatorStub()
   const validateTypeStub = makeValidatorStub()
 
@@ -48,6 +50,7 @@ const makeSut = (): SutTypes => {
     validateCommentaryStub,
     validateDateStub,
     validateDurationStub,
+    validateStatusStub,
     validateTaskParamStub,
     validateTypeStub
   )
@@ -62,6 +65,7 @@ const makeSut = (): SutTypes => {
     validateCommentaryStub,
     validateDateStub,
     validateDurationStub,
+    validateStatusStub,
     validateTaskParamStub,
     validateTypeStub
   }
@@ -238,5 +242,19 @@ describe('updateTaskController', () => {
     const response = await sut.handle(request)
 
     expect(response.data.task.logs.updatedAt).toBe(date)
+  })
+
+  it('should return badRequest if there is a status and it is invalid', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, validateStatusStub } = makeSut()
+    jest
+      .spyOn(validateStatusStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('status')))
+    request.body.status = 'invalid_status'
+
+    const error = await sut.handle(request)
+
+    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('status')))
   })
 })
