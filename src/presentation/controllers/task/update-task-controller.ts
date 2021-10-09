@@ -57,7 +57,7 @@ export class UpdateTaskController implements ControllerProtocol {
 
     if (data.duration || data.type) {
       if (!data.type) data.type = task?.type
-      if (!data.duration) data.type = task?.type
+      if (!data.duration) data.duration = task?.duration
 
       let error = await this.validateType.validate(data)
       if (error) return this.httpHelper.badRequest(error)
