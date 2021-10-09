@@ -25,6 +25,7 @@ interface SutTypes {
   taskDbRepositoryStub: TaskDbRepositoryProtocol
   validateCommentaryStub: ValidatorProtocol
   validateDateStub: ValidatorProtocol
+  validateDurationStub: ValidatorProtocol
   validateTaskParamStub: ValidatorProtocol
   validateTypeStub: ValidatorProtocol
 }
@@ -34,17 +35,19 @@ const makeSut = (): SutTypes => {
   const fakeTask = makeFakeTask(fakeUser)
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: {}, params: { id: 'valid_id' }, user: fakeUser }
+  const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
   const validateCommentaryStub = makeValidatorStub()
   const validateDateStub = makeValidatorStub()
+  const validateDurationStub = makeValidatorStub()
   const validateTaskParamStub = makeValidatorStub()
   const validateTypeStub = makeValidatorStub()
-  const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
 
   const sut = new UpdateTaskController(
     httpHelper,
     taskDbRepositoryStub,
     validateCommentaryStub,
     validateDateStub,
+    validateDurationStub,
     validateTaskParamStub,
     validateTypeStub
   )
@@ -58,6 +61,7 @@ const makeSut = (): SutTypes => {
     taskDbRepositoryStub,
     validateCommentaryStub,
     validateDateStub,
+    validateDurationStub,
     validateTaskParamStub,
     validateTypeStub
   }
@@ -170,5 +174,19 @@ describe('updateTaskController', () => {
     const error = await sut.handle(request)
 
     expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('type')))
+  })
+
+  it('should return badRequest if there is a duration and it is invalid', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, validateDurationStub } = makeSut()
+    jest
+      .spyOn(validateDurationStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('duration')))
+    request.body.duration = 'invalid_duration'
+
+    const error = await sut.handle(request)
+
+    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('duration')))
   })
 })
