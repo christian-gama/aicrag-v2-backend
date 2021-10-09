@@ -216,4 +216,27 @@ describe('updateTaskController', () => {
     expect(response.data.task.duration).toBe(2.4)
     expect(response.data.task.type).toBe('QA')
   })
+
+  it('should return a default message if there is no changes', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut } = makeSut()
+
+    const response = await sut.handle(request)
+
+    expect(response).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
+  })
+
+  it('should return update the updatedAt property if there is a change', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut } = makeSut()
+    const date = new Date(Date.now())
+    fakeTask.logs.updatedAt = date
+    request.body.commentary = fakeTask.commentary
+
+    const response = await sut.handle(request)
+
+    expect(response.data.task.logs.updatedAt).toBe(date)
+  })
 })
