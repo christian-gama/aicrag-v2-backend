@@ -257,4 +257,16 @@ describe('updateTaskController', () => {
 
     expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('status')))
   })
+
+  it('should return a task with new status if changes only status', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut } = makeSut()
+    fakeTask.status = 'in_progress'
+    request.body.status = fakeTask.status
+
+    const response = await sut.handle(request)
+
+    expect(response.data.task.status).toBe('in_progress')
+  })
 })
