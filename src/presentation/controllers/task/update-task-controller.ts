@@ -71,6 +71,10 @@ export class UpdateTaskController implements ControllerProtocol {
           : (data.duration / 60) * 112.5 * user.settings.handicap
     }
 
+    const isEmpty = Object.keys(update).length === 0
+    if (isEmpty) return this.httpHelper.ok({ message: 'No changes were made' })
+    else update['logs.updatedAt'] = new Date(Date.now())
+
     const updatedTask = await this.taskDbRepository.updateTask(task, update)
 
     return this.httpHelper.ok({ task: updatedTask })
