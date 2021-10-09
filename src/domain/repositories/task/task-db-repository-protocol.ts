@@ -25,7 +25,7 @@ export interface FindTaskByIdDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
-   * @param id The task unique id that will be searched for.
+   * @param id Unique id from the task that will be searched for.
    * @param userId The user id which belongs to the task
    * @returns Return a task if finds it or null if does not.
    */
@@ -47,7 +47,7 @@ export interface SaveTaskDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a task data and then save it on database.
-   * @param task Task that will be saved on database.
+   * @param taskData Task that will be saved on database.
    * @returns Return the saved task.
    */
   saveTask: (taskData: ITaskData) => Promise<ITask>
@@ -57,9 +57,9 @@ export interface UpdateTaskDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a task and then update it based on its id.
-   * @param task Task that will be updated on database.
+   * @param id Unique Id from the task that will be updated on database.
    * @param update Properties that will be updated.
    * @returns Return the updated task or null.
    */
-  updateTask: <T extends ITask | null>(task: T, update: TaskDbFilter) => Promise<T>
+  updateTask: <T extends ITask | null>(id: string, update: TaskDbFilter) => Promise<T>
 }

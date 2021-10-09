@@ -41,8 +41,8 @@ export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProto
       return await Promise.resolve(fakeTask)
     }
 
-    async updateTask <T extends ITask | null>(task: T, update: TaskDbFilter): Promise<T> {
-      return await Promise.resolve(fakeTask) as T
+    async updateTask<T extends ITask | null>(id: string, update: TaskDbFilter): Promise<T> {
+      return (await Promise.resolve(fakeTask)) as T
     }
   }
 

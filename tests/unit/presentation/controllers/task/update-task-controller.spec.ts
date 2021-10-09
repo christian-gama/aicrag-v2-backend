@@ -154,7 +154,7 @@ describe('updateTaskController', () => {
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
       commentary: 'any_commentary',
       'logs.updatedAt': new Date(Date.now())
     })
@@ -205,7 +205,7 @@ describe('updateTaskController', () => {
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
       'date.day': date.getDate(),
       'date.full': date,
       'date.hours': date.toLocaleTimeString(),
@@ -279,7 +279,7 @@ describe('updateTaskController', () => {
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
       duration: 15,
       'logs.updatedAt': new Date(Date.now()),
       type: 'TX',
@@ -345,7 +345,7 @@ describe('updateTaskController', () => {
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
       'logs.updatedAt': new Date(Date.now()),
       status: 'in_progress'
     })
@@ -374,7 +374,7 @@ describe('updateTaskController', () => {
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
       'logs.updatedAt': new Date(Date.now()),
       taskId: 'any_value'
     })
