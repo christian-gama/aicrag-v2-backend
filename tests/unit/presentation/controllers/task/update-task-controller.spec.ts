@@ -132,4 +132,25 @@ describe('updateTaskController', () => {
 
     expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('date')))
   })
+
+  it('should return task with new date if changes only date', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut } = makeSut()
+    const date = new Date(Date.now())
+    fakeTask.date.day = date.getDate()
+    fakeTask.date.full = date
+    fakeTask.date.hours = date.toLocaleTimeString()
+    fakeTask.date.month = date.getMonth()
+    fakeTask.date.year = date.getFullYear()
+    request.body.date = fakeTask.date.full
+
+    const response = await sut.handle(request)
+
+    expect(response.data.task.date.day).toBe(date.getDate())
+    expect(response.data.task.date.full).toBe(date)
+    expect(response.data.task.date.hours).toBe(date.toLocaleTimeString())
+    expect(response.data.task.date.month).toBe(date.getMonth())
+    expect(response.data.task.date.year).toBe(date.getFullYear())
+  })
 })
