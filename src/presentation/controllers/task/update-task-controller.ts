@@ -11,10 +11,12 @@ export class UpdateTaskController implements ControllerProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
     private readonly taskDbRepository: TaskDbRepositoryProtocol,
+    private readonly validateCommentary: ValidatorProtocol,
     private readonly validateTaskParam: ValidatorProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    const data = httpRequest.body
     const params = httpRequest.params
     const user = httpRequest.user
 
@@ -25,6 +27,11 @@ export class UpdateTaskController implements ControllerProtocol {
 
     const task = await this.taskDbRepository.findTaskById(params.id, user.personal.id)
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
+
+    if (data.commentary) {
+      const error = await this.validateCommentary.validate(data)
+      if (error) return this.httpHelper.badRequest(error)
+    }
 
     return this.httpHelper.ok({ task: '' })
   }
