@@ -195,6 +195,7 @@ describe('updateTaskController', () => {
 
     const { fakeTask, request, sut } = makeSut()
     fakeTask.duration = 12.3
+    request.body.duration = fakeTask.duration
 
     const response = await sut.handle(request)
 
@@ -207,6 +208,8 @@ describe('updateTaskController', () => {
     const { fakeTask, request, sut } = makeSut()
     fakeTask.duration = 2.4
     fakeTask.type = 'QA'
+    request.body.duration = fakeTask.duration
+    request.body.type = fakeTask.type
 
     const response = await sut.handle(request)
 
