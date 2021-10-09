@@ -102,4 +102,16 @@ describe('updateTaskController', () => {
 
     expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('commentary')))
   })
+
+  it('should return task with new commentary if changes only commentary', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut } = makeSut()
+    fakeTask.commentary = 'new_commentary'
+    request.body.commentary = fakeTask.commentary
+
+    const response = await sut.handle(request)
+
+    expect(response.data.task.commentary).toBe('new_commentary')
+  })
 })
