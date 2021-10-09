@@ -1,4 +1,5 @@
 import { IUser } from '@/domain'
+import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
 
@@ -7,26 +8,30 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import { makeFakeUser } from '@/tests/__mocks__'
+import { makeFakeUser, makeValidatorStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: UpdateTaskController
+  validateTaskParamStub: ValidatorProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { params: { id: 'valid_id' }, user: fakeUser }
-  const sut = new UpdateTaskController(httpHelper)
+  const validateTaskParamStub = makeValidatorStub()
+
+  const sut = new UpdateTaskController(httpHelper, validateTaskParamStub)
 
   return {
     fakeUser,
     httpHelper,
     request,
-    sut
+    sut,
+    validateTaskParamStub
   }
 }
 
@@ -40,5 +45,16 @@ describe('updateTaskController', () => {
     const error = await sut.handle(request)
 
     expect(error).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
+  })
+
+  it('should return badRequest if param is invalid', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, validateTaskParamStub } = makeSut()
+    jest.spyOn(validateTaskParamStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
+
+    const error = await sut.handle(request)
+
+    expect(error).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 })
