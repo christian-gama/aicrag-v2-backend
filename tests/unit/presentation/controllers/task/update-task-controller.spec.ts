@@ -16,6 +16,8 @@ import {
   makeValidatorStub
 } from '@/tests/__mocks__'
 
+import MockDate from 'mockdate'
+
 interface SutTypes {
   fakeTask: ITask
   fakeUser: IUser
@@ -76,6 +78,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('updateTaskController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should return unauthorized if there is no user', async () => {
     expect.hasAssertions()
 
@@ -135,6 +145,21 @@ describe('updateTaskController', () => {
     expect(response.data.task.commentary).toBe('new_commentary')
   })
 
+  it('should call updateTask with correct values if changes commentary', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    request.body.commentary = 'any_commentary'
+
+    await sut.handle(request)
+
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+      commentary: 'any_commentary',
+      'logs.updatedAt': new Date(Date.now())
+    })
+  })
+
   it('should return badRequest if there is a date and it is invalid', async () => {
     expect.hasAssertions()
 
@@ -168,6 +193,26 @@ describe('updateTaskController', () => {
     expect(response.data.task.date.hours).toBe(date.toLocaleTimeString())
     expect(response.data.task.date.month).toBe(date.getMonth())
     expect(response.data.task.date.year).toBe(date.getFullYear())
+  })
+
+  it('should call updateTask with correct values if changes date', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    const date = new Date(Date.now())
+    request.body.date = date
+
+    await sut.handle(request)
+
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+      'date.day': date.getDate(),
+      'date.full': date,
+      'date.hours': date.toLocaleTimeString(),
+      'date.month': date.getMonth(),
+      'date.year': date.getFullYear(),
+      'logs.updatedAt': new Date(Date.now())
+    })
   })
 
   it('should return badRequest if there is a type and it is invalid', async () => {
@@ -225,6 +270,23 @@ describe('updateTaskController', () => {
     expect(response.data.task.type).toBe('QA')
   })
 
+  it('should call updateTask with correct values if changes duration', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    request.body.duration = 15
+
+    await sut.handle(request)
+
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+      duration: 15,
+      'logs.updatedAt': new Date(Date.now()),
+      type: 'TX',
+      usd: 16.25
+    })
+  })
+
   it('should return a default message if there is no changes', async () => {
     expect.hasAssertions()
 
@@ -274,6 +336,21 @@ describe('updateTaskController', () => {
     expect(response.data.task.status).toBe('in_progress')
   })
 
+  it('should call updateTask with correct values if changes status', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    request.body.status = 'in_progress'
+
+    await sut.handle(request)
+
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+      'logs.updatedAt': new Date(Date.now()),
+      status: 'in_progress'
+    })
+  })
+
   it('should return badRequest if there is a taskId and it is invalid', async () => {
     expect.hasAssertions()
 
@@ -286,5 +363,20 @@ describe('updateTaskController', () => {
     const error = await sut.handle(request)
 
     expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('taskId')))
+  })
+
+  it('should call updateTask with correct values if changes taskId', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    request.body.taskId = 'any_value'
+
+    await sut.handle(request)
+
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask, {
+      'logs.updatedAt': new Date(Date.now()),
+      taskId: 'any_value'
+    })
   })
 })
