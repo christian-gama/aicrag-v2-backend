@@ -189,4 +189,28 @@ describe('updateTaskController', () => {
 
     expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('duration')))
   })
+
+  it('should return task with new duration if changes only duration', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut } = makeSut()
+    fakeTask.duration = 12.3
+
+    const response = await sut.handle(request)
+
+    expect(response.data.task.duration).toBe(12.3)
+  })
+
+  it('should return task with new type and duration if changes only type', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, request, sut } = makeSut()
+    fakeTask.duration = 2.4
+    fakeTask.type = 'QA'
+
+    const response = await sut.handle(request)
+
+    expect(response.data.task.duration).toBe(2.4)
+    expect(response.data.task.type).toBe('QA')
+  })
 })
