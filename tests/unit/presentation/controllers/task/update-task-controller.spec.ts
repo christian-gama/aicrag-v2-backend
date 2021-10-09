@@ -26,6 +26,7 @@ interface SutTypes {
   validateCommentaryStub: ValidatorProtocol
   validateDateStub: ValidatorProtocol
   validateTaskParamStub: ValidatorProtocol
+  validateTypeStub: ValidatorProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -36,6 +37,7 @@ const makeSut = (): SutTypes => {
   const validateCommentaryStub = makeValidatorStub()
   const validateDateStub = makeValidatorStub()
   const validateTaskParamStub = makeValidatorStub()
+  const validateTypeStub = makeValidatorStub()
   const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
 
   const sut = new UpdateTaskController(
@@ -43,7 +45,8 @@ const makeSut = (): SutTypes => {
     taskDbRepositoryStub,
     validateCommentaryStub,
     validateDateStub,
-    validateTaskParamStub
+    validateTaskParamStub,
+    validateTypeStub
   )
 
   return {
@@ -55,7 +58,8 @@ const makeSut = (): SutTypes => {
     taskDbRepositoryStub,
     validateCommentaryStub,
     validateDateStub,
-    validateTaskParamStub
+    validateTaskParamStub,
+    validateTypeStub
   }
 }
 
@@ -152,5 +156,19 @@ describe('updateTaskController', () => {
     expect(response.data.task.date.hours).toBe(date.toLocaleTimeString())
     expect(response.data.task.date.month).toBe(date.getMonth())
     expect(response.data.task.date.year).toBe(date.getFullYear())
+  })
+
+  it('should return badRequest if there is a type and it is invalid', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, validateTypeStub } = makeSut()
+    jest
+      .spyOn(validateTypeStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('type')))
+    request.body.type = 'invalid_type'
+
+    const error = await sut.handle(request)
+
+    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('type')))
   })
 })
