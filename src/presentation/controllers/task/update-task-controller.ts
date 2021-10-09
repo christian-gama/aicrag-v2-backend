@@ -13,7 +13,8 @@ export class UpdateTaskController implements ControllerProtocol {
     private readonly taskDbRepository: TaskDbRepositoryProtocol,
     private readonly validateCommentary: ValidatorProtocol,
     private readonly validateDate: ValidatorProtocol,
-    private readonly validateTaskParam: ValidatorProtocol
+    private readonly validateTaskParam: ValidatorProtocol,
+    private readonly validateType: ValidatorProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -49,6 +50,13 @@ export class UpdateTaskController implements ControllerProtocol {
       update['date.hours'] = date.toLocaleTimeString()
       update['date.month'] = date.getMonth()
       update['date.year'] = date.getYear()
+    }
+
+    if (data.type) {
+      if (!data.type) data.type = task?.type
+
+      const error = await this.validateType.validate(data)
+      if (error) return this.httpHelper.badRequest(error)
     }
 
     const updatedTask = await this.taskDbRepository.updateTask(task, update)
