@@ -52,7 +52,7 @@ export class UpdateTaskController implements ControllerProtocol {
       update['date.full'] = data.date
       update['date.hours'] = date.toLocaleTimeString()
       update['date.month'] = date.getMonth()
-      update['date.year'] = date.getYear()
+      update['date.year'] = date.getFullYear()
     }
 
     if (data.duration || data.type) {
