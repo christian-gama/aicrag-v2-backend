@@ -3,6 +3,7 @@ import { LogErrorDbRepositoryProtocol, UserDbRepositoryProtocol } from '@/domain
 import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
 
 import { QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
+import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
 import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
 
 import { makeFakeLogError } from './mock-log-error'
@@ -38,6 +39,10 @@ export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProto
 
     async saveTask (taskData: ITaskData): Promise<ITask> {
       return await Promise.resolve(fakeTask)
+    }
+
+    async updateTask <T extends ITask | null>(task: T, update: TaskDbFilter): Promise<T> {
+      return await Promise.resolve(fakeTask) as T
     }
   }
 
