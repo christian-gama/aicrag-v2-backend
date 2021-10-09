@@ -62,6 +62,13 @@ export class UpdateTaskController implements ControllerProtocol {
 
       error = await this.validateDuration.validate(data)
       if (error) return this.httpHelper.badRequest(error)
+
+      update.duration = data.duration
+      update.type = data.type
+      update.usd =
+        data.type === 'TX'
+          ? (data.duration / 60) * 65 * user.settings.handicap
+          : (data.duration / 60) * 112.5 * user.settings.handicap
     }
 
     const updatedTask = await this.taskDbRepository.updateTask(task, update)
