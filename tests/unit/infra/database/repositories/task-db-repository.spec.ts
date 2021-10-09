@@ -156,4 +156,48 @@ describe('taskDbRepository', () => {
 
     expect(found).toBeNull()
   })
+
+  it('should return a task if updateTask finds a task', async () => {
+    expect.hasAssertions()
+
+    const { sut } = makeSut()
+
+    const updatedTask = await sut.updateTask(task, { taskId: 'changed_task_id' })
+
+    expect(updatedTask).toHaveProperty('_id')
+  })
+
+  it('should return a task with updated values', async () => {
+    expect.hasAssertions()
+
+    const { sut } = makeSut()
+
+    const updatedTask = await sut.updateTask(task, { taskId: 'changed_task_id' })
+
+    expect(updatedTask?.taskId).toBe('changed_task_id')
+  })
+
+  it('should return a task if pass multiple update properties', async () => {
+    expect.hasAssertions()
+
+    const { sut } = makeSut()
+
+    const updatedTask = await sut.updateTask(task, {
+      commentary: 'changed_commentary',
+      taskId: 'changed_task_id'
+    })
+
+    expect(updatedTask?.commentary).toBe('changed_commentary')
+    expect(updatedTask?.taskId).toBe('changed_task_id')
+  })
+
+  it('should return null if does not updateUser finds a user', async () => {
+    expect.hasAssertions()
+
+    const { fakeTask, sut } = makeSut()
+
+    const updatedTask = await sut.updateTask(fakeTask, { commentary: 'changed_commentary' })
+
+    expect(updatedTask).toBeNull()
+  })
 })
