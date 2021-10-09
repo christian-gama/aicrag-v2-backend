@@ -19,7 +19,8 @@ import { makeSignUpController } from '@/factories/controllers/signup'
 import {
   makeCreateTaskController,
   makeFindAllTasksController,
-  makeFindOneTaskController
+  makeFindOneTaskController,
+  makeUpdateTaskController
 } from '@/factories/controllers/task'
 import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/token'
 import {
@@ -59,6 +60,7 @@ export const signUpController = controllerAdapter(makeSignUpController())
 export const createTaskController = controllerAdapter(makeCreateTaskController())
 export const findAllTasksController = controllerAdapter(makeFindAllTasksController())
 export const findOneTaskController = controllerAdapter(makeFindOneTaskController())
+export const updateTaskController = controllerAdapter(makeUpdateTaskController())
 
 // Token Routes
 export const verifyResetPasswordTokenController = controllerAdapter(
