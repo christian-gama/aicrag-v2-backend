@@ -12,6 +12,7 @@ export class UpdateTaskController implements ControllerProtocol {
     private readonly httpHelper: HttpHelperProtocol,
     private readonly taskDbRepository: TaskDbRepositoryProtocol,
     private readonly validateCommentary: ValidatorProtocol,
+    private readonly validateDate: ValidatorProtocol,
     private readonly validateTaskParam: ValidatorProtocol
   ) {}
 
@@ -35,6 +36,11 @@ export class UpdateTaskController implements ControllerProtocol {
       if (error) return this.httpHelper.badRequest(error)
 
       update.commentary = data.commentary
+    }
+
+    if (data.date) {
+      const error = await this.validateDate.validate(data)
+      if (error) return this.httpHelper.badRequest(error)
     }
 
     const updatedTask = await this.taskDbRepository.updateTask(task, update)
