@@ -7,7 +7,8 @@ export interface TaskDbRepositoryProtocol
   extends FindAllTasksDbProtocol,
   FindTaskByIdDbProtocol,
   FindTaskByTaskIdDbProtocol,
-  SaveTaskDbProtocol {}
+  SaveTaskDbProtocol,
+  UpdateTaskDbProtocol{ }
 
 export interface FindAllTasksDbProtocol {
   /**
@@ -60,5 +61,5 @@ export interface UpdateTaskDbProtocol {
    * @param update Properties that will be updated.
    * @returns Return the updated task or null.
    */
-  updateTask: (id: string, update: TaskDbFilter) => Promise<ITask | null>
+  updateTask: <T extends ITask | null>(task: T, update: TaskDbFilter) => Promise<T>
 }

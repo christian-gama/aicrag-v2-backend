@@ -4,6 +4,7 @@ import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-rep
 
 import { DatabaseProtocol } from '../protocols'
 import { QueryProtocol, QueryResultProtocol } from '../protocols/queries-protocol'
+import { TaskDbFilter } from '../protocols/update-task-options'
 
 export class TaskDbRepository implements TaskDbRepositoryProtocol {
   constructor (
@@ -44,5 +45,14 @@ export class TaskDbRepository implements TaskDbRepositoryProtocol {
     const task = this.taskRepository.createTask(taskData)
 
     return await taskCollection.insertOne(task)
+  }
+
+  async updateTask <T extends ITask | null>(task: T, update: TaskDbFilter): Promise<T> {
+    const taskCollection = this.database.collection('tasks')
+
+    const filter = { id: task?.id }
+    const updatedTask = await taskCollection.updateOne<ITask>(filter, update)
+
+    return updatedTask as T
   }
 }
