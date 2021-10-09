@@ -24,6 +24,7 @@ interface SutTypes {
   sut: UpdateTaskController
   taskDbRepositoryStub: TaskDbRepositoryProtocol
   validateCommentaryStub: ValidatorProtocol
+  validateDateStub: ValidatorProtocol
   validateTaskParamStub: ValidatorProtocol
 }
 
@@ -33,6 +34,7 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: {}, params: { id: 'valid_id' }, user: fakeUser }
   const validateCommentaryStub = makeValidatorStub()
+  const validateDateStub = makeValidatorStub()
   const validateTaskParamStub = makeValidatorStub()
   const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
 
@@ -40,6 +42,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     taskDbRepositoryStub,
     validateCommentaryStub,
+    validateDateStub,
     validateTaskParamStub
   )
 
@@ -51,6 +54,7 @@ const makeSut = (): SutTypes => {
     sut,
     taskDbRepositoryStub,
     validateCommentaryStub,
+    validateDateStub,
     validateTaskParamStub
   }
 }
@@ -96,7 +100,7 @@ describe('updateTaskController', () => {
     jest
       .spyOn(validateCommentaryStub, 'validate')
       .mockReturnValueOnce(Promise.resolve(new InvalidParamError('commentary')))
-    request.body.commentary = 123
+    request.body.commentary = 'invalid_commentary'
 
     const error = await sut.handle(request)
 
@@ -113,5 +117,19 @@ describe('updateTaskController', () => {
     const response = await sut.handle(request)
 
     expect(response.data.task.commentary).toBe('new_commentary')
+  })
+
+  it('should return badRequest if there is a date and it is invalid', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, validateDateStub } = makeSut()
+    jest
+      .spyOn(validateDateStub, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('date')))
+    request.body.date = 'invalid_date'
+
+    const error = await sut.handle(request)
+
+    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('date')))
   })
 })
