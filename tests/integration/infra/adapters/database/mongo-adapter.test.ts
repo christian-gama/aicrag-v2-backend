@@ -1,6 +1,6 @@
 /* eslint-disable jest/no-conditional-expect */
 /* eslint-disable jest/prefer-expect-assertions */
-import { IUser } from '@/domain'
+import { ITask, IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
@@ -71,73 +71,122 @@ describe('mongoAdapter', () => {
 
   it('should return an array of document if finds it', async () => {
     const fakeUser = makeFakeUser()
+    const query = {}
 
     await collection.insertOne(fakeUser)
 
-    const result = await collection.aggregate<IUser>([
-      {
-        $match: { 'personal.name': fakeUser.personal.name }
-      }
-    ])
+    const result = await collection.aggregate<IUser>(
+      [
+        {
+          $match: { 'personal.name': fakeUser.personal.name }
+        }
+      ],
+      query
+    )
 
-    expect(result[0].personal.name).toBe(fakeUser.personal.name)
+    expect(result).toStrictEqual({ count: 1, currentPage: 1, documents: [fakeUser], totalPages: 1 })
   })
 
   it('should return an array of document if finds using a complex pipeline', async () => {
     const fakeUser = makeFakeUser()
+    const query = {}
 
     await collection.insertOne(fakeUser)
 
-    const result = await collection.aggregate<any>([
-      {
-        $match: {
-          $and: [
-            { 'logs.createdAt': { $lte: new Date(Date.now()) } },
-            { 'logs.createdAt': { $gte: new Date(Date.now() - 60 * 1000) } }
-          ],
-          'personal.name': fakeUser.personal.name
-        }
-      },
-      { $project: { _id: 0, logs: 1, personal: 1, settings: 1 } }
-    ])
+    const result = await collection.aggregate<any>(
+      [
+        {
+          $match: {
+            $and: [
+              { 'logs.createdAt': { $lte: new Date(Date.now()) } },
+              { 'logs.createdAt': { $gte: new Date(Date.now() - 60 * 1000) } }
+            ],
+            'personal.name': fakeUser.personal.name
+          }
+        },
+        { $project: { _id: 0, logs: 1, personal: 1, settings: 1 } }
+      ],
+      query
+    )
 
-    expect(result[0]._id).toBeUndefined()
-    expect(result[0].temporary).toBeUndefined()
-    expect(result[0].logs).toBeDefined()
-    expect(result[0].personal).toBeDefined()
-    expect(result[0].settings).toBeDefined()
+    expect(result.count).toBe(1)
+    expect(result.currentPage).toBe(1)
+    expect(result.documents[0].personal.name).toBe(fakeUser.personal.name)
+    expect(result.totalPages).toBe(1)
+  })
+
+  it('should return an array of tasks if finds using queries', async () => {
+    const fakeUser = makeFakeUser()
+    const fakeTask = makeFakeTask(fakeUser)
+    const fakeTask2 = makeFakeTask(fakeUser)
+    const fakeTask3 = makeFakeTask(fakeUser)
+    const fakeTask4 = makeFakeTask(fakeUser)
+    const query = { limit: '3', page: '1', sort: 'duration' }
+
+    collection = client.collection('tasks')
+    await collection.insertOne(fakeTask)
+    await collection.insertOne(fakeTask2)
+    await collection.insertOne(fakeTask3)
+    await collection.insertOne(fakeTask4)
+
+    const result = await collection.aggregate<ITask>(
+      [
+        {
+          $match: {
+            userId: fakeTask.userId
+          }
+        }
+      ],
+      query
+    )
+
+    expect(result.count).toBe(4)
+    expect(result.currentPage).toBe(1)
+    expect(result.documents[0].duration).toBeLessThan(result.documents[1].duration)
+    expect(result.totalPages).toBe(2)
   })
 
   it('should return an empty array if does not finds using a complex pipeline', async () => {
     const fakeUser = makeFakeUser()
+    const query = {}
 
     await collection.insertOne(fakeUser)
 
-    const result = await collection.aggregate<any>([
-      {
-        $match: {
-          $and: [
-            { 'logs.createdAt': { $lte: new Date(Date.now()) } },
-            { 'logs.createdAt': { $gte: new Date(Date.now() + 60 * 1000) } }
-          ],
-          'personal.name': fakeUser.personal.name
+    const result = await collection.aggregate<any>(
+      [
+        {
+          $match: {
+            $and: [
+              { 'logs.createdAt': { $lte: new Date(Date.now()) } },
+              { 'logs.createdAt': { $gte: new Date(Date.now() + 60 * 1000) } }
+            ],
+            'personal.name': fakeUser.personal.name
+          }
         }
-      }
-    ])
+      ],
+      query
+    )
 
-    expect(result).toHaveLength(0)
+    expect(result).toStrictEqual({ count: 0, currentPage: 1, documents: [], totalPages: 0 })
   })
 
   it('should return an empty array if does not finds it', async () => {
     const fakeUser = makeFakeUser()
+    const query = {}
 
-    const result = await collection.aggregate<IUser>([
-      {
-        $match: { 'personal.name': fakeUser.personal.name }
-      }
-    ])
+    const result = await collection.aggregate<IUser>(
+      [
+        {
+          $match: { 'personal.name': fakeUser.personal.name }
+        }
+      ],
+      query
+    )
 
-    expect(result).toHaveLength(0)
+    expect(result.count).toBe(0)
+    expect(result.currentPage).toBe(1)
+    expect(result.documents).toStrictEqual([])
+    expect(result.totalPages).toBe(0)
   })
 
   it('should return the deleted count greater than 0 if deletes a document', async () => {
