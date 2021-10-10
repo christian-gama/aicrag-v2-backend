@@ -12,6 +12,14 @@ export class TaskRepository implements TaskRepositoryProtocol {
     private readonly database: DatabaseProtocol
   ) {}
 
+  async deleteTask (id: string, userId: string): Promise<boolean> {
+    const taskCollection = this.database.collection('tasks')
+
+    const deleted = await taskCollection.deleteOne({ id, userId })
+
+    return deleted
+  }
+
   async findAllTasks<T extends ITask>(
     userId: string,
     query: QueryProtocol
@@ -47,7 +55,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
     return await taskCollection.insertOne(task)
   }
 
-  async updateTask <T extends ITask | null>(id: string, update: TaskDbFilter): Promise<T> {
+  async updateTask<T extends ITask | null>(id: string, update: TaskDbFilter): Promise<T> {
     const taskCollection = this.database.collection('tasks')
 
     const updatedTask = await taskCollection.updateOne<ITask>({ id }, update)

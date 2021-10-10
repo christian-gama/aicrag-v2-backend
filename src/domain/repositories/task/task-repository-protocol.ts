@@ -4,12 +4,23 @@ import { QueryProtocol, QueryResultProtocol } from '@/infra/database/protocols/q
 import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
 
 export interface TaskRepositoryProtocol
-  extends FindAllTasksProtocol,
+  extends DeleteTaskProtocol,
+  FindAllTasksProtocol,
   FindTaskByIdProtocol,
   FindTaskByTaskIdProtocol,
   SaveTaskProtocol,
   UpdateTaskProtocol {}
 
+export interface DeleteTaskProtocol {
+  /**
+   * @async Asynchronous method.
+   * @description Receive an id and a user id and tries to find a task that belongs to that user.
+   * @param id Unique id from the task that will be deleted.
+   * @param userId The user id which belongs to the task
+   * @returns Return true if deleted, false otherwise.
+   */
+  deleteTask: (id: string, userId: string) => Promise<boolean>
+}
 export interface FindAllTasksProtocol {
   /**
    * @async Asynchronous method.

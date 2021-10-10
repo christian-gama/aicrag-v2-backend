@@ -20,6 +20,10 @@ export const makeLogErrorRepositoryStub = (error: Error): LogErrorRepositoryProt
 
 export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol => {
   class TaskRepositoryStub implements TaskRepositoryProtocol {
+    async deleteTask (id: string, userId: string): Promise<boolean> {
+      return await Promise.resolve(true)
+    }
+
     async findAllTasks<T extends ITask>(userId: string): Promise<QueryResultProtocol<T>> {
       return (await Promise.resolve({
         count: 1,
