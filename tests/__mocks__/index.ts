@@ -1,6 +1,6 @@
 export * from './mock-adapters'
 export * from './mock-controllers'
-export * from './mock-cyptography'
+export * from './mock-cryptography'
 export * from './mock-database'
 export * from './mock-helpers'
 export * from './mock-log-error'
