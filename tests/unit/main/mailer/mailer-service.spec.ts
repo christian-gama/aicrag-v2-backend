@@ -48,7 +48,7 @@ describe('mailerService', () => {
 
     const result = await sut.send(settings)
 
-    expect(result).toStrictEqual(true)
+    expect(result).toBeTruthy()
   })
 
   it('should call sendMail with correct settings for production environment', async () => {
