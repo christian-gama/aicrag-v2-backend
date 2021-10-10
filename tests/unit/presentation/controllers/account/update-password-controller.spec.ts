@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 import { HasherProtocol } from '@/domain/cryptography'
 import { FilterUserDataProtocol } from '@/domain/helpers'
 import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
@@ -18,7 +18,7 @@ import {
   makeFilterUserDataStub,
   makeGenerateTokenStub,
   makeHasherStub,
-  makeUserDbRepositoryStub,
+  makeUserRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
 
@@ -34,7 +34,7 @@ interface SutTypes {
   request: HttpRequest
   sut: UpdatePasswordController
   updatePasswordValidatorStub: ValidatorProtocol
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -53,7 +53,7 @@ const makeSut = (): SutTypes => {
     user: fakeUser
   }
   const updatePasswordValidatorStub = makeValidatorStub()
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
   const sut = new UpdatePasswordController(
     filterUserDataStub,
@@ -62,7 +62,7 @@ const makeSut = (): SutTypes => {
     hasherStub,
     httpHelper,
     updatePasswordValidatorStub,
-    userDbRepositoryStub
+    userRepositoryStub
   )
 
   return {
@@ -75,7 +75,7 @@ const makeSut = (): SutTypes => {
     request,
     sut,
     updatePasswordValidatorStub,
-    userDbRepositoryStub
+    userRepositoryStub
   }
 }
 
@@ -138,8 +138,8 @@ describe('updatePasswordController', () => {
   it('should call updateUser with correct password', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const { fakeUser, request, sut, userRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 

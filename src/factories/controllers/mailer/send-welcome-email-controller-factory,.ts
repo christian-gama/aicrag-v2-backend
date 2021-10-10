@@ -4,19 +4,19 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeWelcomeEmail } from '../../mailer'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 import { makeSendWelcomeEmailValidatorComposite } from '../../validators/user'
 
 export const makeSendWelcomeEmailController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
   const sendWelcomeValidator = makeSendWelcomeEmailValidatorComposite()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
   const welcomeEmail = makeWelcomeEmail()
 
   const sendWelcomeEmailController = new SendWelcomeEmailController(
     httpHelper,
     sendWelcomeValidator,
-    userDbRepository,
+    userRepository,
     welcomeEmail
   )
 

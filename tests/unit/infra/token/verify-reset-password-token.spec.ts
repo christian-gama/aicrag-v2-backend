@@ -1,28 +1,28 @@
 import { IUser } from '@/domain'
 import { DecoderProtocol } from '@/domain/cryptography'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { TokenMissingError, InvalidTokenError } from '@/application/errors'
 
 import { VerifyResetPasswordToken } from '@/infra/token'
 
-import { makeFakeUser, makeDecoderStub, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeDecoderStub, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: VerifyResetPasswordToken
   fakeUser: IUser
   accessTokenDecoderStub: DecoderProtocol
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const accessTokenDecoderStub = makeDecoderStub()
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
-  const sut = new VerifyResetPasswordToken(accessTokenDecoderStub, userDbRepositoryStub)
+  const sut = new VerifyResetPasswordToken(accessTokenDecoderStub, userRepositoryStub)
 
-  return { accessTokenDecoderStub, fakeUser, sut, userDbRepositoryStub }
+  return { accessTokenDecoderStub, fakeUser, sut, userRepositoryStub }
 }
 
 describe('verifyResetPasswordToken', () => {
@@ -59,11 +59,11 @@ describe('verifyResetPasswordToken', () => {
     expect(response).toStrictEqual(new Error())
   })
 
-  it('should call userDbRepository.findUserById with correct user id', async () => {
+  it('should call userRepository.findUserById with correct user id', async () => {
     expect.hasAssertions()
 
-    const { sut, userDbRepositoryStub } = makeSut()
-    const findUserByIdSpy = jest.spyOn(userDbRepositoryStub, 'findUserById')
+    const { sut, userRepositoryStub } = makeSut()
+    const findUserByIdSpy = jest.spyOn(userRepositoryStub, 'findUserById')
 
     await sut.verify('any_token')
 
@@ -73,8 +73,8 @@ describe('verifyResetPasswordToken', () => {
   it('should return InvalidTokenError if there is no user', async () => {
     expect.hasAssertions()
 
-    const { sut, userDbRepositoryStub } = makeSut()
-    jest.spyOn(userDbRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
+    const { sut, userRepositoryStub } = makeSut()
+    jest.spyOn(userRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.verify('any_token')
 
@@ -84,8 +84,8 @@ describe('verifyResetPasswordToken', () => {
   it("should return InvalidTokenError if user's token is different from param token", async () => {
     expect.hasAssertions()
 
-    const { sut, fakeUser, userDbRepositoryStub } = makeSut()
-    jest.spyOn(userDbRepositoryStub, 'findUserById').mockImplementation(async () => {
+    const { sut, fakeUser, userRepositoryStub } = makeSut()
+    jest.spyOn(userRepositoryStub, 'findUserById').mockImplementation(async () => {
       fakeUser.temporary.resetPasswordToken = 'different_token'
 
       return fakeUser
@@ -99,13 +99,13 @@ describe('verifyResetPasswordToken', () => {
   it('should return a user if succeeds', async () => {
     expect.hasAssertions()
 
-    const { accessTokenDecoderStub, fakeUser, sut, userDbRepositoryStub } = makeSut()
+    const { accessTokenDecoderStub, fakeUser, sut, userRepositoryStub } = makeSut()
     jest
       .spyOn(accessTokenDecoderStub, 'decode')
       .mockReturnValueOnce(
         Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
       )
-    jest.spyOn(userDbRepositoryStub, 'findUserById').mockImplementation(async () => {
+    jest.spyOn(userRepositoryStub, 'findUserById').mockImplementation(async () => {
       fakeUser.temporary.resetPasswordToken = 'any_token'
 
       return fakeUser

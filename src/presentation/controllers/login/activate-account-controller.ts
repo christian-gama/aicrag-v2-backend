@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 import { FilterUserDataProtocol } from '@/domain/helpers'
 import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
@@ -15,7 +15,7 @@ export class ActivateAccountController implements ControllerProtocol {
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly generateRefreshToken: GenerateTokenProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol
+    private readonly userRepository: UserRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -24,13 +24,13 @@ export class ActivateAccountController implements ControllerProtocol {
     const error = await this.activateAccountValidator.validate(data)
     if (error != null) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userDbRepository.findUserByEmail(data.email)) as IUser
+    const user = (await this.userRepository.findUserByEmail(data.email)) as IUser
 
     const update = {}
     Object.assign(update, this.activateAccount(user))
     Object.assign(update, this.clearTemporary(user))
 
-    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
+    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

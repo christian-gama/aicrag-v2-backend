@@ -1,9 +1,9 @@
 import { ValidateActiveAccount } from '@/application/validators/user'
 
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 
 export const makeValidateActiveAccount = (): ValidateActiveAccount => {
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
-  return new ValidateActiveAccount(userDbRepository)
+  return new ValidateActiveAccount(userRepository)
 }

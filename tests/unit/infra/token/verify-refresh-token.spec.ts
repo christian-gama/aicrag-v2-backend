@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 import { DecoderProtocol } from '@/domain/cryptography'
 import { IRefreshToken } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { InvalidTokenError, TokenMissingError } from '@/application/errors'
 
@@ -11,25 +11,25 @@ import {
   makeFakeRefreshToken,
   makeFakeUser,
   makeDecoderStub,
-  makeUserDbRepositoryStub
+  makeUserRepositoryStub
 } from '@/tests/__mocks__'
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   refreshTokenDecoderStub: DecoderProtocol
   sut: VerifyRefreshToken
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeRefreshToken = makeFakeRefreshToken()
   const fakeUser = makeFakeUser()
   const refreshTokenDecoderStub = makeDecoderStub()
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
-  const sut = new VerifyRefreshToken(refreshTokenDecoderStub, userDbRepositoryStub)
+  const sut = new VerifyRefreshToken(refreshTokenDecoderStub, userRepositoryStub)
 
-  return { fakeRefreshToken, fakeUser, refreshTokenDecoderStub, sut, userDbRepositoryStub }
+  return { fakeRefreshToken, fakeUser, refreshTokenDecoderStub, sut, userRepositoryStub }
 }
 
 describe('verifyRefreshToken', () => {
@@ -55,11 +55,11 @@ describe('verifyRefreshToken', () => {
     expect(unauthorizedSpy).toHaveBeenCalledWith('any_token')
   })
 
-  it('should call userDbRepository.findUserById with correct user id', async () => {
+  it('should call userRepository.findUserById with correct user id', async () => {
     expect.hasAssertions()
 
-    const { sut, userDbRepositoryStub } = makeSut()
-    const findUserByIdSpy = jest.spyOn(userDbRepositoryStub, 'findUserById')
+    const { sut, userRepositoryStub } = makeSut()
+    const findUserByIdSpy = jest.spyOn(userRepositoryStub, 'findUserById')
 
     await sut.verify('any_token')
 
@@ -69,8 +69,8 @@ describe('verifyRefreshToken', () => {
   it('should return InvalidTokenError if there is no user', async () => {
     expect.hasAssertions()
 
-    const { sut, userDbRepositoryStub } = makeSut()
-    jest.spyOn(userDbRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
+    const { sut, userRepositoryStub } = makeSut()
+    jest.spyOn(userRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.verify('any_token')
 

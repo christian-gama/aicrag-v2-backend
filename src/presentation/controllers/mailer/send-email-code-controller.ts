@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/domain/mailer'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MailerServiceError } from '@/application/errors'
@@ -14,7 +14,7 @@ export class SendEmailCodeController implements ControllerProtocol {
     private readonly emailCode: MailerServiceProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly sendEmailCodeValidator: ValidatorProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol
+    private readonly userRepository: UserRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -24,7 +24,7 @@ export class SendEmailCodeController implements ControllerProtocol {
 
     if (error != null) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userDbRepository.findUserByEmail(data.email)) as IUser
+    const user = (await this.userRepository.findUserByEmail(data.email)) as IUser
 
     const mailerResponse = await this.emailCode.send(user)
 

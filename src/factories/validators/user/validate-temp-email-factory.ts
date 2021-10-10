@@ -1,9 +1,9 @@
 import { ValidateTempEmail } from '@/application/validators/user'
 
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 
 export const makeValidateTempEmail = (): ValidateTempEmail => {
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
-  return new ValidateTempEmail(userDbRepository)
+  return new ValidateTempEmail(userRepository)
 }

@@ -1,6 +1,6 @@
 import { IPublicUser, IUser } from '@/domain'
 import { FilterUserDataProtocol } from '@/domain/helpers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { InvalidCodeError, MustLoginError } from '@/application/errors'
@@ -15,7 +15,7 @@ import {
   makeFakeUser,
   makeFakePublicUser,
   makeFilterUserDataStub,
-  makeUserDbRepositoryStub
+  makeUserRepositoryStub
 } from '@/tests/__mocks__'
 
 import MockDate from 'mockdate'
@@ -28,7 +28,7 @@ interface SutTypes {
   request: HttpRequest
   sut: UpdateEmailByCodeController
   updateEmailByCodeValidatorStub: ValidatorProtocol
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -44,13 +44,13 @@ const makeSut = (): SutTypes => {
     body: { emailCode: fakeUser.temporary.tempEmailCode },
     user: fakeUser
   }
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
   const sut = new UpdateEmailByCodeController(
     updateEmailByCodeValidatorStub,
     filterUserDataStub,
     httpHelper,
-    userDbRepositoryStub
+    userRepositoryStub
   )
 
   return {
@@ -61,7 +61,7 @@ const makeSut = (): SutTypes => {
     request,
     sut,
     updateEmailByCodeValidatorStub,
-    userDbRepositoryStub
+    userRepositoryStub
   }
 }
 
@@ -162,8 +162,8 @@ describe('updateEmailByCodeController', () => {
   it('should call updateUser with correct values', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, sut, request, userDbRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const { fakeUser, sut, request, userRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 

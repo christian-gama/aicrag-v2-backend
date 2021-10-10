@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 import { HasherProtocol } from '@/domain/cryptography'
 import { FilterUserDataProtocol } from '@/domain/helpers'
 import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
@@ -19,7 +19,7 @@ export class UpdatePasswordController implements ControllerProtocol {
     private readonly hasher: HasherProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly updatePasswordValidator: ValidatorProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol
+    private readonly userRepository: UserRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -37,7 +37,7 @@ export class UpdatePasswordController implements ControllerProtocol {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': hashedPassword
     }
-    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
+    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

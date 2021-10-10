@@ -3,7 +3,7 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper, makeValidationCode } from '../../helpers'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 import { makeValidateEmail, makeValidateName } from '../../validators/user'
 import { makeValidateCurrency } from '../../validators/user/validate-currency-factory'
 
@@ -11,7 +11,7 @@ export const makeUpdateUserController = (): ControllerProtocol => {
   const emailCode = makeValidationCode()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
   const validateCurrency = makeValidateCurrency()
   const validateEmail = makeValidateEmail()
   const validateName = makeValidateName()
@@ -20,7 +20,7 @@ export const makeUpdateUserController = (): ControllerProtocol => {
     emailCode,
     filterUserData,
     httpHelper,
-    userDbRepository,
+    userRepository,
     validateCurrency,
     validateEmail,
     validateName

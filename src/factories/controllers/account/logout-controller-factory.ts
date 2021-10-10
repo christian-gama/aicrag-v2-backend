@@ -3,13 +3,13 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 
 export const makeLogoutController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
-  const logoutController = new LogoutController(httpHelper, userDbRepository)
+  const logoutController = new LogoutController(httpHelper, userRepository)
 
   return makeTryCatchDecorator(logoutController)
 }

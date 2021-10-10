@@ -5,7 +5,7 @@ import { makeBcryptAdapter } from '../../cryptography'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 import { makeUpdatePasswordValidatorComposite } from '../../validators/user'
 
 export const makeUpdatePasswordController = (): ControllerProtocol => {
@@ -15,7 +15,7 @@ export const makeUpdatePasswordController = (): ControllerProtocol => {
   const hasher = makeBcryptAdapter()
   const httpHelper = makeHttpHelper()
   const updatePasswordValidator = makeUpdatePasswordValidatorComposite()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
   const updatePasswordController = new UpdatePasswordController(
     filterUserData,
@@ -24,7 +24,7 @@ export const makeUpdatePasswordController = (): ControllerProtocol => {
     hasher,
     httpHelper,
     updatePasswordValidator,
-    userDbRepository
+    userRepository
   )
 
   return makeTryCatchDecorator(updatePasswordController)

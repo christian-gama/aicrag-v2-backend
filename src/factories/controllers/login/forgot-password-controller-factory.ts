@@ -4,7 +4,7 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken } from '../../providers/token'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 import { makeForgotPasswordValidatorComposite } from '../../validators/user'
 
 export const makeForgotPasswordController = (): ControllerProtocol => {
@@ -12,14 +12,14 @@ export const makeForgotPasswordController = (): ControllerProtocol => {
   const forgotPasswordValidator = makeForgotPasswordValidatorComposite()
   const generateAccessToken = makeGenerateAccessToken()
   const httpHelper = makeHttpHelper()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
   const forgotPasswordController = new ForgotPasswordController(
     filterUserData,
     forgotPasswordValidator,
     generateAccessToken,
     httpHelper,
-    userDbRepository
+    userRepository
   )
 
   return makeTryCatchDecorator(forgotPasswordController)

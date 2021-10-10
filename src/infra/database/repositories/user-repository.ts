@@ -1,9 +1,9 @@
 import { ISignUpUserData, IUser } from '@/domain'
-import { UserDbRepositoryProtocol, CreateUserRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol, CreateUserRepositoryProtocol } from '@/domain/repositories'
 
 import { DatabaseProtocol, UserDbFilter } from '../protocols'
 
-export class UserDbRepository implements UserDbRepositoryProtocol {
+export class UserRepository implements UserRepositoryProtocol {
   constructor (
     private readonly createUserRepository: CreateUserRepositoryProtocol,
     private readonly database: DatabaseProtocol

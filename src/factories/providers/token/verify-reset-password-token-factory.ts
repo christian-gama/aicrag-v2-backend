@@ -1,11 +1,11 @@
 import { VerifyResetPasswordToken } from '@/infra/token'
 
 import { makeAccessTokenDecoder } from '../../cryptography'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 
 export const makeVerifyResetPasswordToken = (): VerifyResetPasswordToken => {
   const accessTokenDecoder = makeAccessTokenDecoder()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
-  return new VerifyResetPasswordToken(accessTokenDecoder, userDbRepository)
+  return new VerifyResetPasswordToken(accessTokenDecoder, userRepository)
 }

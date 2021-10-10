@@ -1,34 +1,34 @@
 import { IUser } from '@/domain'
 import { EncrypterProtocol } from '@/domain/cryptography'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { GenerateRefreshToken } from '@/infra/token'
 
-import { makeEncrypterStub, makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+import { makeEncrypterStub, makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   encrypterStub: EncrypterProtocol
   fakeUser: IUser
   sut: GenerateRefreshToken
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const encrypterStub = makeEncrypterStub()
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
-  const sut = new GenerateRefreshToken(encrypterStub, userDbRepositoryStub)
+  const sut = new GenerateRefreshToken(encrypterStub, userRepositoryStub)
 
-  return { encrypterStub, fakeUser, sut, userDbRepositoryStub }
+  return { encrypterStub, fakeUser, sut, userRepositoryStub }
 }
 
 describe('generateAccessToken', () => {
   it('should call updateUser with correct value', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, sut, userDbRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const { fakeUser, sut, userRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
 
     await sut.generate(fakeUser)
 

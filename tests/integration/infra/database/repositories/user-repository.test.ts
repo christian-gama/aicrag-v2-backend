@@ -3,7 +3,7 @@ import { CreateUserRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
-import { UserDbRepository } from '@/infra/database/repositories'
+import { UserRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -16,7 +16,7 @@ import {
 interface SutTypes {
   createUserRepositoryStub: CreateUserRepositoryProtocol
   fakeUser: IUser
-  sut: UserDbRepository
+  sut: UserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -24,12 +24,12 @@ const makeSut = (): SutTypes => {
   const createUserRepositoryStub = makeCreateUserRepositoryStub(fakeUser)
   const database = makeMongoDb()
 
-  const sut = new UserDbRepository(createUserRepositoryStub, database)
+  const sut = new UserRepository(createUserRepositoryStub, database)
 
   return { createUserRepositoryStub, fakeUser, sut }
 }
 
-describe('userDbRepository', () => {
+describe('userRepository', () => {
   const client = makeMongoDb()
   let user: IUser
   let userCollection: CollectionProtocol

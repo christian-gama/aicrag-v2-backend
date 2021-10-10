@@ -2,7 +2,7 @@ import { IUser, IPublicUser } from '@/domain'
 import { HasherProtocol } from '@/domain/cryptography'
 import { FilterUserDataProtocol } from '@/domain/helpers'
 import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLogoutError, InvalidTokenError } from '@/application/errors'
@@ -19,7 +19,7 @@ import {
   makeGenerateTokenStub,
   makeHasherStub,
   makeValidatorStub,
-  makeUserDbRepositoryStub,
+  makeUserRepositoryStub,
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
 
@@ -35,7 +35,7 @@ interface SutTypes {
   request: HttpRequest
   resetPasswordValidatorStub: ValidatorProtocol
   sut: ResetPasswordController
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
   verifyResetPasswordTokenStub: VerifyTokenProtocol
 }
 
@@ -51,7 +51,7 @@ const makeSut = (): SutTypes => {
     cookies: { accessToken: 'any_token' }
   }
   const resetPasswordValidatorStub = makeValidatorStub()
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const verifyResetPasswordTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new ResetPasswordController(
@@ -60,7 +60,7 @@ const makeSut = (): SutTypes => {
     hasherStub,
     httpHelper,
     resetPasswordValidatorStub,
-    userDbRepositoryStub,
+    userRepositoryStub,
     verifyResetPasswordTokenStub
   )
 
@@ -74,7 +74,7 @@ const makeSut = (): SutTypes => {
     request,
     resetPasswordValidatorStub,
     sut,
-    userDbRepositoryStub,
+    userRepositoryStub,
     verifyResetPasswordTokenStub
   }
 }
@@ -126,8 +126,8 @@ describe('resetPasswordController', () => {
   it('should call updateUser with correct values', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const { fakeUser, request, sut, userRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 

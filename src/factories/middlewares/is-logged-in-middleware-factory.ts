@@ -4,14 +4,14 @@ import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middlew
 import { makeTryCatchDecorator } from '../decorators'
 import { makeHttpHelper } from '../helpers'
 import { makeVerifyRefreshToken } from '../providers/token'
-import { makeUserDbRepository } from '../repositories'
+import { makeUserRepository } from '../repositories'
 
 export const makeIsLoggedInMiddleware = (): MiddlewareProtocol => {
   const httpHelper = makeHttpHelper()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
   const verifyRefreshToken = makeVerifyRefreshToken()
 
-  const isLoggedInMiddleware = new IsLoggedInMiddleware(httpHelper, userDbRepository, verifyRefreshToken)
+  const isLoggedInMiddleware = new IsLoggedInMiddleware(httpHelper, userRepository, verifyRefreshToken)
 
   return makeTryCatchDecorator(isLoggedInMiddleware)
 }

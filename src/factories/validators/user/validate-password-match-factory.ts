@@ -1,11 +1,11 @@
 import { ValidatePasswordMatch } from '@/application/validators/user'
 
 import { makeBcryptAdapter } from '../../cryptography'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 
 export const makeValidatePasswordMatch = (): ValidatePasswordMatch => {
   const hasher = makeBcryptAdapter()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
-  return new ValidatePasswordMatch(hasher, userDbRepository)
+  return new ValidatePasswordMatch(hasher, userRepository)
 }

@@ -3,7 +3,7 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 import { makeUpdateEmailByCodeValidatorComposite } from '../../validators/user'
 
 export const makeUpdateEmailByCodeController = (): ControllerProtocol => {
@@ -11,13 +11,13 @@ export const makeUpdateEmailByCodeController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()
 
   const httpHelper = makeHttpHelper()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
   const updateEmailByCodeController = new UpdateEmailByCodeController(
     updateEmailByCodeValidator,
     filterUserData,
     httpHelper,
-    userDbRepository
+    userRepository
   )
 
   return makeTryCatchDecorator(updateEmailByCodeController)

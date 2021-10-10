@@ -4,7 +4,7 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 import { makeLoginValidatorComposite } from '../../validators/user'
 
 export const makeLoginController = (): ControllerProtocol => {
@@ -13,7 +13,7 @@ export const makeLoginController = (): ControllerProtocol => {
   const generateAccessToken = makeGenerateAccessToken()
   const generateRefreshToken = makeGenerateRefreshToken()
   const httpHelper = makeHttpHelper()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
   const loginController = new LoginController(
     loginValidator,
@@ -21,7 +21,7 @@ export const makeLoginController = (): ControllerProtocol => {
     generateAccessToken,
     generateRefreshToken,
     httpHelper,
-    userDbRepository
+    userRepository
   )
 
   return makeTryCatchDecorator(loginController)

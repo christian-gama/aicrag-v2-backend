@@ -1,11 +1,11 @@
 import { GenerateRefreshToken } from '@/infra/token'
 
 import { makeRefreshTokenEncrypter } from '../../cryptography'
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 
 export const makeGenerateRefreshToken = (): GenerateRefreshToken => {
   const refreshTokenEncrypter = makeRefreshTokenEncrypter()
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
-  return new GenerateRefreshToken(refreshTokenEncrypter, userDbRepository)
+  return new GenerateRefreshToken(refreshTokenEncrypter, userRepository)
 }

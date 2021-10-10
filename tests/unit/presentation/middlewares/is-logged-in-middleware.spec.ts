@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { IsLoggedInMiddleware } from '@/presentation/middlewares'
@@ -10,7 +10,7 @@ import { makeHttpHelper } from '@/factories/helpers'
 import {
   makeFakeRefreshToken,
   makeFakeUser,
-  makeUserDbRepositoryStub,
+  makeUserRepositoryStub,
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
 
@@ -23,7 +23,7 @@ interface SutTypes {
   request: HttpRequest
   sut: IsLoggedInMiddleware
   verifyRefreshTokenStub: VerifyTokenProtocol
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -32,9 +32,9 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { cookies: { refreshToken: 'any_token' } }
   const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
-  const sut = new IsLoggedInMiddleware(httpHelper, userDbRepositoryStub, verifyRefreshTokenStub)
+  const sut = new IsLoggedInMiddleware(httpHelper, userRepositoryStub, verifyRefreshTokenStub)
 
   return {
     fakeRefreshToken,
@@ -42,7 +42,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
-    userDbRepositoryStub,
+    userRepositoryStub,
     verifyRefreshTokenStub
   }
 }
@@ -81,8 +81,8 @@ describe('isLoggedInMiddleware', () => {
   it('should call updateUser with correct values', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const { fakeUser, request, sut, userRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 

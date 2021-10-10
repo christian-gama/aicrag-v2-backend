@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { MustLoginError } from '@/application/errors'
 
@@ -8,25 +8,25 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: LogoutController
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
   const request = { user: fakeUser }
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
-  const sut = new LogoutController(httpHelper, userDbRepositoryStub)
+  const sut = new LogoutController(httpHelper, userRepositoryStub)
 
-  return { fakeUser, httpHelper, request, sut, userDbRepositoryStub }
+  return { fakeUser, httpHelper, request, sut, userRepositoryStub }
 }
 
 describe('logoutController', () => {
@@ -44,8 +44,8 @@ describe('logoutController', () => {
   it('should call updateUser with correct values', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const { fakeUser, request, sut, userRepositoryStub } = makeSut()
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 

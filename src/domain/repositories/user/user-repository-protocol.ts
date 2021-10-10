@@ -5,7 +5,7 @@ import { UserDbFilter } from '@/infra/database/protocols'
 /**
  * @description Generic user database repository.
  */
-export interface UserDbRepositoryProtocol
+export interface UserRepositoryProtocol
   extends SaveUserDbProtocol,
   FindUserByEmailDbProtocol,
   FindUserByIdDbProtocol,

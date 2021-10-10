@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { VerifyTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '../http/protocols'
 import { MiddlewareProtocol } from './protocols/middleware-protocol'
@@ -8,7 +8,7 @@ import { MiddlewareProtocol } from './protocols/middleware-protocol'
 export class IsLoggedInMiddleware implements MiddlewareProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol,
+    private readonly userRepository: UserRepositoryProtocol,
     private readonly verifyRefreshToken: VerifyTokenProtocol
   ) {}
 
@@ -17,7 +17,7 @@ export class IsLoggedInMiddleware implements MiddlewareProtocol {
 
     if (user instanceof Error) return this.httpHelper.ok({ user: undefined })
 
-    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, {
+    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, {
       'logs.lastSeenAt': new Date(Date.now())
     })
 

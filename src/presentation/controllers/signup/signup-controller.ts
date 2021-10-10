@@ -1,6 +1,6 @@
 import { FilterUserDataProtocol } from '@/domain/helpers'
 import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLogoutError, ConflictParamError } from '@/application/errors'
@@ -14,7 +14,7 @@ export class SignUpController implements ControllerProtocol {
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol,
+    private readonly userRepository: UserRepositoryProtocol,
     private readonly userValidator: ValidatorProtocol
   ) {}
 
@@ -26,10 +26,10 @@ export class SignUpController implements ControllerProtocol {
     const error = await this.userValidator.validate(signUpUserCredentials)
     if (error) return this.httpHelper.badRequest(error)
 
-    const emailExists = await this.userDbRepository.findUserByEmail(signUpUserCredentials.email)
+    const emailExists = await this.userRepository.findUserByEmail(signUpUserCredentials.email)
     if (emailExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
-    const user = await this.userDbRepository.saveUser(signUpUserCredentials)
+    const user = await this.userRepository.saveUser(signUpUserCredentials)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLogoutError } from '@/application/errors'
@@ -16,7 +16,7 @@ export class ForgotPasswordController implements ControllerProtocol {
     private readonly forgotPasswordValidator: ValidatorProtocol,
     private readonly generateAccessToken: GenerateTokenProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol
+    private readonly userRepository: UserRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -28,11 +28,11 @@ export class ForgotPasswordController implements ControllerProtocol {
 
     if (error != null) return this.httpHelper.badRequest(error)
 
-    let user = (await this.userDbRepository.findUserByEmail(data.email)) as IUser
+    let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
 
     const resetPasswordToken = await this.generateAccessToken.generate(user)
 
-    user = await this.userDbRepository.updateUser<IUser>(user.personal.id, {
+    user = await this.userRepository.updateUser<IUser>(user.personal.id, {
       'temporary.resetPasswordToken': resetPasswordToken
     })
 

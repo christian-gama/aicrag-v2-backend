@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/domain/mailer'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MailerServiceError } from '@/application/errors'
@@ -13,7 +13,7 @@ import { makeHttpHelper } from '@/factories/helpers'
 import {
   makeFakeUser,
   makeValidatorStub,
-  makeUserDbRepositoryStub,
+  makeUserRepositoryStub,
   makeMailerServiceStub
 } from '@/tests/__mocks__'
 
@@ -24,7 +24,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: SendForgotPasswordEmailController
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -33,13 +33,13 @@ const makeSut = (): SutTypes => {
   const forgotPasswordValidatorStub = makeValidatorStub()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: { email: fakeUser.personal.email } }
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
   const sut = new SendForgotPasswordEmailController(
     forgotPasswordEmailStub,
     forgotPasswordValidatorStub,
     httpHelper,
-    userDbRepositoryStub
+    userRepositoryStub
   )
 
   return {
@@ -49,7 +49,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
-    userDbRepositoryStub
+    userRepositoryStub
   }
 }
 
@@ -81,8 +81,8 @@ describe('sendForgotPasswordEmail', () => {
   it('should call findUserByEmail with correct email', async () => {
     expect.hasAssertions()
 
-    const { request, sut, userDbRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
+    const { request, sut, userRepositoryStub } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
 

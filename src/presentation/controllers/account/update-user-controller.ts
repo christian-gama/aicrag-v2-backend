@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/domain/helpers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { ConflictParamError, MustLoginError } from '@/application/errors'
@@ -14,7 +14,7 @@ export class UpdateUserController implements ControllerProtocol {
     private readonly emailCode: ValidationCodeProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol,
+    private readonly userRepository: UserRepositoryProtocol,
     private readonly validateCurrency: ValidatorProtocol,
     private readonly validateEmail: ValidatorProtocol,
     private readonly validateName: ValidatorProtocol
@@ -38,7 +38,7 @@ export class UpdateUserController implements ControllerProtocol {
       const error = await this.validateEmail.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      const userExists = await this.userDbRepository.findUserByEmail(data.email)
+      const userExists = await this.userRepository.findUserByEmail(data.email)
 
       if (userExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
@@ -59,7 +59,7 @@ export class UpdateUserController implements ControllerProtocol {
     if (isEmpty) return this.httpHelper.ok({ message: 'No changes were made' })
     else update['logs.updatedAt'] = new Date(Date.now())
 
-    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
+    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 

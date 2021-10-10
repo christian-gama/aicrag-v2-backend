@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/domain/mailer'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
@@ -13,7 +13,7 @@ import { makeHttpHelper } from '@/factories/helpers'
 import {
   makeFakeUser,
   makeValidatorStub,
-  makeUserDbRepositoryStub,
+  makeUserRepositoryStub,
   makeMailerServiceStub
 } from '@/tests/__mocks__'
 
@@ -23,7 +23,7 @@ interface SutTypes {
   request: HttpRequest
   sendWelcomeValidatorStub: ValidatorProtocol
   sut: SendWelcomeEmailController
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
   welcomeEmailStub: MailerServiceProtocol
 }
 
@@ -32,13 +32,13 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: { email: fakeUser.personal.email } }
   const sendWelcomeValidatorStub = makeValidatorStub()
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const welcomeEmailStub = makeMailerServiceStub()
 
   const sut = new SendWelcomeEmailController(
     httpHelper,
     sendWelcomeValidatorStub,
-    userDbRepositoryStub,
+    userRepositoryStub,
     welcomeEmailStub
   )
 
@@ -48,7 +48,7 @@ const makeSut = (): SutTypes => {
     request,
     sendWelcomeValidatorStub,
     sut,
-    userDbRepositoryStub,
+    userRepositoryStub,
     welcomeEmailStub
   }
 }
@@ -81,8 +81,8 @@ describe('sendWelcomeEmailController', () => {
   it('should return forbidden if account is already activated', async () => {
     expect.hasAssertions()
 
-    const { fakeUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()
-    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockImplementationOnce(async () => {
+    const { fakeUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockImplementationOnce(async () => {
       fakeUser.settings.accountActivated = true
 
       return fakeUser
@@ -96,8 +96,8 @@ describe('sendWelcomeEmailController', () => {
   it('should call findUserByEmail with correct email', async () => {
     expect.hasAssertions()
 
-    const { request, sut, userDbRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
+    const { request, sut, userRepositoryStub } = makeSut()
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
 
     await sut.handle(request)
 

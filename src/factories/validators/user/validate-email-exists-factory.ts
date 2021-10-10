@@ -1,9 +1,9 @@
 import { ValidateEmailExists } from '@/application/validators/user'
 
-import { makeUserDbRepository } from '../../repositories'
+import { makeUserRepository } from '../../repositories'
 
 export const makeValidateEmailExists = (): ValidateEmailExists => {
-  const userDbRepository = makeUserDbRepository()
+  const userRepository = makeUserRepository()
 
-  return new ValidateEmailExists(userDbRepository)
+  return new ValidateEmailExists(userRepository)
 }

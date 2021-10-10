@@ -1,4 +1,4 @@
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import {
@@ -9,7 +9,7 @@ import {
 } from '../../errors'
 
 export class ValidateActivationCode implements ValidatorProtocol {
-  constructor (private readonly userDbRepository: UserDbRepositoryProtocol) {}
+  constructor (private readonly userRepository: UserRepositoryProtocol) {}
 
   async validate (
     input: any
@@ -24,7 +24,7 @@ export class ValidateActivationCode implements ValidatorProtocol {
 
     if (typeof activationCode !== 'string') return new InvalidTypeError('activationCode')
 
-    const user = await this.userDbRepository.findUserByEmail(email)
+    const user = await this.userRepository.findUserByEmail(email)
 
     if (user == null) return new InvalidCodeError()
 

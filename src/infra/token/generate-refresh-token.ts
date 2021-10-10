@@ -1,16 +1,16 @@
 import { IUser } from '@/domain'
 import { EncrypterProtocol } from '@/domain/cryptography'
 import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 export class GenerateRefreshToken implements GenerateTokenProtocol {
   constructor (
     private readonly refreshTokenEncrypter: EncrypterProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol
+    private readonly userRepository: UserRepositoryProtocol
   ) {}
 
   async generate (user: IUser): Promise<string> {
-    await this.userDbRepository.updateUser(user.personal.id, { tokenVersion: ++user.tokenVersion })
+    await this.userRepository.updateUser(user.personal.id, { tokenVersion: ++user.tokenVersion })
 
     return this.refreshTokenEncrypter.encrypt({
       userId: user.personal.id,

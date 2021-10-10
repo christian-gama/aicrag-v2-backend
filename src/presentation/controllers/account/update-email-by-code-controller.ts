@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { FilterUserDataProtocol } from '@/domain/helpers'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
@@ -14,7 +14,7 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
     private readonly updateEmailByCodeValidator: ValidatorProtocol,
     private readonly filterUserData: FilterUserDataProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userDbRepository: UserDbRepositoryProtocol
+    private readonly userRepository: UserRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -30,7 +30,7 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
     Object.assign(update, this.updateEmail(user))
     Object.assign(update, this.clearTemporary(user))
 
-    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
+    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 

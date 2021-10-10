@@ -1,34 +1,34 @@
 import { IUser } from '@/domain'
-import { UserDbRepositoryProtocol } from '@/domain/repositories'
+import { UserRepositoryProtocol } from '@/domain/repositories'
 
 import { UserCredentialError } from '@/application/errors'
 import { ValidateTempEmail } from '@/application/validators/user'
 
-import { makeFakeUser, makeUserDbRepositoryStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser
   sut: ValidateTempEmail
-  userDbRepositoryStub: UserDbRepositoryProtocol
+  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
-  const userDbRepositoryStub = makeUserDbRepositoryStub(fakeUser)
+  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
-  const sut = new ValidateTempEmail(userDbRepositoryStub)
+  const sut = new ValidateTempEmail(userRepositoryStub)
 
-  return { fakeUser, sut, userDbRepositoryStub }
+  return { fakeUser, sut, userRepositoryStub }
 }
 
 describe('validateTempEmail', () => {
   it('should return a UserCredentialError if email does not exists', async () => {
     expect.hasAssertions()
 
-    const { sut, userDbRepositoryStub } = makeSut()
+    const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
+      .spyOn(userRepositoryStub, 'findUserByEmail')
       .mockReturnValueOnce(Promise.resolve(null))
 
     const error = await sut.validate(data)
@@ -63,9 +63,9 @@ describe('validateTempEmail', () => {
   it('should call findUserByEmail with correct value', async () => {
     expect.hasAssertions()
 
-    const { sut, userDbRepositoryStub } = makeSut()
+    const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
-    const findUserByEmailSpy = jest.spyOn(userDbRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
 
     await sut.validate(data)
 
