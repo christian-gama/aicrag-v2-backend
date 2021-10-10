@@ -63,6 +63,26 @@ describe('taskRepository', () => {
     await taskCollection.insertOne(task)
   })
 
+  it('should return true if delete a task', async () => {
+    expect.hasAssertions()
+
+    const { sut } = makeSut()
+
+    const deleted = await sut.deleteTask(task.id, taskData.user.personal.id)
+
+    expect(deleted).toBeTruthy()
+  })
+
+  it('should return false if does not delete a task', async () => {
+    expect.hasAssertions()
+
+    const { fakeTaskData, sut } = makeSut()
+
+    const deleted = await sut.deleteTask('invalid_id', fakeTaskData.user.personal.id)
+
+    expect(deleted).toBeFalsy()
+  })
+
   it('should return a task on success', async () => {
     expect.hasAssertions()
 
