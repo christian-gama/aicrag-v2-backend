@@ -44,6 +44,7 @@ describe('mongoAdapter', () => {
   })
 
   it('should return collections methods', async () => {
+    expect(collection).toHaveProperty('aggregate')
     expect(collection).toHaveProperty('deleteMany')
     expect(collection).toHaveProperty('deleteOne')
     expect(collection).toHaveProperty('findAll')
@@ -66,6 +67,77 @@ describe('mongoAdapter', () => {
 
       expect(error).toStrictEqual(new Error('Database is not connected'))
     }
+  })
+
+  it('should return an array of document if finds it', async () => {
+    const fakeUser = makeFakeUser()
+
+    await collection.insertOne(fakeUser)
+
+    const result = await collection.aggregate<IUser>([
+      {
+        $match: { 'personal.name': fakeUser.personal.name }
+      }
+    ])
+
+    expect(result[0].personal.name).toBe(fakeUser.personal.name)
+  })
+
+  it('should return an array of document if finds using a complex pipeline', async () => {
+    const fakeUser = makeFakeUser()
+
+    await collection.insertOne(fakeUser)
+
+    const result = await collection.aggregate<any>([
+      {
+        $match: {
+          $and: [
+            { 'logs.createdAt': { $lte: new Date(Date.now()) } },
+            { 'logs.createdAt': { $gte: new Date(Date.now() - 60 * 1000) } }
+          ],
+          'personal.name': fakeUser.personal.name
+        }
+      },
+      { $project: { _id: 0, logs: 1, personal: 1, settings: 1 } }
+    ])
+
+    expect(result[0]._id).toBeUndefined()
+    expect(result[0].temporary).toBeUndefined()
+    expect(result[0].logs).toBeDefined()
+    expect(result[0].personal).toBeDefined()
+    expect(result[0].settings).toBeDefined()
+  })
+
+  it('should return an empty array if does not finds using a complex pipeline', async () => {
+    const fakeUser = makeFakeUser()
+
+    await collection.insertOne(fakeUser)
+
+    const result = await collection.aggregate<any>([
+      {
+        $match: {
+          $and: [
+            { 'logs.createdAt': { $lte: new Date(Date.now()) } },
+            { 'logs.createdAt': { $gte: new Date(Date.now() + 60 * 1000) } }
+          ],
+          'personal.name': fakeUser.personal.name
+        }
+      }
+    ])
+
+    expect(result).toHaveLength(0)
+  })
+
+  it('should return an empty array if does not finds it', async () => {
+    const fakeUser = makeFakeUser()
+
+    const result = await collection.aggregate<IUser>([
+      {
+        $match: { 'personal.name': fakeUser.personal.name }
+      }
+    ])
+
+    expect(result).toHaveLength(0)
   })
 
   it('should return the deleted count greater than 0 if deletes a document', async () => {
