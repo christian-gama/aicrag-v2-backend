@@ -6,12 +6,12 @@ import { UserDbFilter } from '@/infra/database/protocols'
  * @description Generic user database repository.
  */
 export interface UserRepositoryProtocol
-  extends SaveUserDbProtocol,
-  FindUserByEmailDbProtocol,
-  FindUserByIdDbProtocol,
-  UpdateUserDbProtocol {}
+  extends SaveUserProtocol,
+  FindUserByEmailProtocol,
+  FindUserByIdProtocol,
+  UpdateUserProtocol {}
 
-export interface FindUserByEmailDbProtocol {
+export interface FindUserByEmailProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an email and tries to find it on database.
@@ -21,7 +21,7 @@ export interface FindUserByEmailDbProtocol {
   findUserByEmail: (email: string) => Promise<IUser | null>
 }
 
-export interface FindUserByIdDbProtocol {
+export interface FindUserByIdProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an user id and tries to find it on database.
@@ -31,7 +31,7 @@ export interface FindUserByIdDbProtocol {
   findUserById: (id: string) => Promise<IUser | null>
 }
 
-export interface SaveUserDbProtocol {
+export interface SaveUserProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an user and then save a user on database.
@@ -41,7 +41,7 @@ export interface SaveUserDbProtocol {
   saveUser: (userData: ISignUpUserData) => Promise<IUser>
 }
 
-export interface UpdateUserDbProtocol {
+export interface UpdateUserProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a user and tries to update it.

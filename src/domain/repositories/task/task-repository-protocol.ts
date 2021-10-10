@@ -4,13 +4,13 @@ import { QueryProtocol, QueryResultProtocol } from '@/infra/database/protocols/q
 import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
 
 export interface TaskRepositoryProtocol
-  extends FindAllTasksDbProtocol,
-  FindTaskByIdDbProtocol,
-  FindTaskByTaskIdDbProtocol,
-  SaveTaskDbProtocol,
-  UpdateTaskDbProtocol{ }
+  extends FindAllTasksProtocol,
+  FindTaskByIdProtocol,
+  FindTaskByTaskIdProtocol,
+  SaveTaskProtocol,
+  UpdateTaskProtocol {}
 
-export interface FindAllTasksDbProtocol {
+export interface FindAllTasksProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a user id and tries to find all tasks that belongs to that user.
@@ -18,10 +18,13 @@ export interface FindAllTasksDbProtocol {
    * @param query Query that will refine the final result of the search.
    * @returns Return all tasks that belongs to that user or null if there is no task.
    */
-  findAllTasks: <T extends ITask>(userId: string, query: QueryProtocol) => Promise<QueryResultProtocol<T>>
+  findAllTasks: <T extends ITask>(
+    userId: string,
+    query: QueryProtocol
+  ) => Promise<QueryResultProtocol<T>>
 }
 
-export interface FindTaskByIdDbProtocol {
+export interface FindTaskByIdProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
@@ -32,7 +35,7 @@ export interface FindTaskByIdDbProtocol {
   findTaskById: (id: string, userId: string) => Promise<ITask | null>
 }
 
-export interface FindTaskByTaskIdDbProtocol {
+export interface FindTaskByTaskIdProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
@@ -43,7 +46,7 @@ export interface FindTaskByTaskIdDbProtocol {
   findTaskByTaskId: (taskId: string | null, userId: string) => Promise<ITask | null>
 }
 
-export interface SaveTaskDbProtocol {
+export interface SaveTaskProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a task data and then save it on database.
@@ -53,7 +56,7 @@ export interface SaveTaskDbProtocol {
   saveTask: (taskData: ITaskData) => Promise<ITask>
 }
 
-export interface UpdateTaskDbProtocol {
+export interface UpdateTaskProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a task and then update it based on its id.
