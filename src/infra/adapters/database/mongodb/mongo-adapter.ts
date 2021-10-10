@@ -33,6 +33,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     mongoAdapter._collection = this._collection
 
     return {
+      aggregate: this.aggregate.bind(mongoAdapter),
       deleteMany: this.deleteMany.bind(mongoAdapter),
       deleteOne: this.deleteOne.bind(mongoAdapter),
       findAll: this.findAll.bind(mongoAdapter),
@@ -50,6 +51,12 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     } else {
       throw new Error('Database is not connected')
     }
+  }
+
+  protected async aggregate <T>(pipeline: Document[]): Promise<T[] | []> {
+    const result = await this._collection.aggregate(pipeline).toArray()
+
+    return result
   }
 
   protected async deleteMany (filter: Document): Promise<number> {
