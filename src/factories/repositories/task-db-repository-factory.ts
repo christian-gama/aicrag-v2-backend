@@ -1,11 +1,11 @@
 import { TaskDbRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '../database/mongo-db-factory'
-import { makeTaskRepository } from './task-repository-factory'
+import { makeCreateTaskRepository } from './create-task-repository-factory'
 
 export const makeTaskDbRepository = (): TaskDbRepository => {
+  const createTaskRepository = makeCreateTaskRepository()
   const database = makeMongoDb()
-  const taskRepository = makeTaskRepository()
 
-  return new TaskDbRepository(database, taskRepository)
+  return new TaskDbRepository(createTaskRepository, database)
 }

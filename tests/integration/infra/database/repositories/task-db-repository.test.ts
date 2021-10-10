@@ -1,5 +1,5 @@
 import { ITask, ITaskData, IUser } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories'
+import { CreateTaskRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
@@ -11,27 +11,27 @@ import {
   makeFakeTask,
   makeFakeTaskData,
   makeFakeUser,
-  makeTaskRepositoryStub
+  makeCreateTaskRepositoryStub
 } from '@/tests/__mocks__'
 
 interface SutTypes {
+  createTaskRepository: CreateTaskRepositoryProtocol
   fakeTask: ITask
   fakeTaskData: ITaskData
   fakeUser: IUser
   sut: TaskDbRepository
-  taskRepository: TaskRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
-  const fakeUser = makeFakeUser()
   const database = makeMongoDb()
+  const fakeUser = makeFakeUser()
   const fakeTask = makeFakeTask(fakeUser)
   const fakeTaskData = makeFakeTaskData(fakeUser)
-  const taskRepository = makeTaskRepositoryStub(fakeTask)
+  const createTaskRepository = makeCreateTaskRepositoryStub(fakeTask)
 
-  const sut = new TaskDbRepository(database, taskRepository)
+  const sut = new TaskDbRepository(createTaskRepository, database)
 
-  return { fakeTask, fakeTaskData, fakeUser, sut, taskRepository }
+  return { createTaskRepository, fakeTask, fakeTaskData, fakeUser, sut }
 }
 
 describe('taskDbRepository', () => {
@@ -99,8 +99,8 @@ describe('taskDbRepository', () => {
   it('should call createTask with correct value', async () => {
     expect.hasAssertions()
 
-    const { fakeTaskData, sut, taskRepository } = makeSut()
-    const createTaskSpy = jest.spyOn(taskRepository, 'createTask')
+    const { fakeTaskData, sut, createTaskRepository } = makeSut()
+    const createTaskSpy = jest.spyOn(createTaskRepository, 'createTask')
 
     await sut.saveTask(fakeTaskData)
 

@@ -1,7 +1,7 @@
 import { ITaskData, IUser } from '@/domain'
 import { UuidProtocol } from '@/domain/helpers'
 
-import { TaskRepository } from '@/application/repositories'
+import { CreateTaskRepository } from '@/application/repositories'
 
 import { makeFakeUser, makeUuidStub } from '@/tests/__mocks__'
 import { makeFakeTaskData } from '@/tests/__mocks__/mock-task'
@@ -11,7 +11,7 @@ import MockDate from 'mockdate'
 interface SutTypes {
   fakeTaskData: ITaskData
   fakeUser: IUser
-  sut: TaskRepository
+  sut: CreateTaskRepository
   uuidStub: UuidProtocol
 }
 
@@ -20,12 +20,12 @@ const makeSut = (): SutTypes => {
   const fakeTaskData = makeFakeTaskData(fakeUser)
   const uuidStub = makeUuidStub()
 
-  const sut = new TaskRepository(uuidStub)
+  const sut = new CreateTaskRepository(uuidStub)
 
   return { fakeTaskData, fakeUser, sut, uuidStub }
 }
 
-describe('taskRepository', () => {
+describe('createTaskRepository', () => {
   afterAll(() => {
     MockDate.reset()
   })

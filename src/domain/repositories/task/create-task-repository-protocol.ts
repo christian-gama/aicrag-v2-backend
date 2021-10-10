@@ -1,5 +1,5 @@
 import { ITaskData, ITask } from '@/domain/task'
 
-export interface TaskRepositoryProtocol {
+export interface CreateTaskRepositoryProtocol {
   createTask: (taskData: ITaskData) => ITask
 }

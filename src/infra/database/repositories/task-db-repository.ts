@@ -1,5 +1,5 @@
 import { ITask, ITaskData } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories'
+import { CreateTaskRepositoryProtocol } from '@/domain/repositories'
 import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
 
 import { DatabaseProtocol } from '../protocols'
@@ -8,8 +8,8 @@ import { TaskDbFilter } from '../protocols/update-task-options'
 
 export class TaskDbRepository implements TaskDbRepositoryProtocol {
   constructor (
-    private readonly database: DatabaseProtocol,
-    private readonly taskRepository: TaskRepositoryProtocol
+    private readonly createTaskRepository: CreateTaskRepositoryProtocol,
+    private readonly database: DatabaseProtocol
   ) {}
 
   async findAllTasks<T extends ITask>(
@@ -42,7 +42,7 @@ export class TaskDbRepository implements TaskDbRepositoryProtocol {
   async saveTask (taskData: ITaskData): Promise<ITask> {
     const taskCollection = this.database.collection('tasks')
 
-    const task = this.taskRepository.createTask(taskData)
+    const task = this.createTaskRepository.createTask(taskData)
 
     return await taskCollection.insertOne(task)
   }
