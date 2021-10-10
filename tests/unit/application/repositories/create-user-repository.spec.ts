@@ -1,9 +1,9 @@
 import { HasherProtocol } from '@/domain/cryptography'
 import { UuidProtocol } from '@/domain/helpers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { CreateUserRepositoryProtocol } from '@/domain/repositories'
 
 import { ValidationCode } from '@/application/helpers'
-import { UserRepository } from '@/application/repositories'
+import { CreateUserRepository } from '@/application/repositories'
 
 import {
   makeHasherStub,
@@ -14,7 +14,7 @@ import {
 
 import MockDate from 'mockdate'
 interface SutTypes {
-  sut: UserRepositoryProtocol
+  sut: CreateUserRepositoryProtocol
   activationCodeStub: ValidationCode
   hasherStub: HasherProtocol
   uuidStub: UuidProtocol
@@ -25,12 +25,12 @@ const makeSut = (): SutTypes => {
   const hasherStub = makeHasherStub()
   const uuidStub = makeUuidStub()
 
-  const sut = new UserRepository(activationCodeStub, hasherStub, uuidStub)
+  const sut = new CreateUserRepository(activationCodeStub, hasherStub, uuidStub)
 
   return { activationCodeStub, hasherStub, sut, uuidStub }
 }
 
-describe('userRepository', () => {
+describe('createUserRepository', () => {
   afterAll(() => {
     MockDate.reset()
   })

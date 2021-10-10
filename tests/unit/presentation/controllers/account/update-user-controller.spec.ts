@@ -222,9 +222,7 @@ describe('updateUserController', () => {
 
     const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.email = undefined
     request.body.name = undefined
 
@@ -241,9 +239,7 @@ describe('updateUserController', () => {
 
     const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.currency = undefined
     request.body.email = undefined
 
@@ -260,9 +256,7 @@ describe('updateUserController', () => {
 
     const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.currency = undefined
     request.body.name = undefined
 
@@ -281,9 +275,7 @@ describe('updateUserController', () => {
 
     const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -302,9 +294,7 @@ describe('updateUserController', () => {
 
     const { fakeUser, filterUserDataStub, request, sut, userDbRepositoryStub } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -315,9 +305,7 @@ describe('updateUserController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, userDbRepositoryStub } = makeSut()
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.email = undefined
     request.body.name = undefined
     request.body.currency = undefined
@@ -331,9 +319,7 @@ describe('updateUserController', () => {
     expect.hasAssertions()
 
     const { fakeUser, httpHelper, request, sut, userDbRepositoryStub } = makeSut()
-    jest
-      .spyOn(userDbRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userDbRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.handle(request)
 

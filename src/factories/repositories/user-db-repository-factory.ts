@@ -1,11 +1,11 @@
 import { UserDbRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '../database/mongo-db-factory'
-import { makeUserRepository } from './user-repository-factory'
+import { makeCreateUserRepository } from './create-user-repository-factory'
 
 export const makeUserDbRepository = (): UserDbRepository => {
+  const createUserRepository = makeCreateUserRepository()
   const database = makeMongoDb()
-  const userRepository = makeUserRepository()
 
-  return new UserDbRepository(database, userRepository)
+  return new UserDbRepository(createUserRepository, database)
 }

@@ -1,9 +1,9 @@
 import { ISignUpUserData, IUser } from '@/domain'
 import { HasherProtocol } from '@/domain/cryptography'
 import { ValidationCodeProtocol, UuidProtocol } from '@/domain/helpers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { CreateUserRepositoryProtocol } from '@/domain/repositories'
 
-export class UserRepository implements UserRepositoryProtocol {
+export class CreateUserRepository implements CreateUserRepositoryProtocol {
   constructor (
     private readonly activationCode: ValidationCodeProtocol,
     private readonly hasher: HasherProtocol,

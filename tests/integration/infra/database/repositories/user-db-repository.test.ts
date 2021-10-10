@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { CreateUserRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
@@ -9,24 +9,24 @@ import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 import {
   makeFakeUser,
-  makeUserRepositoryStub,
+  makeCreateUserRepositoryStub,
   makeFakeSignUpUserCredentials
 } from '@/tests/__mocks__'
 
 interface SutTypes {
+  createUserRepositoryStub: CreateUserRepositoryProtocol
   fakeUser: IUser
   sut: UserDbRepository
-  userRepositoryStub: UserRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
-  const database = makeMongoDb()
   const fakeUser = makeFakeUser()
-  const userRepositoryStub = makeUserRepositoryStub(fakeUser)
+  const createUserRepositoryStub = makeCreateUserRepositoryStub(fakeUser)
+  const database = makeMongoDb()
 
-  const sut = new UserDbRepository(database, userRepositoryStub)
+  const sut = new UserDbRepository(createUserRepositoryStub, database)
 
-  return { fakeUser, sut, userRepositoryStub }
+  return { createUserRepositoryStub, fakeUser, sut }
 }
 
 describe('userDbRepository', () => {
@@ -143,7 +143,9 @@ describe('userDbRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser<IUser>(user.personal.id, { 'personal.name': 'changed_name' })
+      const updatedUser = await sut.updateUser<IUser>(user.personal.id, {
+        'personal.name': 'changed_name'
+      })
 
       expect(updatedUser).toHaveProperty('_id')
     })
@@ -153,7 +155,9 @@ describe('userDbRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser<IUser>(user.personal.id, { 'personal.name': 'changed_name' })
+      const updatedUser = await sut.updateUser<IUser>(user.personal.id, {
+        'personal.name': 'changed_name'
+      })
 
       expect(updatedUser?.personal.name).toBe('changed_name')
     })
@@ -177,7 +181,9 @@ describe('userDbRepository', () => {
 
       const { fakeUser, sut } = makeSut()
 
-      const updatedUser = await sut.updateUser<IUser>(fakeUser.personal.id, { 'personal.name': 'any_name' })
+      const updatedUser = await sut.updateUser<IUser>(fakeUser.personal.id, {
+        'personal.name': 'any_name'
+      })
 
       expect(updatedUser).toBeNull()
     })

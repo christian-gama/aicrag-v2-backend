@@ -1,12 +1,12 @@
 import { ISignUpUserData, IUser } from '@/domain'
-import { UserDbRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
+import { UserDbRepositoryProtocol, CreateUserRepositoryProtocol } from '@/domain/repositories'
 
 import { DatabaseProtocol, UserDbFilter } from '../protocols'
 
 export class UserDbRepository implements UserDbRepositoryProtocol {
   constructor (
-    private readonly database: DatabaseProtocol,
-    private readonly userRepository: UserRepositoryProtocol
+    private readonly createUserRepository: CreateUserRepositoryProtocol,
+    private readonly database: DatabaseProtocol
   ) {}
 
   async findUserByEmail (email: string): Promise<IUser | null> {
@@ -30,7 +30,7 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
   async saveUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
     const userCollection = this.database.collection('users')
 
-    const user = await this.userRepository.createUser(signUpUserCredentials)
+    const user = await this.createUserRepository.createUser(signUpUserCredentials)
 
     return await userCollection.insertOne(user)
   }

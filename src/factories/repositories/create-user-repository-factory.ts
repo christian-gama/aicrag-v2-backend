@@ -1,12 +1,12 @@
-import { UserRepository } from '@/application/repositories'
+import { CreateUserRepository } from '@/application/repositories'
 
 import { makeBcryptAdapter } from '@/factories/cryptography'
 import { makeUuid, makeValidationCode } from '@/factories/helpers'
 
-export const makeUserRepository = (): UserRepository => {
+export const makeCreateUserRepository = (): CreateUserRepository => {
   const activationCode = makeValidationCode()
   const hasher = makeBcryptAdapter()
   const uuid = makeUuid()
 
-  return new UserRepository(activationCode, hasher, uuid)
+  return new CreateUserRepository(activationCode, hasher, uuid)
 }
