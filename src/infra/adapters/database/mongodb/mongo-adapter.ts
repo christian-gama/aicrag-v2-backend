@@ -53,10 +53,28 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     }
   }
 
-  protected async aggregate <T>(pipeline: Document[]): Promise<T[] | []> {
-    const result = await this._collection.aggregate(pipeline).toArray()
+  protected async aggregate<T>(
+    pipeline: Document[],
+    query: QueryProtocol
+  ): Promise<QueryResultProtocol<T>> {
+    const limit = this.queries.limit(query)
+    const skip = this.queries.page(query)
 
-    return result
+    pipeline.push({ $count: 'totalCount' })
+    const totalCount = await this._collection.aggregate(pipeline).toArray()
+    const count = totalCount.length > 0 ? totalCount[0].totalCount : 0
+    pipeline.pop()
+
+    if (query.sort) {
+      const sort = this.queries.sort(query)
+      pipeline.push({ $sort: sort })
+    }
+    const documents = await this._collection.aggregate(pipeline).limit(limit).skip(skip).toArray()
+
+    const currentPage = skip / limit + 1
+    const totalPages = Math.ceil(count / limit)
+
+    return { count, currentPage, documents, totalPages }
   }
 
   protected async deleteMany (filter: Document): Promise<number> {
@@ -74,7 +92,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
 
   protected async findAll<T extends Document>(
     filter: Document,
-    query?: QueryProtocol
+    query: QueryProtocol
   ): Promise<QueryResultProtocol<T>> {
     const fields = this.queries.fields(query)
     const limit = this.queries.limit(query)
