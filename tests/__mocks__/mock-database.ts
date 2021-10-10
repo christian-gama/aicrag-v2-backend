@@ -1,6 +1,6 @@
 import { ILogError, IUser, ISignUpUserData, ITask, ITaskData } from '@/domain'
 import { LogErrorDbRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task'
 
 import { QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
 import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'

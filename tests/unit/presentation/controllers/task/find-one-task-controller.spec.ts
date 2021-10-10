@@ -1,5 +1,5 @@
 import { ITask, IUser } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'

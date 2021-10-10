@@ -1,5 +1,5 @@
 import { ITask, IUser } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task'
 
 import { ConflictParamError } from '@/application/errors'
 import { ValidateUniqueTaskId } from '@/application/validators/task'

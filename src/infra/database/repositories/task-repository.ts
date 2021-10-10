@@ -1,6 +1,6 @@
 import { ITask, ITaskData } from '@/domain'
 import { CreateTaskRepositoryProtocol } from '@/domain/repositories'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task'
 
 import { DatabaseProtocol } from '../protocols'
 import { QueryProtocol, QueryResultProtocol } from '../protocols/queries-protocol'
