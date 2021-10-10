@@ -1,3 +1,4 @@
+import { IUser } from '@/domain'
 import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/domain/helpers'
 import { UserDbRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
@@ -58,7 +59,7 @@ export class UpdateUserController implements ControllerProtocol {
     if (isEmpty) return this.httpHelper.ok({ message: 'No changes were made' })
     else update['logs.updatedAt'] = new Date(Date.now())
 
-    const updatedUser = await this.userDbRepository.updateUser(user, update)
+    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 

@@ -250,7 +250,7 @@ describe('loginController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.lastLoginAt': new Date(Date.now())
     })
   })

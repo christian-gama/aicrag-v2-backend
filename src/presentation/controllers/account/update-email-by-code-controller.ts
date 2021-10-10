@@ -30,7 +30,7 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
     Object.assign(update, this.updateEmail(user))
     Object.assign(update, this.clearTemporary(user))
 
-    const updatedUser = await this.userDbRepository.updateUser(user, update)
+    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 

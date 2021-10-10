@@ -18,7 +18,7 @@ export class LogoutController implements ControllerProtocol {
     if (user == null) return this.httpHelper.forbidden(new MustLoginError())
 
     user.tokenVersion++
-    await this.userDbRepository.updateUser(user, { tokenVersion: user.tokenVersion })
+    await this.userDbRepository.updateUser(user.personal.id, { tokenVersion: user.tokenVersion })
 
     return this.httpHelper.ok({ message: "You've been logged out" })
   }

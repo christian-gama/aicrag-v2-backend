@@ -1,3 +1,4 @@
+import { IUser } from '@/domain'
 import { HasherProtocol } from '@/domain/cryptography'
 import { FilterUserDataProtocol } from '@/domain/helpers'
 import { GenerateTokenProtocol } from '@/domain/providers'
@@ -36,7 +37,7 @@ export class UpdatePasswordController implements ControllerProtocol {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': hashedPassword
     }
-    const updatedUser = await this.userDbRepository.updateUser(user, update)
+    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

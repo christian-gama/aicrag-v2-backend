@@ -45,11 +45,11 @@ describe('logoutController', () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userDbRepositoryStub } = makeSut()
-    const updateUser = jest.spyOn(userDbRepositoryStub, 'updateUser')
+    const updateUserSpy = jest.spyOn(userDbRepositoryStub, 'updateUser')
 
     await sut.handle(request)
 
-    expect(updateUser).toHaveBeenCalledWith(fakeUser, { tokenVersion: fakeUser.tokenVersion })
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, { tokenVersion: fakeUser.tokenVersion })
   })
 
   it('should return ok if succeeds', async () => {

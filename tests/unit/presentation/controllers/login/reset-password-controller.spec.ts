@@ -131,7 +131,7 @@ describe('resetPasswordController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': 'hashed_value',
       'temporary.resetPasswordToken': null

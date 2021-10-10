@@ -32,7 +32,7 @@ export class ForgotPasswordController implements ControllerProtocol {
 
     const resetPasswordToken = await this.generateAccessToken.generate(user)
 
-    user = await this.userDbRepository.updateUser(user, {
+    user = await this.userDbRepository.updateUser<IUser>(user.personal.id, {
       'temporary.resetPasswordToken': resetPasswordToken
     })
 

@@ -10,7 +10,7 @@ export class GenerateRefreshToken implements GenerateTokenProtocol {
   ) {}
 
   async generate (user: IUser): Promise<string> {
-    await this.userDbRepository.updateUser(user, { tokenVersion: ++user.tokenVersion })
+    await this.userDbRepository.updateUser(user.personal.id, { tokenVersion: ++user.tokenVersion })
 
     return this.refreshTokenEncrypter.encrypt({
       userId: user.personal.id,

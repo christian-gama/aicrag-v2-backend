@@ -230,7 +230,7 @@ describe('updateUserController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'settings.currency': request.body.currency
     })
@@ -249,7 +249,7 @@ describe('updateUserController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.name': request.body.name
     })
@@ -268,7 +268,7 @@ describe('updateUserController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'temporary.tempEmail': request.body.email,
       'temporary.tempEmailCode': 'any_code',
@@ -287,7 +287,7 @@ describe('updateUserController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.name': request.body.name,
       'settings.currency': request.body.currency,

@@ -30,7 +30,7 @@ export class ActivateAccountController implements ControllerProtocol {
     Object.assign(update, this.activateAccount(user))
     Object.assign(update, this.clearTemporary(user))
 
-    const updatedUser = await this.userDbRepository.updateUser(user, update)
+    const updatedUser = await this.userDbRepository.updateUser<IUser>(user.personal.id, update)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

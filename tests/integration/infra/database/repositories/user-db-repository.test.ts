@@ -143,7 +143,7 @@ describe('userDbRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser(user, { 'personal.name': 'changed_name' })
+      const updatedUser = await sut.updateUser<IUser>(user.personal.id, { 'personal.name': 'changed_name' })
 
       expect(updatedUser).toHaveProperty('_id')
     })
@@ -153,7 +153,7 @@ describe('userDbRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser(user, { 'personal.name': 'changed_name' })
+      const updatedUser = await sut.updateUser<IUser>(user.personal.id, { 'personal.name': 'changed_name' })
 
       expect(updatedUser?.personal.name).toBe('changed_name')
     })
@@ -163,7 +163,7 @@ describe('userDbRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser(user, {
+      const updatedUser = await sut.updateUser<IUser>(user.personal.id, {
         'personal.email': 'changed_email',
         'personal.name': 'changed_name'
       })
@@ -177,7 +177,7 @@ describe('userDbRepository', () => {
 
       const { fakeUser, sut } = makeSut()
 
-      const updatedUser = await sut.updateUser(fakeUser, { 'personal.name': 'any_name' })
+      const updatedUser = await sut.updateUser<IUser>(fakeUser.personal.id, { 'personal.name': 'any_name' })
 
       expect(updatedUser).toBeNull()
     })

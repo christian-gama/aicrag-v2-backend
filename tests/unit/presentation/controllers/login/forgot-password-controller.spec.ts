@@ -126,7 +126,7 @@ describe('forgot Password', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'temporary.resetPasswordToken': 'any_token'
     })
   })

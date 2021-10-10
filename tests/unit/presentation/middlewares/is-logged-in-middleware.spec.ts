@@ -86,7 +86,7 @@ describe('isLoggedInMiddleware', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, {
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.lastSeenAt': new Date(Date.now())
     })
   })

@@ -35,11 +35,10 @@ export class UserDbRepository implements UserDbRepositoryProtocol {
     return await userCollection.insertOne(user)
   }
 
-  async updateUser <T extends IUser | null>(user: T, update: UserDbFilter): Promise<T> {
+  async updateUser<T extends IUser | null>(id: string, update: UserDbFilter): Promise<T> {
     const userCollection = this.database.collection('users')
 
-    const filter = { 'personal.id': user?.personal.id }
-    const updatedUser = await userCollection.updateOne<IUser>(filter, update)
+    const updatedUser = await userCollection.updateOne<IUser>({ 'personal.id': id }, update)
 
     return updatedUser as T
   }

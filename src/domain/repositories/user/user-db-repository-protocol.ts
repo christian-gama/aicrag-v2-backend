@@ -35,19 +35,19 @@ export interface SaveUserDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive an user and then save a user on database.
-   * @param user User that will be saved as a user.
+   * @param userData User data that will be saved as a user.
    * @returns Return the saved user.
    */
-  saveUser: (user: ISignUpUserData) => Promise<IUser>
+  saveUser: (userData: ISignUpUserData) => Promise<IUser>
 }
 
 export interface UpdateUserDbProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a user and tries to update it.
-   * @param user The user that will be updated.
+   * @param id The id from the user that will be updated.
    * @param update Object that contains the changes to be updated.
    * @returns Return a user if updates it or null if does not.
    */
-  updateUser: <T extends IUser | null>(user: T, update: UserDbFilter) => Promise<T>
+  updateUser: <T extends IUser | null>(id: string, update: UserDbFilter) => Promise<T>
 }

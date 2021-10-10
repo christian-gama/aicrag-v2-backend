@@ -32,7 +32,7 @@ describe('generateAccessToken', () => {
 
     await sut.generate(fakeUser)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser, { tokenVersion: fakeUser.tokenVersion })
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, { tokenVersion: fakeUser.tokenVersion })
   })
 
   it('should call encrypt with correct value', async () => {
