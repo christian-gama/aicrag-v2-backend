@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
+import { LogErrorRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
@@ -8,22 +8,22 @@ import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { makeFakeUser, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
+import { makeFakeUser, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   sut: ClearUserDatabase
   error: Error
-  logErrorDbRepositoryStub: LogErrorDbRepositoryProtocol
+  logErrorRepositoryStub: LogErrorRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
   const error = new Error('any_message')
   const database = makeMongoDb()
-  const logErrorDbRepositoryStub = makeLogErrorDbRepositoryStub(error)
+  const logErrorRepositoryStub = makeLogErrorRepositoryStub(error)
 
-  const sut = new ClearUserDatabase(database, logErrorDbRepositoryStub)
+  const sut = new ClearUserDatabase(database, logErrorRepositoryStub)
 
-  return { error, logErrorDbRepositoryStub, sut }
+  return { error, logErrorRepositoryStub, sut }
 }
 
 describe('clearUserDatabase', () => {

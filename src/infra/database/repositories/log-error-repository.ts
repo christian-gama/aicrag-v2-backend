@@ -1,11 +1,11 @@
 import { ILogError } from '@/domain'
-import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
+import { LogErrorRepositoryProtocol } from '@/domain/repositories'
 
 import { CreateLogErrorRepository } from '@/application/repositories'
 
 import { DatabaseProtocol } from '../protocols'
 
-export class LogErrorDbRepository implements LogErrorDbRepositoryProtocol {
+export class LogErrorRepository implements LogErrorRepositoryProtocol {
   constructor (
     private readonly createLogErrorRepository: CreateLogErrorRepository,
     private readonly database: DatabaseProtocol

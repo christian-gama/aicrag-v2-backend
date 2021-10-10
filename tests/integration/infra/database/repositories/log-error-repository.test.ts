@@ -3,7 +3,7 @@ import { CreateLogErrorRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
-import { LogErrorDbRepository } from '@/infra/database/repositories'
+import { LogErrorRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -13,7 +13,7 @@ interface SutTypes {
   error: Error
   fakeLogError: ILogError
   createLogErrorRepositoryStub: CreateLogErrorRepositoryProtocol
-  sut: LogErrorDbRepository
+  sut: LogErrorRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -22,12 +22,12 @@ const makeSut = (): SutTypes => {
   const fakeLogError = makeFakeLogError(error)
   const createLogErrorRepositoryStub = makeCreateLogErrorRepositoryStub(fakeLogError)
 
-  const sut = new LogErrorDbRepository(createLogErrorRepositoryStub, database)
+  const sut = new LogErrorRepository(createLogErrorRepositoryStub, database)
 
   return { createLogErrorRepositoryStub, error, fakeLogError, sut }
 }
 
-describe('logErrorDbRepository', () => {
+describe('logErrorRepository', () => {
   const client = makeMongoDb()
   let logCollection: CollectionProtocol
 
@@ -48,7 +48,7 @@ describe('logErrorDbRepository', () => {
   it('should call createLog with correct error', async () => {
     expect.hasAssertions()
 
-    const { createLogErrorRepositoryStub, error, sut } = makeSut()
+    const { sut, error, createLogErrorRepositoryStub } = makeSut()
     const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'createLog')
 
     await sut.saveLog(error)

@@ -1,5 +1,5 @@
 import { ILogError, IUser, ISignUpUserData, ITask, ITaskData } from '@/domain'
-import { LogErrorDbRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
+import { LogErrorRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
 import { TaskRepositoryProtocol } from '@/domain/repositories/task'
 
 import { QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
@@ -8,14 +8,14 @@ import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
 
 import { makeFakeLogError } from './mock-log-error'
 
-export const makeLogErrorDbRepositoryStub = (error: Error): LogErrorDbRepositoryProtocol => {
-  class LogErrorDbRepositoryStub implements LogErrorDbRepositoryProtocol {
+export const makeLogErrorRepositoryStub = (error: Error): LogErrorRepositoryProtocol => {
+  class LogErrorRepositoryStub implements LogErrorRepositoryProtocol {
     async saveLog (_error: Error): Promise<ILogError> {
       return await Promise.resolve(makeFakeLogError(error))
     }
   }
 
-  return new LogErrorDbRepositoryStub()
+  return new LogErrorRepositoryStub()
 }
 
 export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol => {

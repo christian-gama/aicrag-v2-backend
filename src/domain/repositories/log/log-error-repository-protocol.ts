@@ -1,6 +1,6 @@
 import { ILogError } from '@/domain'
 
-export interface LogErrorDbRepositoryProtocol {
+export interface LogErrorRepositoryProtocol {
   /**
    * @async Asynchronous method.
    * @description Receive a log error and save it.

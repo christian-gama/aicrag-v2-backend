@@ -1,4 +1,4 @@
-import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
+import { LogErrorRepositoryProtocol } from '@/domain/repositories'
 
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { LogDecorator } from '@/presentation/decorators'
@@ -6,13 +6,13 @@ import { HttpHelper } from '@/presentation/http/http-helper'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import { makeControllerStub, makeLogErrorDbRepositoryStub } from '@/tests/__mocks__'
+import { makeControllerStub, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   controllerStub: ControllerProtocol
   error: Error
   httpHelper: HttpHelper
-  logErrorDbRepositoryStub: LogErrorDbRepositoryProtocol
+  logErrorRepositoryStub: LogErrorRepositoryProtocol
   sut: LogDecorator<ControllerProtocol>
 }
 
@@ -20,24 +20,24 @@ const makeSut = (): SutTypes => {
   const controllerStub = makeControllerStub()
   const error = new Error('any_message')
   const httpHelper = makeHttpHelper()
-  const logErrorDbRepositoryStub = makeLogErrorDbRepositoryStub(error)
+  const logErrorRepositoryStub = makeLogErrorRepositoryStub(error)
 
-  const sut = new LogDecorator(controllerStub, logErrorDbRepositoryStub)
+  const sut = new LogDecorator(controllerStub, logErrorRepositoryStub)
 
-  return { controllerStub, error, httpHelper, logErrorDbRepositoryStub, sut }
+  return { controllerStub, error, httpHelper, logErrorRepositoryStub, sut }
 }
 
 describe('logDecorator', () => {
-  it('should call logErrorDbRepository with correct error', async () => {
+  it('should call logErrorRepository with correct error', async () => {
     expect.hasAssertions()
 
-    const { controllerStub, error, httpHelper, logErrorDbRepositoryStub, sut } = makeSut()
+    const { controllerStub, error, httpHelper, logErrorRepositoryStub, sut } = makeSut()
     const errorData = {
       message: error.message,
       name: error.name,
       stack: error.stack
     }
-    const saveLogSpy = jest.spyOn(logErrorDbRepositoryStub, 'saveLog')
+    const saveLogSpy = jest.spyOn(logErrorRepositoryStub, 'saveLog')
     jest
       .spyOn(controllerStub, 'handle')
       .mockReturnValueOnce(Promise.resolve(httpHelper.serverError(error)))

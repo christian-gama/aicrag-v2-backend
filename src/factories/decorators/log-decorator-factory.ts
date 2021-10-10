@@ -2,12 +2,12 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { LogDecorator } from '@/presentation/decorators/log-decorator'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
 
-import { makeLogErrorDbRepository } from '../repositories'
+import { makeLogErrorRepository } from '../repositories'
 
 type TryCatchProtocol = ControllerProtocol | MiddlewareProtocol
 
 export const makeLogDecorator = <T extends TryCatchProtocol>(fn: T): LogDecorator<T> => {
-  const logErrorDbRepository = makeLogErrorDbRepository()
+  const logErrorRepository = makeLogErrorRepository()
 
-  return new LogDecorator<T>(fn, logErrorDbRepository)
+  return new LogDecorator<T>(fn, logErrorRepository)
 }

@@ -1,6 +1,6 @@
 export * from './create-task-repository-factory'
 export * from './create-user-repository-factory'
-export * from './log-error-db-repository-factory'
+export * from './log-error-repository-factory'
 export * from './create-log-error-repository-factory'
 export * from './task-repository-factory'
 export * from './user-repository-factory'

@@ -1,4 +1,4 @@
-import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
+import { LogErrorRepositoryProtocol } from '@/domain/repositories'
 
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
@@ -8,14 +8,14 @@ type LogDecoratorProtocol = ControllerProtocol | MiddlewareProtocol
 export class LogDecorator<T extends LogDecoratorProtocol> {
   constructor (
     private readonly fn: T,
-    private readonly logErrorDbRepository: LogErrorDbRepositoryProtocol
+    private readonly logErrorRepository: LogErrorRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const httpResponse = await this.fn.handle(httpRequest)
 
     if (httpResponse.statusCode === 500) {
-      await this.logErrorDbRepository.saveLog(httpResponse.data.error)
+      await this.logErrorRepository.saveLog(httpResponse.data.error)
     }
     return httpResponse
   }

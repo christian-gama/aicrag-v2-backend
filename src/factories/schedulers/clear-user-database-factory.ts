@@ -1,11 +1,11 @@
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 
 import { makeMongoDb } from '../database/mongo-db-factory'
-import { makeLogErrorDbRepository } from '../repositories'
+import { makeLogErrorRepository } from '../repositories'
 
 export const makeClearUserDatabase = (): ClearUserDatabase => {
   const database = makeMongoDb()
-  const logErrorDbRepository = makeLogErrorDbRepository()
+  const logErrorRepository = makeLogErrorRepository()
 
-  return new ClearUserDatabase(database, logErrorDbRepository)
+  return new ClearUserDatabase(database, logErrorRepository)
 }

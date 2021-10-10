@@ -1,5 +1,5 @@
 import { ILogError } from '@/domain'
-import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
+import { LogErrorRepositoryProtocol } from '@/domain/repositories'
 
 import { DatabaseProtocol } from '@/infra/database/protocols'
 import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
@@ -9,7 +9,7 @@ import { FindOptions } from 'mongodb'
 export class ClearUserDatabase {
   constructor (
     private readonly database: DatabaseProtocol,
-    private readonly logErrorDbRepository: LogErrorDbRepositoryProtocol
+    private readonly logErrorRepository: LogErrorRepositoryProtocol
   ) {}
 
   async deleteInactiveUsers (): Promise<number | ILogError> {
@@ -39,7 +39,7 @@ export class ClearUserDatabase {
 
       return deletedCount
     } catch (error) {
-      return await this.logErrorDbRepository.saveLog(error)
+      return await this.logErrorRepository.saveLog(error)
     }
   }
 }
