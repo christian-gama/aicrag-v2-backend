@@ -1,5 +1,5 @@
 import { ITask, IUser } from '@/domain'
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'
@@ -12,7 +12,7 @@ import { makeHttpHelper } from '@/factories/helpers'
 import {
   makeFakeTask,
   makeFakeUser,
-  makeTaskDbRepositoryStub,
+  makeTaskRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
 
@@ -22,7 +22,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: FindOneTaskController
-  taskDbRepositoryStub: TaskDbRepositoryProtocol
+  taskRepositoryStub: TaskRepositoryProtocol
   validateTaskParamStub: ValidatorProtocol
 }
 
@@ -31,10 +31,10 @@ const makeSut = (): SutTypes => {
   const fakeTask = makeFakeTask(fakeUser)
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { params: { id: 'valid_id' }, user: fakeUser }
-  const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
+  const taskRepositoryStub = makeTaskRepositoryStub(fakeTask)
   const validateTaskParamStub = makeValidatorStub()
 
-  const sut = new FindOneTaskController(validateTaskParamStub, httpHelper, taskDbRepositoryStub)
+  const sut = new FindOneTaskController(validateTaskParamStub, httpHelper, taskRepositoryStub)
 
   return {
     fakeTask,
@@ -42,7 +42,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
-    taskDbRepositoryStub,
+    taskRepositoryStub,
     validateTaskParamStub
   }
 }
@@ -73,8 +73,8 @@ describe('findOneTaskController', () => {
   it('should return badRequest if does not find a task', async () => {
     expect.hasAssertions()
 
-    const { httpHelper, request, sut, taskDbRepositoryStub } = makeSut()
-    jest.spyOn(taskDbRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
+    const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
+    jest.spyOn(taskRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
 
     const error = await sut.handle(request)
 
@@ -95,8 +95,8 @@ describe('findOneTaskController', () => {
   it('should call findTaskById with correct data', async () => {
     expect.hasAssertions()
 
-    const { request, sut, taskDbRepositoryStub } = makeSut()
-    const findTaskByIdSpy = jest.spyOn(taskDbRepositoryStub, 'findTaskById')
+    const { request, sut, taskRepositoryStub } = makeSut()
+    const findTaskByIdSpy = jest.spyOn(taskRepositoryStub, 'findTaskById')
 
     await sut.handle(request)
 

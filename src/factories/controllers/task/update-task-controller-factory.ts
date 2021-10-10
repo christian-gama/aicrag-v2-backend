@@ -3,7 +3,7 @@ import { UpdateTaskController } from '@/presentation/controllers/task'
 
 import { makeTryCatchDecorator } from '@/factories/decorators'
 import { makeHttpHelper } from '@/factories/helpers'
-import { makeTaskDbRepository } from '@/factories/repositories'
+import { makeTaskRepository } from '@/factories/repositories'
 import {
   makeValidateCommentary,
   makeValidateDate,
@@ -16,7 +16,7 @@ import {
 
 export const makeUpdateTaskController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
-  const taskDbRepository = makeTaskDbRepository()
+  const taskRepository = makeTaskRepository()
   const validateCommentary = makeValidateCommentary()
   const validateDate = makeValidateDate()
   const validateDuration = makeValidateDuration()
@@ -27,7 +27,7 @@ export const makeUpdateTaskController = (): ControllerProtocol => {
 
   const updateTaskController = new UpdateTaskController(
     httpHelper,
-    taskDbRepository,
+    taskRepository,
     validateCommentary,
     validateDate,
     validateDuration,

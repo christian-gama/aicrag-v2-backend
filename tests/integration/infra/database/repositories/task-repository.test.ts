@@ -3,7 +3,7 @@ import { CreateTaskRepositoryProtocol } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
-import { TaskDbRepository } from '@/infra/database/repositories'
+import { TaskRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -19,7 +19,7 @@ interface SutTypes {
   fakeTask: ITask
   fakeTaskData: ITaskData
   fakeUser: IUser
-  sut: TaskDbRepository
+  sut: TaskRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -29,12 +29,12 @@ const makeSut = (): SutTypes => {
   const fakeTaskData = makeFakeTaskData(fakeUser)
   const createTaskRepository = makeCreateTaskRepositoryStub(fakeTask)
 
-  const sut = new TaskDbRepository(createTaskRepository, database)
+  const sut = new TaskRepository(createTaskRepository, database)
 
   return { createTaskRepository, fakeTask, fakeTaskData, fakeUser, sut }
 }
 
-describe('taskDbRepository', () => {
+describe('taskRepository', () => {
   const client = makeMongoDb()
   let task: ITask
   let taskData: ITaskData

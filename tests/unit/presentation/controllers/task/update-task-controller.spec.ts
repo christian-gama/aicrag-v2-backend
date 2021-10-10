@@ -1,5 +1,5 @@
 import { ITask, IUser } from '@/domain'
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { InvalidParamError, MustLoginError, TaskNotFoundError } from '@/application/errors'
@@ -12,7 +12,7 @@ import { makeHttpHelper } from '@/factories/helpers'
 import {
   makeFakeTask,
   makeFakeUser,
-  makeTaskDbRepositoryStub,
+  makeTaskRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
 
@@ -24,7 +24,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: UpdateTaskController
-  taskDbRepositoryStub: TaskDbRepositoryProtocol
+  taskRepositoryStub: TaskRepositoryProtocol
   validateCommentaryStub: ValidatorProtocol
   validateDateStub: ValidatorProtocol
   validateDurationStub: ValidatorProtocol
@@ -39,7 +39,7 @@ const makeSut = (): SutTypes => {
   const fakeTask = makeFakeTask(fakeUser)
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: {}, params: { id: 'valid_id' }, user: fakeUser }
-  const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
+  const taskRepositoryStub = makeTaskRepositoryStub(fakeTask)
   const validateCommentaryStub = makeValidatorStub()
   const validateDateStub = makeValidatorStub()
   const validateDurationStub = makeValidatorStub()
@@ -50,7 +50,7 @@ const makeSut = (): SutTypes => {
 
   const sut = new UpdateTaskController(
     httpHelper,
-    taskDbRepositoryStub,
+    taskRepositoryStub,
     validateCommentaryStub,
     validateDateStub,
     validateDurationStub,
@@ -66,7 +66,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
-    taskDbRepositoryStub,
+    taskRepositoryStub,
     validateCommentaryStub,
     validateDateStub,
     validateDurationStub,
@@ -111,8 +111,8 @@ describe('updateTaskController', () => {
   it('should return badRequest if there is no task', async () => {
     expect.hasAssertions()
 
-    const { httpHelper, request, sut, taskDbRepositoryStub } = makeSut()
-    jest.spyOn(taskDbRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
+    const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
+    jest.spyOn(taskRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
 
     const error = await sut.handle(request)
 
@@ -148,8 +148,8 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes commentary', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.commentary = 'any_commentary'
 
     await sut.handle(request)
@@ -198,8 +198,8 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes date', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     const date = new Date(Date.now())
     request.body.date = date
 
@@ -273,8 +273,8 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes duration', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.duration = 15
 
     await sut.handle(request)
@@ -339,8 +339,8 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes status', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.status = 'in_progress'
 
     await sut.handle(request)
@@ -368,8 +368,8 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes taskId', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskDbRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskDbRepositoryStub, 'updateTask')
+    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.taskId = 'any_value'
 
     await sut.handle(request)

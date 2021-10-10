@@ -1,5 +1,5 @@
 import { ITask, ITaskData, IUser } from '@/domain'
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { ConflictParamError, MustLoginError } from '@/application/errors'
@@ -12,7 +12,7 @@ import { makeHttpHelper } from '@/factories/helpers'
 import {
   makeFakeTask,
   makeFakeUser,
-  makeTaskDbRepositoryStub,
+  makeTaskRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
 
@@ -24,7 +24,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: CreateTaskController
-  taskDbRepositoryStub: TaskDbRepositoryProtocol
+  taskRepositoryStub: TaskRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -43,9 +43,9 @@ const makeSut = (): SutTypes => {
 
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: fakeTaskData, user: fakeUser }
-  const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
+  const taskRepositoryStub = makeTaskRepositoryStub(fakeTask)
 
-  const sut = new CreateTaskController(createTaskValidatorStub, httpHelper, taskDbRepositoryStub)
+  const sut = new CreateTaskController(createTaskValidatorStub, httpHelper, taskRepositoryStub)
 
   return {
     createTaskValidatorStub,
@@ -55,7 +55,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
-    taskDbRepositoryStub
+    taskRepositoryStub
   }
 }
 
@@ -112,9 +112,9 @@ describe('createTaskController', () => {
   it('should call saveTask with correct data', async () => {
     expect.hasAssertions()
 
-    const { request, sut, taskDbRepositoryStub } = makeSut()
+    const { request, sut, taskRepositoryStub } = makeSut()
     const data = Object.assign({ user: request.user }, request.body)
-    const saveTaskSpy = jest.spyOn(taskDbRepositoryStub, 'saveTask')
+    const saveTaskSpy = jest.spyOn(taskRepositoryStub, 'saveTask')
 
     await sut.handle(request)
 

@@ -1,6 +1,6 @@
 import { ILogError, IUser, ISignUpUserData, ITask, ITaskData } from '@/domain'
 import { LogErrorDbRepositoryProtocol, UserDbRepositoryProtocol } from '@/domain/repositories'
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 
 import { QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
 import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
@@ -18,8 +18,8 @@ export const makeLogErrorDbRepositoryStub = (error: Error): LogErrorDbRepository
   return new LogErrorDbRepositoryStub()
 }
 
-export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProtocol => {
-  class TaskDbRepositoryStub implements TaskDbRepositoryProtocol {
+export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol => {
+  class TaskRepositoryStub implements TaskRepositoryProtocol {
     async findAllTasks<T extends ITask>(userId: string): Promise<QueryResultProtocol<T>> {
       return (await Promise.resolve({
         count: 1,
@@ -46,7 +46,7 @@ export const makeTaskDbRepositoryStub = (fakeTask: ITask): TaskDbRepositoryProto
     }
   }
 
-  return new TaskDbRepositoryStub()
+  return new TaskRepositoryStub()
 }
 
 export const makeUserDbRepositoryStub = (fakeUser: IUser): UserDbRepositoryProtocol => {

@@ -1,12 +1,12 @@
 import { ITask, ITaskData } from '@/domain'
 import { CreateTaskRepositoryProtocol } from '@/domain/repositories'
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 
 import { DatabaseProtocol } from '../protocols'
 import { QueryProtocol, QueryResultProtocol } from '../protocols/queries-protocol'
 import { TaskDbFilter } from '../protocols/update-task-options'
 
-export class TaskDbRepository implements TaskDbRepositoryProtocol {
+export class TaskRepository implements TaskRepositoryProtocol {
   constructor (
     private readonly createTaskRepository: CreateTaskRepositoryProtocol,
     private readonly database: DatabaseProtocol

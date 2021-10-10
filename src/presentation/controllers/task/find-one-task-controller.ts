@@ -1,4 +1,4 @@
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'
@@ -11,7 +11,7 @@ export class FindOneTaskController implements ControllerProtocol {
   constructor (
     private readonly validateTaskParam: ValidatorProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly taskDbRepository: TaskDbRepositoryProtocol
+    private readonly taskRepository: TaskRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -23,7 +23,7 @@ export class FindOneTaskController implements ControllerProtocol {
     const error = await this.validateTaskParam.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    const task = await this.taskDbRepository.findTaskById(data.id, user.personal.id)
+    const task = await this.taskRepository.findTaskById(data.id, user.personal.id)
 
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 

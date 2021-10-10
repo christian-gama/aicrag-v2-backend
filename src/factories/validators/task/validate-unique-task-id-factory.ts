@@ -1,9 +1,9 @@
 import { ValidateUniqueTaskId } from '@/application/validators/task'
 
-import { makeTaskDbRepository } from '@/factories/repositories/task-db-repository-factory'
+import { makeTaskRepository } from '@/factories/repositories/task-repository-factory'
 
 export const makeValidateUniqueTaskId = (): ValidateUniqueTaskId => {
-  const taskDbRepository = makeTaskDbRepository()
+  const taskRepository = makeTaskRepository()
 
-  return new ValidateUniqueTaskId(taskDbRepository)
+  return new ValidateUniqueTaskId(taskRepository)
 }

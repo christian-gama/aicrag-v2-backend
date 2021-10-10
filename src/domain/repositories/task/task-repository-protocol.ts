@@ -3,7 +3,7 @@ import { ITask, ITaskData } from '@/domain'
 import { QueryProtocol, QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
 import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
 
-export interface TaskDbRepositoryProtocol
+export interface TaskRepositoryProtocol
   extends FindAllTasksDbProtocol,
   FindTaskByIdDbProtocol,
   FindTaskByTaskIdDbProtocol,

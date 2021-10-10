@@ -1,4 +1,4 @@
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'
@@ -10,7 +10,7 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 export class UpdateTaskController implements ControllerProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly taskDbRepository: TaskDbRepositoryProtocol,
+    private readonly taskRepository: TaskRepositoryProtocol,
     private readonly validateCommentary: ValidatorProtocol,
     private readonly validateDate: ValidatorProtocol,
     private readonly validateDuration: ValidatorProtocol,
@@ -30,7 +30,7 @@ export class UpdateTaskController implements ControllerProtocol {
     const error = await this.validateTaskParam.validate(params)
     if (error) return this.httpHelper.badRequest(error)
 
-    const task = await this.taskDbRepository.findTaskById(params.id, user.personal.id)
+    const task = await this.taskRepository.findTaskById(params.id, user.personal.id)
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 
     const update: Record<string, any> = {}
@@ -91,7 +91,7 @@ export class UpdateTaskController implements ControllerProtocol {
     if (isEmpty) return this.httpHelper.ok({ message: 'No changes were made' })
     else update['logs.updatedAt'] = new Date(Date.now())
 
-    const updatedTask = await this.taskDbRepository.updateTask(task.id, update)
+    const updatedTask = await this.taskRepository.updateTask(task.id, update)
 
     return this.httpHelper.ok({ task: updatedTask })
   }

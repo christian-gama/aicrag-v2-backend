@@ -1,4 +1,4 @@
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
@@ -11,7 +11,7 @@ export class FindAllTasksController implements ControllerProtocol {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
     private readonly queryValidator: ValidatorProtocol,
-    private readonly taskDbRepository: TaskDbRepositoryProtocol
+    private readonly taskRepository: TaskRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -25,7 +25,7 @@ export class FindAllTasksController implements ControllerProtocol {
       return this.httpHelper.badRequest(error)
     }
 
-    const result = await this.taskDbRepository.findAllTasks(user.personal.id, query)
+    const result = await this.taskRepository.findAllTasks(user.personal.id, query)
 
     return this.httpHelper.ok({
       documents: result.documents,

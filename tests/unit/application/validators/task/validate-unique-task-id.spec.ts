@@ -1,29 +1,29 @@
 import { ITask, IUser } from '@/domain'
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 
 import { ConflictParamError } from '@/application/errors'
 import { ValidateUniqueTaskId } from '@/application/validators/task'
 
 import { HttpRequest } from '@/presentation/http/protocols'
 
-import { makeFakeTask, makeFakeUser, makeTaskDbRepositoryStub } from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeTask: ITask
   fakeUser: IUser
   request: HttpRequest
   sut: ValidateUniqueTaskId
-  taskDbRepositoryStub: TaskDbRepositoryProtocol
+  taskRepositoryStub: TaskRepositoryProtocol
 }
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const fakeTask = makeFakeTask(fakeUser)
   const request: HttpRequest = { body: { taskId: 'any_id', user: fakeUser } }
-  const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
+  const taskRepositoryStub = makeTaskRepositoryStub(fakeTask)
 
-  const sut = new ValidateUniqueTaskId(taskDbRepositoryStub)
+  const sut = new ValidateUniqueTaskId(taskRepositoryStub)
 
-  return { fakeTask, fakeUser, request, sut, taskDbRepositoryStub }
+  return { fakeTask, fakeUser, request, sut, taskRepositoryStub }
 }
 
 describe('validateUniqueTaskId', () => {
@@ -52,8 +52,8 @@ describe('validateUniqueTaskId', () => {
   it('should return undefined if task does not exist', async () => {
     expect.hasAssertions()
 
-    const { request, sut, taskDbRepositoryStub } = makeSut()
-    jest.spyOn(taskDbRepositoryStub, 'findTaskByTaskId').mockReturnValueOnce(Promise.resolve(null))
+    const { request, sut, taskRepositoryStub } = makeSut()
+    jest.spyOn(taskRepositoryStub, 'findTaskByTaskId').mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.validate(request.body)
 

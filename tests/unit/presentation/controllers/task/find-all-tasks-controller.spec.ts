@@ -1,5 +1,5 @@
 import { ITask, IUser } from '@/domain'
-import { TaskDbRepositoryProtocol } from '@/domain/repositories/task/task-db-repository-protocol'
+import { TaskRepositoryProtocol } from '@/domain/repositories/task/task-repository-protocol'
 import { ValidatorProtocol } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
@@ -12,7 +12,7 @@ import { makeHttpHelper } from '@/factories/helpers'
 import {
   makeFakeTask,
   makeFakeUser,
-  makeTaskDbRepositoryStub,
+  makeTaskRepositoryStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
 
@@ -23,7 +23,7 @@ interface SutTypes {
   queryValidatorStub: ValidatorProtocol
   request: HttpRequest
   sut: FindAllTasksController
-  taskDbRepositoryStub: TaskDbRepositoryProtocol
+  taskRepositoryStub: TaskRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -32,9 +32,9 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const queryValidatorStub = makeValidatorStub()
   const request: HttpRequest = { query: { any_query: 'any_value' }, user: fakeUser }
-  const taskDbRepositoryStub = makeTaskDbRepositoryStub(fakeTask)
+  const taskRepositoryStub = makeTaskRepositoryStub(fakeTask)
 
-  const sut = new FindAllTasksController(httpHelper, queryValidatorStub, taskDbRepositoryStub)
+  const sut = new FindAllTasksController(httpHelper, queryValidatorStub, taskRepositoryStub)
 
   return {
     fakeTask,
@@ -43,7 +43,7 @@ const makeSut = (): SutTypes => {
     queryValidatorStub,
     request,
     sut,
-    taskDbRepositoryStub
+    taskRepositoryStub
   }
 }
 
@@ -73,9 +73,9 @@ describe('findAllTasksController', () => {
   it('should return ok if does not find a task', async () => {
     expect.hasAssertions()
 
-    const { httpHelper, request, sut, taskDbRepositoryStub } = makeSut()
+    const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest
-      .spyOn(taskDbRepositoryStub, 'findAllTasks')
+      .spyOn(taskRepositoryStub, 'findAllTasks')
       .mockReturnValueOnce(
         Promise.resolve({ count: 0, currentPage: 1, documents: [], totalPages: 1 })
       )
@@ -104,8 +104,8 @@ describe('findAllTasksController', () => {
   it('should call findAllTasks with correct data', async () => {
     expect.hasAssertions()
 
-    const { request, sut, taskDbRepositoryStub } = makeSut()
-    const findTaskByIdSpy = jest.spyOn(taskDbRepositoryStub, 'findAllTasks')
+    const { request, sut, taskRepositoryStub } = makeSut()
+    const findTaskByIdSpy = jest.spyOn(taskRepositoryStub, 'findAllTasks')
 
     await sut.handle(request)
 
