@@ -18,6 +18,7 @@ import {
 import { makeSignUpController } from '@/factories/controllers/signup'
 import {
   makeCreateTaskController,
+  makeDeleteTaskController,
   makeFindAllTasksController,
   makeFindOneTaskController,
   makeUpdateTaskController
@@ -58,6 +59,7 @@ export const signUpController = controllerAdapter(makeSignUpController())
 
 // Task Routes
 export const createTaskController = controllerAdapter(makeCreateTaskController())
+export const deleteTaskController = controllerAdapter(makeDeleteTaskController())
 export const findAllTasksController = controllerAdapter(makeFindAllTasksController())
 export const findOneTaskController = controllerAdapter(makeFindOneTaskController())
 export const updateTaskController = controllerAdapter(makeUpdateTaskController())
