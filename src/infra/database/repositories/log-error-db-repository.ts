@@ -1,18 +1,18 @@
 import { ILogError } from '@/domain'
 import { LogErrorDbRepositoryProtocol } from '@/domain/repositories'
 
-import { LogErrorRepository } from '@/application/repositories'
+import { CreateLogErrorRepository } from '@/application/repositories'
 
 import { DatabaseProtocol } from '../protocols'
 
 export class LogErrorDbRepository implements LogErrorDbRepositoryProtocol {
   constructor (
-    private readonly database: DatabaseProtocol,
-    private readonly logErrorRepository: LogErrorRepository
+    private readonly createLogErrorRepository: CreateLogErrorRepository,
+    private readonly database: DatabaseProtocol
   ) {}
 
   async saveLog (error: Error): Promise<ILogError> {
-    const log = this.logErrorRepository.createLog(error)
+    const log = this.createLogErrorRepository.createLog(error)
 
     const logCollection = this.database.collection('logs')
 

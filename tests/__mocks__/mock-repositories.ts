@@ -1,18 +1,18 @@
 import { ILogError, ISignUpUserData, ITask, ITaskData, IUser } from '@/domain'
 import {
-  LogErrorRepositoryProtocol,
+  CreateLogErrorRepositoryProtocol,
   CreateTaskRepositoryProtocol,
   CreateUserRepositoryProtocol
 } from '@/domain/repositories'
 
-export const makeLogErrorRepositoryStub = (fakeLogError: ILogError): LogErrorRepositoryProtocol => {
-  class LogErrorRepositoryStub implements LogErrorRepositoryProtocol {
+export const makeCreateLogErrorRepositoryStub = (fakeLogError: ILogError): CreateLogErrorRepositoryProtocol => {
+  class CreateLogErrorRepositoryStub implements CreateLogErrorRepositoryProtocol {
     createLog (_error: Error): ILogError {
       return fakeLogError
     }
   }
 
-  return new LogErrorRepositoryStub()
+  return new CreateLogErrorRepositoryStub()
 }
 
 export const makeCreateTaskRepositoryStub = (fakeTask: ITask): CreateTaskRepositoryProtocol => {

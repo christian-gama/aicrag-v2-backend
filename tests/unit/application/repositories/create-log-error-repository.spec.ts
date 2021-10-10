@@ -1,18 +1,18 @@
-import { LogErrorRepository } from '@/application/repositories'
+import { CreateLogErrorRepository } from '@/application/repositories'
 
 import MockDate from 'mockdate'
 
 interface SutTypes {
-  sut: LogErrorRepository
+  sut: CreateLogErrorRepository
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new LogErrorRepository()
+  const sut = new CreateLogErrorRepository()
 
   return { sut }
 }
 
-describe('logErrorRepository', () => {
+describe('createLogErrorRepository', () => {
   afterAll(() => {
     MockDate.reset()
   })

@@ -1,11 +1,11 @@
 import { LogErrorDbRepository } from '@/infra/database/repositories'
 
-import { makeLogErrorRepository } from '.'
+import { makeCreateLogErrorRepository } from '.'
 import { makeMongoDb } from '../database/mongo-db-factory'
 
 export const makeLogErrorDbRepository = (): LogErrorDbRepository => {
+  const createLogErrorRepository = makeCreateLogErrorRepository()
   const database = makeMongoDb()
-  const logErrorRepository = makeLogErrorRepository()
 
-  return new LogErrorDbRepository(database, logErrorRepository)
+  return new LogErrorDbRepository(createLogErrorRepository, database)
 }
