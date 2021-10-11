@@ -51,7 +51,7 @@ export const TaskSchema = {
               description: 'must be a date and is required'
             },
             updatedAt: {
-              bsonType: 'date',
+              bsonType: ['date', 'null'],
               description: 'must be a date and is required'
             }
           }
