@@ -1,10 +1,10 @@
 import { InvalidQueryError } from '@/application/errors'
 
 export interface QueryMethodsProtocol {
-  fields: (query?: Record<string, string>) => Record<string, 0 | 1> | InvalidQueryError
-  limit: (query?: Record<string, string>) => number
-  page: (query?: Record<string, string>) => number
-  sort: (query?: Record<string, string>) => Record<string, -1 | 1>
+  fields: (query?: QueryProtocol) => Record<string, 0 | 1> | InvalidQueryError
+  limit: (query?: QueryProtocol) => number
+  page: (query?: QueryProtocol) => number
+  sort: (query?: QueryProtocol) => Record<string, -1 | 1>
 }
 
 export interface QueryResultProtocol<T> {
@@ -15,5 +15,8 @@ export interface QueryResultProtocol<T> {
 }
 
 export interface QueryProtocol {
-  [prop: string]: string
+  fields?: string
+  limit?: string
+  page?: string
+  sort?: string
 }

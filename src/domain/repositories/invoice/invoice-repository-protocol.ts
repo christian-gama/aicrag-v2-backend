@@ -4,6 +4,11 @@ import { QueryProtocol, QueryResultProtocol } from '@/infra/database/protocols/q
 
 export interface InvoiceRepositoryProtocol extends GetInvoiceByMonthProtocol {}
 
+export interface QueryInvoiceProtocol extends QueryProtocol {
+  month: string
+  year: string
+  taskId?: string
+}
 export interface GetInvoiceByMonthProtocol {
   /**
    * @async Asynchronous method.
@@ -13,12 +18,7 @@ export interface GetInvoiceByMonthProtocol {
    * @returns Return an array of tasks if finds it or an empty array if does not.
    */
   getInvoiceByMonth: <T extends ITask>(
-    data: {
-      month: number
-      taskId?: string
-      userId: string
-      year: number
-    },
-    query: QueryProtocol
+    query: QueryInvoiceProtocol,
+    userId: string,
   ) => Promise<QueryResultProtocol<T>>
 }
