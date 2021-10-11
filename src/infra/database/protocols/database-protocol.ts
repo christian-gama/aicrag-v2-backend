@@ -5,6 +5,7 @@ export interface Document {
 }
 
 export interface CollectionProtocol {
+  aggregate: <T>(pipeline: Document[], query: QueryProtocol) => Promise<QueryResultProtocol<T>>
   deleteMany: (filter: Document) => Promise<number>
   deleteOne: (filter: Document) => Promise<boolean>
   findAll: <T extends Document>(
