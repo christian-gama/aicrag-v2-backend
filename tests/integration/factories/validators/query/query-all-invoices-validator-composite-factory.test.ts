@@ -7,9 +7,9 @@ import {
   makeValidateLimit,
   makeValidatePage,
   makeValidateSort,
-  makeQueryAllInvoicesValidatorComposite
+  makeQueryAllInvoicesValidatorComposite,
+  makeValidateType
 } from '@/factories/validators/query'
-import { makeValidateType } from '@/factories/validators/task'
 import { makeRequiredFields } from '@/factories/validators/validate-required-fields-factory'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
