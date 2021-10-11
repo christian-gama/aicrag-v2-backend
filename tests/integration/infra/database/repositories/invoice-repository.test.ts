@@ -51,6 +51,68 @@ describe('invoiceRepository', () => {
     task = fakeTask
   })
 
+  describe('getAllInvoices', () => {
+    it('should return a result if finds one or more tasks', async () => {
+      expect.hasAssertions()
+
+      const { sut } = makeSut()
+
+      await taskCollection.insertOne(task)
+
+      const query = {
+        type: 'TX' as 'TX'
+      }
+
+      const result = await sut.getAllInvoices(query, task.userId)
+
+      console.log(result.documents)
+
+      expect(result).toStrictEqual({
+        count: 1,
+        displaying: 1,
+        documents: [{ _id: { month: task.date.month, year: task.date.year }, totalUsd: task.usd }],
+        page: '1 of 1'
+      })
+    })
+
+    it('should return a result from TX if find one or more tasks with a query', async () => {
+      expect.hasAssertions()
+
+      const { fakeUser, sut } = makeSut()
+
+      const fakeTask = makeFakeTask(fakeUser)
+      const fakeTask2 = makeFakeTask(fakeUser)
+      const fakeTask3 = makeFakeTask(fakeUser)
+      fakeTask2.date = fakeTask.date
+      fakeTask3.date = fakeTask.date
+
+      await taskCollection.insertOne(fakeTask)
+      await taskCollection.insertOne(fakeTask2)
+      await taskCollection.insertOne(fakeTask3)
+
+      const query = {
+        limit: '1',
+        page: '1',
+        type: 'TX' as 'TX',
+        year: fakeTask.date.year.toString()
+      }
+
+      const result = await sut.getAllInvoices(query, fakeUser.personal.id)
+
+      expect(result).toStrictEqual({
+        count: 1,
+        displaying: 1,
+        documents: [
+          {
+            _id: { month: fakeTask.date.month, year: fakeTask.date.year },
+            totalUsd: +(fakeTask.usd + fakeTask2.usd + +fakeTask3.usd).toFixed(2)
+          }
+        ],
+        page: '1 of 1'
+      })
+    })
+  })
+
   describe('getInvoiceByMonth', () => {
     it('should return a result if finds one or more tasks', async () => {
       expect.hasAssertions()
