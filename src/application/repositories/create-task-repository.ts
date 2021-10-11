@@ -11,7 +11,8 @@ export class CreateTaskRepository implements CreateTaskRepositoryProtocol {
     const d = new Date(Date.parse(date))
     const handicap = user.settings.handicap
     const id = this.uuid.generate()
-    const usd = type === 'TX' ? (duration / 60) * 65 * handicap : (duration / 60) * 112.5 * handicap
+    const _duration = Math.round(duration * 100) / 100
+    const usd = type === 'TX' ? (_duration / 60) * 65 * handicap : (_duration / 60) * 112.5 * handicap
 
     return {
       commentary: commentary ?? '',
@@ -22,7 +23,7 @@ export class CreateTaskRepository implements CreateTaskRepositoryProtocol {
         month: d.getMonth(),
         year: d.getFullYear()
       },
-      duration,
+      duration: _duration,
       id,
       logs: {
         createdAt: new Date(Date.now()),

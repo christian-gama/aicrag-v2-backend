@@ -16,7 +16,7 @@ export const makeFakeTaskData = (fakeUser: IUser): ITaskData => {
 
 export const makeFakeTask = (fakeUser: IUser): ITask => {
   const date = faker.date.recent(Math.random() * 27)
-  const duration = Math.random() * 30
+  const duration = Math.round(Math.random() * 30 * 100) / 100
 
   return {
     commentary: faker.lorem.words(10),
