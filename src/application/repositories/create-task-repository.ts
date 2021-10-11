@@ -31,7 +31,7 @@ export class CreateTaskRepository implements CreateTaskRepositoryProtocol {
       status,
       taskId: taskId ?? '',
       type,
-      usd,
+      usd: +usd.toFixed(2),
       userId: user.personal.id
     }
   }
