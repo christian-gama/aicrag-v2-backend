@@ -2,7 +2,15 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
-import { makeValidateUniqueTaskId, makeValidateType, makeValidateDate, makeValidateDuration, makeValidateStatus, makeValidateTaskId, makeCreateTaskValidatorComposite } from '@/factories/validators/task'
+import {
+  makeValidateUniqueTaskId,
+  makeValidateType,
+  makeValidateDate,
+  makeValidateDuration,
+  makeValidateStatus,
+  makeValidateTaskId,
+  makeCreateTaskValidatorComposite
+} from '@/factories/validators/task'
 import { makeValidateCommentary } from '@/factories/validators/task/validate-commentary-factory'
 import { makeRequiredFields } from '@/factories/validators/validate-required-fields-factory'
 
