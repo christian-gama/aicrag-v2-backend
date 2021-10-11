@@ -105,7 +105,7 @@ describe('invoiceRepository', () => {
         documents: [
           {
             _id: { month: fakeTask.date.month, year: fakeTask.date.year },
-            totalUsd: +(fakeTask.usd + fakeTask2.usd + +fakeTask3.usd).toFixed(2)
+            totalUsd: Math.round((fakeTask.usd + fakeTask2.usd + fakeTask3.usd) * 100) / 100
           }
         ],
         page: '1 of 1'
