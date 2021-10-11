@@ -4,7 +4,7 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import { makeRequiredFields, makeValidateEmail, makeValidateEmailExists } from '.'
 
-export const makeSendWelcomeEmailValidatorComposite = (): ValidatorProtocol => {
+export const makeSendWelcomeEmailValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['email']
@@ -16,7 +16,7 @@ export const makeSendWelcomeEmailValidatorComposite = (): ValidatorProtocol => {
   validations.push(makeValidateEmail())
   validations.push(makeValidateEmailExists())
 
-  const sendWelcomeEmailValidatorComposite = new ValidationComposite(validations)
+  const sendWelcomeEmailValidator = new ValidationComposite(validations)
 
-  return sendWelcomeEmailValidatorComposite
+  return sendWelcomeEmailValidator
 }

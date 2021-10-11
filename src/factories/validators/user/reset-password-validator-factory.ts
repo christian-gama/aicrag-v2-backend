@@ -4,7 +4,7 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import { makeRequiredFields, makeValidatePassword, makeValidatePasswordComparison } from '.'
 
-export const makeResetPasswordValidatorComposite = (): ValidatorProtocol => {
+export const makeResetPasswordValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['password', 'passwordConfirmation']
@@ -15,7 +15,7 @@ export const makeResetPasswordValidatorComposite = (): ValidatorProtocol => {
   validations.push(makeValidatePassword())
   validations.push(makeValidatePasswordComparison())
 
-  const resetPasswordValidatorComposite = new ValidationComposite(validations)
+  const resetPasswordValidator = new ValidationComposite(validations)
 
-  return resetPasswordValidatorComposite
+  return resetPasswordValidator
 }

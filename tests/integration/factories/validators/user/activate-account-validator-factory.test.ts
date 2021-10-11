@@ -3,18 +3,18 @@ import { ValidatorProtocol } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
-  makeActivateAccountValidatorComposite,
+  makeActivateAccountValidator,
   makeRequiredFields,
   makeValidateActivationCode
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('activateAccountValidatorComposite', () => {
+describe('activateAccountValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeActivateAccountValidatorComposite()
+    makeActivateAccountValidator()
 
     const validations: ValidatorProtocol[] = []
 

@@ -5,11 +5,11 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken } from '../../providers/token'
 import { makeUserRepository } from '../../repositories'
-import { makeForgotPasswordValidatorComposite } from '../../validators/user'
+import { makeForgotPasswordValidator } from '../../validators/user'
 
 export const makeForgotPasswordController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()
-  const forgotPasswordValidator = makeForgotPasswordValidatorComposite()
+  const forgotPasswordValidator = makeForgotPasswordValidator()
   const generateAccessToken = makeGenerateAccessToken()
   const httpHelper = makeHttpHelper()
   const userRepository = makeUserRepository()

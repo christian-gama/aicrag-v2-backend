@@ -7,14 +7,14 @@ import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateRefreshToken } from '../../providers/token'
 import { makeVerifyResetPasswordToken } from '../../providers/token/verify-reset-password-token-factory'
 import { makeUserRepository } from '../../repositories'
-import { makeResetPasswordValidatorComposite } from '../../validators/user/reset-password-validator-composite-factory'
+import { makeResetPasswordValidator } from '../../validators/user/reset-password-validator-factory'
 
 export const makeResetPasswordController = (): ControllerProtocol => {
   const filterUserData = makeFilterUserData()
   const generateRefreshToken = makeGenerateRefreshToken()
   const hasher = makeBcryptAdapter()
   const httpHelper = makeHttpHelper()
-  const resetPasswordValidator = makeResetPasswordValidatorComposite()
+  const resetPasswordValidator = makeResetPasswordValidator()
   const userRepository = makeUserRepository()
   const verifyResetPasswordToken = makeVerifyResetPasswordToken()
 

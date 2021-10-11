@@ -7,7 +7,7 @@ import { makeValidateLimit } from './validate-limit-factory'
 import { makeValidatePage } from './validate-page-factory'
 import { makeValidateSort } from './validate-sort-factory'
 
-export const makeQueryValidatorComposite = (): ValidatorProtocol => {
+export const makeQueryValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   // Must have this exact validation order
@@ -16,7 +16,7 @@ export const makeQueryValidatorComposite = (): ValidatorProtocol => {
   validations.push(makeValidatePage())
   validations.push(makeValidateSort())
 
-  const queryValidatorComposite = new ValidationComposite(validations)
+  const queryValidator = new ValidationComposite(validations)
 
-  return queryValidatorComposite
+  return queryValidator
 }

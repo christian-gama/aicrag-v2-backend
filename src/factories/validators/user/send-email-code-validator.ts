@@ -2,9 +2,14 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/user'
 
-import { makeRequiredFields, makeValidateEmail, makeValidateEmailExists } from '.'
+import {
+  makeRequiredFields,
+  makeValidateEmail,
+  makeValidateEmailExists,
+  makeValidateTempEmail
+} from '.'
 
-export const makeForgotPasswordValidatorComposite = (): ValidatorProtocol => {
+export const makeSendEmailCodeValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['email']
@@ -15,8 +20,9 @@ export const makeForgotPasswordValidatorComposite = (): ValidatorProtocol => {
   // Must have this exact validation order
   validations.push(makeValidateEmail())
   validations.push(makeValidateEmailExists())
+  validations.push(makeValidateTempEmail())
 
-  const forgotPasswordComposite = new ValidationComposite(validations)
+  const sendEmailCodeValidator = new ValidationComposite(validations)
 
-  return forgotPasswordComposite
+  return sendEmailCodeValidator
 }

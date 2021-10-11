@@ -4,28 +4,29 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import {
   makeRequiredFields,
-  makeValidatePassword,
-  makeValidatePasswordComparison
+  makeSendWelcomeEmailValidator,
+  makeValidateEmail,
+  makeValidateEmailExists
 } from '@/factories/validators/user'
-import { makeResetPasswordValidatorComposite } from '@/factories/validators/user/reset-password-validator-composite-factory'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('resetPasswordValidatorComposite', () => {
+describe('sendWelcomeEmail', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeResetPasswordValidatorComposite()
+    makeSendWelcomeEmailValidator()
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['password', 'passwordConfirmation']
+    const fields = ['email']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
-    validations.push(makeValidatePassword())
-    validations.push(makeValidatePasswordComparison())
+    // Must have this exact validation order
+    validations.push(makeValidateEmail())
+    validations.push(makeValidateEmailExists())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

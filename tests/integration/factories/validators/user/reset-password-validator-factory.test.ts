@@ -3,35 +3,29 @@ import { ValidatorProtocol } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
-  makeLoginValidatorComposite,
   makeRequiredFields,
-  makeValidateEmail,
   makeValidatePassword,
-  makeValidateEmailExists,
-  makeValidatePasswordMatch,
-  makeValidateActiveAccount
+  makeValidatePasswordComparison
 } from '@/factories/validators/user'
+import { makeResetPasswordValidator } from '@/factories/validators/user/reset-password-validator-factory'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('loginValidatorComposite', () => {
+describe('resetPasswordValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeLoginValidatorComposite()
+    makeResetPasswordValidator()
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['email', 'password']
+    const fields = ['password', 'passwordConfirmation']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
-    validations.push(makeValidateEmail())
     validations.push(makeValidatePassword())
-    validations.push(makeValidateEmailExists())
-    validations.push(makeValidatePasswordMatch())
-    validations.push(makeValidateActiveAccount())
+    validations.push(makeValidatePasswordComparison())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

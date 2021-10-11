@@ -4,7 +4,7 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import { makeRequiredFields, makeValidateActivationCode } from '.'
 
-export const makeActivateAccountValidatorComposite = (): ValidatorProtocol => {
+export const makeActivateAccountValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['email', 'activationCode']
@@ -14,7 +14,7 @@ export const makeActivateAccountValidatorComposite = (): ValidatorProtocol => {
 
   validations.push(makeValidateActivationCode())
 
-  const activateAccountValidatorComposite = new ValidationComposite(validations)
+  const activateAccountValidator = new ValidationComposite(validations)
 
-  return activateAccountValidatorComposite
+  return activateAccountValidator
 }

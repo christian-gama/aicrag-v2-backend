@@ -5,11 +5,11 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeForgotPasswordEmail } from '../../mailer'
 import { makeUserRepository } from '../../repositories'
-import { makeForgotPasswordValidatorComposite } from '../../validators/user'
+import { makeForgotPasswordValidator } from '../../validators/user'
 
 export const makeSendForgotPasswordEmailController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
-  const forgotPasswordValidator = makeForgotPasswordValidatorComposite()
+  const forgotPasswordValidator = makeForgotPasswordValidator()
   const userRepository = makeUserRepository()
   const forgotPasswordEmail = makeForgotPasswordEmail()
 

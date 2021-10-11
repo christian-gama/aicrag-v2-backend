@@ -1,5 +1,5 @@
 export * from '../validate-required-fields-factory'
-export * from './create-task-validator-composite-factory'
+export * from './create-task-validator-factory'
 export * from './validate-commentary-factory'
 export * from './validate-date-factory'
 export * from './validate-duration-factory'

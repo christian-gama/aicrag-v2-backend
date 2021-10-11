@@ -5,10 +5,10 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../providers/token'
 import { makeUserRepository } from '../../repositories'
-import { makeActivateAccountValidatorComposite } from '../../validators/user'
+import { makeActivateAccountValidator } from '../../validators/user'
 
 export const makeActivateAccountController = (): ControllerProtocol => {
-  const activateAccountValidator = makeActivateAccountValidatorComposite()
+  const activateAccountValidator = makeActivateAccountValidator()
   const filterUserData = makeFilterUserData()
   const generateAccessToken = makeGenerateAccessToken()
   const generateRefreshToken = makeGenerateRefreshToken()

@@ -9,18 +9,18 @@ import {
   makeValidateDuration,
   makeValidateStatus,
   makeValidateTaskId,
-  makeCreateTaskValidatorComposite
+  makeCreateTaskValidator
 } from '@/factories/validators/task'
 import { makeValidateCommentary } from '@/factories/validators/task/validate-commentary-factory'
 import { makeRequiredFields } from '@/factories/validators/validate-required-fields-factory'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('createTaskValidatorComposite', () => {
+describe('createTaskValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeCreateTaskValidatorComposite()
+    makeCreateTaskValidator()
 
     const validations: ValidatorProtocol[] = []
 

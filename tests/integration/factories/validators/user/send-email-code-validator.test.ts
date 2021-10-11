@@ -4,18 +4,19 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import {
   makeRequiredFields,
-  makeSendWelcomeEmailValidatorComposite,
+  makeSendEmailCodeValidator,
   makeValidateEmail,
-  makeValidateEmailExists
+  makeValidateEmailExists,
+  makeValidateTempEmail
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('sendWelcomeEmail', () => {
+describe('sendEmailCodeValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeSendWelcomeEmailValidatorComposite()
+    makeSendEmailCodeValidator()
 
     const validations: ValidatorProtocol[] = []
 
@@ -27,6 +28,7 @@ describe('sendWelcomeEmail', () => {
     // Must have this exact validation order
     validations.push(makeValidateEmail())
     validations.push(makeValidateEmailExists())
+    validations.push(makeValidateTempEmail())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

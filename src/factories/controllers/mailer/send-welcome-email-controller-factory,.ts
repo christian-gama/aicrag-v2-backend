@@ -5,11 +5,11 @@ import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeWelcomeEmail } from '../../mailer'
 import { makeUserRepository } from '../../repositories'
-import { makeSendWelcomeEmailValidatorComposite } from '../../validators/user'
+import { makeSendWelcomeEmailValidator } from '../../validators/user'
 
 export const makeSendWelcomeEmailController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
-  const sendWelcomeValidator = makeSendWelcomeEmailValidatorComposite()
+  const sendWelcomeValidator = makeSendWelcomeEmailValidator()
   const userRepository = makeUserRepository()
   const welcomeEmail = makeWelcomeEmail()
 

@@ -4,7 +4,7 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import { makeRequiredFields, makeValidateEmailCode } from '.'
 
-export const makeUpdateEmailByCodeValidatorComposite = (): ValidatorProtocol => {
+export const makeUpdateEmailByCodeValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['emailCode']

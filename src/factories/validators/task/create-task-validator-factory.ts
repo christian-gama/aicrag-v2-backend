@@ -13,7 +13,7 @@ import {
   , makeValidateCommentary
 } from '.'
 
-export const makeCreateTaskValidatorComposite = (): ValidatorProtocol => {
+export const makeCreateTaskValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
   const fields = ['date', 'duration', 'status', 'type']
@@ -30,7 +30,7 @@ export const makeCreateTaskValidatorComposite = (): ValidatorProtocol => {
   validations.push(makeValidateStatus())
   validations.push(makeValidateTaskId())
 
-  const createTaskValidatorComposite = new ValidationComposite(validations)
+  const createTaskValidator = new ValidationComposite(validations)
 
-  return createTaskValidatorComposite
+  return createTaskValidator
 }

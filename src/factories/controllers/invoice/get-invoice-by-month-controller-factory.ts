@@ -4,12 +4,12 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 import { makeTryCatchDecorator } from '@/factories/decorators'
 import { makeHttpHelper } from '@/factories/helpers'
 import { makeInvoiceRepository } from '@/factories/repositories'
-import { makeQueryInvoiceValidatorComposite } from '@/factories/validators/query/query-invoice-validator-composite-factory'
+import { makeQueryInvoiceValidator } from '@/factories/validators/query/query-invoice-validator-factory'
 
 export const makeGetInvoiceByMonthController = (): ControllerProtocol => {
   const httpHelper = makeHttpHelper()
   const invoiceRepository = makeInvoiceRepository()
-  const queryInvoiceValidator = makeQueryInvoiceValidatorComposite()
+  const queryInvoiceValidator = makeQueryInvoiceValidator()
 
   const getInvoiceByController = new GetInvoiceByMonthController(
     httpHelper,

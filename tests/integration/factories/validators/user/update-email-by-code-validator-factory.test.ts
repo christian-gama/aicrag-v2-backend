@@ -3,18 +3,18 @@ import { ValidatorProtocol } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
-  makeUpdateEmailByCodeValidatorComposite,
+  makeUpdateEmailByCodeValidator,
   makeRequiredFields,
   makeValidateEmailCode
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('updateEmailByCodeValidatorComposite', () => {
+describe('updateEmailByCodeValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeUpdateEmailByCodeValidatorComposite()
+    makeUpdateEmailByCodeValidator()
 
     const validations: ValidatorProtocol[] = []
 

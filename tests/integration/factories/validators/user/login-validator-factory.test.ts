@@ -3,32 +3,35 @@ import { ValidatorProtocol } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
+  makeLoginValidator,
   makeRequiredFields,
-  makeSendEmailCodeValidatorComposite,
   makeValidateEmail,
+  makeValidatePassword,
   makeValidateEmailExists,
-  makeValidateTempEmail
+  makeValidatePasswordMatch,
+  makeValidateActiveAccount
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('sendEmailCodeValidatorComposite', () => {
+describe('loginValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeSendEmailCodeValidatorComposite()
+    makeLoginValidator()
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['email']
+    const fields = ['email', 'password']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
-    // Must have this exact validation order
     validations.push(makeValidateEmail())
+    validations.push(makeValidatePassword())
     validations.push(makeValidateEmailExists())
-    validations.push(makeValidateTempEmail())
+    validations.push(makeValidatePasswordMatch())
+    validations.push(makeValidateActiveAccount())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

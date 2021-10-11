@@ -3,31 +3,30 @@ import { ValidatorProtocol } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
-  makeUserValidatorComposite,
+  makeUpdatePasswordValidator,
   makeRequiredFields,
-  makeValidateName,
-  makeValidateEmail,
   makeValidatePassword,
-  makeValidatePasswordComparison
+  makeValidatePasswordComparison,
+  makeValidateCurrentPassword
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('userValidator', () => {
+describe('updatePasswordValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeUserValidatorComposite()
+    makeUpdatePasswordValidator()
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['name', 'email', 'password', 'passwordConfirmation']
+    const fields = ['currentPassword', 'password', 'passwordConfirmation']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
-    validations.push(makeValidateName())
-    validations.push(makeValidateEmail())
+    // Must have this exact validation order
+    validations.push(makeValidateCurrentPassword())
     validations.push(makeValidatePassword())
     validations.push(makeValidatePasswordComparison())
 

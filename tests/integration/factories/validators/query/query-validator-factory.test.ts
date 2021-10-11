@@ -2,35 +2,25 @@ import { ValidatorProtocol } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
-import {
-  makeValidateFields,
-  makeValidateLimit,
-  makeValidatePage,
-  makeValidateSort,
-  makeQueryAllInvoicesValidatorComposite,
-  makeValidateType
-} from '@/factories/validators/query'
-import { makeRequiredFields } from '@/factories/validators/validate-required-fields-factory'
+import { makeQueryValidator } from '@/factories/validators/query'
+import { makeValidateFields } from '@/factories/validators/query/validate-fields-factory'
+import { makeValidateLimit } from '@/factories/validators/query/validate-limit-factory'
+import { makeValidatePage } from '@/factories/validators/query/validate-page-factory'
+import { makeValidateSort } from '@/factories/validators/query/validate-sort-factory'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('queryAllInvoicesValidatorComposite', () => {
+describe('queryValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeQueryAllInvoicesValidatorComposite()
+    makeQueryValidator()
 
     const validations: ValidatorProtocol[] = []
-
-    const fields = ['type']
-    for (const field of fields) {
-      validations.push(makeRequiredFields(field))
-    }
 
     // Must have this exact validation order
     validations.push(makeValidateFields())
     validations.push(makeValidateLimit())
-    validations.push(makeValidateType())
     validations.push(makeValidatePage())
     validations.push(makeValidateSort())
 

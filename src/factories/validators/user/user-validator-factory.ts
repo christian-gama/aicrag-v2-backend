@@ -4,25 +4,27 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import {
   makeRequiredFields,
-  makeValidateCurrentPassword,
+  makeValidateEmail,
+  makeValidateName,
   makeValidatePassword,
   makeValidatePasswordComparison
 } from '.'
 
-export const makeUpdatePasswordValidatorComposite = (): ValidatorProtocol => {
+export const makeUserValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
-  const fields = ['currentPassword', 'password', 'passwordConfirmation']
+  const fields = ['name', 'email', 'password', 'passwordConfirmation']
   for (const field of fields) {
     validations.push(makeRequiredFields(field))
   }
 
   // Must have this exact validation order
-  validations.push(makeValidateCurrentPassword())
+  validations.push(makeValidateName())
+  validations.push(makeValidateEmail())
   validations.push(makeValidatePassword())
   validations.push(makeValidatePasswordComparison())
 
-  const updatePasswordValidatorComposite = new ValidationComposite(validations)
+  const userValidationComposite = new ValidationComposite(validations)
 
-  return updatePasswordValidatorComposite
+  return userValidationComposite
 }

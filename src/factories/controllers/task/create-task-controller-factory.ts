@@ -4,10 +4,10 @@ import { CreateTaskController } from '@/presentation/controllers/task'
 import { makeTryCatchDecorator } from '@/factories/decorators'
 import { makeHttpHelper } from '@/factories/helpers'
 import { makeTaskRepository } from '@/factories/repositories'
-import { makeCreateTaskValidatorComposite } from '@/factories/validators/task'
+import { makeCreateTaskValidator } from '@/factories/validators/task'
 
 export const makeCreateTaskController = (): ControllerProtocol => {
-  const createTaskValidator = makeCreateTaskValidatorComposite()
+  const createTaskValidator = makeCreateTaskValidator()
   const httpHelper = makeHttpHelper()
   const taskRepository = makeTaskRepository()
 
