@@ -47,4 +47,15 @@ describe('validateYear', () => {
 
     expect(response).toBeUndefined()
   })
+
+  it('should return undefined if there is no taskId', async () => {
+    expect.hasAssertions()
+
+    const { request, sut } = makeSut()
+    request.query.taskId = undefined
+
+    const response = await sut.validate(request.query)
+
+    expect(response).toBeUndefined()
+  })
 })
