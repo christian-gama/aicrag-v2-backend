@@ -2,7 +2,7 @@ import { ITask } from '@/domain'
 
 import { QueryProtocol, QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
 
-export interface TaskRepositoryProtocol extends GetInvoiceByMonthProtocol {}
+export interface InvoiceRepositoryProtocol extends GetInvoiceByMonthProtocol {}
 
 export interface GetInvoiceByMonthProtocol {
   /**
