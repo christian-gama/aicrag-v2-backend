@@ -51,70 +51,82 @@ describe('invoiceRepository', () => {
     task = fakeTask
   })
 
-  it('should return a result if finds one or more tasks', async () => {
-    expect.hasAssertions()
+  describe('getInvoiceByMonth', () => {
+    it('should return a result if finds one or more tasks', async () => {
+      expect.hasAssertions()
 
-    const { sut } = makeSut()
+      const { sut } = makeSut()
 
-    await taskCollection.insertOne(task)
+      await taskCollection.insertOne(task)
 
-    const query = {
-      month: task.date.month.toString(),
-      taskId: task.taskId,
-      year: task.date.year.toString()
-    }
+      const query = {
+        month: task.date.month.toString(),
+        taskId: task.taskId,
+        year: task.date.year.toString()
+      }
 
-    const result = await sut.getInvoiceByMonth(query, task.userId)
+      const result = await sut.getInvoiceByMonth(query, task.userId)
 
-    expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
-  })
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
+    })
 
-  it('should return a result if find one or more tasks with a query', async () => {
-    expect.hasAssertions()
+    it('should return a result if find one or more tasks with a query', async () => {
+      expect.hasAssertions()
 
-    const { fakeUser, sut } = makeSut()
+      const { fakeUser, sut } = makeSut()
 
-    const fakeTask = makeFakeTask(fakeUser)
-    const fakeTask2 = makeFakeTask(fakeUser)
-    const fakeTask3 = makeFakeTask(fakeUser)
-    fakeTask2.date = fakeTask.date
-    fakeTask3.date = fakeTask.date
+      const fakeTask = makeFakeTask(fakeUser)
+      const fakeTask2 = makeFakeTask(fakeUser)
+      const fakeTask3 = makeFakeTask(fakeUser)
+      fakeTask2.date = fakeTask.date
+      fakeTask3.date = fakeTask.date
 
-    await taskCollection.insertOne(fakeTask)
-    await taskCollection.insertOne(fakeTask2)
-    await taskCollection.insertOne(fakeTask3)
+      await taskCollection.insertOne(fakeTask)
+      await taskCollection.insertOne(fakeTask2)
+      await taskCollection.insertOne(fakeTask3)
 
-    const query = {
-      limit: '1',
-      month: fakeTask.date.month.toString(),
-      page: '1',
-      year: fakeTask.date.year.toString()
-    }
+      const query = {
+        limit: '1',
+        month: fakeTask.date.month.toString(),
+        page: '1',
+        year: fakeTask.date.year.toString()
+      }
 
-    const result = await sut.getInvoiceByMonth(query, fakeUser.personal.id)
+      const result = await sut.getInvoiceByMonth(query, fakeUser.personal.id)
 
-    expect(result).toStrictEqual({ count: 3, displaying: 1, documents: [fakeTask], page: '1 of 3' })
-  })
+      expect(result).toStrictEqual({
+        count: 3,
+        displaying: 1,
+        documents: [fakeTask],
+        page: '1 of 3'
+      })
+    })
 
-  it('should return a result if finds one or more tasks with a query and taskId', async () => {
-    expect.hasAssertions()
+    it('should return a result if finds one or more tasks with a query and taskId', async () => {
+      expect.hasAssertions()
 
-    const { fakeUser, sut } = makeSut()
+      const { fakeUser, sut } = makeSut()
 
-    const fakeTask = makeFakeTask(fakeUser)
-    const fakeTask2 = makeFakeTask(fakeUser)
+      const fakeTask = makeFakeTask(fakeUser)
+      const fakeTask2 = makeFakeTask(fakeUser)
 
-    await taskCollection.insertOne(fakeTask)
-    await taskCollection.insertOne(fakeTask2)
+      await taskCollection.insertOne(fakeTask)
+      await taskCollection.insertOne(fakeTask2)
 
-    const query = {
-      month: fakeTask.date.month.toString(),
-      taskId: fakeTask.taskId,
-      year: fakeTask.date.year.toString()
-    }
+      const query = {
+        month: fakeTask.date.month.toString(),
+        taskId: fakeTask.taskId,
+        year: fakeTask.date.year.toString()
+      }
 
-    const result = await sut.getInvoiceByMonth(query, fakeTask.userId)
+      const result = await sut.getInvoiceByMonth(query, fakeTask.userId)
 
-    expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [fakeTask], page: '1 of 1' })
+      expect(result).toStrictEqual({
+        count: 1,
+        displaying: 1,
+        documents: [fakeTask],
+        page: '1 of 1'
+      })
+    })
   })
 })

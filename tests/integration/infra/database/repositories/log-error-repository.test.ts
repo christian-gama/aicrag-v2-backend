@@ -45,31 +45,33 @@ describe('logErrorRepository', () => {
     await logCollection.deleteMany({})
   })
 
-  it('should call createLog with correct error', async () => {
-    expect.hasAssertions()
+  describe('createLog', () => {
+    it('should call createLog with correct error', async () => {
+      expect.hasAssertions()
 
-    const { sut, error, createLogErrorRepositoryStub } = makeSut()
-    const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'createLog')
+      const { sut, error, createLogErrorRepositoryStub } = makeSut()
+      const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'createLog')
 
-    await sut.saveLog(error)
+      await sut.saveLog(error)
 
-    expect(createLogSpy).toHaveBeenCalledWith(error)
-  })
+      expect(createLogSpy).toHaveBeenCalledWith(error)
+    })
 
-  it('should save a log error on database', async () => {
-    expect.hasAssertions()
+    it('should save a log error on database', async () => {
+      expect.hasAssertions()
 
-    const { error, fakeLogError, sut } = makeSut()
+      const { error, fakeLogError, sut } = makeSut()
 
-    const log = await sut.saveLog(error)
+      const log = await sut.saveLog(error)
 
-    const { _id, ...obj } = log as any
+      const { _id, ...obj } = log as any
 
-    expect(obj).toStrictEqual({
-      date: fakeLogError.date,
-      message: fakeLogError.message,
-      name: fakeLogError.name,
-      stack: fakeLogError.stack
+      expect(obj).toStrictEqual({
+        date: fakeLogError.date,
+        message: fakeLogError.message,
+        name: fakeLogError.name,
+        stack: fakeLogError.stack
+      })
     })
   })
 })
