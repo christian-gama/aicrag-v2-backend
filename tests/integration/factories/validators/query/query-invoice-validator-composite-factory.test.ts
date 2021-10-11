@@ -16,7 +16,7 @@ import { makeRequiredFields } from '@/factories/validators/validate-required-fie
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('queryValidatorComposite', () => {
+describe('queryInvoiceValidatorComposite', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
