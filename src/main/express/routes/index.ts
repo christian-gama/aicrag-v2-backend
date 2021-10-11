@@ -4,7 +4,10 @@ import {
   makeUpdatePasswordController,
   makeUpdateUserController
 } from '@/factories/controllers/account'
-import { makeGetInvoiceByMonthController } from '@/factories/controllers/invoice'
+import {
+  makeGetAllInvoicesController,
+  makeGetInvoiceByMonthController
+} from '@/factories/controllers/invoice'
 import {
   makeActivateAccountController,
   makeForgotPasswordController,
@@ -42,6 +45,7 @@ export const updatePassword = controllerAdapter(makeUpdatePasswordController())
 export const updateUserController = controllerAdapter(makeUpdateUserController())
 
 // Invoice Routes
+export const getAllInvoicesController = controllerAdapter(makeGetAllInvoicesController())
 export const getInvoiceByMonthController = controllerAdapter(makeGetInvoiceByMonthController())
 
 // Login Routes
