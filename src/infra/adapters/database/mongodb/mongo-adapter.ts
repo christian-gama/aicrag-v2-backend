@@ -69,7 +69,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
       const sort = this.queries.sort(query)
       pipeline.push({ $sort: sort })
     }
-    const documents = await this._collection.aggregate(pipeline).limit(limit).skip(skip).toArray()
+    const documents = await this._collection.aggregate(pipeline).skip(skip).limit(limit).toArray()
 
     const currentPage = skip / limit + 1
     const totalPages = Math.ceil(count / limit)
@@ -102,7 +102,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     const cursor = this._collection.find(filter, { projection: fields })
 
     const count = await cursor.count()
-    const documents = await cursor.limit(limit).skip(skip).sort(sort).toArray()
+    const documents = await cursor.skip(skip).limit(limit).sort(sort).toArray()
 
     const currentPage = skip / limit + 1
     const totalPages = Math.ceil(count / limit)
