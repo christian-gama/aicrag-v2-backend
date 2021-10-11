@@ -9,9 +9,9 @@ export interface QueryMethodsProtocol {
 
 export interface QueryResultProtocol<T> {
   count: number
-  currentPage: number
+  displaying: number
   documents: T[]
-  totalPages: number
+  page: string
 }
 
 export interface QueryProtocol {

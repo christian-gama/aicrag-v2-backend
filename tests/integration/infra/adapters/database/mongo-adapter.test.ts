@@ -84,10 +84,10 @@ describe('mongoAdapter', () => {
       query
     )
 
-    expect(result).toStrictEqual({ count: 1, currentPage: 1, documents: [fakeUser], totalPages: 1 })
+    expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [fakeUser], page: '1 of 1' })
   })
 
-  it('should return an array of document if finds using a complex pipeline', async () => {
+  it('should return an array of document if find using a complex pipeline', async () => {
     const fakeUser = makeFakeUser()
     const query = {}
 
@@ -110,12 +110,12 @@ describe('mongoAdapter', () => {
     )
 
     expect(result.count).toBe(1)
-    expect(result.currentPage).toBe(1)
+    expect(result.displaying).toBe(1)
     expect(result.documents[0].personal.name).toBe(fakeUser.personal.name)
-    expect(result.totalPages).toBe(1)
+    expect(result.page).toBe('1 of 1')
   })
 
-  it('should return an array of tasks if finds using queries', async () => {
+  it('should return an array of tasks if find using queries', async () => {
     const fakeUser = makeFakeUser()
     const fakeTask = makeFakeTask(fakeUser)
     const fakeTask2 = makeFakeTask(fakeUser)
@@ -141,12 +141,12 @@ describe('mongoAdapter', () => {
     )
 
     expect(result.count).toBe(4)
-    expect(result.currentPage).toBe(1)
+    expect(result.displaying).toBe(3)
     expect(result.documents[0].duration).toBeLessThan(result.documents[1].duration)
-    expect(result.totalPages).toBe(2)
+    expect(result.page).toBe('1 of 2')
   })
 
-  it('should return an empty array if does not finds using a complex pipeline', async () => {
+  it('should return an empty array if does not find using a complex pipeline', async () => {
     const fakeUser = makeFakeUser()
     const query = {}
 
@@ -167,10 +167,10 @@ describe('mongoAdapter', () => {
       query
     )
 
-    expect(result).toStrictEqual({ count: 0, currentPage: 1, documents: [], totalPages: 0 })
+    expect(result).toStrictEqual({ count: 0, displaying: 0, documents: [], page: '1 of 0' })
   })
 
-  it('should return an empty array if does not finds it', async () => {
+  it('should return an empty array if does not find it', async () => {
     const fakeUser = makeFakeUser()
     const query = {}
 
@@ -184,9 +184,9 @@ describe('mongoAdapter', () => {
     )
 
     expect(result.count).toBe(0)
-    expect(result.currentPage).toBe(1)
+    expect(result.displaying).toBe(0)
     expect(result.documents).toStrictEqual([])
-    expect(result.totalPages).toBe(0)
+    expect(result.page).toBe('1 of 0')
   })
 
   it('should return the deleted count greater than 0 if deletes a document', async () => {
@@ -350,9 +350,9 @@ describe('mongoAdapter', () => {
 
     expect(result).toStrictEqual({
       count: 2,
-      currentPage: 1,
+      displaying: 2,
       documents: [insertedDoc, insertedDoc2],
-      totalPages: 1
+      page: '1 of 1'
     })
 
     await collection.deleteMany({})

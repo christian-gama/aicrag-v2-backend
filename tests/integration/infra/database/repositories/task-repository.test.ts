@@ -134,7 +134,7 @@ describe('taskRepository', () => {
 
     const result = await sut.findAllTasks(taskData.user.personal.id, {})
 
-    expect(result).toStrictEqual({ count: 1, currentPage: 1, documents: [task], totalPages: 1 })
+    expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
   })
 
   it('should return a task if finds it', async () => {

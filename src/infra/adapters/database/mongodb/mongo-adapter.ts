@@ -69,12 +69,18 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
       const sort = this.queries.sort(query)
       pipeline.push({ $sort: sort })
     }
-    const documents = await this._collection.aggregate(pipeline).skip(skip).limit(limit).toArray()
+    const documents = (await this._collection
+      .aggregate(pipeline)
+      .skip(skip)
+      .limit(limit)
+      .toArray()) as T[]
 
     const currentPage = skip / limit + 1
+    const displaying = documents.length
     const totalPages = Math.ceil(count / limit)
+    const page = `${currentPage} of ${totalPages}`
 
-    return { count, currentPage, documents, totalPages }
+    return { count, displaying, documents, page }
   }
 
   protected async deleteMany (filter: Document): Promise<number> {
@@ -105,9 +111,11 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     const documents = await cursor.skip(skip).limit(limit).sort(sort).toArray()
 
     const currentPage = skip / limit + 1
+    const displaying = documents.length
     const totalPages = Math.ceil(count / limit)
+    const page = `${currentPage} of ${totalPages}`
 
-    return { count, currentPage, documents, totalPages }
+    return { count, displaying, documents, page }
   }
 
   protected async findOne<T extends Document>(filter: Document): Promise<T | null> {

@@ -66,10 +66,10 @@ describe('invoiceRepository', () => {
 
     const result = await sut.getInvoiceByMonth(query, task.userId)
 
-    expect(result).toStrictEqual({ count: 1, currentPage: 1, documents: [task], totalPages: 1 })
+    expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
   })
 
-  it('should return a result if finds one or more tasks with a query', async () => {
+  it('should return a result if find one or more tasks with a query', async () => {
     expect.hasAssertions()
 
     const { fakeUser, sut } = makeSut()
@@ -93,7 +93,7 @@ describe('invoiceRepository', () => {
 
     const result = await sut.getInvoiceByMonth(query, fakeUser.personal.id)
 
-    expect(result).toStrictEqual({ count: 3, currentPage: 1, documents: [fakeTask], totalPages: 3 })
+    expect(result).toStrictEqual({ count: 3, displaying: 1, documents: [fakeTask], page: '1 of 3' })
   })
 
   it('should return a result if finds one or more tasks with a query and taskId', async () => {
@@ -115,6 +115,6 @@ describe('invoiceRepository', () => {
 
     const result = await sut.getInvoiceByMonth(query, fakeTask.userId)
 
-    expect(result).toStrictEqual({ count: 1, currentPage: 1, documents: [fakeTask], totalPages: 1 })
+    expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [fakeTask], page: '1 of 1' })
   })
 })

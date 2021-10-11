@@ -27,9 +27,9 @@ export const makeInvoiceRepositoryStub = (fakeTask: ITask): InvoiceRepositoryPro
     ): Promise<QueryResultProtocol<T>> {
       return (await Promise.resolve({
         count: 1,
-        currentPage: 1,
+        displaying: 1,
         documents: [fakeTask],
-        totalPages: 1
+        page: '1 of 1'
       })) as QueryResultProtocol<T>
     }
   }
@@ -46,9 +46,9 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol 
     async findAllTasks<T extends ITask>(userId: string): Promise<QueryResultProtocol<T>> {
       return (await Promise.resolve({
         count: 1,
-        currentPage: 1,
+        displaying: 1,
         documents: [fakeTask],
-        totalPages: 1
+        page: '1 of 1'
       })) as QueryResultProtocol<T>
     }
 

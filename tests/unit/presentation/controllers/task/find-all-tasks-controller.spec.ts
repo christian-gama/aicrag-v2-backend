@@ -77,13 +77,15 @@ describe('findAllTasksController', () => {
     jest
       .spyOn(taskRepositoryStub, 'findAllTasks')
       .mockReturnValueOnce(
-        Promise.resolve({ count: 0, currentPage: 1, documents: [], totalPages: 1 })
+        Promise.resolve({ count: 1, displaying: 1, documents: [], page: '1 of 1' })
       )
 
     const response = await sut.handle(request)
 
     expect(response).toStrictEqual(
       httpHelper.ok({
+        count: 1,
+        displaying: 1,
         documents: [],
         page: '1 of 1'
       })
@@ -121,6 +123,8 @@ describe('findAllTasksController', () => {
 
     expect(response).toStrictEqual(
       httpHelper.ok({
+        count: 1,
+        displaying: 1,
         documents: [fakeTask],
         page: '1 of 1'
       })

@@ -27,8 +27,10 @@ export class GetInvoiceByMonthController implements ControllerProtocol {
     const result = await this.invoiceRepository.getInvoiceByMonth(query, user.personal.id)
 
     return this.httpHelper.ok({
+      count: result.count,
+      displaying: result.displaying,
       documents: result.documents,
-      page: `${result.currentPage} of ${result.totalPages}`
+      page: result.page
     })
   }
 }
