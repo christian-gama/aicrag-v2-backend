@@ -105,8 +105,8 @@ export const UserSchema = {
           }
         },
         tokenVersion: {
-          bsonType: 'int',
-          description: 'must be a int is required'
+          bsonType: 'int32',
+          description: 'must be a int32 is required'
         }
       }
     }
