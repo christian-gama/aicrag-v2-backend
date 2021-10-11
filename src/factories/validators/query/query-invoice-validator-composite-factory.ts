@@ -9,6 +9,7 @@ import {
   makeValidatePage,
   makeValidateSort,
   makeValidateTaskId,
+  makeValidateType,
   makeValidateYear
 } from '.'
 import { makeRequiredFields } from '../validate-required-fields-factory'
@@ -16,7 +17,7 @@ import { makeRequiredFields } from '../validate-required-fields-factory'
 export const makeQueryInvoiceValidatorComposite = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
-  const fields = ['month', 'year']
+  const fields = ['month', 'type', 'year']
   for (const field of fields) {
     validations.push(makeRequiredFields(field))
   }
@@ -28,6 +29,7 @@ export const makeQueryInvoiceValidatorComposite = (): ValidatorProtocol => {
   validations.push(makeValidatePage())
   validations.push(makeValidateSort())
   validations.push(makeValidateTaskId())
+  validations.push(makeValidateType())
   validations.push(makeValidateYear())
 
   const queryInvoiceValidatorComposite = new ValidationComposite(validations)

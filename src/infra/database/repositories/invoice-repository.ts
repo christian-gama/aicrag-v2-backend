@@ -6,6 +6,7 @@ import {
 } from '@/domain/repositories/invoice/invoice-repository-protocol'
 
 import { getRegexTaskId } from '../helpers/get-regex-task-id'
+import { getType } from '../helpers/get-type'
 import { DatabaseProtocol } from '../protocols'
 import { QueryResultProtocol } from '../protocols/queries-protocol'
 
@@ -17,12 +18,13 @@ export class InvoiceRepository implements GetInvoiceByMonthProtocol {
     userId: string
   ): Promise<QueryResultProtocol<T>> {
     const taskCollection = this.database.collection('tasks')
+    const type = getType(query.type as 'QA' | 'TX' | 'both')
 
     const result = await taskCollection.aggregate<T>(
       [
         {
           $match: {
-            type: query.type,
+            type: type,
             userId
           }
         },
@@ -43,8 +45,9 @@ export class InvoiceRepository implements GetInvoiceByMonthProtocol {
     query: QueryInvoiceProtocol,
     userId: string
   ): Promise<QueryResultProtocol<T>> {
-    const { month, taskId, year } = query
+    const { month, taskId, type, year } = query
     const _taskId = getRegexTaskId(taskId)
+    const _type = getType(type as 'QA' | 'TX' | 'both')
     const taskCollection = this.database.collection('tasks')
 
     const result = await taskCollection.aggregate<ITask>(
@@ -53,6 +56,7 @@ export class InvoiceRepository implements GetInvoiceByMonthProtocol {
           $match: {
             $and: [{ 'date.month': { $eq: +month } }, { 'date.year': { $eq: +year } }],
             taskId: _taskId,
+            type: _type,
             userId
           }
         }

@@ -124,6 +124,7 @@ describe('invoiceRepository', () => {
       const query = {
         month: task.date.month.toString(),
         taskId: task.taskId,
+        type: 'TX',
         year: task.date.year.toString()
       }
 
@@ -151,6 +152,7 @@ describe('invoiceRepository', () => {
         limit: '1',
         month: fakeTask.date.month.toString(),
         page: '1',
+        type: 'TX',
         year: fakeTask.date.year.toString()
       }
 
@@ -178,6 +180,7 @@ describe('invoiceRepository', () => {
       const query = {
         month: fakeTask.date.month.toString(),
         taskId: fakeTask.taskId,
+        type: 'TX',
         year: fakeTask.date.year.toString()
       }
 

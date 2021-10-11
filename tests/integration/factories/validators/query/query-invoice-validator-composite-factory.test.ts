@@ -8,7 +8,8 @@ import {
   makeValidatePage,
   makeValidateSort,
   makeValidateMonth,
-  makeValidateYear
+  makeValidateYear,
+  makeValidateType
 } from '@/factories/validators/query'
 import { makeQueryInvoiceValidatorComposite } from '@/factories/validators/query/query-invoice-validator-composite-factory'
 import { makeValidateTaskId } from '@/factories/validators/task'
@@ -24,7 +25,7 @@ describe('queryInvoiceValidatorComposite', () => {
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['month', 'year']
+    const fields = ['month', 'type', 'year']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
@@ -36,6 +37,7 @@ describe('queryInvoiceValidatorComposite', () => {
     validations.push(makeValidatePage())
     validations.push(makeValidateSort())
     validations.push(makeValidateTaskId())
+    validations.push(makeValidateType())
     validations.push(makeValidateYear())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)

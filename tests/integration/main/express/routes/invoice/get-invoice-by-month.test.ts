@@ -74,7 +74,7 @@ describe('get /invoice/get-invoice-by-month', () => {
       .expect(400)
   })
 
-  it('should return 400 if misses month or year', async () => {
+  it('should return 400 if misses month, year or type', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
@@ -85,13 +85,24 @@ describe('get /invoice/get-invoice-by-month', () => {
       .expect(400)
   })
 
+  it('should return 400 with if type is invalid', async () => {
+    expect.assertions(0)
+
+    await userCollection.insertOne(fakeUser)
+
+    await request(app)
+      .get('/api/v1/invoice/get-invoice-by-month?month=0&year=2021&type=invalid_type')
+      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .expect(400)
+  })
+
   it('should return 200 with if does not find any tasks', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
 
     await request(app)
-      .get('/api/v1/invoice/get-invoice-by-month?month=0&year=2021')
+      .get('/api/v1/invoice/get-invoice-by-month?month=0&year=2021&type=TX')
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)
   })
@@ -104,7 +115,7 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get(
-        `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}`
+        `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&type=${fakeTask.type}`
       )
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)
@@ -118,7 +129,7 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get(
-        `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&sort=usd,-date.full&limit=2&page=1`
+        `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&type=${fakeTask.type}&sort=usd,-date.full&limit=2&page=1`
       )
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)
@@ -133,7 +144,7 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get(
-        `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&taskId=${fakeTask.taskId}&sort=usd,-date.full&limit=2&page=1`
+        `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&type=both&taskId=${fakeTask.taskId}&sort=usd,-date.full&limit=2&page=1`
       )
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)

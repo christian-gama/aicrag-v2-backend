@@ -8,6 +8,7 @@ export interface QueryInvoiceProtocol extends QueryProtocol {
   month: string
   year: string
   taskId?: string
+  type: string
 }
 
 export interface QueryAllInvoicesProtocol extends QueryProtocol {
