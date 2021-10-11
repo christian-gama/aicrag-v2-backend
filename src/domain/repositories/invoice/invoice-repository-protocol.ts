@@ -9,6 +9,11 @@ export interface QueryInvoiceProtocol extends QueryProtocol {
   year: string
   taskId?: string
 }
+
+export interface QueryAllInvoicesProtocol extends QueryProtocol {
+  type: 'QA' | 'TX' | { $ne: null }
+}
+
 export interface GetInvoiceByMonthProtocol {
   /**
    * @async Asynchronous method.

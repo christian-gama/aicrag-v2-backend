@@ -1,6 +1,7 @@
 import { ITask } from '@/domain'
 import {
   GetInvoiceByMonthProtocol,
+  QueryAllInvoicesProtocol,
   QueryInvoiceProtocol
 } from '@/domain/repositories/invoice/invoice-repository-protocol'
 
@@ -10,6 +11,33 @@ import { QueryResultProtocol } from '../protocols/queries-protocol'
 
 export class InvoiceRepository implements GetInvoiceByMonthProtocol {
   constructor (private readonly database: DatabaseProtocol) {}
+
+  async getAllInvoices<T extends ITask>(
+    query: QueryAllInvoicesProtocol,
+    userId: string
+  ): Promise<QueryResultProtocol<T>> {
+    const taskCollection = this.database.collection('tasks')
+
+    const result = await taskCollection.aggregate<T>(
+      [
+        {
+          $match: {
+            type: query.type,
+            userId
+          }
+        },
+        {
+          $group: {
+            _id: { month: '$date.month', year: '$date.year' },
+            totalUsd: { $sum: '$usd' }
+          }
+        }
+      ],
+      query
+    )
+
+    return result
+  }
 
   async getInvoiceByMonth<T extends ITask>(
     query: QueryInvoiceProtocol,
