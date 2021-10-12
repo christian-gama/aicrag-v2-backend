@@ -7,22 +7,25 @@ import {
   makeValidateLimit,
   makeValidatePage,
   makeValidateSort,
-  makeQueryAllInvoicesValidator,
+  makeValidateMonth,
+  makeValidateYear,
   makeValidateType
 } from '@/factories/validators/query'
+import { makeInvoiceByMonthValidator } from '@/factories/validators/query/invoice-by-month-validator-factory'
+import { makeValidateTaskId } from '@/factories/validators/task'
 import { makeRequiredFields } from '@/factories/validators/validate-required-fields-factory'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
-describe('queryAllInvoicesValidator', () => {
+describe('getInvoiceByMonthValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeQueryAllInvoicesValidator()
+    makeInvoiceByMonthValidator()
 
     const validations: ValidatorProtocol[] = []
 
-    const fields = ['type']
+    const fields = ['month', 'type', 'year']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
@@ -30,9 +33,12 @@ describe('queryAllInvoicesValidator', () => {
     // Must have this exact validation order
     validations.push(makeValidateFields())
     validations.push(makeValidateLimit())
-    validations.push(makeValidateType())
+    validations.push(makeValidateMonth())
     validations.push(makeValidatePage())
     validations.push(makeValidateSort())
+    validations.push(makeValidateTaskId())
+    validations.push(makeValidateType())
+    validations.push(makeValidateYear())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

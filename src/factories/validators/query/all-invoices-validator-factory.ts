@@ -5,19 +5,16 @@ import { ValidationComposite } from '@/application/validators/validation-composi
 import {
   makeValidateFields,
   makeValidateLimit,
-  makeValidateMonth,
   makeValidatePage,
   makeValidateSort,
-  makeValidateTaskId,
-  makeValidateType,
-  makeValidateYear
+  makeValidateType
 } from '.'
 import { makeRequiredFields } from '../validate-required-fields-factory'
 
-export const makeQueryInvoiceValidator = (): ValidatorProtocol => {
+export const makeAllInvoicesValidator = (): ValidatorProtocol => {
   const validations: ValidatorProtocol[] = []
 
-  const fields = ['month', 'type', 'year']
+  const fields = ['type']
   for (const field of fields) {
     validations.push(makeRequiredFields(field))
   }
@@ -25,14 +22,11 @@ export const makeQueryInvoiceValidator = (): ValidatorProtocol => {
   // Must have this exact validation order
   validations.push(makeValidateFields())
   validations.push(makeValidateLimit())
-  validations.push(makeValidateMonth())
+  validations.push(makeValidateType())
   validations.push(makeValidatePage())
   validations.push(makeValidateSort())
-  validations.push(makeValidateTaskId())
-  validations.push(makeValidateType())
-  validations.push(makeValidateYear())
 
-  const queryInvoiceValidator = new ValidationComposite(validations)
+  const getInvoiceByMonthValidator = new ValidationComposite(validations)
 
-  return queryInvoiceValidator
+  return getInvoiceByMonthValidator
 }

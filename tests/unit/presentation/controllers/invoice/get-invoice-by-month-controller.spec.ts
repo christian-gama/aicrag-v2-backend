@@ -19,11 +19,11 @@ import {
 interface SutTypes {
   fakeTask: ITask
   fakeUser: IUser
+  getInvoiceByMonthValidator: ValidatorProtocol
   httpHelper: HttpHelperProtocol
-  queryInvoiceValidator: ValidatorProtocol
+  invoiceRepository: InvoiceRepositoryProtocol
   request: HttpRequest
   sut: GetInvoiceByMonthController
-  invoiceRepository: InvoiceRepositoryProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -31,17 +31,21 @@ const makeSut = (): SutTypes => {
   const fakeTask = makeFakeTask(fakeUser)
   const httpHelper = makeHttpHelper()
   const invoiceRepository = makeInvoiceRepositoryStub(fakeTask)
-  const queryInvoiceValidator = makeValidatorStub()
+  const getInvoiceByMonthValidator = makeValidatorStub()
   const request: HttpRequest = { query: { month: '0', year: '2021' }, user: fakeUser }
 
-  const sut = new GetInvoiceByMonthController(httpHelper, invoiceRepository, queryInvoiceValidator)
+  const sut = new GetInvoiceByMonthController(
+    getInvoiceByMonthValidator,
+    httpHelper,
+    invoiceRepository
+  )
 
   return {
     fakeTask,
     fakeUser,
+    getInvoiceByMonthValidator,
     httpHelper,
     invoiceRepository,
-    queryInvoiceValidator,
     request,
     sut
   }
@@ -62,8 +66,10 @@ describe('getInvoiceByMonth', () => {
   it('should return badRequest if validation returns an error', async () => {
     expect.hasAssertions()
 
-    const { httpHelper, request, sut, queryInvoiceValidator } = makeSut()
-    jest.spyOn(queryInvoiceValidator, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
+    const { getInvoiceByMonthValidator, httpHelper, request, sut } = makeSut()
+    jest
+      .spyOn(getInvoiceByMonthValidator, 'validate')
+      .mockReturnValueOnce(Promise.resolve(new Error()))
 
     const error = await sut.handle(request)
 
@@ -73,7 +79,7 @@ describe('getInvoiceByMonth', () => {
   it('should return ok if does not find a task', async () => {
     expect.hasAssertions()
 
-    const { httpHelper, request, sut, invoiceRepository } = makeSut()
+    const { httpHelper, invoiceRepository, request, sut } = makeSut()
     jest
       .spyOn(invoiceRepository, 'getInvoiceByMonth')
       .mockReturnValueOnce(
@@ -95,8 +101,8 @@ describe('getInvoiceByMonth', () => {
   it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
-    const { request, sut, queryInvoiceValidator } = makeSut()
-    const validateSpy = jest.spyOn(queryInvoiceValidator, 'validate')
+    const { getInvoiceByMonthValidator, request, sut } = makeSut()
+    const validateSpy = jest.spyOn(getInvoiceByMonthValidator, 'validate')
 
     await sut.handle(request)
 

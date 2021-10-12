@@ -1,5 +1,5 @@
-export * from './query-all-invoices-validator-factory'
-export * from './query-invoice-validator-factory'
+export * from './all-invoices-validator-factory'
+export * from './invoice-by-month-validator-factory'
 export * from './query-validator-factory'
 export * from './validate-fields-factory'
 export * from './validate-limit-factory'

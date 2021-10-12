@@ -9,9 +9,9 @@ import { ControllerProtocol } from '../protocols/controller-protocol'
 
 export class GetAllInvoicesController implements ControllerProtocol {
   constructor (
+    private readonly getAllInvoicesValidator: ValidatorProtocol,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly invoiceRepository: InvoiceRepositoryProtocol,
-    private readonly queryAllInvoicesValidator: ValidatorProtocol
+    private readonly invoiceRepository: InvoiceRepositoryProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -19,7 +19,7 @@ export class GetAllInvoicesController implements ControllerProtocol {
 
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
-    const error = await this.queryAllInvoicesValidator.validate(httpRequest.query)
+    const error = await this.getAllInvoicesValidator.validate(httpRequest.query)
     if (error) {
       return this.httpHelper.badRequest(error)
     }
