@@ -65,12 +65,13 @@ describe('invoiceRepository', () => {
 
       const result = await sut.getAllInvoices(query, task.userId)
 
-      expect(result).toStrictEqual({
-        count: 1,
-        displaying: 1,
-        documents: [{ _id: { month: task.date.month, year: task.date.year }, totalUsd: task.usd }],
-        page: '1 of 1'
-      })
+      expect(result.count).toBe(1)
+      expect(result.displaying).toBe(1)
+      expect(result.documents[0].tasks).toBe(1)
+      expect(result.documents[0].date.month).toBe(task.date.month)
+      expect(result.documents[0].date.year).toBe(task.date.year)
+      expect(result.documents[0].totalUsd).toBeCloseTo(Math.round(task.usd * 100) / 100, 1)
+      expect(result.page).toBe('1 of 1')
     })
 
     it('should return a result from TX if find one or more tasks with a query', async () => {
@@ -91,23 +92,20 @@ describe('invoiceRepository', () => {
       const query = {
         limit: '1',
         page: '1',
-        type: 'TX' as 'TX',
-        year: fakeTask.date.year.toString()
+        type: 'TX' as 'TX'
       }
 
       const result = await sut.getAllInvoices(query, fakeUser.personal.id)
 
-      expect(result).toStrictEqual({
-        count: 1,
-        displaying: 1,
-        documents: [
-          {
-            _id: { month: fakeTask.date.month, year: fakeTask.date.year },
-            totalUsd: Math.round((fakeTask.usd + fakeTask2.usd + fakeTask3.usd) * 100) / 100
-          }
-        ],
-        page: '1 of 1'
-      })
+      expect(result.count).toBe(1)
+      expect(result.displaying).toBe(1)
+      expect(result.documents[0].tasks).toBe(3)
+      expect(result.documents[0].date.month).toBe(fakeTask.date.month)
+      expect(result.documents[0].date.year).toBe(fakeTask.date.year)
+      expect(result.documents[0].totalUsd).toBeCloseTo(
+        Math.round((fakeTask.usd + fakeTask2.usd + fakeTask3.usd) * 100) / 100, 1
+      )
+      expect(result.page).toBe('1 of 1')
     })
   })
 

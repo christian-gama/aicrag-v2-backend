@@ -1,6 +1,11 @@
 import { ILogError, IUser, ISignUpUserData, ITask, ITaskData } from '@/domain'
 import { LogErrorRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
-import { InvoiceRepositoryProtocol, QueryAllInvoicesProtocol, QueryInvoiceProtocol } from '@/domain/repositories/invoice'
+import {
+  AllInvoicesDocument,
+  InvoiceRepositoryProtocol,
+  QueryAllInvoicesProtocol,
+  QueryInvoiceProtocol
+} from '@/domain/repositories/invoice'
 import { TaskRepositoryProtocol } from '@/domain/repositories/task'
 
 import { QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
@@ -21,14 +26,20 @@ export const makeLogErrorRepositoryStub = (error: Error): LogErrorRepositoryProt
 
 export const makeInvoiceRepositoryStub = (fakeTask: ITask): InvoiceRepositoryProtocol => {
   class InvoiceRepositoryStub implements InvoiceRepositoryProtocol {
-    async getAllInvoices<T extends ITask>(
+    async getAllInvoices<T extends AllInvoicesDocument>(
       query: QueryAllInvoicesProtocol,
       userId: string
     ): Promise<QueryResultProtocol<T>> {
       return (await Promise.resolve({
         count: 1,
         displaying: 1,
-        documents: [fakeTask],
+        documents: [
+          {
+            date: { month: fakeTask.date.month, year: fakeTask.date.year },
+            tasks: 1,
+            totalUsd: fakeTask.usd
+          }
+        ],
         page: '1 of 1'
       })) as QueryResultProtocol<T>
     }

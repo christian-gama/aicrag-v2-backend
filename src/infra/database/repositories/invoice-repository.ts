@@ -1,5 +1,6 @@
 import { ITask } from '@/domain'
 import {
+  AllInvoicesDocument,
   GetInvoiceByMonthProtocol,
   QueryAllInvoicesProtocol,
   QueryInvoiceProtocol
@@ -13,7 +14,7 @@ import { QueryResultProtocol } from '../protocols/queries-protocol'
 export class InvoiceRepository implements GetInvoiceByMonthProtocol {
   constructor (private readonly database: DatabaseProtocol) {}
 
-  async getAllInvoices<T extends ITask>(
+  async getAllInvoices<T extends AllInvoicesDocument>(
     query: QueryAllInvoicesProtocol,
     userId: string
   ): Promise<QueryResultProtocol<T>> {
@@ -24,14 +25,40 @@ export class InvoiceRepository implements GetInvoiceByMonthProtocol {
       [
         {
           $match: {
-            type: type,
-            userId
+            $and: [{ type: type }, { userId }]
           }
         },
         {
           $group: {
-            _id: { month: '$date.month', year: '$date.year' },
-            totalUsd: { $sum: '$usd' }
+            _id: {
+              date: { month: '$date.month', year: '$date.year' }
+            },
+            sumUsd: { $sum: '$usd' },
+            tasks: { $sum: 1 }
+          }
+        },
+        {
+          $addFields: {
+            date: '$_id.date',
+            tasks: '$tasks',
+            totalUsd: {
+              // Round 2 decimals
+              $divide: [
+                {
+                  $subtract: [
+                    { $multiply: ['$sumUsd', 100] },
+                    { $mod: [{ $multiply: ['$sumUsd', 100] }, 1] }
+                  ]
+                },
+                100
+              ]
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            sumUsd: 0
           }
         }
       ],

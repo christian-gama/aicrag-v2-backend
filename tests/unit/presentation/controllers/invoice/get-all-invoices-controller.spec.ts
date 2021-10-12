@@ -131,7 +131,13 @@ describe('getAllInvoices', () => {
       httpHelper.ok({
         count: 1,
         displaying: 1,
-        documents: [fakeTask],
+        documents: [
+          {
+            date: { month: fakeTask.date.month, year: fakeTask.date.year },
+            tasks: 1,
+            totalUsd: fakeTask.usd
+          }
+        ],
         page: '1 of 1'
       })
     )
