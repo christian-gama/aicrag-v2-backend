@@ -30,9 +30,19 @@ export interface DatabaseProtocol {
 export abstract class ICollection {
   protected _collection: any
 
+  protected abstract aggregate<T>(
+    pipeline: Document[],
+    query: QueryProtocol
+  ): Promise<QueryResultProtocol<T>>
+
   protected abstract deleteMany (doc: Document): Promise<number>
 
   protected abstract deleteOne (doc: Document): Promise<boolean>
+
+  protected abstract findAll<T extends Document>(
+    filter: Document,
+    query: QueryProtocol
+  ): Promise<QueryResultProtocol<T>>
 
   protected abstract findOne<T extends Document>(doc: Document): Promise<T | null>
 
