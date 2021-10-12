@@ -65,8 +65,6 @@ describe('invoiceRepository', () => {
 
       const result = await sut.getAllInvoices(query, task.userId)
 
-      console.log(result.documents)
-
       expect(result).toStrictEqual({
         count: 1,
         displaying: 1,

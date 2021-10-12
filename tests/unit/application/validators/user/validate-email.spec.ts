@@ -45,8 +45,6 @@ describe('validateEmail', () => {
     jest.spyOn(emailValidatorStub, 'isEmail').mockReturnValueOnce(false)
     request.body.email = 'invalid_email'
 
-    console.log(typeof request.body.email)
-
     const value = sut.validate(request.body)
 
     expect(value).toStrictEqual(new InvalidParamError('email'))
