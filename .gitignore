@@ -1,7 +1,8 @@
-node_modules
-dist
-coverage
 .vscode
-data
-globalConfig.json
 config.env
+coverage
+data
+dist
+globalConfig.json
+node_modules
+yarn-error.log
