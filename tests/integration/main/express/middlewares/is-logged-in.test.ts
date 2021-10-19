@@ -3,7 +3,7 @@ import { IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 import { isLoggedInMiddleware } from '@/main/express/routes'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -11,8 +11,10 @@ import { makeGenerateRefreshToken } from '@/factories/providers/token'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
-import { Request } from 'express'
+import { Request, Express } from 'express'
 import request from 'supertest'
+
+let app: Express
 
 type RequestUser = Request & { user: IUser }
 
@@ -31,6 +33,8 @@ describe('isLoggedInMiddleware', () => {
   })
 
   beforeAll(async () => {
+    app = await setupApp()
+
     await MongoAdapter.connect(global.__MONGO_URI__)
 
     userCollection = client.collection('users')

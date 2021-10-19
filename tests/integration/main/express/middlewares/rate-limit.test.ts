@@ -1,11 +1,16 @@
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 
 import assert from 'assert'
+import { Express } from 'express'
 import rateLimit from 'express-rate-limit'
 import request from 'supertest'
 
+let app: Express
+
 describe('rateLimit', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    app = await setupApp()
+
     const block = rateLimit({
       max: 3,
       message: 'Any message',

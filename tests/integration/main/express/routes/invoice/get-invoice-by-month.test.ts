@@ -3,7 +3,7 @@ import { ITask, IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
@@ -11,7 +11,10 @@ import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/p
 import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
 
 import assert from 'assert'
+import { Express } from 'express'
 import request from 'supertest'
+
+let app: Express
 
 describe('get /invoice/get-invoice-by-month', () => {
   const client = makeMongoDb()
@@ -31,6 +34,8 @@ describe('get /invoice/get-invoice-by-month', () => {
   })
 
   beforeAll(async () => {
+    app = await setupApp()
+
     await MongoAdapter.connect(global.__MONGO_URI__)
 
     taskCollection = client.collection('tasks')

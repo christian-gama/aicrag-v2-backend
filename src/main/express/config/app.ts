@@ -5,14 +5,18 @@ import engine from './engine'
 import middlewares from './middlewares'
 import routes from './routes'
 
-import express from 'express'
+import express, { Express } from 'express'
 
-const app = express()
+export const setupApp = async (): Promise<Express> => {
+  const app = express()
 
-setupApolloServer(app)
-middlewares(app)
-engine(app)
-routes(app)
-schedulers()
+  middlewares(app)
+  engine(app)
+  routes(app)
+  schedulers()
+  const server = setupApolloServer()
+  await server.start()
+  server.applyMiddleware({ app })
 
-export default app
+  return app
+}

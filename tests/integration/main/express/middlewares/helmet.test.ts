@@ -1,9 +1,14 @@
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 
+import { Express } from 'express'
 import request from 'supertest'
 
+let app: Express
+
 describe('helmet', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    app = await setupApp()
+
     app.post('/test_helmet', (req, res) => {
       res.send()
     })

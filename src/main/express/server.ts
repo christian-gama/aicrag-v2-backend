@@ -1,3 +1,4 @@
+/* eslint-disable jest/require-hook */
 import 'module-alias/register'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
@@ -8,7 +9,8 @@ import { createSchemas, createIndexes } from '@/schemas/mongodb'
 
 MongoAdapter.connect(environment.DB.MONGO_URL)
   .then(async () => {
-    const app = (await import('./config/app')).default
+    const { setupApp } = await import('./config/app')
+    const app = await setupApp()
 
     await createSchemas()
     await createIndexes()

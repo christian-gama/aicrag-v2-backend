@@ -1,9 +1,16 @@
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 
+import { Express } from 'express'
 import request from 'supertest'
 
+let app: Express
+let agent: request.SuperAgentTest
+
 describe('cookieParser', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    app = await setupApp()
+    agent = request.agent(app)
+
     app.get('/save_cookie', (req, res) => {
       res.cookie('any_cookie', 'any_value')
       res.send()
@@ -14,8 +21,6 @@ describe('cookieParser', () => {
       else res.send('No cookies')
     })
   })
-
-  const agent = request.agent(app)
 
   it('should save cookies', async () => {
     expect.assertions(0)

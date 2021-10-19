@@ -1,9 +1,13 @@
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 
+import { Express } from 'express'
 import request from 'supertest'
 
+let app: Express
+
 describe('bodyParser', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    app = await setupApp()
     app.post('/use_body_parser', (req, res) => {
       res.send(req.body)
     })

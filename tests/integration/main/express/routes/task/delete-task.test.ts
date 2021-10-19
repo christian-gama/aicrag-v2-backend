@@ -3,14 +3,17 @@ import { ITask, IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
 
 import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
 
+import { Express } from 'express'
 import request from 'supertest'
+
+let app: Express
 
 describe('delete /task/:id', () => {
   const client = makeMongoDb()
@@ -30,6 +33,8 @@ describe('delete /task/:id', () => {
   })
 
   beforeAll(async () => {
+    app = await setupApp()
+
     await MongoAdapter.connect(global.__MONGO_URI__)
 
     taskCollection = client.collection('tasks')

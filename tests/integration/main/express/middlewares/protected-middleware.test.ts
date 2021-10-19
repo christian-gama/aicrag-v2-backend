@@ -3,7 +3,7 @@ import { IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 import { protectedMiddleware } from '@/main/express/routes'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -11,7 +11,10 @@ import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/p
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
+import { Express } from 'express'
 import request from 'supertest'
+
+let app: Express
 
 describe('protectedMiddleware', () => {
   const client = makeMongoDb()
@@ -29,6 +32,8 @@ describe('protectedMiddleware', () => {
   })
 
   beforeAll(async () => {
+    app = await setupApp()
+
     await MongoAdapter.connect(global.__MONGO_URI__)
 
     userCollection = client.collection('users')

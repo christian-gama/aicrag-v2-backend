@@ -4,10 +4,13 @@ import { ControllerProtocol } from '@/presentation/controllers/protocols/control
 
 import { environment } from '@/main/config/environment'
 import { controllerAdapter } from '@/main/express/adapters/controller-adapter'
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 import { errorRequestHandler } from '@/main/express/middlewares/error-request-handler'
 
+import { Express } from 'express'
 import request from 'supertest'
+
+let app: Express
 
 const error = new Error('any_message')
 const makeControllerStub = (): ControllerProtocol => {
@@ -27,7 +30,9 @@ describe('errorRequestHandler', () => {
     environment.SERVER.NODE_ENV = env
   })
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    app = await setupApp()
+
     app.post('/error_handler', controllerAdapter(makeControllerStub()))
     app.use(errorRequestHandler)
   })

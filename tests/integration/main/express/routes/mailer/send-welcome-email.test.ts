@@ -5,14 +5,17 @@ import { MailerServiceError } from '@/application/errors'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionProtocol } from '@/infra/database/protocols'
 
-import app from '@/main/express/config/app'
+import { setupApp } from '@/main/express/config/app'
 import { WelcomeEmail } from '@/main/mailer/welcome-email'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
+import { Express } from 'express'
 import request from 'supertest'
+
+let app: Express
 
 describe('post /send-welcome-email', () => {
   const client = makeMongoDb()
@@ -28,6 +31,8 @@ describe('post /send-welcome-email', () => {
   })
 
   beforeAll(async () => {
+    app = await setupApp()
+
     await MongoAdapter.connect(global.__MONGO_URI__)
 
     userCollection = client.collection('users')
