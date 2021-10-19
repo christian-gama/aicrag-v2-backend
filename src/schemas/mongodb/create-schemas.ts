@@ -1,6 +1,6 @@
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 
-import { LogSchema } from './log-schema.ts'
+import { LogSchema } from './log-schema'
 import { TaskSchema } from './task-schema'
 import { UserSchema } from './user-schema'
 
