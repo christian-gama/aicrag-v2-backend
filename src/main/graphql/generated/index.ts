@@ -63,6 +63,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  empty?: Maybe<Scalars['String']>;
   login?: Maybe<Login>;
   signUp?: Maybe<SignUp>;
 };
@@ -98,6 +99,11 @@ export type PublicUserProps = {
 export type PublicUserSettings = {
   __typename?: 'PublicUserSettings';
   currency: UserCurrency;
+};
+
+export type Query = {
+  __typename?: 'Query';
+  empty?: Maybe<Scalars['String']>;
 };
 
 export type SignUp = HttpResponse & {
@@ -237,6 +243,7 @@ export type ResolversTypes = {
   PublicUserPersonal: ResolverTypeWrapper<PublicUserPersonal>;
   PublicUserProps: ResolverTypeWrapper<PublicUserProps>;
   PublicUserSettings: ResolverTypeWrapper<PublicUserSettings>;
+  Query: ResolverTypeWrapper<{}>;
   SignUp: ResolverTypeWrapper<SignUp>;
   SignUpInput: SignUpInput;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -265,6 +272,7 @@ export type ResolversParentTypes = {
   PublicUserPersonal: PublicUserPersonal;
   PublicUserProps: PublicUserProps;
   PublicUserSettings: PublicUserSettings;
+  Query: {};
   SignUp: SignUp;
   SignUpInput: SignUpInput;
   String: Scalars['String'];
@@ -323,6 +331,7 @@ export type LoginResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   signUp?: Resolver<Maybe<ResolversTypes['SignUp']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
 };
@@ -348,6 +357,10 @@ export type PublicUserPropsResolvers<ContextType = any, ParentType extends Resol
 export type PublicUserSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUserSettings'] = ResolversParentTypes['PublicUserSettings']> = {
   currency?: Resolver<ResolversTypes['UserCurrency'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
 export type SignUpResolvers<ContextType = any, ParentType extends ResolversParentTypes['SignUp'] = ResolversParentTypes['SignUp']> = {
@@ -404,6 +417,7 @@ export type Resolvers<ContextType = any> = {
   PublicUserPersonal?: PublicUserPersonalResolvers<ContextType>;
   PublicUserProps?: PublicUserPropsResolvers<ContextType>;
   PublicUserSettings?: PublicUserSettingsResolvers<ContextType>;
+  Query?: QueryResolvers<ContextType>;
   SignUp?: SignUpResolvers<ContextType>;
   UserLogs?: UserLogsResolvers<ContextType>;
   UserPersonal?: UserPersonalResolvers<ContextType>;
