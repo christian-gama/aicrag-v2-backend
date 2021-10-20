@@ -15,9 +15,9 @@ export class ClearUserDatabase {
   async deleteInactiveUsers (): Promise<number | ILogError> {
     try {
       console.log(
-        `[${new Date(
-          Date.now()
-        ).toLocaleString()}] ClearUserDatabase: Looking for inactive users...`
+        `[${new Date().toLocaleString('pt-br', {
+          timeZone: 'America/Sao_Paulo'
+        })}] ClearUserDatabase: Looking for inactive users...`
       )
 
       const userCollection = this.database.collection('users')
@@ -31,9 +31,9 @@ export class ClearUserDatabase {
 
       if (deletedCount > 0) {
         console.log(
-          `[${new Date(
-            Date.now()
-          ).toLocaleString()}] ClearUserDatabase: ${deletedCount} inactive users were deleted.`
+          `[${new Date().toLocaleString('pt-br', {
+            timeZone: 'America/Sao_Paulo'
+          })}] ClearUserDatabase: ${deletedCount} inactive users were deleted.`
         )
       }
 
