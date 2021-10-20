@@ -1,4 +1,3 @@
-/* eslint-disable jest/require-hook */
 import 'module-alias/register'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
