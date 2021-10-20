@@ -20,6 +20,6 @@ services:
       - '3000:3000'
       - '9222:9222'
     working_dir: /usr/workspace/aicrag-v2/
-    command: bash -c "npm install --only=prod && npm run debug"
+    command: bash -c "npm install --only=prod && npm run dev:docker"
     links:
       - mongo
