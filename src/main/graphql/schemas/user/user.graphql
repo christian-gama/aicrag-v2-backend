@@ -1,0 +1,65 @@
+type UserLogs {
+  createdAt: Date!
+  lastLoginAt: Date
+  lastSeenAt: Date
+  updatedAt: Date
+}
+
+type UserPersonal {
+  email: String!
+  id: String!
+  name: String!
+  password: String!
+}
+
+type UserSettings {
+  accountActivated: Boolean!
+  currency: UserCurrency!
+  handicap: Int!
+}
+
+type UserTemporary {
+  activationCode: String
+  activationCodeExpiration: Date
+  resetPasswordToken: String
+  tempEmail: String
+  tempEmailCode: String
+  tempEmailCodeExpiration: Date
+}
+
+enum UserCurrency {
+  BRL
+  USD
+}
+
+type FullUser {
+  user: FullUserProps!
+}
+
+type FullUserProps {
+  logs: UserLogs!
+  personal: UserPersonal!
+  settings: UserSettings!
+  temporary: UserTemporary!
+  tokenVersion: Int!
+}
+
+type PublicUser {
+  user: PublicUserProps!
+
+}
+
+type PublicUserProps {
+  personal: PublicUserPersonal!
+  settings: PublicUserSettings!
+}
+
+type PublicUserPersonal {
+  email: String!
+  id: String!
+  name: String!
+}
+
+type PublicUserSettings {
+  currency: UserCurrency!
+}

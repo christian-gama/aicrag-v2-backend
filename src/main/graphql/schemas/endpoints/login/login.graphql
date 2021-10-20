@@ -1,0 +1,27 @@
+type Mutation {
+  login(input: LoginInput!): Login
+}
+
+type Login implements HttpResponse {
+  status: Boolean!
+  statusCode: Int!
+  data: AccountData!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type ActiveAccount {
+  accessToken: String!
+  refreshToken: String!
+  user: PublicUser!
+}
+
+type InactiveAccount {
+  accessToken: String!
+  message: String!
+}
+
+union AccountData = ActiveAccount | InactiveAccount

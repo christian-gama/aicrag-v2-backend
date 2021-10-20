@@ -1,0 +1,16 @@
+type Mutation {
+  signUp(input: SignUpInput!): SignUp
+}
+
+type SignUp implements HttpResponse {
+  status: Boolean!
+  statusCode: Int!
+  data: PublicUser!
+}
+
+input SignUpInput {
+  email: String!
+  name: String!
+  password: String!
+  passwordConfirmation: String!
+}
