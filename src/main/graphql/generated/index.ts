@@ -104,6 +104,11 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
+export type Logout = {
+  __typename?: 'Logout';
+  message: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   activateAccount?: Maybe<ActivateAccount>;
@@ -111,6 +116,7 @@ export type Mutation = {
   deleteTask: DeleteTask;
   empty?: Maybe<Scalars['String']>;
   login?: Maybe<Login>;
+  logout: Logout;
   signUp: SignUp;
   updateTask: UpdateTask;
 };
@@ -378,6 +384,7 @@ export type ResolversTypes = {
   JWT: ResolverTypeWrapper<Scalars['JWT']>;
   Login: ResolversTypes['ActiveAccount'] | ResolversTypes['InactiveAccount'];
   LoginInput: LoginInput;
+  Logout: ResolverTypeWrapper<Logout>;
   Mutation: ResolverTypeWrapper<{}>;
   PublicUser: ResolverTypeWrapper<PublicUser>;
   PublicUserPersonal: ResolverTypeWrapper<PublicUserPersonal>;
@@ -425,6 +432,7 @@ export type ResolversParentTypes = {
   JWT: Scalars['JWT'];
   Login: ResolversParentTypes['ActiveAccount'] | ResolversParentTypes['InactiveAccount'];
   LoginInput: LoginInput;
+  Logout: Logout;
   Mutation: {};
   PublicUser: PublicUser;
   PublicUserPersonal: PublicUserPersonal;
@@ -514,12 +522,18 @@ export type LoginResolvers<ContextType = any, ParentType extends ResolversParent
   __resolveType: TypeResolveFn<'ActiveAccount' | 'InactiveAccount', ParentType, ContextType>;
 };
 
+export type LogoutResolvers<ContextType = any, ParentType extends ResolversParentTypes['Logout'] = ResolversParentTypes['Logout']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   activateAccount?: Resolver<Maybe<ResolversTypes['ActivateAccount']>, ParentType, ContextType, RequireFields<MutationActivateAccountArgs, 'input'>>;
   createTask?: Resolver<ResolversTypes['CreateTask'], ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'input'>>;
   deleteTask?: Resolver<ResolversTypes['DeleteTask'], ParentType, ContextType, RequireFields<MutationDeleteTaskArgs, 'param'>>;
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
+  logout?: Resolver<ResolversTypes['Logout'], ParentType, ContextType>;
   signUp?: Resolver<ResolversTypes['SignUp'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
 };
@@ -637,6 +651,7 @@ export type Resolvers<ContextType = any> = {
   InactiveAccount?: InactiveAccountResolvers<ContextType>;
   JWT?: GraphQLScalarType;
   Login?: LoginResolvers<ContextType>;
+  Logout?: LogoutResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PublicUser?: PublicUserResolvers<ContextType>;
   PublicUserPersonal?: PublicUserPersonalResolvers<ContextType>;

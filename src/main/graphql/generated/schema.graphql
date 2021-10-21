@@ -83,12 +83,17 @@ input LoginInput {
   password: String!
 }
 
+type Logout {
+  message: String!
+}
+
 type Mutation {
   activateAccount(input: ActivateAccountInput!): ActivateAccount
   createTask(input: CreateTaskInput!): CreateTask!
   deleteTask(param: FindOneTaskParam!): DeleteTask!
   empty: String
   login(input: LoginInput!): Login
+  logout: Logout!
   signUp(input: SignUpInput!): SignUp!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
 }

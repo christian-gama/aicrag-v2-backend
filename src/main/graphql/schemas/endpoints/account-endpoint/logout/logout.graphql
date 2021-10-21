@@ -1,0 +1,7 @@
+type Mutation {
+  logout: Logout!
+}
+
+type Logout {
+  message: String!
+}
