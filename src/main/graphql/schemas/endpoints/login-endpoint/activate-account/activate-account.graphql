@@ -1,0 +1,20 @@
+type Mutation {
+  activateAccount(input: ActivateAccountInput!): ActivateAccount
+}
+
+input ActivateAccountInput {
+  email: String!
+  activationCode: String!
+}
+
+type ActivateAccount implements HttpResponse {
+  status: Boolean!
+  statusCode: Int!
+  data: ActivateAccountData!
+}
+
+type ActivateAccountData {
+  accessToken: String!
+  refreshToken: String!
+  user: PublicUser!
+}

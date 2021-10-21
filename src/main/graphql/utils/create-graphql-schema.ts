@@ -9,9 +9,15 @@ import path from 'path'
 export const createGraphqlSchema = (): GraphQLSchema => {
   const srcPath = path.join(__dirname, '../../../')
 
-  const graphqlTypes = glob
-    .sync(`${srcPath}/**/*.graphql`)
-    .map((x: any) => fs.readFileSync(x, { encoding: 'utf8' }))
+  fs.writeFileSync('graphql-schema.txt', '', { encoding: 'utf8' })
+
+  const graphqlTypes = glob.sync(`${srcPath}/**/*.graphql`).map((x: any) => {
+    const content = fs.readFileSync(x, { encoding: 'utf8' })
+
+    fs.appendFileSync('graphql-schema.txt', content, { encoding: 'utf8' })
+
+    return content
+  })
 
   const _resolvers = glob
     .sync(`${srcPath}/**/resolver.?s`)

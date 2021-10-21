@@ -4,15 +4,7 @@ import { Resolvers } from '@/main/graphql/generated'
 export const resolver: Resolvers = {
   FullUser: {
     __isTypeOf: (obj) => {
-      return typeof obj.user.logs !== 'undefined'
-    },
-    user: ({ user }) => {
-      return user
-    }
-  },
-  FullUserProps: {
-    __isTypeOf: (obj) => {
-      return typeof obj.logs !== 'undefined'
+      return obj.logs !== undefined
     },
     logs: ({ logs }) => {
       return logs
@@ -32,15 +24,7 @@ export const resolver: Resolvers = {
   },
   PublicUser: {
     __isTypeOf: (obj) => {
-      return typeof (obj as any).user.logs === 'undefined'
-    },
-    user: ({ user }) => {
-      return user
-    }
-  },
-  PublicUserProps: {
-    __isTypeOf: (obj) => {
-      return typeof (obj as any).logs === 'undefined'
+      return (obj as any).logs === undefined
     },
     personal: ({ personal }) => {
       return personal

@@ -17,6 +17,25 @@ export type Scalars = {
 
 export type AccountData = ActiveAccount | InactiveAccount;
 
+export type ActivateAccount = HttpResponse & {
+  __typename?: 'ActivateAccount';
+  data: ActivateAccountData;
+  status: Scalars['Boolean'];
+  statusCode: Scalars['Int'];
+};
+
+export type ActivateAccountData = {
+  __typename?: 'ActivateAccountData';
+  accessToken: Scalars['String'];
+  refreshToken: Scalars['String'];
+  user: PublicUser;
+};
+
+export type ActivateAccountInput = {
+  activationCode: Scalars['String'];
+  email: Scalars['String'];
+};
+
 export type ActiveAccount = {
   __typename?: 'ActiveAccount';
   accessToken: Scalars['String'];
@@ -24,13 +43,15 @@ export type ActiveAccount = {
   user: PublicUser;
 };
 
-export type FullUser = {
-  __typename?: 'FullUser';
-  user: FullUserProps;
+export type CreateTask = HttpResponse & {
+  __typename?: 'CreateTask';
+  data: Task;
+  status: Scalars['Boolean'];
+  statusCode: Scalars['Int'];
 };
 
-export type FullUserProps = {
-  __typename?: 'FullUserProps';
+export type FullUser = {
+  __typename?: 'FullUser';
   logs: UserLogs;
   personal: UserPersonal;
   settings: UserSettings;
@@ -63,10 +84,16 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createTask?: Maybe<Task>;
+  activateAccount?: Maybe<ActivateAccount>;
+  createTask?: Maybe<CreateTask>;
   empty?: Maybe<Scalars['String']>;
   login?: Maybe<Login>;
   signUp?: Maybe<SignUp>;
+};
+
+
+export type MutationActivateAccountArgs = {
+  input: ActivateAccountInput;
 };
 
 
@@ -86,7 +113,8 @@ export type MutationSignUpArgs = {
 
 export type PublicUser = {
   __typename?: 'PublicUser';
-  user: PublicUserProps;
+  personal: PublicUserPersonal;
+  settings: PublicUserSettings;
 };
 
 export type PublicUserPersonal = {
@@ -94,12 +122,6 @@ export type PublicUserPersonal = {
   email: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
-};
-
-export type PublicUserProps = {
-  __typename?: 'PublicUserProps';
-  personal: PublicUserPersonal;
-  settings: PublicUserSettings;
 };
 
 export type PublicUserSettings = {
@@ -126,25 +148,9 @@ export type SignUpInput = {
   passwordConfirmation: Scalars['String'];
 };
 
-export type Task = HttpResponse & {
+export type Task = {
   __typename?: 'Task';
-  data: TaskData;
-  status: Scalars['Boolean'];
-  statusCode: Scalars['Int'];
-};
-
-export type TaskData = {
-  __typename?: 'TaskData';
-  commentary?: Maybe<Scalars['String']>;
-  date?: Maybe<TaskDate>;
-  duration: Scalars['Float'];
-  id: Scalars['ID'];
-  logs: TaskLogs;
-  status: TaskStatus;
-  taskId?: Maybe<Scalars['String']>;
-  type: Scalars['String'];
-  usd: Scalars['Float'];
-  userId: Scalars['String'];
+  task: TaskProps;
 };
 
 export type TaskDate = {
@@ -169,6 +175,20 @@ export type TaskLogs = {
   __typename?: 'TaskLogs';
   createdAt: Scalars['Date'];
   updatedAt?: Maybe<Scalars['Date']>;
+};
+
+export type TaskProps = {
+  __typename?: 'TaskProps';
+  commentary?: Maybe<Scalars['String']>;
+  date: TaskDate;
+  duration: Scalars['Float'];
+  id: Scalars['ID'];
+  logs: TaskLogs;
+  status: TaskStatus;
+  taskId?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
+  usd: Scalars['Float'];
+  userId: Scalars['String'];
 };
 
 export enum TaskStatus {
@@ -289,13 +309,16 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AccountData: ResolversTypes['ActiveAccount'] | ResolversTypes['InactiveAccount'];
+  ActivateAccount: ResolverTypeWrapper<ActivateAccount>;
+  ActivateAccountData: ResolverTypeWrapper<ActivateAccountData>;
+  ActivateAccountInput: ActivateAccountInput;
   ActiveAccount: ResolverTypeWrapper<ActiveAccount>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  CreateTask: ResolverTypeWrapper<CreateTask>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   FullUser: ResolverTypeWrapper<FullUser>;
-  FullUserProps: ResolverTypeWrapper<FullUserProps>;
-  HttpResponse: ResolversTypes['Login'] | ResolversTypes['SignUp'] | ResolversTypes['Task'];
+  HttpResponse: ResolversTypes['ActivateAccount'] | ResolversTypes['CreateTask'] | ResolversTypes['Login'] | ResolversTypes['SignUp'];
   ID: ResolverTypeWrapper<Scalars['ID']>;
   InactiveAccount: ResolverTypeWrapper<InactiveAccount>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -304,17 +327,16 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   PublicUser: ResolverTypeWrapper<PublicUser>;
   PublicUserPersonal: ResolverTypeWrapper<PublicUserPersonal>;
-  PublicUserProps: ResolverTypeWrapper<PublicUserProps>;
   PublicUserSettings: ResolverTypeWrapper<PublicUserSettings>;
   Query: ResolverTypeWrapper<{}>;
   SignUp: ResolverTypeWrapper<SignUp>;
   SignUpInput: SignUpInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Task: ResolverTypeWrapper<Task>;
-  TaskData: ResolverTypeWrapper<TaskData>;
   TaskDate: ResolverTypeWrapper<TaskDate>;
   TaskInput: TaskInput;
   TaskLogs: ResolverTypeWrapper<TaskLogs>;
+  TaskProps: ResolverTypeWrapper<TaskProps>;
   TaskStatus: TaskStatus;
   TaskType: TaskType;
   UserCurrency: UserCurrency;
@@ -327,13 +349,16 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AccountData: ResolversParentTypes['ActiveAccount'] | ResolversParentTypes['InactiveAccount'];
+  ActivateAccount: ActivateAccount;
+  ActivateAccountData: ActivateAccountData;
+  ActivateAccountInput: ActivateAccountInput;
   ActiveAccount: ActiveAccount;
   Boolean: Scalars['Boolean'];
+  CreateTask: CreateTask;
   Date: Scalars['Date'];
   Float: Scalars['Float'];
   FullUser: FullUser;
-  FullUserProps: FullUserProps;
-  HttpResponse: ResolversParentTypes['Login'] | ResolversParentTypes['SignUp'] | ResolversParentTypes['Task'];
+  HttpResponse: ResolversParentTypes['ActivateAccount'] | ResolversParentTypes['CreateTask'] | ResolversParentTypes['Login'] | ResolversParentTypes['SignUp'];
   ID: Scalars['ID'];
   InactiveAccount: InactiveAccount;
   Int: Scalars['Int'];
@@ -342,17 +367,16 @@ export type ResolversParentTypes = {
   Mutation: {};
   PublicUser: PublicUser;
   PublicUserPersonal: PublicUserPersonal;
-  PublicUserProps: PublicUserProps;
   PublicUserSettings: PublicUserSettings;
   Query: {};
   SignUp: SignUp;
   SignUpInput: SignUpInput;
   String: Scalars['String'];
   Task: Task;
-  TaskData: TaskData;
   TaskDate: TaskDate;
   TaskInput: TaskInput;
   TaskLogs: TaskLogs;
+  TaskProps: TaskProps;
   UserLogs: UserLogs;
   UserPersonal: UserPersonal;
   UserSettings: UserSettings;
@@ -363,10 +387,31 @@ export type AccountDataResolvers<ContextType = any, ParentType extends Resolvers
   __resolveType: TypeResolveFn<'ActiveAccount' | 'InactiveAccount', ParentType, ContextType>;
 };
 
+export type ActivateAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivateAccount'] = ResolversParentTypes['ActivateAccount']> = {
+  data?: Resolver<ResolversTypes['ActivateAccountData'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ActivateAccountDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivateAccountData'] = ResolversParentTypes['ActivateAccountData']> = {
+  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ActiveAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActiveAccount'] = ResolversParentTypes['ActiveAccount']> = {
   accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateTaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateTask'] = ResolversParentTypes['CreateTask']> = {
+  data?: Resolver<ResolversTypes['Task'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -375,11 +420,6 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type FullUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['FullUser'] = ResolversParentTypes['FullUser']> = {
-  user?: Resolver<ResolversTypes['FullUserProps'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type FullUserPropsResolvers<ContextType = any, ParentType extends ResolversParentTypes['FullUserProps'] = ResolversParentTypes['FullUserProps']> = {
   logs?: Resolver<ResolversTypes['UserLogs'], ParentType, ContextType>;
   personal?: Resolver<ResolversTypes['UserPersonal'], ParentType, ContextType>;
   settings?: Resolver<ResolversTypes['UserSettings'], ParentType, ContextType>;
@@ -389,7 +429,7 @@ export type FullUserPropsResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type HttpResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['HttpResponse'] = ResolversParentTypes['HttpResponse']> = {
-  __resolveType: TypeResolveFn<'Login' | 'SignUp' | 'Task', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'ActivateAccount' | 'CreateTask' | 'Login' | 'SignUp', ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   statusCode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
@@ -408,14 +448,16 @@ export type LoginResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createTask?: Resolver<Maybe<ResolversTypes['Task']>, ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'input'>>;
+  activateAccount?: Resolver<Maybe<ResolversTypes['ActivateAccount']>, ParentType, ContextType, RequireFields<MutationActivateAccountArgs, 'input'>>;
+  createTask?: Resolver<Maybe<ResolversTypes['CreateTask']>, ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'input'>>;
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   signUp?: Resolver<Maybe<ResolversTypes['SignUp']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
 };
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
-  user?: Resolver<ResolversTypes['PublicUserProps'], ParentType, ContextType>;
+  personal?: Resolver<ResolversTypes['PublicUserPersonal'], ParentType, ContextType>;
+  settings?: Resolver<ResolversTypes['PublicUserSettings'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -423,12 +465,6 @@ export type PublicUserPersonalResolvers<ContextType = any, ParentType extends Re
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type PublicUserPropsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUserProps'] = ResolversParentTypes['PublicUserProps']> = {
-  personal?: Resolver<ResolversTypes['PublicUserPersonal'], ParentType, ContextType>;
-  settings?: Resolver<ResolversTypes['PublicUserSettings'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -449,23 +485,7 @@ export type SignUpResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type TaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Task'] = ResolversParentTypes['Task']> = {
-  data?: Resolver<ResolversTypes['TaskData'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  statusCode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TaskDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaskData'] = ResolversParentTypes['TaskData']> = {
-  commentary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  date?: Resolver<Maybe<ResolversTypes['TaskDate']>, ParentType, ContextType>;
-  duration?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  logs?: Resolver<ResolversTypes['TaskLogs'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>;
-  taskId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  usd?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  task?: Resolver<ResolversTypes['TaskProps'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -481,6 +501,20 @@ export type TaskDateResolvers<ContextType = any, ParentType extends ResolversPar
 export type TaskLogsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaskLogs'] = ResolversParentTypes['TaskLogs']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TaskPropsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaskProps'] = ResolversParentTypes['TaskProps']> = {
+  commentary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  date?: Resolver<ResolversTypes['TaskDate'], ParentType, ContextType>;
+  duration?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  logs?: Resolver<ResolversTypes['TaskLogs'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>;
+  taskId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  usd?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -519,24 +553,25 @@ export type UserTemporaryResolvers<ContextType = any, ParentType extends Resolve
 
 export type Resolvers<ContextType = any> = {
   AccountData?: AccountDataResolvers<ContextType>;
+  ActivateAccount?: ActivateAccountResolvers<ContextType>;
+  ActivateAccountData?: ActivateAccountDataResolvers<ContextType>;
   ActiveAccount?: ActiveAccountResolvers<ContextType>;
+  CreateTask?: CreateTaskResolvers<ContextType>;
   Date?: GraphQLScalarType;
   FullUser?: FullUserResolvers<ContextType>;
-  FullUserProps?: FullUserPropsResolvers<ContextType>;
   HttpResponse?: HttpResponseResolvers<ContextType>;
   InactiveAccount?: InactiveAccountResolvers<ContextType>;
   Login?: LoginResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PublicUser?: PublicUserResolvers<ContextType>;
   PublicUserPersonal?: PublicUserPersonalResolvers<ContextType>;
-  PublicUserProps?: PublicUserPropsResolvers<ContextType>;
   PublicUserSettings?: PublicUserSettingsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SignUp?: SignUpResolvers<ContextType>;
   Task?: TaskResolvers<ContextType>;
-  TaskData?: TaskDataResolvers<ContextType>;
   TaskDate?: TaskDateResolvers<ContextType>;
   TaskLogs?: TaskLogsResolvers<ContextType>;
+  TaskProps?: TaskPropsResolvers<ContextType>;
   UserLogs?: UserLogsResolvers<ContextType>;
   UserPersonal?: UserPersonalResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;

@@ -1,11 +1,11 @@
 type Mutation {
-  createTask(input: TaskInput!): Task
+  createTask(input: TaskInput!): CreateTask
 }
 
-type Task implements HttpResponse {
+type CreateTask implements HttpResponse {
   status: Boolean!
   statusCode: Int!
-  data: TaskData!
+  data: Task!
 }
 
 input TaskInput {
@@ -27,9 +27,13 @@ enum TaskStatus {
   in_progress
 }
 
-type TaskData {
+type Task {
+  task: TaskProps!
+}
+
+type TaskProps {
   commentary: String
-  date: TaskDate
+  date: TaskDate!
   duration: Float!
   id: ID!
   logs: TaskLogs!

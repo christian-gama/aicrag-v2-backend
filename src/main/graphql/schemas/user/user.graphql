@@ -1,3 +1,11 @@
+type FullUser {
+  logs: UserLogs!
+  personal: UserPersonal!
+  settings: UserSettings!
+  temporary: UserTemporary!
+  tokenVersion: Int!
+}
+
 type UserLogs {
   createdAt: Date!
   lastLoginAt: Date
@@ -32,24 +40,7 @@ enum UserCurrency {
   USD
 }
 
-type FullUser {
-  user: FullUserProps!
-}
-
-type FullUserProps {
-  logs: UserLogs!
-  personal: UserPersonal!
-  settings: UserSettings!
-  temporary: UserTemporary!
-  tokenVersion: Int!
-}
-
 type PublicUser {
-  user: PublicUserProps!
-
-}
-
-type PublicUserProps {
   personal: PublicUserPersonal!
   settings: PublicUserSettings!
 }
