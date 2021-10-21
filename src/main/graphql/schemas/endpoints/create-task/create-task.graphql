@@ -1,0 +1,54 @@
+type Mutation {
+  createTask(input: TaskInput!): Task
+}
+
+type Task implements HttpResponse {
+  status: Boolean!
+  statusCode: Int!
+  data: TaskData!
+}
+
+input TaskInput {
+  taskId: String
+  commentary: String
+  date: Date
+  duration: Int!
+  status: TaskStatus!
+  type: TaskType!
+}
+
+enum TaskType {
+  QA
+  TX
+}
+
+enum TaskStatus {
+  completed
+  in_progress
+}
+
+type TaskData {
+  commentary: String
+  date: TaskDate
+  duration: Float!
+  id: ID!
+  logs: TaskLogs!
+  status: TaskStatus!
+  taskId: String
+  type: String!
+  usd: Float!
+  userId: String!
+}
+
+type TaskDate {
+  day: Int!
+  full: Date!
+  hours: String!
+  month: Int!
+  year: Int!
+}
+
+type TaskLogs {
+  createdAt: Date!
+  updatedAt: Date
+}
