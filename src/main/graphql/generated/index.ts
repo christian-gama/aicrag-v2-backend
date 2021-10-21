@@ -130,6 +130,7 @@ export type Mutation = {
   resetPassword: ResetPassword;
   signUp: SignUp;
   updateTask: UpdateTask;
+  verifyResetPasswordToken: VerifyResetPasswordToken;
 };
 
 
@@ -171,6 +172,11 @@ export type MutationSignUpArgs = {
 export type MutationUpdateTaskArgs = {
   input: UpdateTaskInput;
   param: UpdateTaskParam;
+};
+
+
+export type MutationVerifyResetPasswordTokenArgs = {
+  param: VerifyResetPasswordTokenInput;
 };
 
 export type PublicUser = {
@@ -326,6 +332,15 @@ export type UserTemporary = {
   tempEmailCodeExpiration?: Maybe<Scalars['DateString']>;
 };
 
+export type VerifyResetPasswordToken = {
+  __typename?: 'VerifyResetPasswordToken';
+  accessToken: Scalars['JWT'];
+};
+
+export type VerifyResetPasswordTokenInput = {
+  token: Scalars['JWT'];
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -443,6 +458,8 @@ export type ResolversTypes = {
   UserPersonal: ResolverTypeWrapper<UserPersonal>;
   UserSettings: ResolverTypeWrapper<UserSettings>;
   UserTemporary: ResolverTypeWrapper<UserTemporary>;
+  VerifyResetPasswordToken: ResolverTypeWrapper<VerifyResetPasswordToken>;
+  VerifyResetPasswordTokenInput: VerifyResetPasswordTokenInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -492,6 +509,8 @@ export type ResolversParentTypes = {
   UserPersonal: UserPersonal;
   UserSettings: UserSettings;
   UserTemporary: UserTemporary;
+  VerifyResetPasswordToken: VerifyResetPasswordToken;
+  VerifyResetPasswordTokenInput: VerifyResetPasswordTokenInput;
 };
 
 export type ActivateAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivateAccount'] = ResolversParentTypes['ActivateAccount']> = {
@@ -583,6 +602,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   resetPassword?: Resolver<ResolversTypes['ResetPassword'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['SignUp'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
+  verifyResetPasswordToken?: Resolver<ResolversTypes['VerifyResetPasswordToken'], ParentType, ContextType, RequireFields<MutationVerifyResetPasswordTokenArgs, 'param'>>;
 };
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
@@ -691,6 +711,11 @@ export type UserTemporaryResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type VerifyResetPasswordTokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['VerifyResetPasswordToken'] = ResolversParentTypes['VerifyResetPasswordToken']> = {
+  accessToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   ActivateAccount?: ActivateAccountResolvers<ContextType>;
   ActiveAccount?: ActiveAccountResolvers<ContextType>;
@@ -722,5 +747,6 @@ export type Resolvers<ContextType = any> = {
   UserPersonal?: UserPersonalResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;
   UserTemporary?: UserTemporaryResolvers<ContextType>;
+  VerifyResetPasswordToken?: VerifyResetPasswordTokenResolvers<ContextType>;
 };
 

@@ -106,6 +106,7 @@ type Mutation {
   resetPassword(input: ResetPasswordInput!): ResetPassword!
   signUp(input: SignUpInput!): SignUp!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
+  verifyResetPasswordToken(param: VerifyResetPasswordTokenInput!): VerifyResetPasswordToken!
 }
 
 type PublicUser {
@@ -237,4 +238,12 @@ type UserTemporary {
   tempEmail: String
   tempEmailCode: String
   tempEmailCodeExpiration: DateString
+}
+
+type VerifyResetPasswordToken {
+  accessToken: JWT!
+}
+
+input VerifyResetPasswordTokenInput {
+  token: JWT!
 }
