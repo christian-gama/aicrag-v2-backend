@@ -3,7 +3,7 @@ type Mutation {
 }
 
 input ActivateAccountInput {
-  email: String!
+  email: EmailAddress!
   activationCode: String!
 }
 
@@ -14,7 +14,7 @@ type ActivateAccount implements HttpResponse {
 }
 
 type ActivateAccountData {
-  accessToken: String!
-  refreshToken: String!
+  accessToken: JWT!
+  refreshToken: JWT!
   user: PublicUser!
 }

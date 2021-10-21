@@ -11,7 +11,7 @@ type CreateTask implements HttpResponse {
 input TaskInput {
   taskId: String
   commentary: String
-  date: Date
+  date: DateString
   duration: Int!
   status: TaskStatus!
   type: TaskType!
@@ -35,24 +35,24 @@ type TaskProps {
   commentary: String
   date: TaskDate!
   duration: Float!
-  id: ID!
+  id: UUID!
   logs: TaskLogs!
   status: TaskStatus!
   taskId: String
   type: String!
   usd: Float!
-  userId: String!
+  userId: UUID!
 }
 
 type TaskDate {
   day: Int!
-  full: Date!
+  full: DateString!
   hours: String!
   month: Int!
   year: Int!
 }
 
 type TaskLogs {
-  createdAt: Date!
-  updatedAt: Date
+  createdAt: DateString!
+  updatedAt: DateString
 }

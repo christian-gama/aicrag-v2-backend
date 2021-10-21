@@ -1,0 +1,190 @@
+union AccountData = ActiveAccount | InactiveAccount
+
+type ActivateAccount implements HttpResponse {
+  data: ActivateAccountData!
+  status: Boolean!
+  statusCode: Int!
+}
+
+type ActivateAccountData {
+  accessToken: JWT!
+  refreshToken: JWT!
+  user: PublicUser!
+}
+
+input ActivateAccountInput {
+  activationCode: String!
+  email: EmailAddress!
+}
+
+type ActiveAccount {
+  accessToken: JWT!
+  refreshToken: JWT!
+  user: PublicUser!
+}
+
+type CreateTask implements HttpResponse {
+  data: Task!
+  status: Boolean!
+  statusCode: Int!
+}
+
+scalar DateString
+
+scalar EmailAddress
+
+type FullUser {
+  logs: UserLogs!
+  personal: UserPersonal!
+  settings: UserSettings!
+  temporary: UserTemporary!
+  tokenVersion: Int!
+}
+
+interface HttpResponse {
+  status: Boolean!
+  statusCode: Int!
+}
+
+type InactiveAccount {
+  accessToken: JWT!
+  message: String!
+}
+
+scalar JWT
+
+type Login implements HttpResponse {
+  data: AccountData!
+  status: Boolean!
+  statusCode: Int!
+}
+
+input LoginInput {
+  email: EmailAddress!
+  password: String!
+}
+
+type Mutation {
+  activateAccount(input: ActivateAccountInput!): ActivateAccount
+  createTask(input: TaskInput!): CreateTask
+  empty: String
+  login(input: LoginInput!): Login
+  signUp(input: SignUpInput!): SignUp
+}
+
+type PublicUser {
+  personal: PublicUserPersonal!
+  settings: PublicUserSettings!
+}
+
+type PublicUserPersonal {
+  email: EmailAddress!
+  id: UUID!
+  name: String!
+}
+
+type PublicUserSettings {
+  currency: UserCurrency!
+}
+
+type Query {
+  empty: String
+}
+
+type SignUp implements HttpResponse {
+  data: PublicUser!
+  status: Boolean!
+  statusCode: Int!
+}
+
+input SignUpInput {
+  email: EmailAddress!
+  name: String!
+  password: String!
+  passwordConfirmation: String!
+}
+
+type Task {
+  task: TaskProps!
+}
+
+type TaskDate {
+  day: Int!
+  full: DateString!
+  hours: String!
+  month: Int!
+  year: Int!
+}
+
+input TaskInput {
+  commentary: String
+  date: DateString
+  duration: Int!
+  status: TaskStatus!
+  taskId: String
+  type: TaskType!
+}
+
+type TaskLogs {
+  createdAt: DateString!
+  updatedAt: DateString
+}
+
+type TaskProps {
+  commentary: String
+  date: TaskDate!
+  duration: Float!
+  id: UUID!
+  logs: TaskLogs!
+  status: TaskStatus!
+  taskId: String
+  type: String!
+  usd: Float!
+  userId: UUID!
+}
+
+enum TaskStatus {
+  completed
+  in_progress
+}
+
+enum TaskType {
+  QA
+  TX
+}
+
+scalar UUID
+
+enum UserCurrency {
+  BRL
+  USD
+}
+
+type UserLogs {
+  createdAt: DateString!
+  lastLoginAt: DateString
+  lastSeenAt: DateString
+  updatedAt: DateString
+}
+
+type UserPersonal {
+  email: EmailAddress!
+  id: UUID!
+  name: String!
+  password: String!
+}
+
+type UserSettings {
+  accountActivated: Boolean!
+  currency: UserCurrency!
+  handicap: Int!
+}
+
+type UserTemporary {
+  activationCode: String
+  activationCodeExpiration: DateString
+  resetPasswordToken: String
+  tempEmail: String
+  tempEmailCode: String
+  tempEmailCodeExpiration: DateString
+}

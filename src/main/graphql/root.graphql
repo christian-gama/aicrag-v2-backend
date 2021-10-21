@@ -5,8 +5,3 @@ type Query {
 type Mutation {
   empty: String
 }
-
-schema {
-  query: Query
-  mutation: Mutation
-}

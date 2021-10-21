@@ -9,18 +9,18 @@ type Login implements HttpResponse {
 }
 
 input LoginInput {
-  email: String!
+  email: EmailAddress!
   password: String!
 }
 
 type ActiveAccount {
-  accessToken: String!
-  refreshToken: String!
+  accessToken: JWT!
+  refreshToken: JWT!
   user: PublicUser!
 }
 
 type InactiveAccount {
-  accessToken: String!
+  accessToken: JWT!
   message: String!
 }
 

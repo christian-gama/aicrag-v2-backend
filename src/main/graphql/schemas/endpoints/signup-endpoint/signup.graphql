@@ -9,7 +9,7 @@ type SignUp implements HttpResponse {
 }
 
 input SignUpInput {
-  email: String!
+  email: EmailAddress!
   name: String!
   password: String!
   passwordConfirmation: String!

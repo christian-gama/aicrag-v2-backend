@@ -7,15 +7,15 @@ type FullUser {
 }
 
 type UserLogs {
-  createdAt: Date!
-  lastLoginAt: Date
-  lastSeenAt: Date
-  updatedAt: Date
+  createdAt: DateString!
+  lastLoginAt: DateString
+  lastSeenAt: DateString
+  updatedAt: DateString
 }
 
 type UserPersonal {
-  email: String!
-  id: String!
+  email: EmailAddress!
+  id: UUID!
   name: String!
   password: String!
 }
@@ -28,11 +28,11 @@ type UserSettings {
 
 type UserTemporary {
   activationCode: String
-  activationCodeExpiration: Date
+  activationCodeExpiration: DateString
   resetPasswordToken: String
   tempEmail: String
   tempEmailCode: String
-  tempEmailCodeExpiration: Date
+  tempEmailCodeExpiration: DateString
 }
 
 enum UserCurrency {
@@ -46,8 +46,8 @@ type PublicUser {
 }
 
 type PublicUserPersonal {
-  email: String!
-  id: String!
+  email: EmailAddress!
+  id: UUID!
   name: String!
 }
 

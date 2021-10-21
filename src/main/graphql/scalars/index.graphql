@@ -1,0 +1,4 @@
+scalar EmailAddress
+scalar DateString
+scalar JWT
+scalar UUID
