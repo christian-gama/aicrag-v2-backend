@@ -63,9 +63,15 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createTask?: Maybe<Task>;
   empty?: Maybe<Scalars['String']>;
   login?: Maybe<Login>;
   signUp?: Maybe<SignUp>;
+};
+
+
+export type MutationCreateTaskArgs = {
+  input: TaskInput;
 };
 
 
@@ -119,6 +125,61 @@ export type SignUpInput = {
   password: Scalars['String'];
   passwordConfirmation: Scalars['String'];
 };
+
+export type Task = HttpResponse & {
+  __typename?: 'Task';
+  data: TaskData;
+  status: Scalars['Boolean'];
+  statusCode: Scalars['Int'];
+};
+
+export type TaskData = {
+  __typename?: 'TaskData';
+  commentary?: Maybe<Scalars['String']>;
+  date?: Maybe<TaskDate>;
+  duration: Scalars['Float'];
+  id: Scalars['ID'];
+  logs: TaskLogs;
+  status: TaskStatus;
+  taskId?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
+  usd: Scalars['Float'];
+  userId: Scalars['String'];
+};
+
+export type TaskDate = {
+  __typename?: 'TaskDate';
+  day: Scalars['Int'];
+  full: Scalars['Date'];
+  hours: Scalars['String'];
+  month: Scalars['Int'];
+  year: Scalars['Int'];
+};
+
+export type TaskInput = {
+  commentary?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['Date']>;
+  duration: Scalars['Int'];
+  status: TaskStatus;
+  taskId?: Maybe<Scalars['String']>;
+  type: TaskType;
+};
+
+export type TaskLogs = {
+  __typename?: 'TaskLogs';
+  createdAt: Scalars['Date'];
+  updatedAt?: Maybe<Scalars['Date']>;
+};
+
+export enum TaskStatus {
+  Completed = 'completed',
+  InProgress = 'in_progress'
+}
+
+export enum TaskType {
+  Qa = 'QA',
+  Tx = 'TX'
+}
 
 export enum UserCurrency {
   Brl = 'BRL',
@@ -231,9 +292,11 @@ export type ResolversTypes = {
   ActiveAccount: ResolverTypeWrapper<ActiveAccount>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   FullUser: ResolverTypeWrapper<FullUser>;
   FullUserProps: ResolverTypeWrapper<FullUserProps>;
-  HttpResponse: ResolversTypes['Login'] | ResolversTypes['SignUp'];
+  HttpResponse: ResolversTypes['Login'] | ResolversTypes['SignUp'] | ResolversTypes['Task'];
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   InactiveAccount: ResolverTypeWrapper<InactiveAccount>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Login: ResolverTypeWrapper<Omit<Login, 'data'> & { data: ResolversTypes['AccountData'] }>;
@@ -247,6 +310,13 @@ export type ResolversTypes = {
   SignUp: ResolverTypeWrapper<SignUp>;
   SignUpInput: SignUpInput;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Task: ResolverTypeWrapper<Task>;
+  TaskData: ResolverTypeWrapper<TaskData>;
+  TaskDate: ResolverTypeWrapper<TaskDate>;
+  TaskInput: TaskInput;
+  TaskLogs: ResolverTypeWrapper<TaskLogs>;
+  TaskStatus: TaskStatus;
+  TaskType: TaskType;
   UserCurrency: UserCurrency;
   UserLogs: ResolverTypeWrapper<UserLogs>;
   UserPersonal: ResolverTypeWrapper<UserPersonal>;
@@ -260,9 +330,11 @@ export type ResolversParentTypes = {
   ActiveAccount: ActiveAccount;
   Boolean: Scalars['Boolean'];
   Date: Scalars['Date'];
+  Float: Scalars['Float'];
   FullUser: FullUser;
   FullUserProps: FullUserProps;
-  HttpResponse: ResolversParentTypes['Login'] | ResolversParentTypes['SignUp'];
+  HttpResponse: ResolversParentTypes['Login'] | ResolversParentTypes['SignUp'] | ResolversParentTypes['Task'];
+  ID: Scalars['ID'];
   InactiveAccount: InactiveAccount;
   Int: Scalars['Int'];
   Login: Omit<Login, 'data'> & { data: ResolversParentTypes['AccountData'] };
@@ -276,6 +348,11 @@ export type ResolversParentTypes = {
   SignUp: SignUp;
   SignUpInput: SignUpInput;
   String: Scalars['String'];
+  Task: Task;
+  TaskData: TaskData;
+  TaskDate: TaskDate;
+  TaskInput: TaskInput;
+  TaskLogs: TaskLogs;
   UserLogs: UserLogs;
   UserPersonal: UserPersonal;
   UserSettings: UserSettings;
@@ -312,7 +389,7 @@ export type FullUserPropsResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type HttpResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['HttpResponse'] = ResolversParentTypes['HttpResponse']> = {
-  __resolveType: TypeResolveFn<'Login' | 'SignUp', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Login' | 'SignUp' | 'Task', ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   statusCode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
@@ -331,6 +408,7 @@ export type LoginResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createTask?: Resolver<Maybe<ResolversTypes['Task']>, ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'input'>>;
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   signUp?: Resolver<Maybe<ResolversTypes['SignUp']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
@@ -367,6 +445,42 @@ export type SignUpResolvers<ContextType = any, ParentType extends ResolversParen
   data?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   statusCode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Task'] = ResolversParentTypes['Task']> = {
+  data?: Resolver<ResolversTypes['TaskData'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  statusCode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TaskDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaskData'] = ResolversParentTypes['TaskData']> = {
+  commentary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  date?: Resolver<Maybe<ResolversTypes['TaskDate']>, ParentType, ContextType>;
+  duration?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  logs?: Resolver<ResolversTypes['TaskLogs'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>;
+  taskId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  usd?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TaskDateResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaskDate'] = ResolversParentTypes['TaskDate']> = {
+  day?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  full?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  hours?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  month?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  year?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TaskLogsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaskLogs'] = ResolversParentTypes['TaskLogs']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -419,6 +533,10 @@ export type Resolvers<ContextType = any> = {
   PublicUserSettings?: PublicUserSettingsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SignUp?: SignUpResolvers<ContextType>;
+  Task?: TaskResolvers<ContextType>;
+  TaskData?: TaskDataResolvers<ContextType>;
+  TaskDate?: TaskDateResolvers<ContextType>;
+  TaskLogs?: TaskLogsResolvers<ContextType>;
   UserLogs?: UserLogsResolvers<ContextType>;
   UserPersonal?: UserPersonalResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;

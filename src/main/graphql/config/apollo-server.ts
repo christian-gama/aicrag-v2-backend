@@ -1,12 +1,15 @@
 import { createGraphqlSchema, handleErrors } from '@/main/graphql/utils'
 
-import { ApolloServer } from 'apollo-server-express'
+import { context } from './context'
 
-export default async (app): Promise<ApolloServer> => {
+import { ApolloServer } from 'apollo-server-express'
+import { Express } from 'express'
+
+export default async (app: Express): Promise<ApolloServer> => {
   const schema = createGraphqlSchema()
 
   const server = new ApolloServer({
-    context: ({ req }) => ({ req }),
+    context,
     plugins: [
       {
         requestDidStart: async () => ({
@@ -18,7 +21,12 @@ export default async (app): Promise<ApolloServer> => {
   })
 
   await server.start()
-  server.applyMiddleware({ app, path: '/graphql' })
+
+  server.applyMiddleware({
+    app,
+    cors: { credentials: true, origin: 'https://studio.apollographql.com' },
+    path: '/graphql'
+  })
 
   return server
 }

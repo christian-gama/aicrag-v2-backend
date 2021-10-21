@@ -1,2 +1,2 @@
 export * from './apollo-error-adapter'
-export * from './apollo-response-adapter'
+export * from './apollo-controller-adapter'
