@@ -7,20 +7,6 @@ import { makeActivateAccountController } from '@/factories/controllers/login'
 export const resolver: Resolvers = {
   ActivateAccount: {
     __isTypeOf: (obj) => {
-      return typeof obj.data.user !== 'undefined'
-    },
-    data: ({ data }) => {
-      return data
-    },
-    status: ({ status }) => {
-      return status
-    },
-    statusCode: ({ statusCode }) => {
-      return statusCode
-    }
-  },
-  ActivateAccountData: {
-    __isTypeOf: (obj) => {
       return obj.user !== undefined
     },
     accessToken: ({ accessToken }) => {
@@ -34,6 +20,10 @@ export const resolver: Resolvers = {
     }
   },
   Mutation: {
-    activateAccount: async (_, args, context) => await apolloControllerAdapter(makeActivateAccountController(), args, context)
+    activateAccount: async (_, args, context) => {
+      const response = await apolloControllerAdapter(makeActivateAccountController(), args, context)
+
+      return response
+    }
   }
 }

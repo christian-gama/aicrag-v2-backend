@@ -5,6 +5,10 @@ import { makeSignUpController } from '@/factories/controllers/signup'
 
 export const resolver: Resolvers = {
   Mutation: {
-    signUp: async (_, args, context) => await apolloControllerAdapter(makeSignUpController(), args, context)
+    signUp: async (_, args, context) => {
+      const response = await apolloControllerAdapter(makeSignUpController(), args, context)
+
+      return response
+    }
   }
 }

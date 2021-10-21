@@ -1,14 +1,17 @@
 schema:
-  - src/main/graphql/**/*.graphql
+  - 'src/main/graphql/**/*.graphql'
+documents: null
 extensions:
   codegen:
-    overwrite: true
+    overwrite: false
     generates:
       src/main/graphql/generated/schema.graphql:
         plugins:
-        - schema-ast
+          - schema-ast
+        config:
+          sort: true
       src/main/graphql/generated/index.ts:
         plugins:
           - typescript
           - typescript-resolvers
-          - typescript-operations
+

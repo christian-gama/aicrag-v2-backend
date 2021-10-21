@@ -1,11 +1,9 @@
 type Mutation {
-  signUp(input: SignUpInput!): SignUp
+  signUp(input: SignUpInput!): SignUp!
 }
 
-type SignUp implements HttpResponse {
-  status: Boolean!
-  statusCode: Int!
-  data: PublicUser!
+type SignUp {
+  user: PublicUser!
 }
 
 input SignUpInput {

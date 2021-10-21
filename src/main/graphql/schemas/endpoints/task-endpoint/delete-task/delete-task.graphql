@@ -1,0 +1,11 @@
+type Mutation {
+  deleteTask(param: FindOneTaskParam!): DeleteTask!
+}
+
+type DeleteTask {
+  status: Boolean
+}
+
+input DeleteTaskParam {
+  id: UUID!
+}

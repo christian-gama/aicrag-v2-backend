@@ -1,0 +1,36 @@
+type Task {
+  commentary: String!
+  date: TaskDate!
+  duration: Float!
+  id: UUID!
+  logs: TaskLogs!
+  status: TaskStatus!
+  taskId: String!
+  type: String!
+  usd: Float!
+  userId: UUID!
+}
+
+type TaskDate {
+  day: Int!
+  full: DateString!
+  hours: String!
+  month: Int!
+  year: Int!
+}
+
+type TaskLogs {
+  createdAt: DateString!
+  updatedAt: DateString
+}
+
+enum TaskType {
+  QA
+  TX
+}
+
+enum TaskStatus {
+  completed
+  in_progress
+}
+

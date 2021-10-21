@@ -30,18 +30,11 @@ export const resolver: Resolvers = {
       return message
     }
   },
-  Login: {
-    data: ({ data }) => {
-      return data
-    },
-    status: ({ status }) => {
-      return status
-    },
-    statusCode: ({ statusCode }) => {
-      return statusCode
-    }
-  },
   Mutation: {
-    login: async (_, args, context) => await apolloControllerAdapter(makeLoginController(), args, context)
+    login: async (_, args, context) => {
+      const response = await apolloControllerAdapter(makeLoginController(), args, context)
+
+      return response
+    }
   }
 }

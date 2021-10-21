@@ -1,58 +1,16 @@
 type Mutation {
-  createTask(input: TaskInput!): CreateTask
+  createTask(input: CreateTaskInput!): CreateTask!
 }
 
-type CreateTask implements HttpResponse {
-  status: Boolean!
-  statusCode: Int!
-  data: Task!
+type CreateTask {
+  task: Task!
 }
 
-input TaskInput {
+input CreateTaskInput {
   taskId: String
   commentary: String
-  date: DateString
-  duration: Int!
+  date: DateString!
+  duration: Float!
   status: TaskStatus!
   type: TaskType!
-}
-
-enum TaskType {
-  QA
-  TX
-}
-
-enum TaskStatus {
-  completed
-  in_progress
-}
-
-type Task {
-  task: TaskProps!
-}
-
-type TaskProps {
-  commentary: String
-  date: TaskDate!
-  duration: Float!
-  id: UUID!
-  logs: TaskLogs!
-  status: TaskStatus!
-  taskId: String
-  type: String!
-  usd: Float!
-  userId: UUID!
-}
-
-type TaskDate {
-  day: Int!
-  full: DateString!
-  hours: String!
-  month: Int!
-  year: Int!
-}
-
-type TaskLogs {
-  createdAt: DateString!
-  updatedAt: DateString
 }

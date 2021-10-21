@@ -7,13 +7,7 @@ input ActivateAccountInput {
   activationCode: String!
 }
 
-type ActivateAccount implements HttpResponse {
-  status: Boolean!
-  statusCode: Int!
-  data: ActivateAccountData!
-}
-
-type ActivateAccountData {
+type ActivateAccount {
   accessToken: JWT!
   refreshToken: JWT!
   user: PublicUser!

@@ -1,12 +1,4 @@
-union AccountData = ActiveAccount | InactiveAccount
-
-type ActivateAccount implements HttpResponse {
-  data: ActivateAccountData!
-  status: Boolean!
-  statusCode: Int!
-}
-
-type ActivateAccountData {
+type ActivateAccount {
   accessToken: JWT!
   refreshToken: JWT!
   user: PublicUser!
@@ -23,15 +15,51 @@ type ActiveAccount {
   user: PublicUser!
 }
 
-type CreateTask implements HttpResponse {
-  data: Task!
-  status: Boolean!
-  statusCode: Int!
+type CreateTask {
+  task: Task!
+}
+
+input CreateTaskInput {
+  commentary: String
+  date: DateString!
+  duration: Float!
+  status: TaskStatus!
+  taskId: String
+  type: TaskType!
 }
 
 scalar DateString
 
+type DeleteTask {
+  status: Boolean
+}
+
+input DeleteTaskParam {
+  id: UUID!
+}
+
 scalar EmailAddress
+
+type FindAllTasks {
+  count: Int!
+  displaying: Int!
+  documents: [Task!]!
+  page: String!
+}
+
+input FindAllTasksQuery {
+  limit: String
+  page: String
+  sort: String
+}
+
+type FindOneTask {
+  task: Task!
+}
+
+input FindOneTaskParam {
+  id: UUID!
+}
 
 type FullUser {
   logs: UserLogs!
@@ -41,11 +69,6 @@ type FullUser {
   tokenVersion: Int!
 }
 
-interface HttpResponse {
-  status: Boolean!
-  statusCode: Int!
-}
-
 type InactiveAccount {
   accessToken: JWT!
   message: String!
@@ -53,11 +76,7 @@ type InactiveAccount {
 
 scalar JWT
 
-type Login implements HttpResponse {
-  data: AccountData!
-  status: Boolean!
-  statusCode: Int!
-}
+union Login = ActiveAccount | InactiveAccount
 
 input LoginInput {
   email: EmailAddress!
@@ -66,10 +85,12 @@ input LoginInput {
 
 type Mutation {
   activateAccount(input: ActivateAccountInput!): ActivateAccount
-  createTask(input: TaskInput!): CreateTask
+  createTask(input: CreateTaskInput!): CreateTask!
+  deleteTask(param: FindOneTaskParam!): DeleteTask!
   empty: String
   login(input: LoginInput!): Login
-  signUp(input: SignUpInput!): SignUp
+  signUp(input: SignUpInput!): SignUp!
+  updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
 }
 
 type PublicUser {
@@ -89,12 +110,12 @@ type PublicUserSettings {
 
 type Query {
   empty: String
+  findAllTasks(query: FindAllTasksQuery!): FindAllTasks!
+  findOneTask(param: FindOneTaskParam!): FindOneTask!
 }
 
-type SignUp implements HttpResponse {
-  data: PublicUser!
-  status: Boolean!
-  statusCode: Int!
+type SignUp {
+  user: PublicUser!
 }
 
 input SignUpInput {
@@ -105,7 +126,16 @@ input SignUpInput {
 }
 
 type Task {
-  task: TaskProps!
+  commentary: String!
+  date: TaskDate!
+  duration: Float!
+  id: UUID!
+  logs: TaskLogs!
+  status: TaskStatus!
+  taskId: String!
+  type: String!
+  usd: Float!
+  userId: UUID!
 }
 
 type TaskDate {
@@ -116,31 +146,9 @@ type TaskDate {
   year: Int!
 }
 
-input TaskInput {
-  commentary: String
-  date: DateString
-  duration: Int!
-  status: TaskStatus!
-  taskId: String
-  type: TaskType!
-}
-
 type TaskLogs {
   createdAt: DateString!
   updatedAt: DateString
-}
-
-type TaskProps {
-  commentary: String
-  date: TaskDate!
-  duration: Float!
-  id: UUID!
-  logs: TaskLogs!
-  status: TaskStatus!
-  taskId: String
-  type: String!
-  usd: Float!
-  userId: UUID!
 }
 
 enum TaskStatus {
@@ -154,6 +162,23 @@ enum TaskType {
 }
 
 scalar UUID
+
+type UpdateTask {
+  task: Task!
+}
+
+input UpdateTaskInput {
+  commentary: String
+  date: DateString
+  duration: Float
+  status: TaskStatus
+  taskId: String
+  type: TaskType
+}
+
+input UpdateTaskParam {
+  id: UUID!
+}
 
 enum UserCurrency {
   BRL

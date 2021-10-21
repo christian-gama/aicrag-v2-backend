@@ -1,0 +1,11 @@
+type Query {
+  findOneTask(param: FindOneTaskParam!): FindOneTask!
+}
+
+type FindOneTask {
+  task: Task!
+}
+
+input FindOneTaskParam {
+  id: UUID!
+}

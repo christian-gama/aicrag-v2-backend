@@ -1,4 +1,4 @@
-import { createGraphqlSchema, handleErrors } from '@/main/graphql/utils'
+import { createGraphqlSchema, handleStatus } from '@/main/graphql/utils'
 
 import { context } from '../context'
 
@@ -13,7 +13,7 @@ export default async (app: Express): Promise<ApolloServer> => {
     plugins: [
       {
         requestDidStart: async () => ({
-          willSendResponse: async ({ response, errors }) => handleErrors(response, errors)
+          willSendResponse: async ({ response, errors }) => handleStatus(response, errors)
         })
       }
     ],

@@ -2,12 +2,6 @@ type Mutation {
   login(input: LoginInput!): Login
 }
 
-type Login implements HttpResponse {
-  status: Boolean!
-  statusCode: Int!
-  data: AccountData!
-}
-
 input LoginInput {
   email: EmailAddress!
   password: String!
@@ -24,4 +18,4 @@ type InactiveAccount {
   message: String!
 }
 
-union AccountData = ActiveAccount | InactiveAccount
+union Login = ActiveAccount | InactiveAccount

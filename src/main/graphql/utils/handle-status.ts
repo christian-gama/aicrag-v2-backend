@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql'
 
-export const handleErrors = (response: any, errors: readonly GraphQLError[] | undefined): void => {
+export const handleStatus = (response: any, errors: readonly GraphQLError[] | undefined): void => {
   errors?.forEach((error) => {
     response.data = undefined
 

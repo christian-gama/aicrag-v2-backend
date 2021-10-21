@@ -1,0 +1,20 @@
+type Mutation {
+  updateTask(param: UpdateTaskParam!, input: UpdateTaskInput!): UpdateTask!
+}
+
+type UpdateTask {
+  task: Task!
+}
+
+input UpdateTaskParam {
+  id: UUID!
+}
+
+input UpdateTaskInput {
+  taskId: String
+  commentary: String
+  date: DateString
+  duration: Float
+  status: TaskStatus
+  type: TaskType
+}

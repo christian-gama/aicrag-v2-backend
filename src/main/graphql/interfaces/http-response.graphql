@@ -1,4 +1,0 @@
-interface HttpResponse {
-  status: Boolean!
-  statusCode: Int!
-}

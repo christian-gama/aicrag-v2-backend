@@ -1,5 +1,5 @@
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
-import { HttpResponse } from '@/presentation/http/protocols'
+import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import {
   createAccessTokenCookie,
@@ -12,11 +12,18 @@ export const apolloControllerAdapter = async (
   controller: ControllerProtocol,
   args: any,
   context?: any
-): Promise<HttpResponse> => {
+): Promise<any> => {
   const { req, res } = context
-  const request = { ...req, body: { ...(args.input || args) } }
+  const request: HttpRequest = {
+    ...req,
+    body: { ...(args.input || args) },
+    params: { ...(args.param || args) },
+    query: { ...(args.query || args) }
+  }
 
   const _response = await controller.handle(request)
+
+  console.log(_response)
 
   const response = getHttpResponse(_response) as HttpResponse
 
@@ -28,5 +35,5 @@ export const apolloControllerAdapter = async (
     createAccessTokenCookie(res, response)
   }
 
-  return response
+  return response.data
 }
