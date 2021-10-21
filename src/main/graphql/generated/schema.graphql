@@ -103,6 +103,7 @@ type Mutation {
   forgotPassword(input: ForgotPasswordInput!): ForgotPassword!
   login(input: LoginInput!): Login
   logout: Logout!
+  resetPassword(input: ResetPasswordInput!): ResetPassword!
   signUp(input: SignUpInput!): SignUp!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
 }
@@ -126,6 +127,16 @@ type Query {
   empty: String
   findAllTasks(query: FindAllTasksQuery!): FindAllTasks!
   findOneTask(param: FindOneTaskParam!): FindOneTask!
+}
+
+type ResetPassword {
+  refreshToken: JWT!
+  user: PublicUser!
+}
+
+input ResetPasswordInput {
+  password: String!
+  passwordConfirmation: String!
 }
 
 type SignUp {

@@ -127,6 +127,7 @@ export type Mutation = {
   forgotPassword: ForgotPassword;
   login?: Maybe<Login>;
   logout: Logout;
+  resetPassword: ResetPassword;
   signUp: SignUp;
   updateTask: UpdateTask;
 };
@@ -154,6 +155,11 @@ export type MutationForgotPasswordArgs = {
 
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+
+export type MutationResetPasswordArgs = {
+  input: ResetPasswordInput;
 };
 
 
@@ -200,6 +206,17 @@ export type QueryFindAllTasksArgs = {
 
 export type QueryFindOneTaskArgs = {
   param: FindOneTaskParam;
+};
+
+export type ResetPassword = {
+  __typename?: 'ResetPassword';
+  refreshToken: Scalars['JWT'];
+  user: PublicUser;
+};
+
+export type ResetPasswordInput = {
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
 };
 
 export type SignUp = {
@@ -407,6 +424,8 @@ export type ResolversTypes = {
   PublicUserPersonal: ResolverTypeWrapper<PublicUserPersonal>;
   PublicUserSettings: ResolverTypeWrapper<PublicUserSettings>;
   Query: ResolverTypeWrapper<{}>;
+  ResetPassword: ResolverTypeWrapper<ResetPassword>;
+  ResetPasswordInput: ResetPasswordInput;
   SignUp: ResolverTypeWrapper<SignUp>;
   SignUpInput: SignUpInput;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -457,6 +476,8 @@ export type ResolversParentTypes = {
   PublicUserPersonal: PublicUserPersonal;
   PublicUserSettings: PublicUserSettings;
   Query: {};
+  ResetPassword: ResetPassword;
+  ResetPasswordInput: ResetPasswordInput;
   SignUp: SignUp;
   SignUpInput: SignUpInput;
   String: Scalars['String'];
@@ -559,6 +580,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   forgotPassword?: Resolver<ResolversTypes['ForgotPassword'], ParentType, ContextType, RequireFields<MutationForgotPasswordArgs, 'input'>>;
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   logout?: Resolver<ResolversTypes['Logout'], ParentType, ContextType>;
+  resetPassword?: Resolver<ResolversTypes['ResetPassword'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['SignUp'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
 };
@@ -585,6 +607,12 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   findAllTasks?: Resolver<ResolversTypes['FindAllTasks'], ParentType, ContextType, RequireFields<QueryFindAllTasksArgs, 'query'>>;
   findOneTask?: Resolver<ResolversTypes['FindOneTask'], ParentType, ContextType, RequireFields<QueryFindOneTaskArgs, 'param'>>;
+};
+
+export type ResetPasswordResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResetPassword'] = ResolversParentTypes['ResetPassword']> = {
+  refreshToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SignUpResolvers<ContextType = any, ParentType extends ResolversParentTypes['SignUp'] = ResolversParentTypes['SignUp']> = {
@@ -683,6 +711,7 @@ export type Resolvers<ContextType = any> = {
   PublicUserPersonal?: PublicUserPersonalResolvers<ContextType>;
   PublicUserSettings?: PublicUserSettingsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  ResetPassword?: ResetPasswordResolvers<ContextType>;
   SignUp?: SignUpResolvers<ContextType>;
   Task?: TaskResolvers<ContextType>;
   TaskDate?: TaskDateResolvers<ContextType>;
