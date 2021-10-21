@@ -1,0 +1,20 @@
+type Mutation {
+  updateUser(input: UpdateUserInput!): UpdateUser!
+}
+
+input UpdateUserInput {
+  currency: UserCurrency
+  email: EmailAddress
+  name: String
+}
+
+type UpdateUserHasChanges {
+  user: PublicUser!
+}
+
+type UpdateUserNoChanges {
+  message: String!
+}
+
+
+union UpdateUser = UpdateUserNoChanges | UpdateUserHasChanges

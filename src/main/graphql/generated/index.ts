@@ -129,7 +129,10 @@ export type Mutation = {
   logout: Logout;
   resetPassword: ResetPassword;
   signUp: SignUp;
+  updateEmailByCode: UpdateEmailByCode;
+  updatePassword: UpdatePassword;
   updateTask: UpdateTask;
+  updateUser: UpdateUser;
   verifyResetPasswordToken: VerifyResetPasswordToken;
 };
 
@@ -169,9 +172,24 @@ export type MutationSignUpArgs = {
 };
 
 
+export type MutationUpdateEmailByCodeArgs = {
+  input: UpdateEmailByCodeInput;
+};
+
+
+export type MutationUpdatePasswordArgs = {
+  input: UpdatePasswordInput;
+};
+
+
 export type MutationUpdateTaskArgs = {
   input: UpdateTaskInput;
   param: UpdateTaskParam;
+};
+
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput;
 };
 
 
@@ -276,6 +294,27 @@ export enum TaskType {
   Tx = 'TX'
 }
 
+export type UpdateEmailByCode = {
+  __typename?: 'UpdateEmailByCode';
+  user: PublicUser;
+};
+
+export type UpdateEmailByCodeInput = {
+  email: Scalars['EmailAddress'];
+  emailCode: Scalars['String'];
+};
+
+export type UpdatePassword = {
+  __typename?: 'UpdatePassword';
+  user: PublicUser;
+};
+
+export type UpdatePasswordInput = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
+};
+
 export type UpdateTask = {
   __typename?: 'UpdateTask';
   task: Task;
@@ -292,6 +331,24 @@ export type UpdateTaskInput = {
 
 export type UpdateTaskParam = {
   id: Scalars['UUID'];
+};
+
+export type UpdateUser = UpdateUserHasChanges | UpdateUserNoChanges;
+
+export type UpdateUserHasChanges = {
+  __typename?: 'UpdateUserHasChanges';
+  user: PublicUser;
+};
+
+export type UpdateUserInput = {
+  currency?: Maybe<UserCurrency>;
+  email?: Maybe<Scalars['EmailAddress']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type UpdateUserNoChanges = {
+  __typename?: 'UpdateUserNoChanges';
+  message: Scalars['String'];
 };
 
 export enum UserCurrency {
@@ -450,9 +507,17 @@ export type ResolversTypes = {
   TaskStatus: TaskStatus;
   TaskType: TaskType;
   UUID: ResolverTypeWrapper<Scalars['UUID']>;
+  UpdateEmailByCode: ResolverTypeWrapper<UpdateEmailByCode>;
+  UpdateEmailByCodeInput: UpdateEmailByCodeInput;
+  UpdatePassword: ResolverTypeWrapper<UpdatePassword>;
+  UpdatePasswordInput: UpdatePasswordInput;
   UpdateTask: ResolverTypeWrapper<UpdateTask>;
   UpdateTaskInput: UpdateTaskInput;
   UpdateTaskParam: UpdateTaskParam;
+  UpdateUser: ResolversTypes['UpdateUserHasChanges'] | ResolversTypes['UpdateUserNoChanges'];
+  UpdateUserHasChanges: ResolverTypeWrapper<UpdateUserHasChanges>;
+  UpdateUserInput: UpdateUserInput;
+  UpdateUserNoChanges: ResolverTypeWrapper<UpdateUserNoChanges>;
   UserCurrency: UserCurrency;
   UserLogs: ResolverTypeWrapper<UserLogs>;
   UserPersonal: ResolverTypeWrapper<UserPersonal>;
@@ -502,9 +567,17 @@ export type ResolversParentTypes = {
   TaskDate: TaskDate;
   TaskLogs: TaskLogs;
   UUID: Scalars['UUID'];
+  UpdateEmailByCode: UpdateEmailByCode;
+  UpdateEmailByCodeInput: UpdateEmailByCodeInput;
+  UpdatePassword: UpdatePassword;
+  UpdatePasswordInput: UpdatePasswordInput;
   UpdateTask: UpdateTask;
   UpdateTaskInput: UpdateTaskInput;
   UpdateTaskParam: UpdateTaskParam;
+  UpdateUser: ResolversParentTypes['UpdateUserHasChanges'] | ResolversParentTypes['UpdateUserNoChanges'];
+  UpdateUserHasChanges: UpdateUserHasChanges;
+  UpdateUserInput: UpdateUserInput;
+  UpdateUserNoChanges: UpdateUserNoChanges;
   UserLogs: UserLogs;
   UserPersonal: UserPersonal;
   UserSettings: UserSettings;
@@ -601,7 +674,10 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   logout?: Resolver<ResolversTypes['Logout'], ParentType, ContextType>;
   resetPassword?: Resolver<ResolversTypes['ResetPassword'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['SignUp'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
+  updateEmailByCode?: Resolver<ResolversTypes['UpdateEmailByCode'], ParentType, ContextType, RequireFields<MutationUpdateEmailByCodeArgs, 'input'>>;
+  updatePassword?: Resolver<ResolversTypes['UpdatePassword'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
+  updateUser?: Resolver<ResolversTypes['UpdateUser'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
   verifyResetPasswordToken?: Resolver<ResolversTypes['VerifyResetPasswordToken'], ParentType, ContextType, RequireFields<MutationVerifyResetPasswordTokenArgs, 'param'>>;
 };
 
@@ -673,8 +749,32 @@ export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'UUID';
 }
 
+export type UpdateEmailByCodeResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateEmailByCode'] = ResolversParentTypes['UpdateEmailByCode']> = {
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdatePasswordResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdatePassword'] = ResolversParentTypes['UpdatePassword']> = {
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UpdateTaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateTask'] = ResolversParentTypes['UpdateTask']> = {
   task?: Resolver<ResolversTypes['Task'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdateUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUser'] = ResolversParentTypes['UpdateUser']> = {
+  __resolveType: TypeResolveFn<'UpdateUserHasChanges' | 'UpdateUserNoChanges', ParentType, ContextType>;
+};
+
+export type UpdateUserHasChangesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserHasChanges'] = ResolversParentTypes['UpdateUserHasChanges']> = {
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdateUserNoChangesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserNoChanges'] = ResolversParentTypes['UpdateUserNoChanges']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -742,7 +842,12 @@ export type Resolvers<ContextType = any> = {
   TaskDate?: TaskDateResolvers<ContextType>;
   TaskLogs?: TaskLogsResolvers<ContextType>;
   UUID?: GraphQLScalarType;
+  UpdateEmailByCode?: UpdateEmailByCodeResolvers<ContextType>;
+  UpdatePassword?: UpdatePasswordResolvers<ContextType>;
   UpdateTask?: UpdateTaskResolvers<ContextType>;
+  UpdateUser?: UpdateUserResolvers<ContextType>;
+  UpdateUserHasChanges?: UpdateUserHasChangesResolvers<ContextType>;
+  UpdateUserNoChanges?: UpdateUserNoChangesResolvers<ContextType>;
   UserLogs?: UserLogsResolvers<ContextType>;
   UserPersonal?: UserPersonalResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;

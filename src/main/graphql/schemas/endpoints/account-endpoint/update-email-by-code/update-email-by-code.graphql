@@ -1,0 +1,12 @@
+type Mutation {
+  updateEmailByCode(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
+}
+
+input UpdateEmailByCodeInput {
+  email: EmailAddress!
+  emailCode: String!
+}
+
+type UpdateEmailByCode {
+  user: PublicUser!
+}

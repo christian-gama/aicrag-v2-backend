@@ -105,7 +105,10 @@ type Mutation {
   logout: Logout!
   resetPassword(input: ResetPasswordInput!): ResetPassword!
   signUp(input: SignUpInput!): SignUp!
+  updateEmailByCode(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
+  updatePassword(input: UpdatePasswordInput!): UpdatePassword!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
+  updateUser(input: UpdateUserInput!): UpdateUser!
   verifyResetPasswordToken(param: VerifyResetPasswordTokenInput!): VerifyResetPasswordToken!
 }
 
@@ -189,6 +192,25 @@ enum TaskType {
 
 scalar UUID
 
+type UpdateEmailByCode {
+  user: PublicUser!
+}
+
+input UpdateEmailByCodeInput {
+  email: EmailAddress!
+  emailCode: String!
+}
+
+type UpdatePassword {
+  user: PublicUser!
+}
+
+input UpdatePasswordInput {
+  currentPassword: String!
+  password: String!
+  passwordConfirmation: String!
+}
+
 type UpdateTask {
   task: Task!
 }
@@ -204,6 +226,22 @@ input UpdateTaskInput {
 
 input UpdateTaskParam {
   id: UUID!
+}
+
+union UpdateUser = UpdateUserHasChanges | UpdateUserNoChanges
+
+type UpdateUserHasChanges {
+  user: PublicUser!
+}
+
+input UpdateUserInput {
+  currency: UserCurrency
+  email: EmailAddress
+  name: String
+}
+
+type UpdateUserNoChanges {
+  message: String!
 }
 
 enum UserCurrency {
