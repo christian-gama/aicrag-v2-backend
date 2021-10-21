@@ -27,6 +27,7 @@ export class UpdateTaskController implements ControllerProtocol {
 
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
+    console.log('oie')
     const error = await this.validateTaskParam.validate(params)
     if (error) return this.httpHelper.badRequest(error)
 
@@ -46,10 +47,10 @@ export class UpdateTaskController implements ControllerProtocol {
       const error = await this.validateDate.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      const date = data.date
+      const date = new Date(Date.parse(data.date))
 
       update['date.day'] = date.getDate()
-      update['date.full'] = data.date
+      update['date.full'] = date
       update['date.hours'] = date.toLocaleTimeString()
       update['date.month'] = date.getMonth()
       update['date.year'] = date.getFullYear()
