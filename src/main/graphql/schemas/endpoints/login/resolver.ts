@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-import { apolloResponseAdapter } from '@/main/graphql/adapters'
+import { apolloControllerAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
 
 import { makeLoginController } from '@/factories/controllers/login'
@@ -7,7 +7,6 @@ import { makeLoginController } from '@/factories/controllers/login'
 export const resolver: Resolvers = {
   ActiveAccount: {
     __isTypeOf: (obj) => {
-      console.log('ACTIVE', obj)
       return typeof obj.user !== 'undefined'
     },
     accessToken: ({ accessToken }) => {
@@ -43,6 +42,6 @@ export const resolver: Resolvers = {
     }
   },
   Mutation: {
-    login: async (_, { input }) => await apolloResponseAdapter(makeLoginController(), input)
+    login: async (_, args, context) => await apolloControllerAdapter(makeLoginController(), args, context)
   }
 }
