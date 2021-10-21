@@ -3,7 +3,7 @@ schema:
 documents: null
 extensions:
   codegen:
-    overwrite: false
+    overwrite: true
     generates:
       src/main/graphql/generated/schema.graphql:
         plugins:

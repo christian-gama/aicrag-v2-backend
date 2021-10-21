@@ -82,6 +82,15 @@ export type FindOneTaskParam = {
   id: Scalars['UUID'];
 };
 
+export type ForgotPassword = {
+  __typename?: 'ForgotPassword';
+  user: PublicUser;
+};
+
+export type ForgotPasswordInput = {
+  email: Scalars['EmailAddress'];
+};
+
 export type FullUser = {
   __typename?: 'FullUser';
   logs: UserLogs;
@@ -115,6 +124,7 @@ export type Mutation = {
   createTask: CreateTask;
   deleteTask: DeleteTask;
   empty?: Maybe<Scalars['String']>;
+  forgotPassword: ForgotPassword;
   login?: Maybe<Login>;
   logout: Logout;
   signUp: SignUp;
@@ -134,6 +144,11 @@ export type MutationCreateTaskArgs = {
 
 export type MutationDeleteTaskArgs = {
   param: FindOneTaskParam;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  input: ForgotPasswordInput;
 };
 
 
@@ -378,6 +393,8 @@ export type ResolversTypes = {
   FindOneTask: ResolverTypeWrapper<FindOneTask>;
   FindOneTaskParam: FindOneTaskParam;
   Float: ResolverTypeWrapper<Scalars['Float']>;
+  ForgotPassword: ResolverTypeWrapper<ForgotPassword>;
+  ForgotPasswordInput: ForgotPasswordInput;
   FullUser: ResolverTypeWrapper<FullUser>;
   InactiveAccount: ResolverTypeWrapper<InactiveAccount>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -426,6 +443,8 @@ export type ResolversParentTypes = {
   FindOneTask: FindOneTask;
   FindOneTaskParam: FindOneTaskParam;
   Float: Scalars['Float'];
+  ForgotPassword: ForgotPassword;
+  ForgotPasswordInput: ForgotPasswordInput;
   FullUser: FullUser;
   InactiveAccount: InactiveAccount;
   Int: Scalars['Int'];
@@ -499,6 +518,11 @@ export type FindOneTaskResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ForgotPasswordResolvers<ContextType = any, ParentType extends ResolversParentTypes['ForgotPassword'] = ResolversParentTypes['ForgotPassword']> = {
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type FullUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['FullUser'] = ResolversParentTypes['FullUser']> = {
   logs?: Resolver<ResolversTypes['UserLogs'], ParentType, ContextType>;
   personal?: Resolver<ResolversTypes['UserPersonal'], ParentType, ContextType>;
@@ -532,6 +556,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createTask?: Resolver<ResolversTypes['CreateTask'], ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'input'>>;
   deleteTask?: Resolver<ResolversTypes['DeleteTask'], ParentType, ContextType, RequireFields<MutationDeleteTaskArgs, 'param'>>;
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  forgotPassword?: Resolver<ResolversTypes['ForgotPassword'], ParentType, ContextType, RequireFields<MutationForgotPasswordArgs, 'input'>>;
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   logout?: Resolver<ResolversTypes['Logout'], ParentType, ContextType>;
   signUp?: Resolver<ResolversTypes['SignUp'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
@@ -647,6 +672,7 @@ export type Resolvers<ContextType = any> = {
   EmailAddress?: GraphQLScalarType;
   FindAllTasks?: FindAllTasksResolvers<ContextType>;
   FindOneTask?: FindOneTaskResolvers<ContextType>;
+  ForgotPassword?: ForgotPasswordResolvers<ContextType>;
   FullUser?: FullUserResolvers<ContextType>;
   InactiveAccount?: InactiveAccountResolvers<ContextType>;
   JWT?: GraphQLScalarType;
