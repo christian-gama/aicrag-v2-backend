@@ -1,9 +1,7 @@
-import { RequestHandler } from 'express'
+import _cors from 'cors'
 
-export const cors: RequestHandler = (req, res, next): void => {
-  res.set('access-control-allow-headers', '*')
-  res.set('access-control-allow-methods', '*')
-  res.set('access-control-allow-origin', '*')
-
-  next()
-}
+export const cors = _cors({
+  credentials: true,
+  methods: 'GET,PATCH,POST,DELETE',
+  origin: 'http://localhost:3000'
+})

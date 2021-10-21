@@ -1,5 +1,6 @@
 import { setupApp } from '@/main/express/config/app'
 
+import assert from 'assert'
 import { Express } from 'express'
 import request from 'supertest'
 
@@ -18,9 +19,16 @@ describe('cors', () => {
     expect.assertions(0)
 
     await request(app)
-      .post('/test_cors')
-      .expect('access-control-allow-headers', '*')
-      .expect('access-control-allow-methods', '*')
-      .expect('access-control-allow-origin', '*')
+      .patch('/test_cors')
+      .expect('access-control-allow-origin', 'http://localhost:3000')
+      .expect('access-control-allow-credentials', 'true')
+  })
+
+  it('should return an error if tries invalid method', async () => {
+    expect.assertions(0)
+
+    await request(app)
+      .put('/test_cors')
+      .then((response) => assert(response.error))
   })
 })
