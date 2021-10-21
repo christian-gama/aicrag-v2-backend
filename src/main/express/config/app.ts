@@ -11,11 +11,10 @@ import express, { Express } from 'express'
 export const setupApp = async (): Promise<Express> => {
   const app = express()
 
-  if (environment.SERVER.NODE_ENV !== 'test') {
-    await setupApolloServer(app)
-  }
-
   middlewares(app)
+
+  if (environment.SERVER.NODE_ENV !== 'test') await setupApolloServer(app)
+
   engine(app)
   routes(app)
   schedulers()
