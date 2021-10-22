@@ -1,6 +1,6 @@
 import { createGraphqlSchema, handleStatus } from '@/main/graphql/utils'
 
-import { context } from '../context'
+import { context } from './context'
 
 import { ApolloServer } from 'apollo-server-express'
 import { Express } from 'express'

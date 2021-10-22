@@ -23,6 +23,8 @@ export const apolloControllerAdapter = async (
 
   const _response = await controller.handle(request)
 
+  console.log(_response)
+
   const response = getHttpResponse(_response) as HttpResponse
 
   if (response.data.refreshToken) {

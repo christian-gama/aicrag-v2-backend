@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { apolloControllerAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
-import { isPartialProtected } from '@/main/graphql/utils/is-partial-protected'
+import { isPartialProtected } from '@/main/graphql/utils'
 
 import { makeActivateAccountController } from '@/factories/controllers/login'
 

@@ -59,6 +59,13 @@ export type DeleteTaskParam = {
   id: Scalars['UUID'];
 };
 
+export type DetailedInvoice = {
+  __typename?: 'DetailedInvoice';
+  date: GetAllInvoicesDate;
+  tasks: Scalars['Int'];
+  totalUsd: Scalars['Float'];
+};
+
 export type FindAllTasks = {
   __typename?: 'FindAllTasks';
   count: Scalars['Int'];
@@ -99,6 +106,56 @@ export type FullUser = {
   temporary: UserTemporary;
   tokenVersion: Scalars['Int'];
 };
+
+export type GetAllInvoices = {
+  __typename?: 'GetAllInvoices';
+  count: Scalars['Int'];
+  displaying: Scalars['Int'];
+  documents: Array<DetailedInvoice>;
+  page: Scalars['String'];
+};
+
+export type GetAllInvoicesDate = {
+  __typename?: 'GetAllInvoicesDate';
+  month: Scalars['Int'];
+  year: Scalars['Int'];
+};
+
+export type GetAllInvoicesQuery = {
+  limit?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['String']>;
+  sort?: Maybe<Scalars['String']>;
+  type: GetAllInvoicesType;
+};
+
+export enum GetAllInvoicesType {
+  Qa = 'QA',
+  Tx = 'TX',
+  Both = 'both'
+}
+
+export type GetInvoiceByMonth = {
+  __typename?: 'GetInvoiceByMonth';
+  count: Scalars['Int'];
+  displaying: Scalars['Int'];
+  documents: Array<Task>;
+  page: Scalars['String'];
+};
+
+export type GetInvoiceByMonthQuery = {
+  limit?: Maybe<Scalars['String']>;
+  month: Scalars['String'];
+  page?: Maybe<Scalars['String']>;
+  sort?: Maybe<Scalars['String']>;
+  type: GetInvoiceByMonthType;
+  year: Scalars['String'];
+};
+
+export enum GetInvoiceByMonthType {
+  Qa = 'QA',
+  Tx = 'TX',
+  Both = 'both'
+}
 
 export type InactiveAccount = {
   __typename?: 'InactiveAccount';
@@ -220,6 +277,8 @@ export type Query = {
   empty?: Maybe<Scalars['String']>;
   findAllTasks: FindAllTasks;
   findOneTask: FindOneTask;
+  getAllInvoices: GetAllInvoices;
+  getInvoiceByMonth: GetInvoiceByMonth;
 };
 
 
@@ -230,6 +289,16 @@ export type QueryFindAllTasksArgs = {
 
 export type QueryFindOneTaskArgs = {
   param: FindOneTaskParam;
+};
+
+
+export type QueryGetAllInvoicesArgs = {
+  query: GetAllInvoicesQuery;
+};
+
+
+export type QueryGetInvoiceByMonthArgs = {
+  query: GetInvoiceByMonthQuery;
 };
 
 export type ResetPassword = {
@@ -476,6 +545,7 @@ export type ResolversTypes = {
   DateString: ResolverTypeWrapper<Scalars['DateString']>;
   DeleteTask: ResolverTypeWrapper<DeleteTask>;
   DeleteTaskParam: DeleteTaskParam;
+  DetailedInvoice: ResolverTypeWrapper<DetailedInvoice>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   FindAllTasks: ResolverTypeWrapper<FindAllTasks>;
   FindAllTasksQuery: FindAllTasksQuery;
@@ -485,6 +555,13 @@ export type ResolversTypes = {
   ForgotPassword: ResolverTypeWrapper<ForgotPassword>;
   ForgotPasswordInput: ForgotPasswordInput;
   FullUser: ResolverTypeWrapper<FullUser>;
+  GetAllInvoices: ResolverTypeWrapper<GetAllInvoices>;
+  GetAllInvoicesDate: ResolverTypeWrapper<GetAllInvoicesDate>;
+  GetAllInvoicesQuery: GetAllInvoicesQuery;
+  GetAllInvoicesType: GetAllInvoicesType;
+  GetInvoiceByMonth: ResolverTypeWrapper<GetInvoiceByMonth>;
+  GetInvoiceByMonthQuery: GetInvoiceByMonthQuery;
+  GetInvoiceByMonthType: GetInvoiceByMonthType;
   InactiveAccount: ResolverTypeWrapper<InactiveAccount>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   JWT: ResolverTypeWrapper<Scalars['JWT']>;
@@ -538,6 +615,7 @@ export type ResolversParentTypes = {
   DateString: Scalars['DateString'];
   DeleteTask: DeleteTask;
   DeleteTaskParam: DeleteTaskParam;
+  DetailedInvoice: DetailedInvoice;
   EmailAddress: Scalars['EmailAddress'];
   FindAllTasks: FindAllTasks;
   FindAllTasksQuery: FindAllTasksQuery;
@@ -547,6 +625,11 @@ export type ResolversParentTypes = {
   ForgotPassword: ForgotPassword;
   ForgotPasswordInput: ForgotPasswordInput;
   FullUser: FullUser;
+  GetAllInvoices: GetAllInvoices;
+  GetAllInvoicesDate: GetAllInvoicesDate;
+  GetAllInvoicesQuery: GetAllInvoicesQuery;
+  GetInvoiceByMonth: GetInvoiceByMonth;
+  GetInvoiceByMonthQuery: GetInvoiceByMonthQuery;
   InactiveAccount: InactiveAccount;
   Int: Scalars['Int'];
   JWT: Scalars['JWT'];
@@ -614,6 +697,13 @@ export type DeleteTaskResolvers<ContextType = any, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DetailedInvoiceResolvers<ContextType = any, ParentType extends ResolversParentTypes['DetailedInvoice'] = ResolversParentTypes['DetailedInvoice']> = {
+  date?: Resolver<ResolversTypes['GetAllInvoicesDate'], ParentType, ContextType>;
+  tasks?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalUsd?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
@@ -642,6 +732,28 @@ export type FullUserResolvers<ContextType = any, ParentType extends ResolversPar
   settings?: Resolver<ResolversTypes['UserSettings'], ParentType, ContextType>;
   temporary?: Resolver<ResolversTypes['UserTemporary'], ParentType, ContextType>;
   tokenVersion?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GetAllInvoicesResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAllInvoices'] = ResolversParentTypes['GetAllInvoices']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  displaying?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  documents?: Resolver<Array<ResolversTypes['DetailedInvoice']>, ParentType, ContextType>;
+  page?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GetAllInvoicesDateResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAllInvoicesDate'] = ResolversParentTypes['GetAllInvoicesDate']> = {
+  month?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  year?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GetInvoiceByMonthResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetInvoiceByMonth'] = ResolversParentTypes['GetInvoiceByMonth']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  displaying?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  documents?: Resolver<Array<ResolversTypes['Task']>, ParentType, ContextType>;
+  page?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -703,6 +815,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   findAllTasks?: Resolver<ResolversTypes['FindAllTasks'], ParentType, ContextType, RequireFields<QueryFindAllTasksArgs, 'query'>>;
   findOneTask?: Resolver<ResolversTypes['FindOneTask'], ParentType, ContextType, RequireFields<QueryFindOneTaskArgs, 'param'>>;
+  getAllInvoices?: Resolver<ResolversTypes['GetAllInvoices'], ParentType, ContextType, RequireFields<QueryGetAllInvoicesArgs, 'query'>>;
+  getInvoiceByMonth?: Resolver<ResolversTypes['GetInvoiceByMonth'], ParentType, ContextType, RequireFields<QueryGetInvoiceByMonthArgs, 'query'>>;
 };
 
 export type ResetPasswordResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResetPassword'] = ResolversParentTypes['ResetPassword']> = {
@@ -822,11 +936,15 @@ export type Resolvers<ContextType = any> = {
   CreateTask?: CreateTaskResolvers<ContextType>;
   DateString?: GraphQLScalarType;
   DeleteTask?: DeleteTaskResolvers<ContextType>;
+  DetailedInvoice?: DetailedInvoiceResolvers<ContextType>;
   EmailAddress?: GraphQLScalarType;
   FindAllTasks?: FindAllTasksResolvers<ContextType>;
   FindOneTask?: FindOneTaskResolvers<ContextType>;
   ForgotPassword?: ForgotPasswordResolvers<ContextType>;
   FullUser?: FullUserResolvers<ContextType>;
+  GetAllInvoices?: GetAllInvoicesResolvers<ContextType>;
+  GetAllInvoicesDate?: GetAllInvoicesDateResolvers<ContextType>;
+  GetInvoiceByMonth?: GetInvoiceByMonthResolvers<ContextType>;
   InactiveAccount?: InactiveAccountResolvers<ContextType>;
   JWT?: GraphQLScalarType;
   Login?: LoginResolvers<ContextType>;

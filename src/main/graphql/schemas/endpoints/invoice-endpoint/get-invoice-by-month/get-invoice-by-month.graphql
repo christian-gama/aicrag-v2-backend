@@ -1,0 +1,26 @@
+type Query {
+  getInvoiceByMonth(query: GetInvoiceByMonthQuery!): GetInvoiceByMonth!
+}
+
+type GetInvoiceByMonth {
+  count: Int!
+  displaying: Int!
+  documents: [Task!]!
+  page: String!
+}
+
+input GetInvoiceByMonthQuery {
+  limit: String
+  page: String
+  sort: String
+  type: GetInvoiceByMonthType!
+  month: String!
+  year: String!
+}
+
+
+enum GetInvoiceByMonthType {
+  QA
+  TX
+  both
+}

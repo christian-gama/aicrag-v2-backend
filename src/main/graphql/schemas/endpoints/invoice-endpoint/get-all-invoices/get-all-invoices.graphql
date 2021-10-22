@@ -1,0 +1,35 @@
+type Query {
+  getAllInvoices(query: GetAllInvoicesQuery!): GetAllInvoices!
+}
+
+type GetAllInvoices {
+  count: Int!
+  displaying: Int!
+  documents: [DetailedInvoice!]!
+  page: String!
+}
+
+type DetailedInvoice {
+  tasks: Int!
+  date: GetAllInvoicesDate!
+  totalUsd: Float!
+}
+
+input GetAllInvoicesQuery {
+  limit: String
+  page: String
+  sort: String
+  type: GetAllInvoicesType!
+}
+
+enum GetAllInvoicesType {
+  QA
+  TX
+  both
+}
+
+type GetAllInvoicesDate {
+  month: Int!
+  year: Int!
+}
+
