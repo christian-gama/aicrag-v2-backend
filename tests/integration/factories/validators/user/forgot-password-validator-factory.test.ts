@@ -6,7 +6,8 @@ import {
   makeForgotPasswordValidator,
   makeRequiredFields,
   makeValidateEmail,
-  makeValidateEmailExists
+  makeValidateEmailExists,
+  makeValidatePasswordToken
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
@@ -27,6 +28,7 @@ describe('forgotPasswordValidator', () => {
     // Must have this exact validation order
     validations.push(makeValidateEmail())
     validations.push(makeValidateEmailExists())
+    validations.push(makeValidatePasswordToken())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

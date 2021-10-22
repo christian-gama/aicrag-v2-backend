@@ -39,6 +39,7 @@ describe('post /forgot-password', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
+    fakeUser.temporary.resetPasswordToken = 'any_token'
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
   })
 
@@ -55,6 +56,17 @@ describe('post /forgot-password', () => {
 
   it('should return 400 if email does not exist', async () => {
     expect.assertions(0)
+
+    await request(app)
+      .post('/api/v1/login/forgot-password')
+      .send({ email: fakeUser.personal.email })
+      .expect(400)
+  })
+
+  it('should return 400 if there is no resetPasswordToken', async () => {
+    expect.assertions(0)
+
+    fakeUser.temporary.resetPasswordToken = null
 
     await request(app)
       .post('/api/v1/login/forgot-password')

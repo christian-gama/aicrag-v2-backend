@@ -40,6 +40,7 @@ describe('post /send-forgot-password-email', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
+    fakeUser.temporary.resetPasswordToken = 'any_token'
   })
 
   it('should return 400 if validation fails', async () => {

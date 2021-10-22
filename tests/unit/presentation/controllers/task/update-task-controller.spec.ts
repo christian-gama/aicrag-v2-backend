@@ -156,7 +156,7 @@ describe('updateTaskController', () => {
 
     expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
       commentary: 'any_commentary',
-      'logs.updatedAt': new Date(Date.now())
+      'logs.updatedAt': new Date()
     })
   })
 
@@ -178,7 +178,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { fakeTask, request, sut } = makeSut()
-    const date = new Date(Date.now())
+    const date = new Date()
     fakeTask.date.day = date.getDate()
     fakeTask.date.full = date
     fakeTask.date.hours = date.toLocaleTimeString()
@@ -200,18 +200,22 @@ describe('updateTaskController', () => {
 
     const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
-    const date = new Date(Date.now())
+    const date = new Date()
+
     request.body.date = date
 
     await sut.handle(request)
 
+    // Must parse date because of innacuracy, which makes the test fail
+    const parsedDate = new Date(Date.parse(date.toLocaleString()))
+
     expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
-      'date.day': date.getDate(),
-      'date.full': date,
-      'date.hours': date.toLocaleTimeString(),
-      'date.month': date.getMonth(),
-      'date.year': date.getFullYear(),
-      'logs.updatedAt': new Date(Date.now())
+      'date.day': parsedDate.getDate(),
+      'date.full': parsedDate,
+      'date.hours': parsedDate.toLocaleTimeString(),
+      'date.month': parsedDate.getMonth(),
+      'date.year': parsedDate.getFullYear(),
+      'logs.updatedAt': date
     })
   })
 
