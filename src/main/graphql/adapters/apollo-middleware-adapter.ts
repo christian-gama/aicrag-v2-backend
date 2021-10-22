@@ -1,4 +1,4 @@
-import { HttpResponse, HttpRequest } from '@/presentation/http/protocols'
+import { HttpResponse } from '@/presentation/http/protocols'
 import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
 
 import { environment } from '@/main/config/environment'
@@ -7,7 +7,7 @@ import { Request, Response } from 'express'
 
 export const apolloMiddlewareAdapter = async (
   middleware: MiddlewareProtocol,
-  req: AdaptRequest,
+  req: Request,
   res: Response
 ): Promise<HttpResponse> => {
   const httpResponse = await middleware.handle(req)
@@ -23,4 +23,3 @@ export const apolloMiddlewareAdapter = async (
 
   return httpResponse
 }
-type AdaptRequest = Request & Pick<HttpRequest, 'user'>

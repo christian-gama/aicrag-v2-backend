@@ -23,17 +23,10 @@ export const apolloControllerAdapter = async (
 
   const _response = await controller.handle(request)
 
-  console.log(_response)
-
   const response = getHttpResponse(_response) as HttpResponse
 
-  if (response.data.refreshToken) {
-    createRefreshTokenCookie(res, response)
-  }
-
-  if (response.data.accessToken) {
-    createAccessTokenCookie(res, response)
-  }
+  if (response.data.refreshToken) createRefreshTokenCookie(res, response)
+  if (response.data.accessToken) createAccessTokenCookie(res, response)
 
   return response.data
 }
