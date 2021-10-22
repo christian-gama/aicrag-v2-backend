@@ -11,7 +11,7 @@ export class VerifyAccessToken implements VerifyTokenProtocol {
     private readonly userRepository: UserRepositoryProtocol
   ) {}
 
-  async verify (token: string | undefined): Promise<InvalidTokenError | IUser> {
+  async verify (token: any): Promise<InvalidTokenError | IUser> {
     if (!token) {
       return new TokenMissingError()
     }
