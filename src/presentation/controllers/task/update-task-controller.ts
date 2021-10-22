@@ -27,7 +27,6 @@ export class UpdateTaskController implements ControllerProtocol {
 
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
-    console.log('oie')
     const error = await this.validateTaskParam.validate(params)
     if (error) return this.httpHelper.badRequest(error)
 
