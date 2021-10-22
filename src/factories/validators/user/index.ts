@@ -1,6 +1,7 @@
 export * from '../validate-required-fields-factory'
 export * from './activate-account-validator-factory'
 export * from './email-validator-factory'
+export * from './forgot-password-email-validator-factory'
 export * from './forgot-password-validator-factory'
 export * from './login-validator-factory'
 export * from './send-email-code-validator'

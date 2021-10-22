@@ -1,23 +1,29 @@
 import { SendForgotPasswordEmailController } from '@/presentation/controllers/mailer'
 import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
 
+import { makeGenerateAccessToken, makeVerifyResetPasswordToken } from '@/factories/providers/token'
+
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeForgotPasswordEmail } from '../../mailer'
 import { makeUserRepository } from '../../repositories'
-import { makeForgotPasswordValidator } from '../../validators/user'
+import { makeForgotPasswordEmailValidator } from '../../validators/user'
 
 export const makeSendForgotPasswordEmailController = (): ControllerProtocol => {
-  const httpHelper = makeHttpHelper()
-  const forgotPasswordValidator = makeForgotPasswordValidator()
-  const userRepository = makeUserRepository()
   const forgotPasswordEmail = makeForgotPasswordEmail()
+  const forgotPasswordEmailValidator = makeForgotPasswordEmailValidator()
+  const generateAccessToken = makeGenerateAccessToken()
+  const httpHelper = makeHttpHelper()
+  const userRepository = makeUserRepository()
+  const verifyAccessToken = makeVerifyResetPasswordToken()
 
   const sendForgotPasswordEmailController = new SendForgotPasswordEmailController(
     forgotPasswordEmail,
-    forgotPasswordValidator,
+    forgotPasswordEmailValidator,
+    generateAccessToken,
     httpHelper,
-    userRepository
+    userRepository,
+    verifyAccessToken
   )
 
   return makeTryCatchDecorator(sendForgotPasswordEmailController)

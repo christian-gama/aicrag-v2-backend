@@ -1,4 +1,5 @@
 import { IUser } from '@/domain'
+import { ValidationCodeProtocol } from '@/domain/helpers'
 import { MailerServiceProtocol } from '@/domain/mailer'
 import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
@@ -14,17 +15,21 @@ import {
   makeFakeUser,
   makeValidatorStub,
   makeUserRepositoryStub,
-  makeMailerServiceStub
+  makeMailerServiceStub,
+  makeValidationCodeStub
 } from '@/tests/__mocks__'
+
+import MockDate from 'mockdate'
 
 interface SutTypes {
   emailCodeStub: MailerServiceProtocol
-  sendEmailCodeValidatorStub: ValidatorProtocol
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
+  sendEmailCodeValidatorStub: ValidatorProtocol
   sut: SendEmailCodeController
   userRepositoryStub: UserRepositoryProtocol
+  validationCodeStub: ValidationCodeProtocol
 }
 
 const makeSut = (): SutTypes => {
@@ -34,12 +39,14 @@ const makeSut = (): SutTypes => {
   const request: HttpRequest = { body: { email: fakeUser.personal.email } }
   const sendEmailCodeValidatorStub = makeValidatorStub()
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
+  const validationCodeStub = makeValidationCodeStub()
 
   const sut = new SendEmailCodeController(
     emailCodeStub,
     httpHelper,
     sendEmailCodeValidatorStub,
-    userRepositoryStub
+    userRepositoryStub,
+    validationCodeStub
   )
 
   return {
@@ -49,11 +56,20 @@ const makeSut = (): SutTypes => {
     request,
     sendEmailCodeValidatorStub,
     sut,
-    userRepositoryStub
+    userRepositoryStub,
+    validationCodeStub
   }
 }
 
 describe('sendEmailCodeController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
@@ -98,6 +114,21 @@ describe('sendEmailCodeController', () => {
     await sut.handle(request)
 
     expect(sendSpy).toHaveBeenCalledWith(fakeUser)
+  })
+
+  it('should call updateUser with correct values if the email code is expired', async () => {
+    expect.hasAssertions()
+
+    const { validationCodeStub, fakeUser, request, sut, userRepositoryStub } = makeSut()
+    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    fakeUser.temporary.tempEmailCodeExpiration = new Date(Date.now() - 10 * 60 * 1000)
+
+    await sut.handle(request)
+
+    expect(updatedUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+      'temporary.tempEmailCode': validationCodeStub.generate(),
+      'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+    })
   })
 
   it('should return serverError if mailer fails', async () => {

@@ -1,4 +1,5 @@
 import { IUser } from '@/domain'
+import { ValidationCodeProtocol } from '@/domain/helpers'
 import { MailerServiceProtocol } from '@/domain/mailer'
 import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
@@ -14,7 +15,8 @@ export class SendEmailCodeController implements ControllerProtocol {
     private readonly emailCode: MailerServiceProtocol,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly sendEmailCodeValidator: ValidatorProtocol,
-    private readonly userRepository: UserRepositoryProtocol
+    private readonly userRepository: UserRepositoryProtocol,
+    private readonly validationCode: ValidationCodeProtocol
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -22,9 +24,16 @@ export class SendEmailCodeController implements ControllerProtocol {
 
     const error = await this.sendEmailCodeValidator.validate(data)
 
-    if (error != null) return this.httpHelper.badRequest(error)
+    if (error) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+
+    if (
+      user?.temporary.tempEmailCodeExpiration &&
+      user.temporary.tempEmailCodeExpiration.getTime() < Date.now()
+    ) {
+      user = await this.generateNewEmailCode(user)
+    }
 
     const mailerResponse = await this.emailCode.send(user)
 
@@ -35,5 +44,14 @@ export class SendEmailCodeController implements ControllerProtocol {
     return this.httpHelper.ok({
       message: `An email with your code has been sent to ${user.temporary.tempEmail as string}`
     })
+  }
+
+  private async generateNewEmailCode (user: IUser): Promise<IUser> {
+    const updatedUser = await this.userRepository.updateUser(user.personal.id, {
+      'temporary.tempEmailCode': this.validationCode.generate(),
+      'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+    })
+
+    return updatedUser as IUser
   }
 }

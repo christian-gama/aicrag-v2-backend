@@ -1,4 +1,5 @@
 import { IUser } from '@/domain'
+import { ValidationCodeProtocol } from '@/domain/helpers'
 import { MailerServiceProtocol } from '@/domain/mailer'
 import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
@@ -14,8 +15,11 @@ import {
   makeFakeUser,
   makeValidatorStub,
   makeUserRepositoryStub,
-  makeMailerServiceStub
+  makeMailerServiceStub,
+  makeValidationCodeStub
 } from '@/tests/__mocks__'
+
+import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeUser: IUser
@@ -24,6 +28,7 @@ interface SutTypes {
   sendWelcomeValidatorStub: ValidatorProtocol
   sut: SendWelcomeEmailController
   userRepositoryStub: UserRepositoryProtocol
+  validationCodeStub: ValidationCodeProtocol
   welcomeEmailStub: MailerServiceProtocol
 }
 
@@ -34,11 +39,13 @@ const makeSut = (): SutTypes => {
   const sendWelcomeValidatorStub = makeValidatorStub()
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const welcomeEmailStub = makeMailerServiceStub()
+  const validationCodeStub = makeValidationCodeStub()
 
   const sut = new SendWelcomeEmailController(
     httpHelper,
     sendWelcomeValidatorStub,
     userRepositoryStub,
+    validationCodeStub,
     welcomeEmailStub
   )
 
@@ -49,11 +56,20 @@ const makeSut = (): SutTypes => {
     sendWelcomeValidatorStub,
     sut,
     userRepositoryStub,
+    validationCodeStub,
     welcomeEmailStub
   }
 }
 
 describe('sendWelcomeEmailController', () => {
+  afterAll(() => {
+    MockDate.reset()
+  })
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
   it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
@@ -126,6 +142,21 @@ describe('sendWelcomeEmailController', () => {
     const response = await sut.handle(request)
 
     expect(response.data.error.name).toBe('MailerServiceError')
+  })
+
+  it('should call updateUser with correct values if activation code has expired', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userRepositoryStub, validationCodeStub } = makeSut()
+    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 10 * 60 * 1000)
+
+    await sut.handle(request)
+
+    expect(updatedUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+      'temporary.activationCode': validationCodeStub.generate(),
+      'temporary.activationCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+    })
   })
 
   it('should return ok if send email', async () => {

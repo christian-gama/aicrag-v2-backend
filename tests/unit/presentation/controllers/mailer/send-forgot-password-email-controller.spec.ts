@@ -1,9 +1,10 @@
 import { IUser } from '@/domain'
 import { MailerServiceProtocol } from '@/domain/mailer'
+import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
 import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
 
-import { MailerServiceError } from '@/application/errors'
+import { InvalidTokenError, MailerServiceError } from '@/application/errors'
 
 import { SendForgotPasswordEmailController } from '@/presentation/controllers/mailer'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
@@ -14,7 +15,9 @@ import {
   makeFakeUser,
   makeValidatorStub,
   makeUserRepositoryStub,
-  makeMailerServiceStub
+  makeMailerServiceStub,
+  makeVerifyTokenStub,
+  makeGenerateTokenStub
 } from '@/tests/__mocks__'
 
 interface SutTypes {
@@ -25,31 +28,39 @@ interface SutTypes {
   request: HttpRequest
   sut: SendForgotPasswordEmailController
   userRepositoryStub: UserRepositoryProtocol
+  generateAccessTokenStub: GenerateTokenProtocol
+  verifyResetPasswordTokenStub: VerifyTokenProtocol
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const forgotPasswordEmailStub = makeMailerServiceStub()
   const forgotPasswordValidatorStub = makeValidatorStub()
+  const generateAccessTokenStub = makeGenerateTokenStub()
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { body: { email: fakeUser.personal.email } }
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
+  const verifyResetPasswordTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new SendForgotPasswordEmailController(
     forgotPasswordEmailStub,
     forgotPasswordValidatorStub,
+    generateAccessTokenStub,
     httpHelper,
-    userRepositoryStub
+    userRepositoryStub,
+    verifyResetPasswordTokenStub
   )
 
   return {
     fakeUser,
     forgotPasswordEmailStub,
     forgotPasswordValidatorStub,
+    generateAccessTokenStub,
     httpHelper,
     request,
     sut,
-    userRepositoryStub
+    userRepositoryStub,
+    verifyResetPasswordTokenStub
   }
 }
 
@@ -111,6 +122,23 @@ describe('sendForgotPasswordEmail', () => {
     const response = await sut.handle(request)
 
     expect(response.data.error.name).toBe('MailerServiceError')
+  })
+
+  it('should call updateUser with correct values if the reset token is no longer valid', async () => {
+    expect.hasAssertions()
+
+    const { fakeUser, request, sut, userRepositoryStub, verifyResetPasswordTokenStub } = makeSut()
+    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    fakeUser.temporary.resetPasswordToken = null
+    jest
+      .spyOn(verifyResetPasswordTokenStub, 'verify')
+      .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+
+    await sut.handle(request)
+
+    expect(updatedUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+      'temporary.resetPasswordToken': 'any_token'
+    })
   })
 
   it('should return ok if send email', async () => {

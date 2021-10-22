@@ -1,4 +1,5 @@
 import { IUser } from '@/domain'
+import { ValidationCodeProtocol } from '@/domain/helpers'
 import { MailerServiceProtocol } from '@/domain/mailer'
 import { UserRepositoryProtocol } from '@/domain/repositories'
 import { ValidatorProtocol } from '@/domain/validators'
@@ -14,6 +15,7 @@ export class SendWelcomeEmailController implements ControllerProtocol {
     private readonly httpHelper: HttpHelperProtocol,
     private readonly sendWelcomeValidator: ValidatorProtocol,
     private readonly userRepository: UserRepositoryProtocol,
+    private readonly validationCode: ValidationCodeProtocol,
     private readonly welcomeEmail: MailerServiceProtocol
   ) {}
 
@@ -22,11 +24,20 @@ export class SendWelcomeEmailController implements ControllerProtocol {
 
     const error = await this.sendWelcomeValidator.validate(data)
 
-    if (error != null) return this.httpHelper.badRequest(error)
+    if (error) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
 
-    if (user.settings.accountActivated) { return this.httpHelper.forbidden(new AccountAlreadyActivatedError()) }
+    if (user.settings.accountActivated) {
+      return this.httpHelper.forbidden(new AccountAlreadyActivatedError())
+    }
+
+    if (
+      user?.temporary.activationCodeExpiration &&
+      user.temporary.activationCodeExpiration.getTime() < Date.now()
+    ) {
+      user = await this.generateNewActivationCode(user)
+    }
 
     const mailerResponse = await this.welcomeEmail.send(user)
 
@@ -37,5 +48,14 @@ export class SendWelcomeEmailController implements ControllerProtocol {
     return this.httpHelper.ok({
       message: `A welcome email with activation code has been sent to ${user.personal.email}`
     })
+  }
+
+  private async generateNewActivationCode (user: IUser): Promise<IUser> {
+    const updatedUser = await this.userRepository.updateUser(user.personal.id, {
+      'temporary.activationCode': this.validationCode.generate(),
+      'temporary.activationCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+    })
+
+    return updatedUser as IUser
   }
 }
