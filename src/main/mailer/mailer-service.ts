@@ -49,7 +49,7 @@ export abstract class MailerService {
 
   private sendgrid (): Transporter {
     return nodemailer.createTransport(
-      sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY as string })
+      sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY })
     )
   }
 }
