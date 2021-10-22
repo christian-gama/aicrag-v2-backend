@@ -157,6 +157,9 @@ type Mutation {
   login(input: LoginInput!): Login
   logout: Logout!
   resetPassword(input: ResetPasswordInput!): ResetPassword!
+  sendEmailCode(input: SendEmailCodeInput!): SendEmailCode!
+  sendForgotPasswordEmail(input: SendForgotPasswordEmailInput!): SendForgotPasswordEmail!
+  sendWelcomeEmail(input: SendWelcomeEmailInput!): SendWelcomeEmail!
   signUp(input: SignUpInput!): SignUp!
   updateEmailByCode(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
   updatePassword(input: UpdatePasswordInput!): UpdatePassword!
@@ -196,6 +199,30 @@ type ResetPassword {
 input ResetPasswordInput {
   password: String!
   passwordConfirmation: String!
+}
+
+type SendEmailCode {
+  message: String!
+}
+
+input SendEmailCodeInput {
+  email: EmailAddress!
+}
+
+type SendForgotPasswordEmail {
+  message: String!
+}
+
+input SendForgotPasswordEmailInput {
+  email: EmailAddress!
+}
+
+type SendWelcomeEmail {
+  message: String!
+}
+
+input SendWelcomeEmailInput {
+  email: EmailAddress!
 }
 
 type SignUp {

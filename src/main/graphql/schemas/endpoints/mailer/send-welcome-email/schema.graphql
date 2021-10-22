@@ -1,0 +1,13 @@
+type Mutation {
+  sendWelcomeEmail(input: SendWelcomeEmailInput!): SendWelcomeEmail!
+}
+
+input SendWelcomeEmailInput {
+  email: EmailAddress!
+}
+
+type SendWelcomeEmail {
+  message: String!
+}
+
+

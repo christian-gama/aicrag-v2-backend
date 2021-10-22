@@ -1,0 +1,13 @@
+type Mutation {
+  sendForgotPasswordEmail(input: SendForgotPasswordEmailInput!): SendForgotPasswordEmail!
+}
+
+input SendForgotPasswordEmailInput {
+  email: EmailAddress!
+}
+
+type SendForgotPasswordEmail {
+  message: String!
+}
+
+

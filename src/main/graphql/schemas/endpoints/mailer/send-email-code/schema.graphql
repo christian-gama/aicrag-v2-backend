@@ -1,0 +1,13 @@
+type Mutation {
+  sendEmailCode(input: SendEmailCodeInput!): SendEmailCode!
+}
+
+input SendEmailCodeInput {
+  email: EmailAddress!
+}
+
+type SendEmailCode {
+  message: String!
+}
+
+

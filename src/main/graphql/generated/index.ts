@@ -185,6 +185,9 @@ export type Mutation = {
   login?: Maybe<Login>;
   logout: Logout;
   resetPassword: ResetPassword;
+  sendEmailCode: SendEmailCode;
+  sendForgotPasswordEmail: SendForgotPasswordEmail;
+  sendWelcomeEmail: SendWelcomeEmail;
   signUp: SignUp;
   updateEmailByCode: UpdateEmailByCode;
   updatePassword: UpdatePassword;
@@ -221,6 +224,21 @@ export type MutationLoginArgs = {
 
 export type MutationResetPasswordArgs = {
   input: ResetPasswordInput;
+};
+
+
+export type MutationSendEmailCodeArgs = {
+  input: SendEmailCodeInput;
+};
+
+
+export type MutationSendForgotPasswordEmailArgs = {
+  input: SendForgotPasswordEmailInput;
+};
+
+
+export type MutationSendWelcomeEmailArgs = {
+  input: SendWelcomeEmailInput;
 };
 
 
@@ -310,6 +328,33 @@ export type ResetPassword = {
 export type ResetPasswordInput = {
   password: Scalars['String'];
   passwordConfirmation: Scalars['String'];
+};
+
+export type SendEmailCode = {
+  __typename?: 'SendEmailCode';
+  message: Scalars['String'];
+};
+
+export type SendEmailCodeInput = {
+  email: Scalars['EmailAddress'];
+};
+
+export type SendForgotPasswordEmail = {
+  __typename?: 'SendForgotPasswordEmail';
+  message: Scalars['String'];
+};
+
+export type SendForgotPasswordEmailInput = {
+  email: Scalars['EmailAddress'];
+};
+
+export type SendWelcomeEmail = {
+  __typename?: 'SendWelcomeEmail';
+  message: Scalars['String'];
+};
+
+export type SendWelcomeEmailInput = {
+  email: Scalars['EmailAddress'];
 };
 
 export type SignUp = {
@@ -575,6 +620,12 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   ResetPassword: ResolverTypeWrapper<ResetPassword>;
   ResetPasswordInput: ResetPasswordInput;
+  SendEmailCode: ResolverTypeWrapper<SendEmailCode>;
+  SendEmailCodeInput: SendEmailCodeInput;
+  SendForgotPasswordEmail: ResolverTypeWrapper<SendForgotPasswordEmail>;
+  SendForgotPasswordEmailInput: SendForgotPasswordEmailInput;
+  SendWelcomeEmail: ResolverTypeWrapper<SendWelcomeEmail>;
+  SendWelcomeEmailInput: SendWelcomeEmailInput;
   SignUp: ResolverTypeWrapper<SignUp>;
   SignUpInput: SignUpInput;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -643,6 +694,12 @@ export type ResolversParentTypes = {
   Query: {};
   ResetPassword: ResetPassword;
   ResetPasswordInput: ResetPasswordInput;
+  SendEmailCode: SendEmailCode;
+  SendEmailCodeInput: SendEmailCodeInput;
+  SendForgotPasswordEmail: SendForgotPasswordEmail;
+  SendForgotPasswordEmailInput: SendForgotPasswordEmailInput;
+  SendWelcomeEmail: SendWelcomeEmail;
+  SendWelcomeEmailInput: SendWelcomeEmailInput;
   SignUp: SignUp;
   SignUpInput: SignUpInput;
   String: Scalars['String'];
@@ -785,6 +842,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   logout?: Resolver<ResolversTypes['Logout'], ParentType, ContextType>;
   resetPassword?: Resolver<ResolversTypes['ResetPassword'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'input'>>;
+  sendEmailCode?: Resolver<ResolversTypes['SendEmailCode'], ParentType, ContextType, RequireFields<MutationSendEmailCodeArgs, 'input'>>;
+  sendForgotPasswordEmail?: Resolver<ResolversTypes['SendForgotPasswordEmail'], ParentType, ContextType, RequireFields<MutationSendForgotPasswordEmailArgs, 'input'>>;
+  sendWelcomeEmail?: Resolver<ResolversTypes['SendWelcomeEmail'], ParentType, ContextType, RequireFields<MutationSendWelcomeEmailArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['SignUp'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   updateEmailByCode?: Resolver<ResolversTypes['UpdateEmailByCode'], ParentType, ContextType, RequireFields<MutationUpdateEmailByCodeArgs, 'input'>>;
   updatePassword?: Resolver<ResolversTypes['UpdatePassword'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'input'>>;
@@ -822,6 +882,21 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type ResetPasswordResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResetPassword'] = ResolversParentTypes['ResetPassword']> = {
   refreshToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SendEmailCodeResolvers<ContextType = any, ParentType extends ResolversParentTypes['SendEmailCode'] = ResolversParentTypes['SendEmailCode']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SendForgotPasswordEmailResolvers<ContextType = any, ParentType extends ResolversParentTypes['SendForgotPasswordEmail'] = ResolversParentTypes['SendForgotPasswordEmail']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SendWelcomeEmailResolvers<ContextType = any, ParentType extends ResolversParentTypes['SendWelcomeEmail'] = ResolversParentTypes['SendWelcomeEmail']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -955,6 +1030,9 @@ export type Resolvers<ContextType = any> = {
   PublicUserSettings?: PublicUserSettingsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   ResetPassword?: ResetPasswordResolvers<ContextType>;
+  SendEmailCode?: SendEmailCodeResolvers<ContextType>;
+  SendForgotPasswordEmail?: SendForgotPasswordEmailResolvers<ContextType>;
+  SendWelcomeEmail?: SendWelcomeEmailResolvers<ContextType>;
   SignUp?: SignUpResolvers<ContextType>;
   Task?: TaskResolvers<ContextType>;
   TaskDate?: TaskDateResolvers<ContextType>;
