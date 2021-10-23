@@ -8,27 +8,27 @@ As this is my first personal project ever, you may find some stuffs that you dis
 ## [API Documentation](https://documenter.getpostman.com/view/16405037/UV5aeFVE)
 
 >### Principles I've used
-Single Responsibility Principle (SRP)
-Open Closed Principle (OCP)
-Liskov Substitution Principle (LSP)
-Interface Segregation Principle (ISP)
-Dependency Inversion Principle (DIP)
-Separation of Concerns (SOC)
-Don't Repeat Yourself (DRY)
-You Aren't Gonna Need It (YAGNI)
-Keep It Simple, Silly (KISS)
-Composition Over Inheritance
-Small Commits
+- Single Responsibility Principle (SRP)
+- Open Closed Principle (OCP)
+- Liskov Substitution Principle (LSP)
+- Interface Segregation Principle (ISP)
+- Dependency Inversion Principle (DIP)
+- Separation of Concerns (SOC)
+- Don't Repeat Yourself (DRY)
+- You Aren't Gonna Need It (YAGNI)
+- Keep It Simple, Silly (KISS)
+- Composition Over Inheritance
+- Small Commits
 
 >### Methodologies I've used
-TDD
-Clean Architecture
-DDD
-Conventional Commits
-GitFlow
-Modular Design
-Use Cases
-Continuous Integration
+- TDD
+- Clean Architecture
+- DDD
+- Conventional Commits
+- GitFlow
+- Modular Design
+- Use Cases
+- Continuous Integration
 
 >### Design patterns I've used
 - Factory
