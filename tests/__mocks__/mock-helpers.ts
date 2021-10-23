@@ -1,10 +1,10 @@
 import { IPublicUser, IUser } from '@/domain'
-import { FilterUserDataProtocol, UuidProtocol, ValidationCodeProtocol } from '@/domain/helpers'
+import { IFilterUserData, IUuid, IValidationCode } from '@/domain/helpers'
 
 import { makeFakePublicUser } from './mock-user'
 
-export const makeFilterUserDataStub = (fakeUser: IUser): FilterUserDataProtocol => {
-  class FilterUserDataStub implements FilterUserDataProtocol {
+export const makeFilterUserDataStub = (fakeUser: IUser): IFilterUserData => {
+  class FilterUserDataStub implements IFilterUserData {
     filter (user: IUser): IPublicUser {
       return makeFakePublicUser(fakeUser)
     }
@@ -13,18 +13,18 @@ export const makeFilterUserDataStub = (fakeUser: IUser): FilterUserDataProtocol 
   return new FilterUserDataStub()
 }
 
-export const makeUuidStub = (): UuidProtocol => {
-  class UuidProtocolStub implements UuidProtocol {
+export const makeUuidStub = (): IUuid => {
+  class IUuidStub implements IUuid {
     generate (): string {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
     }
   }
 
-  return new UuidProtocolStub()
+  return new IUuidStub()
 }
 
-export const makeValidationCodeStub = (): ValidationCodeProtocol => {
-  class ValidationCode implements ValidationCodeProtocol {
+export const makeValidationCodeStub = (): IValidationCode => {
+  class ValidationCode implements IValidationCode {
     generate (): string {
       return 'any_code'
     }

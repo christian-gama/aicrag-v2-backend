@@ -1,20 +1,20 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class UpdateEmailByCodeController implements ControllerProtocol {
+export class UpdateEmailByCodeController implements IController {
   constructor (
-    private readonly updateEmailByCodeValidator: ValidatorProtocol,
-    private readonly filterUserData: FilterUserDataProtocol,
+    private readonly updateEmailByCodeValidator: IValidator,
+    private readonly filterUserData: IFilterUserData,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol
+    private readonly userRepository: IUserRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -24,7 +24,7 @@ export class UpdateEmailByCodeController implements ControllerProtocol {
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     const error = await this.updateEmailByCodeValidator.validate(data)
-    if (error != null) return this.httpHelper.badRequest(error)
+    if (error) return this.httpHelper.badRequest(error)
 
     const update = {}
     Object.assign(update, this.updateEmail(user))

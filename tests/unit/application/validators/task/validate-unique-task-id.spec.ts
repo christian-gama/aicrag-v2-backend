@@ -1,5 +1,5 @@
 import { ITask, IUser } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
+import { ITaskRepository } from '@/domain/repositories/task'
 
 import { ConflictParamError } from '@/application/errors'
 import { ValidateUniqueTaskId } from '@/application/validators/task'
@@ -13,7 +13,7 @@ interface SutTypes {
   fakeUser: IUser
   request: HttpRequest
   sut: ValidateUniqueTaskId
-  taskRepositoryStub: TaskRepositoryProtocol
+  taskRepositoryStub: ITaskRepository
 }
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()

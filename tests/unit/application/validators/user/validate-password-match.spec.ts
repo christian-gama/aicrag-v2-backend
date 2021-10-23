@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
-import { ComparerProtocol } from '@/domain/cryptography'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IComparer } from '@/domain/cryptography'
+import { IUserRepository } from '@/domain/repositories'
 
 import { UserCredentialError } from '@/application/errors'
 import { ValidatePasswordMatch } from '@/application/validators/user'
@@ -9,9 +9,9 @@ import { makeFakeUser, makeUserRepositoryStub, makeComparerStub } from '@/tests/
 
 interface SutTypes {
   sut: ValidatePasswordMatch
-  comparerStub: ComparerProtocol
+  comparerStub: IComparer
   fakeUser: IUser
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -30,9 +30,7 @@ describe('validatePasswordMatch', () => {
 
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const error = await sut.validate(data)
 

@@ -1,18 +1,12 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
-import {
-  makeValidateFields,
-  makeValidateLimit,
-  makeValidatePage,
-  makeValidateSort,
-  makeValidateType
-} from '.'
+import { makeValidateFields, makeValidateLimit, makeValidatePage, makeValidateSort, makeValidateType } from '.'
 import { makeRequiredFields } from '../validate-required-fields-factory'
 
-export const makeAllInvoicesValidator = (): ValidatorProtocol => {
-  const validations: ValidatorProtocol[] = []
+export const makeAllInvoicesValidator = (): IValidator => {
+  const validations: IValidator[] = []
 
   const fields = ['type']
   for (const field of fields) {

@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { MailerServiceError } from '@/application/errors'
 
-export interface MailerServiceProtocol {
+export interface IMailerService {
   /**
    * @description Send a welcome email to the user, containing a activation code.
    * @param user The user that will be used to send the email.

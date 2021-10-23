@@ -1,18 +1,18 @@
-import { EncrypterProtocol } from '@/domain/cryptography'
-import { VerifyTokenProtocol } from '@/domain/providers'
+import { IEncrypter } from '@/domain/cryptography'
+import { IVerifyToken } from '@/domain/providers'
 
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { MiddlewareProtocol } from './protocols/middleware-protocol'
+import { IMiddleware } from './protocols/middleware-protocol'
 
-export class ProtectedMiddleware implements MiddlewareProtocol {
+export class ProtectedMiddleware implements IMiddleware {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly accessTokenEncrypter: EncrypterProtocol,
-    private readonly verifyAccessToken: VerifyTokenProtocol,
-    private readonly verifyRefreshToken: VerifyTokenProtocol
+    private readonly accessTokenEncrypter: IEncrypter,
+    private readonly verifyAccessToken: IVerifyToken,
+    private readonly verifyRefreshToken: IVerifyToken
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

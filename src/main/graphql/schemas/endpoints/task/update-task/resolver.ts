@@ -6,7 +6,6 @@ import { makeUpdateTaskController } from '@/factories/controllers/task'
 
 export const resolver: Resolvers = {
   Mutation: {
-    updateTask: async (_, args, context) =>
-      await resolverAdapter(makeUpdateTaskController(), args, context)
+    updateTask: async (_, args, context) => await resolverAdapter(makeUpdateTaskController(), args, context)
   }
 }

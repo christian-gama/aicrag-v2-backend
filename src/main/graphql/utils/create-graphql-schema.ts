@@ -16,9 +16,7 @@ export const createGraphqlSchema = (): GraphQLSchema => {
     .sync(`${srcPath}/**/*.graphql`)
     .map((content: any) => fs.readFileSync(content, { encoding: 'utf8' }))
 
-  const graphqlResolvers = glob
-    .sync(`${srcPath}/**/resolver.?s`)
-    .map((resolver: any) => require(resolver).resolver)
+  const graphqlResolvers = glob.sync(`${srcPath}/**/resolver.?s`).map((resolver: any) => require(resolver).resolver)
 
   const typeDefs = mergeTypeDefs(graphqlTypes)
   const resolvers = mergeResolvers(graphqlResolvers)

@@ -1,12 +1,10 @@
-import { ComparerProtocol } from '@/domain/cryptography'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IComparer } from '@/domain/cryptography'
+import { IValidator } from '@/domain/validators'
 
 import { UserCredentialError } from '../../errors'
 
-export class ValidateCurrentPassword implements ValidatorProtocol {
-  constructor (
-    private readonly hasher: ComparerProtocol
-  ) {}
+export class ValidateCurrentPassword implements IValidator {
+  constructor (private readonly hasher: IComparer) {}
 
   async validate (input: any): Promise<UserCredentialError | undefined> {
     const { currentPassword, user } = input

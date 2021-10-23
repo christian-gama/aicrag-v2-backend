@@ -1,6 +1,6 @@
 import { ILogError } from '@/domain'
 
-export interface CreateLogErrorRepositoryProtocol {
+export interface ICreateLogErrorRepository {
   /**
    * @async Asynchronous method.
    * @description Receive a error and create a log based on it.

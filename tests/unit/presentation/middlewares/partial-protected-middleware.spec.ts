@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
+import { IRefreshToken, IVerifyToken } from '@/domain/providers'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { PartialProtectedMiddleware } from '@/presentation/middlewares'
@@ -14,7 +14,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: PartialProtectedMiddleware
-  verifyAccessTokenStub: VerifyTokenProtocol
+  verifyAccessTokenStub: IVerifyToken
 }
 
 const makeSut = (): SutTypes => {

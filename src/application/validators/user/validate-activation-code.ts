@@ -1,25 +1,14 @@
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
-import {
-  InvalidCodeError,
-  AccountAlreadyActivatedError,
-  CodeIsExpiredError,
-  InvalidTypeError
-} from '../../errors'
+import { InvalidCodeError, AccountAlreadyActivatedError, CodeIsExpiredError, InvalidTypeError } from '../../errors'
 
-export class ValidateActivationCode implements ValidatorProtocol {
-  constructor (private readonly userRepository: UserRepositoryProtocol) {}
+export class ValidateActivationCode implements IValidator {
+  constructor (private readonly userRepository: IUserRepository) {}
 
   async validate (
     input: any
-  ): Promise<
-    | AccountAlreadyActivatedError
-    | CodeIsExpiredError
-    | InvalidCodeError
-    | InvalidTypeError
-    | undefined
-    > {
+  ): Promise<AccountAlreadyActivatedError | CodeIsExpiredError | InvalidCodeError | InvalidTypeError | undefined> {
     const { email, activationCode } = input
 
     if (typeof activationCode !== 'string') return new InvalidTypeError('activationCode')

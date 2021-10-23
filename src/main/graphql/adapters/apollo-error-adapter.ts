@@ -1,10 +1,6 @@
 import { ApolloError } from 'apollo-server-express'
 
-export const apolloErrorAdapter = (
-  errorName: ErrorName,
-  message: string,
-  statusCode: StatusCode
-): ApolloError => {
+export const apolloErrorAdapter = (errorName: ErrorName, message: string, statusCode: StatusCode): ApolloError => {
   class CustomApolloError extends ApolloError {
     constructor (message: string, extensions?: Record<string, any>) {
       super(message, statusCode.toString(), extensions)

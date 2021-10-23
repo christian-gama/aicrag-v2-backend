@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/domain/helpers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData, IValidationCode } from '@/domain/helpers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { ConflictParamError, MustLoginError } from '@/application/errors'
 
@@ -22,16 +22,16 @@ import {
 import MockDate from 'mockdate'
 
 interface SutTypes {
-  emailCodeStub: ValidationCodeProtocol
+  emailCodeStub: IValidationCode
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
+  filterUserDataStub: IFilterUserData
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: UpdateUserController
-  userRepositoryStub: UserRepositoryProtocol
-  validateCurrencyStub: ValidatorProtocol
-  validateEmailStub: ValidatorProtocol
-  validateNameStub: ValidatorProtocol
+  userRepositoryStub: IUserRepository
+  validateCurrencyStub: IValidator
+  validateEmailStub: IValidator
+  validateNameStub: IValidator
 }
 
 const makeSut = (): SutTypes => {

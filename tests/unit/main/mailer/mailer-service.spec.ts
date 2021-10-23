@@ -1,4 +1,4 @@
-import { MailerSettingsProtocol } from '@/domain/mailer'
+import { IMailerSettings } from '@/domain/mailer'
 
 import { MailerServiceError } from '@/application/errors'
 
@@ -6,18 +6,18 @@ import { environment } from '@/main/config/environment'
 import { MailerService } from '@/main/mailer/mailer-service'
 
 class DummyService extends MailerService {
-  async send (settings: MailerSettingsProtocol): Promise<any> {
+  async send (settings: IMailerSettings): Promise<any> {
     return await this.sendEmail(settings)
   }
 }
 
 interface SutTypes {
-  settings: MailerSettingsProtocol
+  settings: IMailerSettings
   sut: DummyService
 }
 
 const makeSut = (): SutTypes => {
-  const settings: MailerSettingsProtocol = {
+  const settings: IMailerSettings = {
     html: 'any_html',
     subject: 'any_subject',
     text: 'any_text',

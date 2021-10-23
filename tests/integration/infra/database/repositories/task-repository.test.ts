@@ -1,21 +1,16 @@
 import { ITask, ITaskData, IUser } from '@/domain'
-import { CreateTaskRepositoryProtocol } from '@/domain/repositories'
+import { ICreateTaskRepository } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 import { TaskRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import {
-  makeFakeTask,
-  makeFakeTaskData,
-  makeFakeUser,
-  makeCreateTaskRepositoryStub
-} from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeTaskData, makeFakeUser, makeCreateTaskRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  createTaskRepository: CreateTaskRepositoryProtocol
+  createTaskRepository: ICreateTaskRepository
   fakeTask: ITask
   fakeTaskData: ITaskData
   fakeUser: IUser
@@ -38,7 +33,7 @@ describe('taskRepository', () => {
   const client = makeMongoDb()
   let task: ITask
   let taskData: ITaskData
-  let taskCollection: CollectionProtocol
+  let taskCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()

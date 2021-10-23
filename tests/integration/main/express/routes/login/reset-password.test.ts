@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -20,7 +20,7 @@ describe('patch /reset-password', () => {
   let accessToken: string
   let fakeUser: IUser
   let refreshToken: string
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -59,19 +59,13 @@ describe('patch /reset-password', () => {
   it('should return 401 if token is missing', async () => {
     expect.assertions(0)
 
-    await request(app)
-      .patch('/api/v1/login/reset-password')
-      .send()
-      .expect(401)
+    await request(app).patch('/api/v1/login/reset-password').send().expect(401)
   })
 
   it('should return 401 if token is invalid', async () => {
     expect.assertions(0)
 
-    await request(app)
-      .patch('/api/v1/login/reset-password')
-      .set('Cookie', 'accessToken=invalid_token')
-      .expect(401)
+    await request(app).patch('/api/v1/login/reset-password').set('Cookie', 'accessToken=invalid_token').expect(401)
   })
 
   it('should return 400 if params are missing', async () => {

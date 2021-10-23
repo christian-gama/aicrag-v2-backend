@@ -1,6 +1,6 @@
 import { ITask, IUser } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
-import { ValidatorProtocol } from '@/domain/validators'
+import { ITaskRepository } from '@/domain/repositories/task'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'
 
@@ -9,12 +9,7 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import {
-  makeFakeTask,
-  makeFakeUser,
-  makeTaskRepositoryStub,
-  makeValidatorStub
-} from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeTask: ITask
@@ -22,8 +17,8 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: FindOneTaskController
-  taskRepositoryStub: TaskRepositoryProtocol
-  validateTaskParamStub: ValidatorProtocol
+  taskRepositoryStub: ITaskRepository
+  validateTaskParamStub: IValidator
 }
 
 const makeSut = (): SutTypes => {

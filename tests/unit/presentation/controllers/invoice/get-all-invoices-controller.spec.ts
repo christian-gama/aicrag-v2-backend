@@ -1,6 +1,6 @@
 import { ITask, IUser } from '@/domain'
-import { InvoiceRepositoryProtocol } from '@/domain/repositories/invoice'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IInvoiceRepository } from '@/domain/repositories/invoice'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
 
@@ -9,19 +9,14 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import {
-  makeFakeTask,
-  makeFakeUser,
-  makeInvoiceRepositoryStub,
-  makeValidatorStub
-} from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeUser, makeInvoiceRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeTask: ITask
   fakeUser: IUser
-  getAllInvoicesValidatorStub: ValidatorProtocol
+  getAllInvoicesValidatorStub: IValidator
   httpHelper: HttpHelperProtocol
-  invoiceRepositoryStub: InvoiceRepositoryProtocol
+  invoiceRepositoryStub: IInvoiceRepository
   request: HttpRequest
   sut: GetAllInvoicesController
 }
@@ -34,11 +29,7 @@ const makeSut = (): SutTypes => {
   const getAllInvoicesValidatorStub = makeValidatorStub()
   const request: HttpRequest = { query: { type: 'TX' }, user: fakeUser }
 
-  const sut = new GetAllInvoicesController(
-    getAllInvoicesValidatorStub,
-    httpHelper,
-    invoiceRepositoryStub
-  )
+  const sut = new GetAllInvoicesController(getAllInvoicesValidatorStub, httpHelper, invoiceRepositoryStub)
 
   return {
     fakeTask,
@@ -67,9 +58,7 @@ describe('getAllInvoices', () => {
     expect.hasAssertions()
 
     const { getAllInvoicesValidatorStub, httpHelper, request, sut } = makeSut()
-    jest
-      .spyOn(getAllInvoicesValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(getAllInvoicesValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const error = await sut.handle(request)
 
@@ -82,9 +71,7 @@ describe('getAllInvoices', () => {
     const { httpHelper, invoiceRepositoryStub, request, sut } = makeSut()
     jest
       .spyOn(invoiceRepositoryStub, 'getAllInvoices')
-      .mockReturnValueOnce(
-        Promise.resolve({ count: 1, displaying: 1, documents: [], page: '1 of 1' })
-      )
+      .mockReturnValueOnce(Promise.resolve({ count: 1, displaying: 1, documents: [], page: '1 of 1' }))
 
     const response = await sut.handle(request)
 

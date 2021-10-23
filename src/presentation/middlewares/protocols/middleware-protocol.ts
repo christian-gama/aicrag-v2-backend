@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-export interface MiddlewareProtocol {
+export interface IMiddleware {
   /**
    * @async Asynchronous method.
    * @description Generic middleware that receive a generic http request.

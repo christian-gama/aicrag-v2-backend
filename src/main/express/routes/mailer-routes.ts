@@ -1,8 +1,4 @@
-import {
-  sendEmailCodeController,
-  sendForgotPasswordEmailController,
-  sendWelcomeEmailController
-} from '.'
+import { sendEmailCodeController, sendForgotPasswordEmailController, sendWelcomeEmailController } from '.'
 
 import { Router } from 'express'
 

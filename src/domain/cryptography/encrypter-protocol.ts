@@ -1,4 +1,4 @@
-export interface EncrypterProtocol {
+export interface IEncrypter {
   /**
    *
    * @description Get an ID and encrypt it based on a secret key.

@@ -1,8 +1,8 @@
-import { ComparerProtocol, HasherProtocol } from '@/domain/cryptography'
+import { IComparer, IHasher } from '@/domain/cryptography'
 
 import bcrypt from 'bcrypt'
 
-export class BcryptAdapter implements ComparerProtocol, HasherProtocol {
+export class BcryptAdapter implements IComparer, IHasher {
   constructor (private readonly salt: number) {}
 
   async compare (value: string, valueToCompare: string): Promise<boolean> {

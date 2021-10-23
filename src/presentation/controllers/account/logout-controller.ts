@@ -1,16 +1,13 @@
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IUserRepository } from '@/domain/repositories'
 
 import { MustLoginError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class LogoutController implements ControllerProtocol {
-  constructor (
-    private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol
-  ) {}
+export class LogoutController implements IController {
+  constructor (private readonly httpHelper: HttpHelperProtocol, private readonly userRepository: IUserRepository) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const { user } = httpRequest

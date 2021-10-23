@@ -1,15 +1,15 @@
 import { IUser } from '@/domain'
-import { VerifyTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IVerifyToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '../http/protocols'
-import { MiddlewareProtocol } from './protocols/middleware-protocol'
+import { IMiddleware } from './protocols/middleware-protocol'
 
-export class IsLoggedInMiddleware implements MiddlewareProtocol {
+export class IsLoggedInMiddleware implements IMiddleware {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol,
-    private readonly verifyRefreshToken: VerifyTokenProtocol
+    private readonly userRepository: IUserRepository,
+    private readonly verifyRefreshToken: IVerifyToken
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

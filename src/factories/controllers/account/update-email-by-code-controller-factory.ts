@@ -1,12 +1,12 @@
 import { UpdateEmailByCodeController } from '@/presentation/controllers/account'
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeUserRepository } from '../../repositories'
 import { makeUpdateEmailByCodeValidator } from '../../validators/user'
 
-export const makeUpdateEmailByCodeController = (): ControllerProtocol => {
+export const makeUpdateEmailByCodeController = (): IController => {
   const updateEmailByCodeValidator = makeUpdateEmailByCodeValidator()
   const filterUserData = makeFilterUserData()
 

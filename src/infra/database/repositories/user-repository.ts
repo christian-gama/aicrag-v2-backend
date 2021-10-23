@@ -1,18 +1,15 @@
 import { ISignUpUserData, IUser } from '@/domain'
-import { UserRepositoryProtocol, CreateUserRepositoryProtocol } from '@/domain/repositories'
+import { IUserRepository, ICreateUserRepository } from '@/domain/repositories'
 
-import { DatabaseProtocol, UserDbFilter } from '../protocols'
+import { IDatabase, IUserDbFilter } from '../protocols'
 
-export class UserRepository implements UserRepositoryProtocol {
-  constructor (
-    private readonly createUserRepository: CreateUserRepositoryProtocol,
-    private readonly database: DatabaseProtocol
-  ) {}
+export class UserRepository implements IUserRepository {
+  constructor (private readonly createUserRepository: ICreateUserRepository, private readonly database: IDatabase) {}
 
   async findUserByEmail (email: string): Promise<IUser | null> {
     const userCollection = this.database.collection('users')
 
-    const filter: UserDbFilter = { 'personal.email': email.toLowerCase() }
+    const filter: IUserDbFilter = { 'personal.email': email.toLowerCase() }
     const user = await userCollection.findOne<IUser>(filter)
 
     return user
@@ -21,7 +18,7 @@ export class UserRepository implements UserRepositoryProtocol {
   async findUserById (id: string): Promise<IUser | null> {
     const userCollection = this.database.collection('users')
 
-    const filter: UserDbFilter = { 'personal.id': id }
+    const filter: IUserDbFilter = { 'personal.id': id }
     const user = await userCollection.findOne<IUser>(filter)
 
     return user
@@ -35,7 +32,7 @@ export class UserRepository implements UserRepositoryProtocol {
     return await userCollection.insertOne(user)
   }
 
-  async updateUser<T extends IUser | null>(id: string, update: UserDbFilter): Promise<T> {
+  async updateUser<T extends IUser | null>(id: string, update: IUserDbFilter): Promise<T> {
     const userCollection = this.database.collection('users')
 
     const updatedUser = await userCollection.updateOne<IUser>({ 'personal.id': id }, update)

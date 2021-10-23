@@ -1,10 +1,10 @@
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MissingParamError, UserCredentialError } from '../../errors'
 
-export class ValidatePasswordToken implements ValidatorProtocol {
-  constructor (private readonly userRepository: UserRepositoryProtocol) {}
+export class ValidatePasswordToken implements IValidator {
+  constructor (private readonly userRepository: IUserRepository) {}
 
   async validate (input: any): Promise<UserCredentialError | undefined> {
     const { email } = input

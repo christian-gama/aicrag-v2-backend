@@ -1,5 +1,5 @@
 import { ITaskData, IUser } from '@/domain'
-import { UuidProtocol } from '@/domain/helpers'
+import { IUuid } from '@/domain/helpers'
 
 import { CreateTaskRepository } from '@/application/repositories'
 
@@ -12,7 +12,7 @@ interface SutTypes {
   fakeTaskData: ITaskData
   fakeUser: IUser
   sut: CreateTaskRepository
-  uuidStub: UuidProtocol
+  uuidStub: IUuid
 }
 
 const makeSut = (): SutTypes => {
@@ -42,9 +42,7 @@ describe('createTaskRepository', () => {
     const d = new Date(Date.parse(date))
     const fakeId = uuidStub.generate()
     const usd =
-      type === 'TX'
-        ? (duration / 60) * 65 * user.settings.handicap
-        : (duration / 60) * 112.5 * user.settings.handicap
+      type === 'TX' ? (duration / 60) * 65 * user.settings.handicap : (duration / 60) * 112.5 * user.settings.handicap
     const task = sut.createTask(fakeTaskData)
 
     expect(task).toStrictEqual({
@@ -78,9 +76,7 @@ describe('createTaskRepository', () => {
     const d = new Date(Date.parse(date))
     const fakeId = uuidStub.generate()
     const usd =
-      type === 'TX'
-        ? (duration / 60) * 65 * user.settings.handicap
-        : (duration / 60) * 112.5 * user.settings.handicap
+      type === 'TX' ? (duration / 60) * 65 * user.settings.handicap : (duration / 60) * 112.5 * user.settings.handicap
     fakeTaskData.commentary = null
     fakeTaskData.taskId = null
 

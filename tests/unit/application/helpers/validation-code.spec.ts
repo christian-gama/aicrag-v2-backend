@@ -1,9 +1,9 @@
-import { ValidationCodeProtocol } from '@/domain/helpers'
+import { IValidationCode } from '@/domain/helpers'
 
 import { ValidationCode } from '@/application/helpers'
 
 interface SutTypes {
-  sut: ValidationCodeProtocol
+  sut: IValidationCode
 }
 
 const makeSut = (): SutTypes => {

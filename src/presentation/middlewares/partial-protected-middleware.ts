@@ -1,14 +1,11 @@
-import { VerifyTokenProtocol } from '@/domain/providers'
+import { IVerifyToken } from '@/domain/providers'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { MiddlewareProtocol } from './protocols/middleware-protocol'
+import { IMiddleware } from './protocols/middleware-protocol'
 
-export class PartialProtectedMiddleware implements MiddlewareProtocol {
-  constructor (
-    private readonly httpHelper: HttpHelperProtocol,
-    private readonly verifyAccessToken: VerifyTokenProtocol
-  ) {}
+export class PartialProtectedMiddleware implements IMiddleware {
+  constructor (private readonly httpHelper: HttpHelperProtocol, private readonly verifyAccessToken: IVerifyToken) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const accessToken = httpRequest.cookies?.accessToken

@@ -4,10 +4,7 @@ import {
   makeUpdatePasswordController,
   makeUpdateUserController
 } from '@/factories/controllers/account'
-import {
-  makeGetAllInvoicesController,
-  makeGetInvoiceByMonthController
-} from '@/factories/controllers/invoice'
+import { makeGetAllInvoicesController, makeGetInvoiceByMonthController } from '@/factories/controllers/invoice'
 import {
   makeActivateAccountController,
   makeForgotPasswordController,
@@ -55,9 +52,7 @@ export const loginController = controllerAdapter(makeLoginController())
 export const resetPasswordController = controllerAdapter(makeResetPasswordController())
 
 // Mailer Routes
-export const sendForgotPasswordEmailController = controllerAdapter(
-  makeSendForgotPasswordEmailController()
-)
+export const sendForgotPasswordEmailController = controllerAdapter(makeSendForgotPasswordEmailController())
 export const sendEmailCodeController = controllerAdapter(makeSendEmailCodeController())
 export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 
@@ -73,9 +68,7 @@ export const findOneTaskController = controllerAdapter(makeFindOneTaskController
 export const updateTaskController = controllerAdapter(makeUpdateTaskController())
 
 // Token Routes
-export const verifyResetPasswordTokenController = controllerAdapter(
-  makeVerifyResetPasswordTokenController()
-)
+export const verifyResetPasswordTokenController = controllerAdapter(makeVerifyResetPasswordTokenController())
 /* ********** Middlewares *********** */
 export const isLoggedInMiddleware = middlewareAdapter(makeIsLoggedInMiddleware())
 export const partialProtectedMiddleware = middlewareAdapter(makePartialProtectedMiddleware())

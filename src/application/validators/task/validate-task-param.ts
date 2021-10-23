@@ -1,8 +1,8 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
-export class ValidateTaskParam implements ValidatorProtocol {
+export class ValidateTaskParam implements IValidator {
   validate (input: any): InvalidParamError | InvalidTypeError | undefined {
     const { id } = input
 

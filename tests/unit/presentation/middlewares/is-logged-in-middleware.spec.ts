@@ -1,18 +1,13 @@
 import { IUser } from '@/domain'
-import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IRefreshToken, IVerifyToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
 
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 import { IsLoggedInMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import {
-  makeFakeRefreshToken,
-  makeFakeUser,
-  makeUserRepositoryStub,
-  makeVerifyTokenStub
-} from '@/tests/__mocks__'
+import { makeFakeRefreshToken, makeFakeUser, makeUserRepositoryStub, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 import MockDate from 'mockdate'
 
@@ -22,8 +17,8 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: IsLoggedInMiddleware
-  verifyRefreshTokenStub: VerifyTokenProtocol
-  userRepositoryStub: UserRepositoryProtocol
+  verifyRefreshTokenStub: IVerifyToken
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {

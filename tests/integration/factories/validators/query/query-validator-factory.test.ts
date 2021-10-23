@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
@@ -16,7 +16,7 @@ describe('queryValidator', () => {
 
     makeQueryValidator()
 
-    const validations: ValidatorProtocol[] = []
+    const validations: IValidator[] = []
 
     // Must have this exact validation order
     validations.push(makeValidateFields())

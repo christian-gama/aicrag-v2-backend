@@ -1,11 +1,11 @@
 import { IUser } from '@/domain'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { InactiveAccountError } from '../../errors'
 
-export class ValidateActiveAccount implements ValidatorProtocol {
-  constructor (private readonly userRepository: UserRepositoryProtocol) {}
+export class ValidateActiveAccount implements IValidator {
+  constructor (private readonly userRepository: IUserRepository) {}
 
   async validate (input: any): Promise<InactiveAccountError | undefined> {
     const { email } = input

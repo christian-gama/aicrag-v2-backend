@@ -1,19 +1,19 @@
-import { VerifyTokenProtocol } from '@/domain/providers'
+import { IVerifyToken } from '@/domain/providers'
 
 import { MustLogoutError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class VerifyResetPasswordTokenController implements ControllerProtocol {
+export class VerifyResetPasswordTokenController implements IController {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly verifyResetPasswordToken: VerifyTokenProtocol
+    private readonly verifyResetPasswordToken: IVerifyToken
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
+    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
     const token = httpRequest.params.token
 

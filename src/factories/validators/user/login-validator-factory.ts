@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/user'
 
@@ -11,8 +11,8 @@ import {
   makeValidateActiveAccount
 } from '.'
 
-export const makeLoginValidator = (): ValidatorProtocol => {
-  const validations: ValidatorProtocol[] = []
+export const makeLoginValidator = (): IValidator => {
+  const validations: IValidator[] = []
 
   const fields = ['email', 'password']
   for (const field of fields) {

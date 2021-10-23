@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
 
 import { environment } from '@/main/config/environment'
 
@@ -9,7 +9,7 @@ import { Request, Response, NextFunction } from 'express'
 
 type AdaptRequest = Request & Pick<HttpRequest, 'user'>
 
-export const middlewareAdapter = (middleware: MiddlewareProtocol) => {
+export const middlewareAdapter = (middleware: IMiddleware) => {
   return async (req: AdaptRequest, res: Response, next: NextFunction) => {
     try {
       const httpResponse: HttpResponse = await middleware.handle(req)

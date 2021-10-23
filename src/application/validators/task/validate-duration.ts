@@ -1,8 +1,8 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
-export class ValidateDuration implements ValidatorProtocol {
+export class ValidateDuration implements IValidator {
   validate (input: any): InvalidParamError | InvalidTypeError | undefined {
     if (typeof input.duration !== 'number') return new InvalidTypeError('duration')
 

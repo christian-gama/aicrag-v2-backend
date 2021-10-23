@@ -1,10 +1,5 @@
 {
-  "extends": [
-    "plugin:jest-formatting/strict",
-    "plugin:jest/all",
-    "plugin:mongodb/all",
-    "standard-with-typescript"
-  ],
+  "extends": ["plugin:jest-formatting/strict", "plugin:jest/all", "plugin:mongodb/all", "standard-with-typescript"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },

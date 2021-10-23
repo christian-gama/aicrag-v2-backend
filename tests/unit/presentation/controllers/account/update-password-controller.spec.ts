@@ -1,9 +1,9 @@
 import { IUser } from '@/domain'
-import { HasherProtocol } from '@/domain/cryptography'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IHasher } from '@/domain/cryptography'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
 
@@ -26,15 +26,15 @@ import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
-  generateAccessTokenStub: GenerateTokenProtocol
-  generateRefreshTokenStub: GenerateTokenProtocol
-  hasherStub: HasherProtocol
+  filterUserDataStub: IFilterUserData
+  generateAccessTokenStub: IGenerateToken
+  generateRefreshTokenStub: IGenerateToken
+  hasherStub: IHasher
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: UpdatePasswordController
-  updatePasswordValidatorStub: ValidatorProtocol
-  userRepositoryStub: UserRepositoryProtocol
+  updatePasswordValidatorStub: IValidator
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -115,9 +115,7 @@ describe('updatePasswordController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, updatePasswordValidatorStub } = makeSut()
-    jest
-      .spyOn(updatePasswordValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(updatePasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 

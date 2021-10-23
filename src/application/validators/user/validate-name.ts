@@ -1,8 +1,8 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidParamError, InvalidTypeError } from '../../errors'
 
-export class ValidateName implements ValidatorProtocol {
+export class ValidateName implements IValidator {
   validate (input: any): InvalidParamError | InvalidTypeError | undefined {
     const { name } = input
 

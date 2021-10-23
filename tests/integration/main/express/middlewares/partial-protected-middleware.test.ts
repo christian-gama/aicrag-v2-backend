@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 import { partialProtectedMiddleware } from '@/main/express/routes'
@@ -20,7 +20,7 @@ describe('partialProtectedMiddleware', () => {
   const client = makeMongoDb()
   let accessToken: string
   let fakeUser: IUser
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()

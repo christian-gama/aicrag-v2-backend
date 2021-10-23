@@ -1,17 +1,13 @@
 import { ISignUpUserData, IUser } from '@/domain'
 
-import { UserDbFilter } from '@/infra/database/protocols'
+import { IUserDbFilter } from '@/infra/database/protocols'
 
 /**
  * @description Generic user database repository.
  */
-export interface UserRepositoryProtocol
-  extends SaveUserProtocol,
-  FindUserByEmailProtocol,
-  FindUserByIdProtocol,
-  UpdateUserProtocol {}
+export interface IUserRepository extends ISaveUser, IFindUserByEmail, IFindUserById, IUpdateUser {}
 
-export interface FindUserByEmailProtocol {
+export interface IFindUserByEmail {
   /**
    * @async Asynchronous method.
    * @description Receive an email and tries to find it on database.
@@ -21,7 +17,7 @@ export interface FindUserByEmailProtocol {
   findUserByEmail: (email: string) => Promise<IUser | null>
 }
 
-export interface FindUserByIdProtocol {
+export interface IFindUserById {
   /**
    * @async Asynchronous method.
    * @description Receive an user id and tries to find it on database.
@@ -31,7 +27,7 @@ export interface FindUserByIdProtocol {
   findUserById: (id: string) => Promise<IUser | null>
 }
 
-export interface SaveUserProtocol {
+export interface ISaveUser {
   /**
    * @async Asynchronous method.
    * @description Receive an user and then save a user on database.
@@ -41,7 +37,7 @@ export interface SaveUserProtocol {
   saveUser: (userData: ISignUpUserData) => Promise<IUser>
 }
 
-export interface UpdateUserProtocol {
+export interface IUpdateUser {
   /**
    * @async Asynchronous method.
    * @description Receive a user and tries to update it.
@@ -49,5 +45,5 @@ export interface UpdateUserProtocol {
    * @param update Object that contains the changes to be updated.
    * @returns Return a user if updates it or null if does not.
    */
-  updateUser: <T extends IUser | null>(id: string, update: UserDbFilter) => Promise<T>
+  updateUser: <T extends IUser | null>(id: string, update: IUserDbFilter) => Promise<T>
 }

@@ -3,7 +3,7 @@ import { IUser } from '@/domain'
 import { MailerServiceError } from '@/application/errors'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 import { ForgotPasswordEmail } from '@/main/mailer/forgot-password-email'
@@ -20,7 +20,7 @@ let app: Express
 describe('post /send-forgot-password-email', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -48,10 +48,7 @@ describe('post /send-forgot-password-email', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .post('/api/v1/mailer/send-forgot-password-email')
-      .send({ email: 'invalid_email' })
-      .expect(400)
+    await request(app).post('/api/v1/mailer/send-forgot-password-email').send({ email: 'invalid_email' }).expect(400)
   })
 
   it('should return 500 if email is not sent', async () => {
@@ -59,9 +56,7 @@ describe('post /send-forgot-password-email', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    jest
-      .spyOn(ForgotPasswordEmail.prototype, 'send')
-      .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
+    jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     await request(app)
       .post('/api/v1/mailer/send-forgot-password-email')

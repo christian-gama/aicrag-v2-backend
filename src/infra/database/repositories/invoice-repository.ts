@@ -1,23 +1,23 @@
 import { ITask } from '@/domain'
 import {
-  AllInvoicesDocument,
-  GetInvoiceByMonthProtocol,
-  QueryAllInvoicesProtocol,
-  QueryInvoiceProtocol
+  IAllInvoicesDocument,
+  IGetInvoiceByMonth,
+  IQueryAllInvoices,
+  IQueryInvoice
 } from '@/domain/repositories/invoice/invoice-repository-protocol'
 
 import { getRegexTaskId } from '../helpers/get-regex-task-id'
 import { getType } from '../helpers/get-type'
-import { DatabaseProtocol } from '../protocols'
-import { QueryResultProtocol } from '../protocols/queries-protocol'
+import { IDatabase } from '../protocols'
+import { IQueryResult } from '../protocols/queries-protocol'
 
-export class InvoiceRepository implements GetInvoiceByMonthProtocol {
-  constructor (private readonly database: DatabaseProtocol) {}
+export class InvoiceRepository implements IGetInvoiceByMonth {
+  constructor (private readonly database: IDatabase) {}
 
-  async getAllInvoices<T extends AllInvoicesDocument>(
-    query: QueryAllInvoicesProtocol,
+  async getAllInvoices<T extends IAllInvoicesDocument>(
+    query: IQueryAllInvoices,
     userId: string
-  ): Promise<QueryResultProtocol<T>> {
+  ): Promise<IQueryResult<T>> {
     const taskCollection = this.database.collection('tasks')
     const type = getType(query.type as 'QA' | 'TX' | 'both')
 
@@ -45,10 +45,7 @@ export class InvoiceRepository implements GetInvoiceByMonthProtocol {
               // Round 2 decimals
               $divide: [
                 {
-                  $subtract: [
-                    { $multiply: ['$sumUsd', 100] },
-                    { $mod: [{ $multiply: ['$sumUsd', 100] }, 1] }
-                  ]
+                  $subtract: [{ $multiply: ['$sumUsd', 100] }, { $mod: [{ $multiply: ['$sumUsd', 100] }, 1] }]
                 },
                 100
               ]
@@ -68,10 +65,7 @@ export class InvoiceRepository implements GetInvoiceByMonthProtocol {
     return result
   }
 
-  async getInvoiceByMonth<T extends ITask>(
-    query: QueryInvoiceProtocol,
-    userId: string
-  ): Promise<QueryResultProtocol<T>> {
+  async getInvoiceByMonth<T extends ITask>(query: IQueryInvoice, userId: string): Promise<IQueryResult<T>> {
     const { month, taskId, type, year } = query
     const _taskId = getRegexTaskId(taskId)
     const _type = getType(type as 'QA' | 'TX' | 'both')
@@ -91,6 +85,6 @@ export class InvoiceRepository implements GetInvoiceByMonthProtocol {
       query
     )
 
-    return result as QueryResultProtocol<T>
+    return result as IQueryResult<T>
   }
 }

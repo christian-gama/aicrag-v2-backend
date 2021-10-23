@@ -1,9 +1,9 @@
 import { IUser } from '@/domain'
-import { EncrypterProtocol } from '@/domain/cryptography'
-import { GenerateTokenProtocol } from '@/domain/providers'
+import { IEncrypter } from '@/domain/cryptography'
+import { IGenerateToken } from '@/domain/providers'
 
-export class GenerateAccessToken implements GenerateTokenProtocol {
-  constructor (private readonly accessTokenEncrypter: EncrypterProtocol) {}
+export class GenerateAccessToken implements IGenerateToken {
+  constructor (private readonly accessTokenEncrypter: IEncrypter) {}
 
   generate (user: IUser): string {
     return this.accessTokenEncrypter.encrypt({

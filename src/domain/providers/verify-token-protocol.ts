@@ -5,6 +5,6 @@ import { InvalidTokenError } from '@/application/errors'
 /**
  * @description Generic interface that is used to verify a token.
  */
-export interface VerifyTokenProtocol {
+export interface IVerifyToken {
   verify: (token: any) => Promise<InvalidTokenError | IUser>
 }

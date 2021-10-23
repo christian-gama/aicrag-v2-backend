@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IUserRepository } from '@/domain/repositories'
 
 import { MustLoginError } from '@/application/errors'
 
@@ -15,7 +15,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: LogoutController
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -49,7 +49,9 @@ describe('logoutController', () => {
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, { tokenVersion: fakeUser.tokenVersion })
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+      tokenVersion: fakeUser.tokenVersion
+    })
   })
 
   it('should return ok if succeeds', async () => {

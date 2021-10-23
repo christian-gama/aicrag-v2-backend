@@ -2,7 +2,7 @@
  * @description Interface used for create a new email.
  */
 
-export interface MailerSettingsProtocol {
+export interface IMailerSettings {
   readonly html: string
   readonly subject: string
   readonly text: string

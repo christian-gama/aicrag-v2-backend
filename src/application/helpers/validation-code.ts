@@ -1,8 +1,8 @@
-import { ValidationCodeProtocol } from '@/domain/helpers'
+import { IValidationCode } from '@/domain/helpers'
 
 import { randomAlphanumeric } from '.'
 
-export class ValidationCode implements ValidationCodeProtocol {
+export class ValidationCode implements IValidationCode {
   generate (): string {
     const code: Partial<string[]> = []
 

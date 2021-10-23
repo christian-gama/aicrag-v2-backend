@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
-import { LogErrorRepositoryProtocol } from '@/domain/repositories'
+import { ILogErrorRepository } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
 
@@ -13,7 +13,7 @@ import { makeFakeUser, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 interface SutTypes {
   sut: ClearUserDatabase
   error: Error
-  logErrorRepositoryStub: LogErrorRepositoryProtocol
+  logErrorRepositoryStub: ILogErrorRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -29,7 +29,7 @@ const makeSut = (): SutTypes => {
 describe('clearUserDatabase', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()

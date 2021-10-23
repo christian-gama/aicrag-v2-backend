@@ -1,17 +1,17 @@
-import { InvoiceRepositoryProtocol, QueryInvoiceProtocol } from '@/domain/repositories/invoice'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IInvoiceRepository, IQueryInvoice } from '@/domain/repositories/invoice'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class GetInvoiceByMonthController implements ControllerProtocol {
+export class GetInvoiceByMonthController implements IController {
   constructor (
-    private readonly getInvoiceByMonthValidator: ValidatorProtocol,
+    private readonly getInvoiceByMonthValidator: IValidator,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly invoiceRepository: InvoiceRepositoryProtocol
+    private readonly invoiceRepository: IInvoiceRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -22,7 +22,7 @@ export class GetInvoiceByMonthController implements ControllerProtocol {
     const error = await this.getInvoiceByMonthValidator.validate(httpRequest.query)
     if (error) return this.httpHelper.badRequest(error)
 
-    const query = httpRequest.query as QueryInvoiceProtocol
+    const query = httpRequest.query as IQueryInvoice
 
     const result = await this.invoiceRepository.getInvoiceByMonth(query, user.personal.id)
 

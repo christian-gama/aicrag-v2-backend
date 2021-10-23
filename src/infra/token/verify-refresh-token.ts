@@ -1,15 +1,12 @@
 import { IUser } from '@/domain'
-import { DecoderProtocol } from '@/domain/cryptography'
-import { VerifyTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IDecoder } from '@/domain/cryptography'
+import { IVerifyToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
 
 import { TokenMissingError, InvalidTokenError } from '@/application/errors'
 
-export class VerifyRefreshToken implements VerifyTokenProtocol {
-  constructor (
-    private readonly refreshTokenDecoder: DecoderProtocol,
-    private readonly userRepository: UserRepositoryProtocol
-  ) {}
+export class VerifyRefreshToken implements IVerifyToken {
+  constructor (private readonly refreshTokenDecoder: IDecoder, private readonly userRepository: IUserRepository) {}
 
   async verify (token: any): Promise<InvalidTokenError | IUser> {
     if (!token) {

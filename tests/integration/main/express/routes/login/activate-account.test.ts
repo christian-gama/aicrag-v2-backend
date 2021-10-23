@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -19,7 +19,7 @@ describe('patch /activate-account', () => {
   const client = makeMongoDb()
   let accessToken: string
   let fakeUser: IUser
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -61,10 +61,7 @@ describe('patch /activate-account', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .patch('/api/v1/login/activate-account')
-      .send()
-      .expect(401)
+    await request(app).patch('/api/v1/login/activate-account').send().expect(401)
   })
 
   it('should return 400 if code is invalid', async () => {

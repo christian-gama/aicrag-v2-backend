@@ -1,13 +1,7 @@
-import {
-  HasherProtocol,
-  ComparerProtocol,
-  DecoderProtocol,
-  DecodedProtocol,
-  EncrypterProtocol
-} from '@/domain/cryptography'
+import { IHasher, IComparer, IDecoder, IDecoded, IEncrypter } from '@/domain/cryptography'
 
-export const makeComparerStub = (): ComparerProtocol => {
-  class ComparerStub implements ComparerProtocol {
+export const makeComparerStub = (): IComparer => {
+  class ComparerStub implements IComparer {
     async compare (value: string, valueToCompare: string): Promise<boolean> {
       return await Promise.resolve(true)
     }
@@ -16,9 +10,9 @@ export const makeComparerStub = (): ComparerProtocol => {
   return new ComparerStub()
 }
 
-export const makeDecoderStub = (): DecoderProtocol => {
-  class DecoderStub implements DecoderProtocol {
-    async decode (token: string): Promise<DecodedProtocol> {
+export const makeDecoderStub = (): IDecoder => {
+  class DecoderStub implements IDecoder {
+    async decode (token: string): Promise<IDecoded> {
       return await Promise.resolve({ userId: 'any_id', version: 'any_version' })
     }
   }
@@ -26,8 +20,8 @@ export const makeDecoderStub = (): DecoderProtocol => {
   return new DecoderStub()
 }
 
-export const makeEncrypterStub = (): EncrypterProtocol => {
-  class EncrypterStub implements EncrypterProtocol {
+export const makeEncrypterStub = (): IEncrypter => {
+  class EncrypterStub implements IEncrypter {
     encrypt (subject: Record<any, string>): string {
       return 'any_token'
     }
@@ -36,8 +30,8 @@ export const makeEncrypterStub = (): EncrypterProtocol => {
   return new EncrypterStub()
 }
 
-export const makeHasherStub = (): HasherProtocol => {
-  class HasherStub implements HasherProtocol {
+export const makeHasherStub = (): IHasher => {
+  class HasherStub implements IHasher {
     async hash (value: string): Promise<string> {
       return await Promise.resolve('hashed_value')
     }
@@ -46,9 +40,9 @@ export const makeHasherStub = (): HasherProtocol => {
   return new HasherStub()
 }
 
-export const makeJwtAdapterStub = (): EncrypterProtocol & DecoderProtocol => {
-  class JwtAdapterStub implements EncrypterProtocol, DecoderProtocol {
-    async decode (token: string): Promise<DecodedProtocol> {
+export const makeJwtAdapterStub = (): IEncrypter & IDecoder => {
+  class JwtAdapterStub implements IEncrypter, IDecoder {
+    async decode (token: string): Promise<IDecoded> {
       return await Promise.resolve({ userId: 'any_id', version: 'any_version' })
     }
 

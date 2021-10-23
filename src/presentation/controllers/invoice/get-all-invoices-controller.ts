@@ -1,17 +1,17 @@
-import { InvoiceRepositoryProtocol, QueryAllInvoicesProtocol } from '@/domain/repositories/invoice'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IInvoiceRepository, IQueryAllInvoices } from '@/domain/repositories/invoice'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class GetAllInvoicesController implements ControllerProtocol {
+export class GetAllInvoicesController implements IController {
   constructor (
-    private readonly getAllInvoicesValidator: ValidatorProtocol,
+    private readonly getAllInvoicesValidator: IValidator,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly invoiceRepository: InvoiceRepositoryProtocol
+    private readonly invoiceRepository: IInvoiceRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -24,7 +24,7 @@ export class GetAllInvoicesController implements ControllerProtocol {
       return this.httpHelper.badRequest(error)
     }
 
-    const query = httpRequest.query as QueryAllInvoicesProtocol
+    const query = httpRequest.query as IQueryAllInvoices
 
     const result = await this.invoiceRepository.getAllInvoices(query, user.personal.id)
 

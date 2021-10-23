@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/user'
 
@@ -17,7 +17,7 @@ describe('sendWelcomeEmail', () => {
 
     makeSendWelcomeEmailValidator()
 
-    const validations: ValidatorProtocol[] = []
+    const validations: IValidator[] = []
 
     const fields = ['email']
     for (const field of fields) {

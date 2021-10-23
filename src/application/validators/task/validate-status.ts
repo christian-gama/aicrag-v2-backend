@@ -1,9 +1,11 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidParamError } from '@/application/errors'
 
-export class ValidateStatus implements ValidatorProtocol {
+export class ValidateStatus implements IValidator {
   validate (input: any): InvalidParamError | undefined {
-    if (input.status !== 'in_progress' && input.status !== 'completed') { return new InvalidParamError('status') }
+    if (input.status !== 'in_progress' && input.status !== 'completed') {
+      return new InvalidParamError('status')
+    }
   }
 }

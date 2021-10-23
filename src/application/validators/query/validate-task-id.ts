@@ -1,8 +1,8 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidQueryError } from '@/application/errors'
 
-export class ValidateTaskId implements ValidatorProtocol {
+export class ValidateTaskId implements IValidator {
   async validate (input: any): Promise<InvalidQueryError | undefined> {
     if (!input.taskId) return
 

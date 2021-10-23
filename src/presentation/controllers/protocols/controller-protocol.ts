@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-export interface ControllerProtocol {
+export interface IController {
   /**
    * @async Asynchronous method.
    * @description Generic controller that receive a generic http request.

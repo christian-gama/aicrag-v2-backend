@@ -1,11 +1,9 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidCodeError, CodeIsExpiredError, InvalidTypeError } from '../../errors'
 
-export class ValidateEmailCode implements ValidatorProtocol {
-  async validate (
-    input: any
-  ): Promise<CodeIsExpiredError | InvalidCodeError | InvalidTypeError | undefined> {
+export class ValidateEmailCode implements IValidator {
+  async validate (input: any): Promise<CodeIsExpiredError | InvalidCodeError | InvalidTypeError | undefined> {
     const { emailCode, user } = input
 
     if (!user) return new InvalidCodeError()

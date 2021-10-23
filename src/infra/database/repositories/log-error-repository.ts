@@ -1,14 +1,14 @@
 import { ILogError } from '@/domain'
-import { LogErrorRepositoryProtocol } from '@/domain/repositories'
+import { ILogErrorRepository } from '@/domain/repositories'
 
 import { CreateLogErrorRepository } from '@/application/repositories'
 
-import { DatabaseProtocol } from '../protocols'
+import { IDatabase } from '../protocols'
 
-export class LogErrorRepository implements LogErrorRepositoryProtocol {
+export class LogErrorRepository implements ILogErrorRepository {
   constructor (
     private readonly createLogErrorRepository: CreateLogErrorRepository,
-    private readonly database: DatabaseProtocol
+    private readonly database: IDatabase
   ) {}
 
   async saveLog (error: Error): Promise<ILogError> {

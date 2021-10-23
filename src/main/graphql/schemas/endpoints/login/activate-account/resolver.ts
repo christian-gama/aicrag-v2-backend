@@ -20,7 +20,6 @@ export const resolver: Resolvers = {
     }
   },
   Mutation: {
-    activateAccount: async (_, args, context) =>
-      await resolverAdapter(makeActivateAccountController(), args, context)
+    activateAccount: async (_, args, context) => await resolverAdapter(makeActivateAccountController(), args, context)
   }
 }

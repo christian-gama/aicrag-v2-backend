@@ -1,6 +1,6 @@
 import { ITask, IUser } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
-import { ValidatorProtocol } from '@/domain/validators'
+import { ITaskRepository } from '@/domain/repositories/task'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidParamError, MustLoginError, TaskNotFoundError } from '@/application/errors'
 
@@ -9,12 +9,7 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import {
-  makeFakeTask,
-  makeFakeUser,
-  makeTaskRepositoryStub,
-  makeValidatorStub
-} from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 
 import MockDate from 'mockdate'
 
@@ -24,14 +19,14 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: UpdateTaskController
-  taskRepositoryStub: TaskRepositoryProtocol
-  validateCommentaryStub: ValidatorProtocol
-  validateDateStub: ValidatorProtocol
-  validateDurationStub: ValidatorProtocol
-  validateStatusStub: ValidatorProtocol
-  validateTaskIdStub: ValidatorProtocol
-  validateTaskParamStub: ValidatorProtocol
-  validateTypeStub: ValidatorProtocol
+  taskRepositoryStub: ITaskRepository
+  validateCommentaryStub: IValidator
+  validateDateStub: IValidator
+  validateDurationStub: IValidator
+  validateStatusStub: IValidator
+  validateTaskIdStub: IValidator
+  validateTaskParamStub: IValidator
+  validateTypeStub: IValidator
 }
 
 const makeSut = (): SutTypes => {
@@ -164,9 +159,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, validateDateStub } = makeSut()
-    jest
-      .spyOn(validateDateStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('date')))
+    jest.spyOn(validateDateStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('date')))
     request.body.date = 'invalid_date'
 
     const error = await sut.handle(request)
@@ -223,9 +216,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, validateTypeStub } = makeSut()
-    jest
-      .spyOn(validateTypeStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('type')))
+    jest.spyOn(validateTypeStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('type')))
     request.body.type = 'invalid_type'
 
     const error = await sut.handle(request)
@@ -237,9 +228,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, validateDurationStub } = makeSut()
-    jest
-      .spyOn(validateDurationStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('duration')))
+    jest.spyOn(validateDurationStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('duration')))
     request.body.duration = 'invalid_duration'
 
     const error = await sut.handle(request)
@@ -318,9 +307,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, validateStatusStub } = makeSut()
-    jest
-      .spyOn(validateStatusStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('status')))
+    jest.spyOn(validateStatusStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('status')))
     request.body.status = 'invalid_status'
 
     const error = await sut.handle(request)
@@ -359,9 +346,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, validateTaskIdStub } = makeSut()
-    jest
-      .spyOn(validateTaskIdStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new InvalidParamError('taskId')))
+    jest.spyOn(validateTaskIdStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('taskId')))
     request.body.taskId = 'invalid_taskId'
 
     const error = await sut.handle(request)

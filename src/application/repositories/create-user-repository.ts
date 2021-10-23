@@ -1,13 +1,13 @@
 import { ISignUpUserData, IUser } from '@/domain'
-import { HasherProtocol } from '@/domain/cryptography'
-import { ValidationCodeProtocol, UuidProtocol } from '@/domain/helpers'
-import { CreateUserRepositoryProtocol } from '@/domain/repositories'
+import { IHasher } from '@/domain/cryptography'
+import { IValidationCode, IUuid } from '@/domain/helpers'
+import { ICreateUserRepository } from '@/domain/repositories'
 
-export class CreateUserRepository implements CreateUserRepositoryProtocol {
+export class CreateUserRepository implements ICreateUserRepository {
   constructor (
-    private readonly activationCode: ValidationCodeProtocol,
-    private readonly hasher: HasherProtocol,
-    private readonly uuid: UuidProtocol
+    private readonly activationCode: IValidationCode,
+    private readonly hasher: IHasher,
+    private readonly uuid: IUuid
   ) {}
 
   async createUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {

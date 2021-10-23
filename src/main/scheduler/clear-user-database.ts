@@ -1,16 +1,13 @@
 import { ILogError } from '@/domain'
-import { LogErrorRepositoryProtocol } from '@/domain/repositories'
+import { ILogErrorRepository } from '@/domain/repositories'
 
-import { DatabaseProtocol } from '@/infra/database/protocols'
-import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
+import { IDatabase } from '@/infra/database/protocols'
+import { IUserDbFilter } from '@/infra/database/protocols/update-user-options'
 
 import { FindOptions } from 'mongodb'
 
 export class ClearUserDatabase {
-  constructor (
-    private readonly database: DatabaseProtocol,
-    private readonly logErrorRepository: LogErrorRepositoryProtocol
-  ) {}
+  constructor (private readonly database: IDatabase, private readonly logErrorRepository: ILogErrorRepository) {}
 
   async deleteInactiveUsers (): Promise<number | ILogError> {
     try {
@@ -22,7 +19,7 @@ export class ClearUserDatabase {
 
       const userCollection = this.database.collection('users')
 
-      const filter: UserDbFilter | FindOptions = {
+      const filter: IUserDbFilter | FindOptions = {
         'logs.createdAt': { $lte: new Date(Date.now() - 24 * 60 * 60 * 1000) } as any,
         'settings.accountActivated': false
       }

@@ -1,7 +1,7 @@
 import { IPublicUser, IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidCodeError, MustLoginError } from '@/application/errors'
 
@@ -23,12 +23,12 @@ import MockDate from 'mockdate'
 interface SutTypes {
   fakePublicUser: IPublicUser
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
+  filterUserDataStub: IFilterUserData
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: UpdateEmailByCodeController
-  updateEmailByCodeValidatorStub: ValidatorProtocol
-  userRepositoryStub: UserRepositoryProtocol
+  updateEmailByCodeValidatorStub: IValidator
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {

@@ -1,7 +1,7 @@
 import { ILogError } from '@/domain'
-import { CreateLogErrorRepositoryProtocol } from '@/domain/repositories'
+import { ICreateLogErrorRepository } from '@/domain/repositories'
 
-export class CreateLogErrorRepository implements CreateLogErrorRepositoryProtocol {
+export class CreateLogErrorRepository implements ICreateLogErrorRepository {
   createLog (error: Error): ILogError {
     return {
       date: new Date(Date.now()).toLocaleString(),

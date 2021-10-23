@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 import { isLoggedInMiddleware } from '@/main/express/routes'
@@ -22,7 +22,7 @@ describe('isLoggedInMiddleware', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let refreshToken: string
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -60,9 +60,6 @@ describe('isLoggedInMiddleware', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .get('/is-logged-in')
-      .set('Cookie', `refreshToken=${refreshToken}`)
-      .expect('true')
+    await request(app).get('/is-logged-in').set('Cookie', `refreshToken=${refreshToken}`).expect('true')
   })
 })

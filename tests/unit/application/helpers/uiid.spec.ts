@@ -1,9 +1,9 @@
-import { UuidProtocol } from '@/domain/helpers'
+import { IUuid } from '@/domain/helpers'
 
 import { Uuid } from '@/application/helpers'
 
 interface SutTypes {
-  sut: UuidProtocol
+  sut: IUuid
 }
 
 const makeSut = (): SutTypes => {

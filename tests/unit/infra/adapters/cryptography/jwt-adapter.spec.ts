@@ -1,4 +1,4 @@
-import { DecodedProtocol } from '@/domain/cryptography'
+import { IDecoded } from '@/domain/cryptography'
 
 import { ExpiredTokenError, InvalidTokenError } from '@/application/errors'
 
@@ -34,7 +34,7 @@ describe('jwtAdapter', () => {
 
       const decodedToken = await sut.decode(token)
 
-      expect((decodedToken as DecodedProtocol).id).toBe('any_id')
+      expect((decodedToken as IDecoded).id).toBe('any_id')
     })
 
     it('should return ExpiredTokenError if verify throws', async () => {

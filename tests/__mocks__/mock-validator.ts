@@ -1,7 +1,7 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
-export const makeValidatorStub = (): ValidatorProtocol => {
-  class ValidatorStub implements ValidatorProtocol {
+export const makeValidatorStub = (): IValidator => {
+  class ValidatorStub implements IValidator {
     validate (input: any): Error | undefined {
       return undefined
     }

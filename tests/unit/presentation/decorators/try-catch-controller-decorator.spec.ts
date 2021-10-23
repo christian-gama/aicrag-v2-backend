@@ -1,4 +1,4 @@
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { TryCatchDecorator } from '@/presentation/decorators'
 import { HttpHelper } from '@/presentation/http/http-helper'
 
@@ -7,9 +7,9 @@ import { makeHttpHelper } from '@/factories/helpers'
 import { makeControllerStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  controllerStub: ControllerProtocol
+  controllerStub: IController
   httpHelper: HttpHelper
-  sut: TryCatchDecorator<ControllerProtocol>
+  sut: TryCatchDecorator<IController>
 }
 
 const makeSut = (): SutTypes => {
@@ -44,9 +44,7 @@ describe('logDecorator', () => {
       name: error.name,
       stack: error.stack
     }
-    jest
-      .spyOn(controllerStub, 'handle')
-      .mockImplementationOnce(async () => await Promise.reject(error))
+    jest.spyOn(controllerStub, 'handle').mockImplementationOnce(async () => await Promise.reject(error))
 
     const promise = await sut.handle({})
 

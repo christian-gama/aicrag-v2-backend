@@ -1,4 +1,4 @@
-export interface EmailValidatorProtocol {
+export interface IEmailValidator {
   /**
    * @description Receive value and verify if it is a valid email.
    * @param value Value that will be verified.

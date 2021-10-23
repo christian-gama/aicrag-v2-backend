@@ -6,7 +6,6 @@ import { makeDeleteTaskController } from '@/factories/controllers/task'
 
 export const resolver: Resolvers = {
   Mutation: {
-    deleteTask: async (_, args, context) =>
-      await resolverAdapter(makeDeleteTaskController(), args, context)
+    deleteTask: async (_, args, context) => await resolverAdapter(makeDeleteTaskController(), args, context)
   }
 }

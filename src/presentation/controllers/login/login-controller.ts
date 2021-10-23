@@ -1,23 +1,23 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MustLogoutError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class LoginController implements ControllerProtocol {
+export class LoginController implements IController {
   constructor (
-    private readonly loginValidator: ValidatorProtocol,
-    private readonly filterUserData: FilterUserDataProtocol,
-    private readonly generateAccessToken: GenerateTokenProtocol,
-    private readonly generateRefreshToken: GenerateTokenProtocol,
+    private readonly loginValidator: IValidator,
+    private readonly filterUserData: IFilterUserData,
+    private readonly generateAccessToken: IGenerateToken,
+    private readonly generateRefreshToken: IGenerateToken,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol
+    private readonly userRepository: IUserRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

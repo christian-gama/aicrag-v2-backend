@@ -6,7 +6,6 @@ import { makeGetAllInvoicesController } from '@/factories/controllers/invoice'
 
 export const resolver: Resolvers = {
   Query: {
-    getAllInvoices: async (_, args, context) =>
-      await resolverAdapter(makeGetAllInvoicesController(), args, context)
+    getAllInvoices: async (_, args, context) => await resolverAdapter(makeGetAllInvoicesController(), args, context)
   }
 }

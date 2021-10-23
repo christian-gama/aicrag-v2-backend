@@ -1,4 +1,4 @@
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { environment } from '@/main/config/environment'
 
@@ -11,7 +11,7 @@ import {
 
 import { NextFunction, Request, Response } from 'express'
 
-export const controllerAdapter = (controller: ControllerProtocol) => {
+export const controllerAdapter = (controller: IController) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const httpResponseData = await controller.handle(req)

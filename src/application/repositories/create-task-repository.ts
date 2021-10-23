@@ -1,9 +1,9 @@
-import { UuidProtocol } from '@/domain/helpers'
-import { CreateTaskRepositoryProtocol } from '@/domain/repositories/task'
+import { IUuid } from '@/domain/helpers'
+import { ICreateTaskRepository } from '@/domain/repositories/task'
 import { ITask, ITaskData } from '@/domain/task'
 
-export class CreateTaskRepository implements CreateTaskRepositoryProtocol {
-  constructor (private readonly uuid: UuidProtocol) {}
+export class CreateTaskRepository implements ICreateTaskRepository {
+  constructor (private readonly uuid: IUuid) {}
 
   createTask (taskData: ITaskData): ITask {
     const { commentary, date, duration, status, taskId, type, user } = taskData

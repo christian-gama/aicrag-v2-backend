@@ -1,22 +1,22 @@
 import { IUser } from '@/domain'
-import { ValidationCodeProtocol } from '@/domain/helpers'
-import { MailerServiceProtocol } from '@/domain/mailer'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidationCode } from '@/domain/helpers'
+import { IMailerService } from '@/domain/mailer'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MailerServiceError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class SendEmailCodeController implements ControllerProtocol {
+export class SendEmailCodeController implements IController {
   constructor (
-    private readonly emailCode: MailerServiceProtocol,
+    private readonly emailCode: IMailerService,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly sendEmailCodeValidator: ValidatorProtocol,
-    private readonly userRepository: UserRepositoryProtocol,
-    private readonly validationCode: ValidationCodeProtocol
+    private readonly sendEmailCodeValidator: IValidator,
+    private readonly userRepository: IUserRepository,
+    private readonly validationCode: IValidationCode
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -28,10 +28,7 @@ export class SendEmailCodeController implements ControllerProtocol {
 
     let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
 
-    if (
-      user?.temporary.tempEmailCodeExpiration &&
-      user.temporary.tempEmailCodeExpiration.getTime() < Date.now()
-    ) {
+    if (user?.temporary.tempEmailCodeExpiration && user.temporary.tempEmailCodeExpiration.getTime() < Date.now()) {
       user = await this.generateNewEmailCode(user)
     }
 

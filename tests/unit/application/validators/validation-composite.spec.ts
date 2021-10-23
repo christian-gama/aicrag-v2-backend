@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { MissingParamError } from '@/application/errors'
 import { ValidationComposite } from '@/application/validators/user'
@@ -6,8 +6,8 @@ import { ValidationComposite } from '@/application/validators/user'
 import { makeValidatorStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  sut: ValidatorProtocol
-  validationStubs: ValidatorProtocol[]
+  sut: IValidator
+  validationStubs: IValidator[]
 }
 
 const makeSut = (): SutTypes => {
@@ -23,9 +23,7 @@ describe('validationComposite', () => {
     expect.hasAssertions()
 
     const { sut, validationStubs } = makeSut()
-    jest
-      .spyOn(validationStubs[0], 'validate')
-      .mockReturnValueOnce(new MissingParamError('any_field'))
+    jest.spyOn(validationStubs[0], 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
 
     const error = await sut.validate({ field: 'any_value' })
 
@@ -36,12 +34,8 @@ describe('validationComposite', () => {
     expect.hasAssertions()
 
     const { sut, validationStubs } = makeSut()
-    jest
-      .spyOn(validationStubs[0], 'validate')
-      .mockReturnValueOnce(new MissingParamError('first_error'))
-    jest
-      .spyOn(validationStubs[1], 'validate')
-      .mockReturnValueOnce(new MissingParamError('seconds_error'))
+    jest.spyOn(validationStubs[0], 'validate').mockReturnValueOnce(new MissingParamError('first_error'))
+    jest.spyOn(validationStubs[1], 'validate').mockReturnValueOnce(new MissingParamError('seconds_error'))
 
     const error = await sut.validate({ field: 'any_value' })
 

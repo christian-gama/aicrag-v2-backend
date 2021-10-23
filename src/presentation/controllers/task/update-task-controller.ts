@@ -1,23 +1,23 @@
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
-import { ValidatorProtocol } from '@/domain/validators'
+import { ITaskRepository } from '@/domain/repositories/task'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class UpdateTaskController implements ControllerProtocol {
+export class UpdateTaskController implements IController {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly taskRepository: TaskRepositoryProtocol,
-    private readonly validateCommentary: ValidatorProtocol,
-    private readonly validateDate: ValidatorProtocol,
-    private readonly validateDuration: ValidatorProtocol,
-    private readonly validateStatus: ValidatorProtocol,
-    private readonly validateTaskId: ValidatorProtocol,
-    private readonly validateTaskParam: ValidatorProtocol,
-    private readonly validateType: ValidatorProtocol
+    private readonly taskRepository: ITaskRepository,
+    private readonly validateCommentary: IValidator,
+    private readonly validateDate: IValidator,
+    private readonly validateDuration: IValidator,
+    private readonly validateStatus: IValidator,
+    private readonly validateTaskId: IValidator,
+    private readonly validateTaskParam: IValidator,
+    private readonly validateType: IValidator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

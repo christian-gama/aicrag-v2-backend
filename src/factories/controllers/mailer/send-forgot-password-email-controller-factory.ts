@@ -1,5 +1,5 @@
 import { SendForgotPasswordEmailController } from '@/presentation/controllers/mailer'
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeGenerateAccessToken, makeVerifyResetPasswordToken } from '@/factories/providers/token'
 
@@ -9,7 +9,7 @@ import { makeForgotPasswordEmail } from '../../mailer'
 import { makeUserRepository } from '../../repositories'
 import { makeForgotPasswordEmailValidator } from '../../validators/user'
 
-export const makeSendForgotPasswordEmailController = (): ControllerProtocol => {
+export const makeSendForgotPasswordEmailController = (): IController => {
   const forgotPasswordEmail = makeForgotPasswordEmail()
   const forgotPasswordEmailValidator = makeForgotPasswordEmailValidator()
   const generateAccessToken = makeGenerateAccessToken()

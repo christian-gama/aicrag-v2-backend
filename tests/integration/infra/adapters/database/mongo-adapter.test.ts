@@ -3,7 +3,7 @@
 import { ITask, IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -11,7 +11,7 @@ import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
 
 describe('mongoAdapter', () => {
   const client = makeMongoDb()
-  let collection: CollectionProtocol
+  let collection: ICollectionMethods
 
   afterAll(async () => {
     await collection.deleteMany({})

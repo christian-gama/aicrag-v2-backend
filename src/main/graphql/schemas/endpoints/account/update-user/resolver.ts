@@ -6,8 +6,7 @@ import { makeUpdateUserController } from '@/factories/controllers/account'
 
 export const resolver: Resolvers = {
   Mutation: {
-    updateUser: async (_, args, context) =>
-      await resolverAdapter(makeUpdateUserController(), args, context)
+    updateUser: async (_, args, context) => await resolverAdapter(makeUpdateUserController(), args, context)
   },
   UpdateUserHasChanges: {
     __isTypeOf: (obj) => {

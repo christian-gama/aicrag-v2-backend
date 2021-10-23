@@ -1,7 +1,7 @@
 import { ITask, IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -22,8 +22,8 @@ describe('get /invoice/get-invoice-by-month', () => {
   let fakeTask: ITask
   let fakeUser: IUser
   let refreshToken: string
-  let taskCollection: CollectionProtocol
-  let userCollection: CollectionProtocol
+  let taskCollection: ICollectionMethods
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()

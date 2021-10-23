@@ -1,12 +1,8 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/user'
 
-import {
-  makeRequiredFields,
-  makeValidatePassword,
-  makeValidatePasswordComparison
-} from '@/factories/validators/user'
+import { makeRequiredFields, makeValidatePassword, makeValidatePasswordComparison } from '@/factories/validators/user'
 import { makeResetPasswordValidator } from '@/factories/validators/user/reset-password-validator-factory'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
@@ -17,7 +13,7 @@ describe('resetPasswordValidator', () => {
 
     makeResetPasswordValidator()
 
-    const validations: ValidatorProtocol[] = []
+    const validations: IValidator[] = []
 
     const fields = ['password', 'passwordConfirmation']
     for (const field of fields) {

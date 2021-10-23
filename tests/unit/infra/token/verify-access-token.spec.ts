@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
-import { DecoderProtocol } from '@/domain/cryptography'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IDecoder } from '@/domain/cryptography'
+import { IUserRepository } from '@/domain/repositories'
 
 import { TokenMissingError, InvalidTokenError } from '@/application/errors'
 
@@ -10,9 +10,9 @@ import { makeFakeUser, makeDecoderStub, makeUserRepositoryStub } from '@/tests/_
 
 interface SutTypes {
   fakeUser: IUser
-  accessTokenDecoderStub: DecoderProtocol
+  accessTokenDecoderStub: IDecoder
   sut: VerifyAccessToken
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -87,9 +87,7 @@ describe('verifyAccessToken', () => {
     const { accessTokenDecoderStub, fakeUser, sut } = makeSut()
     jest
       .spyOn(accessTokenDecoderStub, 'decode')
-      .mockReturnValueOnce(
-        Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
-      )
+      .mockReturnValueOnce(Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() }))
 
     const response = await sut.verify('any_token')
 

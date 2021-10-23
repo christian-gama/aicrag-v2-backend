@@ -1,6 +1,6 @@
 import { ITask, ITaskData, IUser } from '@/domain'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
-import { ValidatorProtocol } from '@/domain/validators'
+import { ITaskRepository } from '@/domain/repositories/task'
+import { IValidator } from '@/domain/validators'
 
 import { ConflictParamError, MustLoginError } from '@/application/errors'
 
@@ -9,22 +9,17 @@ import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import {
-  makeFakeTask,
-  makeFakeUser,
-  makeTaskRepositoryStub,
-  makeValidatorStub
-} from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  createTaskValidatorStub: ValidatorProtocol
+  createTaskValidatorStub: IValidator
   fakeTask: ITask
   fakeTaskData: ITaskData
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: CreateTaskController
-  taskRepositoryStub: TaskRepositoryProtocol
+  taskRepositoryStub: ITaskRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -88,9 +83,7 @@ describe('createTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, createTaskValidatorStub } = makeSut()
-    jest
-      .spyOn(createTaskValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(createTaskValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const error = await sut.handle(request)
 

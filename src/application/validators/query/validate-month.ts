@@ -1,8 +1,8 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidQueryError } from '@/application/errors'
 
-export class ValidateMonth implements ValidatorProtocol {
+export class ValidateMonth implements IValidator {
   async validate (input: any): Promise<InvalidQueryError | undefined> {
     if (typeof input.month !== 'string') return new InvalidQueryError('month')
 

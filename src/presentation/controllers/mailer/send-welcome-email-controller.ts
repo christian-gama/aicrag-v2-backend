@@ -1,22 +1,22 @@
 import { IUser } from '@/domain'
-import { ValidationCodeProtocol } from '@/domain/helpers'
-import { MailerServiceProtocol } from '@/domain/mailer'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidationCode } from '@/domain/helpers'
+import { IMailerService } from '@/domain/mailer'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class SendWelcomeEmailController implements ControllerProtocol {
+export class SendWelcomeEmailController implements IController {
   constructor (
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly sendWelcomeValidator: ValidatorProtocol,
-    private readonly userRepository: UserRepositoryProtocol,
-    private readonly validationCode: ValidationCodeProtocol,
-    private readonly welcomeEmail: MailerServiceProtocol
+    private readonly sendWelcomeValidator: IValidator,
+    private readonly userRepository: IUserRepository,
+    private readonly validationCode: IValidationCode,
+    private readonly welcomeEmail: IMailerService
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -32,10 +32,7 @@ export class SendWelcomeEmailController implements ControllerProtocol {
       return this.httpHelper.forbidden(new AccountAlreadyActivatedError())
     }
 
-    if (
-      user?.temporary.activationCodeExpiration &&
-      user.temporary.activationCodeExpiration.getTime() < Date.now()
-    ) {
+    if (user?.temporary.activationCodeExpiration && user.temporary.activationCodeExpiration.getTime() < Date.now()) {
       user = await this.generateNewActivationCode(user)
     }
 

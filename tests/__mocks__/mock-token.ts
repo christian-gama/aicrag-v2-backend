@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { GenerateTokenProtocol, IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
+import { IGenerateToken, IRefreshToken, IVerifyToken } from '@/domain/providers'
 
 import { InvalidTokenError } from '@/application/errors'
 
@@ -12,8 +12,8 @@ export const makeFakeRefreshToken = (): IRefreshToken => {
   }
 }
 
-export const makeGenerateTokenStub = (): GenerateTokenProtocol => {
-  class GenerateTokenStub implements GenerateTokenProtocol {
+export const makeGenerateTokenStub = (): IGenerateToken => {
+  class GenerateTokenStub implements IGenerateToken {
     generate (user: any): string {
       return 'any_token'
     }
@@ -22,8 +22,8 @@ export const makeGenerateTokenStub = (): GenerateTokenProtocol => {
   return new GenerateTokenStub()
 }
 
-export const makeVerifyTokenStub = (fakeUser: IUser): VerifyTokenProtocol => {
-  class VerifyTokenStub implements VerifyTokenProtocol {
+export const makeVerifyTokenStub = (fakeUser: IUser): IVerifyToken => {
+  class VerifyTokenStub implements IVerifyToken {
     async verify (token: any): Promise<InvalidTokenError | IUser> {
       return fakeUser
     }

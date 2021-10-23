@@ -1,8 +1,8 @@
 import { IPublicUser, IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidCodeError } from '@/application/errors'
 
@@ -23,16 +23,16 @@ import {
 import MockDate from 'mockdate'
 
 interface SutTypes {
-  activateAccountValidatorStub: ValidatorProtocol
+  activateAccountValidatorStub: IValidator
   fakePublicUser: IPublicUser
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
-  generateAccessTokenStub: GenerateTokenProtocol
-  generateRefreshTokenStub: GenerateTokenProtocol
+  filterUserDataStub: IFilterUserData
+  generateAccessTokenStub: IGenerateToken
+  generateRefreshTokenStub: IGenerateToken
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: ActivateAccountController
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {

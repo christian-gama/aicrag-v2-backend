@@ -1,4 +1,4 @@
-export interface ComparerProtocol {
+export interface IComparer {
   /**
    * @async Asynchronous method.
    * @description Get a normal value, hashes it and compare with a hashed value, returning a boolean.

@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MustLogoutError } from '@/application/errors'
 
@@ -22,13 +22,13 @@ import {
 
 interface SutTypes {
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
-  forgotPasswordValidatorStub: ValidatorProtocol
-  generateTokenStub: GenerateTokenProtocol
+  filterUserDataStub: IFilterUserData
+  forgotPasswordValidatorStub: IValidator
+  generateTokenStub: IGenerateToken
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: ForgotPasswordController
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -87,9 +87,7 @@ describe('forgot Password', () => {
     expect.hasAssertions()
 
     const { forgotPasswordValidatorStub, httpHelper, request, sut } = makeSut()
-    jest
-      .spyOn(forgotPasswordValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(forgotPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 

@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { VerifyTokenProtocol } from '@/domain/providers'
+import { IVerifyToken } from '@/domain/providers'
 
 import { InvalidTokenError, MustLogoutError } from '@/application/errors'
 
@@ -15,7 +15,7 @@ interface SutTypes {
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: VerifyResetPasswordTokenController
-  verifyResetPasswordTokenStub: VerifyTokenProtocol
+  verifyResetPasswordTokenStub: IVerifyToken
 }
 
 const makeSut = (): SutTypes => {
@@ -62,9 +62,7 @@ describe('verifyResetPasswordTokenController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, verifyResetPasswordTokenStub } = makeSut()
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+    jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     const response = await sut.handle(request)
 

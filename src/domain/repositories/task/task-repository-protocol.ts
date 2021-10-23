@@ -1,17 +1,17 @@
 import { ITask, ITaskData } from '@/domain'
 
-import { QueryProtocol, QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
-import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
+import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
+import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options'
 
-export interface TaskRepositoryProtocol
-  extends DeleteTaskProtocol,
-  FindAllTasksProtocol,
-  FindTaskByIdProtocol,
-  FindTaskByTaskIdProtocol,
-  SaveTaskProtocol,
-  UpdateTaskProtocol {}
+export interface ITaskRepository
+  extends IDeleteTask,
+  IFindAllTasks,
+  IFindTaskById,
+  IFindTaskByTaskId,
+  ISaveTask,
+  IUpdateTask {}
 
-export interface DeleteTaskProtocol {
+export interface IDeleteTask {
   /**
    * @async Asynchronous method.
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
@@ -21,7 +21,7 @@ export interface DeleteTaskProtocol {
    */
   deleteTask: (id: string, userId: string) => Promise<boolean>
 }
-export interface FindAllTasksProtocol {
+export interface IFindAllTasks {
   /**
    * @async Asynchronous method.
    * @description Receive a user id and tries to find all tasks that belongs to that user.
@@ -29,13 +29,10 @@ export interface FindAllTasksProtocol {
    * @param query Query that will refine the final result of the search.
    * @returns Return all tasks that belongs to that user or null if there is no task.
    */
-  findAllTasks: <T extends ITask>(
-    userId: string,
-    query: QueryProtocol
-  ) => Promise<QueryResultProtocol<T>>
+  findAllTasks: <T extends ITask>(userId: string, query: IQuery) => Promise<IQueryResult<T>>
 }
 
-export interface FindTaskByIdProtocol {
+export interface IFindTaskById {
   /**
    * @async Asynchronous method.
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
@@ -46,7 +43,7 @@ export interface FindTaskByIdProtocol {
   findTaskById: (id: string, userId: string) => Promise<ITask | null>
 }
 
-export interface FindTaskByTaskIdProtocol {
+export interface IFindTaskByTaskId {
   /**
    * @async Asynchronous method.
    * @description Receive an id and a user id and tries to find a task that belongs to that user.
@@ -57,7 +54,7 @@ export interface FindTaskByTaskIdProtocol {
   findTaskByTaskId: (taskId: string | null, userId: string) => Promise<ITask | null>
 }
 
-export interface SaveTaskProtocol {
+export interface ISaveTask {
   /**
    * @async Asynchronous method.
    * @description Receive a task data and then save it on database.
@@ -67,7 +64,7 @@ export interface SaveTaskProtocol {
   saveTask: (taskData: ITaskData) => Promise<ITask>
 }
 
-export interface UpdateTaskProtocol {
+export interface IUpdateTask {
   /**
    * @async Asynchronous method.
    * @description Receive a task and then update it based on its id.
@@ -75,5 +72,5 @@ export interface UpdateTaskProtocol {
    * @param update Properties that will be updated.
    * @returns Return the updated task or null.
    */
-  updateTask: <T extends ITask | null>(id: string, update: TaskDbFilter) => Promise<T>
+  updateTask: <T extends ITask | null>(id: string, update: ITaskDbFilter) => Promise<T>
 }

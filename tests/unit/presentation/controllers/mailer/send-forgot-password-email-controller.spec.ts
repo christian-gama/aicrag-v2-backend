@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
-import { MailerServiceProtocol } from '@/domain/mailer'
-import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IMailerService } from '@/domain/mailer'
+import { IGenerateToken, IVerifyToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidTokenError, MailerServiceError } from '@/application/errors'
 
@@ -22,14 +22,14 @@ import {
 
 interface SutTypes {
   fakeUser: IUser
-  forgotPasswordEmailStub: MailerServiceProtocol
-  forgotPasswordValidatorStub: ValidatorProtocol
+  forgotPasswordEmailStub: IMailerService
+  forgotPasswordValidatorStub: IValidator
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: SendForgotPasswordEmailController
-  userRepositoryStub: UserRepositoryProtocol
-  generateAccessTokenStub: GenerateTokenProtocol
-  verifyResetPasswordTokenStub: VerifyTokenProtocol
+  userRepositoryStub: IUserRepository
+  generateAccessTokenStub: IGenerateToken
+  verifyResetPasswordTokenStub: IVerifyToken
 }
 
 const makeSut = (): SutTypes => {
@@ -80,9 +80,7 @@ describe('sendForgotPasswordEmail', () => {
     expect.hasAssertions()
 
     const { forgotPasswordValidatorStub, httpHelper, request, sut } = makeSut()
-    jest
-      .spyOn(forgotPasswordValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(forgotPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
@@ -115,9 +113,7 @@ describe('sendForgotPasswordEmail', () => {
     expect.hasAssertions()
 
     const { forgotPasswordEmailStub, request, sut } = makeSut()
-    jest
-      .spyOn(forgotPasswordEmailStub, 'send')
-      .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
+    jest.spyOn(forgotPasswordEmailStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     const response = await sut.handle(request)
 
@@ -130,9 +126,7 @@ describe('sendForgotPasswordEmail', () => {
     const { fakeUser, request, sut, userRepositoryStub, verifyResetPasswordTokenStub } = makeSut()
     const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
     fakeUser.temporary.resetPasswordToken = null
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+    jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     await sut.handle(request)
 

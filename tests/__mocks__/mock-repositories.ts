@@ -1,12 +1,8 @@
 import { ILogError, ISignUpUserData, ITask, ITaskData, IUser } from '@/domain'
-import {
-  CreateLogErrorRepositoryProtocol,
-  CreateTaskRepositoryProtocol,
-  CreateUserRepositoryProtocol
-} from '@/domain/repositories'
+import { ICreateLogErrorRepository, ICreateTaskRepository, ICreateUserRepository } from '@/domain/repositories'
 
-export const makeCreateLogErrorRepositoryStub = (fakeLogError: ILogError): CreateLogErrorRepositoryProtocol => {
-  class CreateLogErrorRepositoryStub implements CreateLogErrorRepositoryProtocol {
+export const makeCreateLogErrorRepositoryStub = (fakeLogError: ILogError): ICreateLogErrorRepository => {
+  class CreateLogErrorRepositoryStub implements ICreateLogErrorRepository {
     createLog (_error: Error): ILogError {
       return fakeLogError
     }
@@ -15,8 +11,8 @@ export const makeCreateLogErrorRepositoryStub = (fakeLogError: ILogError): Creat
   return new CreateLogErrorRepositoryStub()
 }
 
-export const makeCreateTaskRepositoryStub = (fakeTask: ITask): CreateTaskRepositoryProtocol => {
-  class CreateTaskRepositoryStub implements CreateTaskRepositoryProtocol {
+export const makeCreateTaskRepositoryStub = (fakeTask: ITask): ICreateTaskRepository => {
+  class CreateTaskRepositoryStub implements ICreateTaskRepository {
     createTask (taskData: ITaskData): ITask {
       return fakeTask
     }
@@ -25,8 +21,8 @@ export const makeCreateTaskRepositoryStub = (fakeTask: ITask): CreateTaskReposit
   return new CreateTaskRepositoryStub()
 }
 
-export const makeCreateUserRepositoryStub = (fakeUser: IUser): CreateUserRepositoryProtocol => {
-  class CreateUserRepositoryStub implements CreateUserRepositoryProtocol {
+export const makeCreateUserRepositoryStub = (fakeUser: IUser): ICreateUserRepository => {
+  class CreateUserRepositoryStub implements ICreateUserRepository {
     async createUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
       return await Promise.resolve(fakeUser)
     }

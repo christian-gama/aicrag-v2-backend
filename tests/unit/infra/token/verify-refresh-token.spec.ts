@@ -1,24 +1,19 @@
 import { IUser } from '@/domain'
-import { DecoderProtocol } from '@/domain/cryptography'
+import { IDecoder } from '@/domain/cryptography'
 import { IRefreshToken } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IUserRepository } from '@/domain/repositories'
 
 import { InvalidTokenError, TokenMissingError } from '@/application/errors'
 
 import { VerifyRefreshToken } from '@/infra/token/verify-refresh-token'
 
-import {
-  makeFakeRefreshToken,
-  makeFakeUser,
-  makeDecoderStub,
-  makeUserRepositoryStub
-} from '@/tests/__mocks__'
+import { makeFakeRefreshToken, makeFakeUser, makeDecoderStub, makeUserRepositoryStub } from '@/tests/__mocks__'
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
-  refreshTokenDecoderStub: DecoderProtocol
+  refreshTokenDecoderStub: IDecoder
   sut: VerifyRefreshToken
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -103,9 +98,7 @@ describe('verifyRefreshToken', () => {
     const { fakeUser, refreshTokenDecoderStub, sut } = makeSut()
     jest
       .spyOn(refreshTokenDecoderStub, 'decode')
-      .mockReturnValueOnce(
-        Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
-      )
+      .mockReturnValueOnce(Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() }))
 
     const response = await sut.verify('any_token')
 

@@ -1,20 +1,10 @@
-import {
-  QueryMethodsProtocol,
-  QueryProtocol,
-  QueryResultProtocol
-} from '@/infra/database/protocols/queries-protocol'
+import { QueryMethodsProtocol, IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
 
-import {
-  CollectionProtocol,
-  CollectionsName,
-  DatabaseProtocol,
-  Document,
-  ICollection
-} from '../../../database/protocols'
+import { CollectionsName, Document, ICollection, ICollectionMethods, IDatabase } from '../../../database/protocols'
 
 import { MongoClient } from 'mongodb'
 
-export class MongoAdapter extends ICollection implements DatabaseProtocol {
+export class MongoAdapter extends ICollection implements IDatabase {
   protected _collection: any
   static client: any = null
 
@@ -22,7 +12,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     super()
   }
 
-  collection (name: CollectionsName): CollectionProtocol {
+  collection (name: CollectionsName): ICollectionMethods {
     if (!MongoAdapter.client) throw new Error('Database is not connected')
 
     this._collection = MongoAdapter.client.db().collection(name)
@@ -53,10 +43,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     }
   }
 
-  protected async aggregate<T>(
-    pipeline: Document[],
-    query: QueryProtocol
-  ): Promise<QueryResultProtocol<T>> {
+  protected async aggregate<T>(pipeline: Document[], query: IQuery): Promise<IQueryResult<T>> {
     const limit = this.queries.limit(query)
     const skip = this.queries.page(query)
 
@@ -69,11 +56,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
       const sort = this.queries.sort(query)
       pipeline.push({ $sort: sort })
     }
-    const documents = (await this._collection
-      .aggregate(pipeline)
-      .skip(skip)
-      .limit(limit)
-      .toArray()) as T[]
+    const documents = (await this._collection.aggregate(pipeline).skip(skip).limit(limit).toArray()) as T[]
 
     const currentPage = skip / limit + 1
     const displaying = documents.length
@@ -96,10 +79,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     else return false
   }
 
-  protected async findAll<T extends Document>(
-    filter: Document,
-    query: QueryProtocol
-  ): Promise<QueryResultProtocol<T>> {
+  protected async findAll<T extends Document>(filter: Document, query: IQuery): Promise<IQueryResult<T>> {
     const fields = this.queries.fields(query)
     const limit = this.queries.limit(query)
     const skip = this.queries.page(query)
@@ -133,10 +113,7 @@ export class MongoAdapter extends ICollection implements DatabaseProtocol {
     return insertedDoc
   }
 
-  protected async updateOne<T extends Document>(
-    filter: Document,
-    update: Document
-  ): Promise<T | null> {
+  protected async updateOne<T extends Document>(filter: Document, update: Document): Promise<T | null> {
     await this._collection.updateOne(filter, { $set: update })
 
     const updatedDoc = await this._collection.findOne(update)

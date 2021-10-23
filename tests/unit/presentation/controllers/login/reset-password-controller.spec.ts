@@ -1,9 +1,9 @@
 import { IUser, IPublicUser } from '@/domain'
-import { HasherProtocol } from '@/domain/cryptography'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IHasher } from '@/domain/cryptography'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken, IVerifyToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MustLogoutError, InvalidTokenError } from '@/application/errors'
 
@@ -27,16 +27,16 @@ import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
+  filterUserDataStub: IFilterUserData
   filteredUser: IPublicUser
-  generateRefreshTokenStub: GenerateTokenProtocol
-  hasherStub: HasherProtocol
+  generateRefreshTokenStub: IGenerateToken
+  hasherStub: IHasher
   httpHelper: HttpHelperProtocol
   request: HttpRequest
-  resetPasswordValidatorStub: ValidatorProtocol
+  resetPasswordValidatorStub: IValidator
   sut: ResetPasswordController
-  userRepositoryStub: UserRepositoryProtocol
-  verifyResetPasswordTokenStub: VerifyTokenProtocol
+  userRepositoryStub: IUserRepository
+  verifyResetPasswordTokenStub: IVerifyToken
 }
 
 const makeSut = (): SutTypes => {
@@ -114,9 +114,7 @@ describe('resetPasswordController', () => {
     expect.hasAssertions()
 
     const { sut, httpHelper, request, verifyResetPasswordTokenStub } = makeSut()
-    jest
-      .spyOn(verifyResetPasswordTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+    jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     const response = await sut.handle(request)
 
@@ -153,9 +151,7 @@ describe('resetPasswordController', () => {
     expect.hasAssertions()
 
     const { sut, httpHelper, request, resetPasswordValidatorStub } = makeSut()
-    jest
-      .spyOn(resetPasswordValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(resetPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 

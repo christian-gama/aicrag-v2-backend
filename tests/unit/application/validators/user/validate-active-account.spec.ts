@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { InactiveAccountError } from '@/application/errors'
 import { ValidateActiveAccount } from '@/application/validators/user'
@@ -9,8 +9,8 @@ import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser
-  sut: ValidatorProtocol
-  userRepositoryStub: UserRepositoryProtocol
+  sut: IValidator
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {

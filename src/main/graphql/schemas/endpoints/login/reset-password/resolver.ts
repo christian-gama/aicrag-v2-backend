@@ -6,7 +6,6 @@ import { makeResetPasswordController } from '@/factories/controllers/login'
 
 export const resolver: Resolvers = {
   Mutation: {
-    resetPassword: async (_, args, context) =>
-      await resolverAdapter(makeResetPasswordController(), args, context)
+    resetPassword: async (_, args, context) => await resolverAdapter(makeResetPasswordController(), args, context)
   }
 }

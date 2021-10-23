@@ -1,7 +1,7 @@
 import { ITask, ITaskData, IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 import { InvoiceRepository } from '@/infra/database/repositories/invoice-repository'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -29,7 +29,7 @@ const makeSut = (): SutTypes => {
 describe('invoiceRepository', () => {
   const client = makeMongoDb()
   let task: ITask
-  let taskCollection: CollectionProtocol
+  let taskCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -103,7 +103,8 @@ describe('invoiceRepository', () => {
       expect(result.documents[0].date.month).toBe(fakeTask.date.month)
       expect(result.documents[0].date.year).toBe(fakeTask.date.year)
       expect(result.documents[0].totalUsd).toBeCloseTo(
-        Math.round((fakeTask.usd + fakeTask2.usd + fakeTask3.usd) * 100) / 100, 1
+        Math.round((fakeTask.usd + fakeTask2.usd + fakeTask3.usd) * 100) / 100,
+        1
       )
       expect(result.page).toBe('1 of 1')
     })

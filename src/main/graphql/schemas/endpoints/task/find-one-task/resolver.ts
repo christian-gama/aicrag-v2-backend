@@ -6,7 +6,6 @@ import { makeFindOneTaskController } from '@/factories/controllers/task'
 
 export const resolver: Resolvers = {
   Query: {
-    findOneTask: async (_, args, context) =>
-      await resolverAdapter(makeFindOneTaskController(), args, context)
+    findOneTask: async (_, args, context) => await resolverAdapter(makeFindOneTaskController(), args, context)
   }
 }

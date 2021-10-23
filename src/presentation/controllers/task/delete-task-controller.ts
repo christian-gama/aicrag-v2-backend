@@ -1,17 +1,17 @@
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
-import { ValidatorProtocol } from '@/domain/validators'
+import { ITaskRepository } from '@/domain/repositories/task'
+import { IValidator } from '@/domain/validators'
 
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class DeleteTaskController implements ControllerProtocol {
+export class DeleteTaskController implements IController {
   constructor (
-    private readonly validateTaskParam: ValidatorProtocol,
+    private readonly validateTaskParam: IValidator,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly taskRepository: TaskRepositoryProtocol
+    private readonly taskRepository: ITaskRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

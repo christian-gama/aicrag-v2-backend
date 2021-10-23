@@ -16,5 +16,4 @@ type UpdateUserNoChanges {
   message: String!
 }
 
-
 union UpdateUser = UpdateUserNoChanges | UpdateUserHasChanges

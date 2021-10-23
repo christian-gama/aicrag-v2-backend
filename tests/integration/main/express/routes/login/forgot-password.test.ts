@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -19,7 +19,7 @@ describe('post /forgot-password', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let refreshToken: string
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -48,19 +48,13 @@ describe('post /forgot-password', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .post('/api/v1/login/forgot-password')
-      .send({ email: fakeUser.personal.email })
-      .expect(200)
+    await request(app).post('/api/v1/login/forgot-password').send({ email: fakeUser.personal.email }).expect(200)
   })
 
   it('should return 400 if email does not exist', async () => {
     expect.assertions(0)
 
-    await request(app)
-      .post('/api/v1/login/forgot-password')
-      .send({ email: fakeUser.personal.email })
-      .expect(400)
+    await request(app).post('/api/v1/login/forgot-password').send({ email: fakeUser.personal.email }).expect(400)
   })
 
   it('should return 400 if there is no resetPasswordToken', async () => {
@@ -68,10 +62,7 @@ describe('post /forgot-password', () => {
 
     fakeUser.temporary.resetPasswordToken = null
 
-    await request(app)
-      .post('/api/v1/login/forgot-password')
-      .send({ email: fakeUser.personal.email })
-      .expect(400)
+    await request(app).post('/api/v1/login/forgot-password').send({ email: fakeUser.personal.email }).expect(400)
   })
 
   it('should return 403 if user is logged in', async () => {

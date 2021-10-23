@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { InvalidParamError } from '@/application/errors'
 import { ValidatePasswordComparison } from '@/application/validators/user'
@@ -6,7 +6,7 @@ import { ValidatePasswordComparison } from '@/application/validators/user'
 import faker from 'faker'
 
 interface SutTypes {
-  sut: ValidatorProtocol
+  sut: IValidator
 }
 
 const makeSut = (): SutTypes => {

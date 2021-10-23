@@ -1,5 +1,5 @@
 import { UpdatePasswordController } from '@/presentation/controllers/account'
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeBcryptAdapter } from '../../cryptography'
 import { makeTryCatchDecorator } from '../../decorators'
@@ -8,7 +8,7 @@ import { makeGenerateAccessToken, makeGenerateRefreshToken } from '../../provide
 import { makeUserRepository } from '../../repositories'
 import { makeUpdatePasswordValidator } from '../../validators/user'
 
-export const makeUpdatePasswordController = (): ControllerProtocol => {
+export const makeUpdatePasswordController = (): IController => {
   const filterUserData = makeFilterUserData()
   const generateAccessToken = makeGenerateAccessToken()
   const generateRefreshToken = makeGenerateRefreshToken()

@@ -1,20 +1,16 @@
 import { IUser } from '@/domain'
-import { CreateUserRepositoryProtocol } from '@/domain/repositories'
+import { ICreateUserRepository } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 import { UserRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import {
-  makeFakeUser,
-  makeCreateUserRepositoryStub,
-  makeFakeSignUpUserCredentials
-} from '@/tests/__mocks__'
+import { makeFakeUser, makeCreateUserRepositoryStub, makeFakeSignUpUserCredentials } from '@/tests/__mocks__'
 
 interface SutTypes {
-  createUserRepositoryStub: CreateUserRepositoryProtocol
+  createUserRepositoryStub: ICreateUserRepository
   fakeUser: IUser
   sut: UserRepository
 }
@@ -32,7 +28,7 @@ const makeSut = (): SutTypes => {
 describe('userRepository', () => {
   const client = makeMongoDb()
   let user: IUser
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()

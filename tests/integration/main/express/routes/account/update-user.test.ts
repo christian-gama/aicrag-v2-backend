@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -20,7 +20,7 @@ describe('patch /update-user', () => {
   let accessToken: string
   let fakeUser: IUser
   let refreshToken: string
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -49,10 +49,7 @@ describe('patch /update-user', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .patch('/api/v1/account/update-user')
-      .send()
-      .expect(401)
+    await request(app).patch('/api/v1/account/update-user').send().expect(401)
   })
 
   it('should return 400 if name is invalid', async () => {

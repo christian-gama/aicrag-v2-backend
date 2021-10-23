@@ -1,15 +1,12 @@
 import { IUser } from '@/domain'
-import { ComparerProtocol } from '@/domain/cryptography'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IComparer } from '@/domain/cryptography'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { UserCredentialError } from '../../errors'
 
-export class ValidatePasswordMatch implements ValidatorProtocol {
-  constructor (
-    private readonly hasher: ComparerProtocol,
-    private readonly userRepository: UserRepositoryProtocol
-  ) {}
+export class ValidatePasswordMatch implements IValidator {
+  constructor (private readonly hasher: IComparer, private readonly userRepository: IUserRepository) {}
 
   async validate (input: any): Promise<UserCredentialError | undefined> {
     const { email, password } = input

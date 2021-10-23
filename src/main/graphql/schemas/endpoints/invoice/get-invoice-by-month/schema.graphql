@@ -18,7 +18,6 @@ input GetInvoiceByMonthQuery {
   year: String!
 }
 
-
 enum GetInvoiceByMonthType {
   QA
   TX

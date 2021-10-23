@@ -6,7 +6,6 @@ import { makeForgotPasswordController } from '@/factories/controllers/login'
 
 export const resolver: Resolvers = {
   Mutation: {
-    forgotPassword: async (_, args, context) =>
-      await resolverAdapter(makeForgotPasswordController(), args, context)
+    forgotPassword: async (_, args, context) => await resolverAdapter(makeForgotPasswordController(), args, context)
   }
 }

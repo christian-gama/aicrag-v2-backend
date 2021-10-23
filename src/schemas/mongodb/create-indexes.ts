@@ -1,11 +1,7 @@
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { CollectionsName } from '@/infra/database/protocols'
 
-const createIndex = async (
-  asc: 0 | 1,
-  collection: CollectionsName,
-  field: string
-): Promise<void> => {
+const createIndex = async (asc: 0 | 1, collection: CollectionsName, field: string): Promise<void> => {
   await MongoAdapter.client
     .db()
     .collection(collection)

@@ -6,7 +6,6 @@ import { makeUpdatePasswordController } from '@/factories/controllers/account'
 
 export const resolver: Resolvers = {
   Mutation: {
-    updatePassword: async (_, args, context) =>
-      await resolverAdapter(makeUpdatePasswordController(), args, context)
+    updatePassword: async (_, args, context) => await resolverAdapter(makeUpdatePasswordController(), args, context)
   }
 }

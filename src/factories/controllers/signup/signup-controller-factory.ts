@@ -1,4 +1,4 @@
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { SignUpController } from '@/presentation/controllers/signup'
 
 import { makeTryCatchDecorator } from '../../decorators'
@@ -7,7 +7,7 @@ import { makeGenerateAccessToken } from '../../providers/token'
 import { makeUserRepository } from '../../repositories'
 import { makeUserValidator } from '../../validators/user'
 
-export const makeSignUpController = (): ControllerProtocol => {
+export const makeSignUpController = (): IController => {
   const filterUserData = makeFilterUserData()
   const generateAccessToken = makeGenerateAccessToken()
   const httpHelper = makeHttpHelper()

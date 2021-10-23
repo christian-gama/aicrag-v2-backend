@@ -1,12 +1,8 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/user'
 
-import {
-  makeUpdateEmailByCodeValidator,
-  makeRequiredFields,
-  makeValidateEmailCode
-} from '@/factories/validators/user'
+import { makeUpdateEmailByCodeValidator, makeRequiredFields, makeValidateEmailCode } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
 
@@ -16,7 +12,7 @@ describe('updateEmailByCodeValidator', () => {
 
     makeUpdateEmailByCodeValidator()
 
-    const validations: ValidatorProtocol[] = []
+    const validations: IValidator[] = []
 
     const fields = ['emailCode']
     for (const field of fields) {

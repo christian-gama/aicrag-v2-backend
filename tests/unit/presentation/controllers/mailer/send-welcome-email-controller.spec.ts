@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
-import { ValidationCodeProtocol } from '@/domain/helpers'
-import { MailerServiceProtocol } from '@/domain/mailer'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidationCode } from '@/domain/helpers'
+import { IMailerService } from '@/domain/mailer'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
 
@@ -25,11 +25,11 @@ interface SutTypes {
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
-  sendWelcomeValidatorStub: ValidatorProtocol
+  sendWelcomeValidatorStub: IValidator
   sut: SendWelcomeEmailController
-  userRepositoryStub: UserRepositoryProtocol
-  validationCodeStub: ValidationCodeProtocol
-  welcomeEmailStub: MailerServiceProtocol
+  userRepositoryStub: IUserRepository
+  validationCodeStub: IValidationCode
+  welcomeEmailStub: IMailerService
 }
 
 const makeSut = (): SutTypes => {
@@ -85,9 +85,7 @@ describe('sendWelcomeEmailController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sendWelcomeValidatorStub, sut } = makeSut()
-    jest
-      .spyOn(sendWelcomeValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(sendWelcomeValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 
@@ -135,9 +133,7 @@ describe('sendWelcomeEmailController', () => {
     expect.hasAssertions()
 
     const { sut, request, welcomeEmailStub } = makeSut()
-    jest
-      .spyOn(welcomeEmailStub, 'send')
-      .mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
+    jest.spyOn(welcomeEmailStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     const response = await sut.handle(request)
 

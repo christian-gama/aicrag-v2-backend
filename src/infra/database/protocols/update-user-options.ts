@@ -13,16 +13,14 @@ type Settings<T extends keyof IUser> = {
 }
 
 type Temporary<T extends keyof IUser> = {
-  [Property in keyof Partial<
-  IUser['temporary']
-  > as `${T}.${Property}`]: IUser['temporary'][Property]
+  [Property in keyof Partial<IUser['temporary']> as `${T}.${Property}`]: IUser['temporary'][Property]
 }
 
 type TokenVersion<T extends keyof IUser> = {
   [Property in keyof Partial<IUser['tokenVersion']> as `${T}`]: IUser['tokenVersion']
 }
 
-export type UserDbFilter =
+export type IUserDbFilter =
   | Logs<'logs'>
   | Personal<'personal'>
   | Settings<'settings'>

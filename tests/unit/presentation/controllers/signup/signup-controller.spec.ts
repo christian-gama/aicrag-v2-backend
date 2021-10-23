@@ -1,8 +1,8 @@
 import { IPublicUser, IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { ConflictParamError, InvalidParamError, MustLogoutError } from '@/application/errors'
 
@@ -23,13 +23,13 @@ import {
 interface SutTypes {
   fakePublicUser: IPublicUser
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
-  generateAccessTokenStub: GenerateTokenProtocol
+  filterUserDataStub: IFilterUserData
+  generateAccessTokenStub: IGenerateToken
   httpHelper: HttpHelperProtocol
   request: HttpRequest
   sut: SignUpController
-  userRepositoryStub: UserRepositoryProtocol
-  userValidatorStub: ValidatorProtocol
+  userRepositoryStub: IUserRepository
+  userValidatorStub: IValidator
 }
 
 const makeSut = (): SutTypes => {
@@ -109,9 +109,7 @@ describe('signUpController', () => {
 
     const { request, sut, userRepositoryStub } = makeSut()
     const saveUserSpy = jest.spyOn(userRepositoryStub, 'saveUser')
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -123,9 +121,7 @@ describe('signUpController', () => {
 
     const { fakeUser, generateAccessTokenStub, request, sut, userRepositoryStub } = makeSut()
     const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -137,9 +133,7 @@ describe('signUpController', () => {
 
     const { request, sut, userRepositoryStub, userValidatorStub } = makeSut()
     const validateSpy = jest.spyOn(userValidatorStub, 'validate')
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -152,9 +146,7 @@ describe('signUpController', () => {
     const { httpHelper, request, sut, userRepositoryStub, userValidatorStub } = makeSut()
     const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
     const error = new Error('any_error')
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
     jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)
@@ -167,9 +159,7 @@ describe('signUpController', () => {
 
     const { httpHelper, request, sut, userRepositoryStub, userValidatorStub } = makeSut()
     const error = new InvalidParamError('any_field')
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
     jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
 
     const response = await sut.handle(request)
@@ -182,9 +172,7 @@ describe('signUpController', () => {
 
     const { fakePublicUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
     const okSpy = jest.spyOn(httpHelper, 'ok')
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -195,14 +183,10 @@ describe('signUpController', () => {
     expect.hasAssertions()
 
     const { fakePublicUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const response = await sut.handle(request)
 
-    expect(response).toStrictEqual(
-      httpHelper.ok({ accessToken: 'any_token', user: fakePublicUser })
-    )
+    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', user: fakePublicUser }))
   })
 })

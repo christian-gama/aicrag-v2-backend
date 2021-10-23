@@ -64,9 +64,7 @@ describe('bcryptAdapter', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
-      jest
-        .spyOn(bcrypt, 'compare')
-        .mockImplementationOnce(async () => await Promise.reject(new Error()))
+      jest.spyOn(bcrypt, 'compare').mockImplementationOnce(async () => await Promise.reject(new Error()))
 
       const promise = sut.compare('value', 'value2')
 
@@ -110,9 +108,7 @@ describe('bcryptAdapter', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
-      jest
-        .spyOn(bcrypt, 'hash')
-        .mockImplementationOnce(async () => await Promise.reject(new Error()))
+      jest.spyOn(bcrypt, 'hash').mockImplementationOnce(async () => await Promise.reject(new Error()))
 
       const promise = sut.hash('value')
 

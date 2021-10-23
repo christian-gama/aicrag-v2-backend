@@ -1,16 +1,13 @@
 import { ITask, ITaskData } from '@/domain'
-import { CreateTaskRepositoryProtocol } from '@/domain/repositories'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
+import { ICreateTaskRepository } from '@/domain/repositories'
+import { ITaskRepository } from '@/domain/repositories/task'
 
-import { DatabaseProtocol } from '../protocols'
-import { QueryProtocol, QueryResultProtocol } from '../protocols/queries-protocol'
-import { TaskDbFilter } from '../protocols/update-task-options'
+import { IDatabase } from '../protocols'
+import { IQuery, IQueryResult } from '../protocols/queries-protocol'
+import { ITaskDbFilter } from '../protocols/update-task-options'
 
-export class TaskRepository implements TaskRepositoryProtocol {
-  constructor (
-    private readonly createTaskRepository: CreateTaskRepositoryProtocol,
-    private readonly database: DatabaseProtocol
-  ) {}
+export class TaskRepository implements ITaskRepository {
+  constructor (private readonly createTaskRepository: ICreateTaskRepository, private readonly database: IDatabase) {}
 
   async deleteTask (id: string, userId: string): Promise<boolean> {
     const taskCollection = this.database.collection('tasks')
@@ -20,15 +17,12 @@ export class TaskRepository implements TaskRepositoryProtocol {
     return deleted
   }
 
-  async findAllTasks<T extends ITask>(
-    userId: string,
-    query: QueryProtocol
-  ): Promise<QueryResultProtocol<T>> {
+  async findAllTasks<T extends ITask>(userId: string, query: IQuery): Promise<IQueryResult<T>> {
     const taskCollection = this.database.collection('tasks')
 
     const result = await taskCollection.findAll<ITask>({ userId }, query)
 
-    return result as QueryResultProtocol<T>
+    return result as IQueryResult<T>
   }
 
   async findTaskById (id: string, userId: string): Promise<ITask | null> {
@@ -55,7 +49,7 @@ export class TaskRepository implements TaskRepositoryProtocol {
     return await taskCollection.insertOne(task)
   }
 
-  async updateTask<T extends ITask | null>(id: string, update: TaskDbFilter): Promise<T> {
+  async updateTask<T extends ITask | null>(id: string, update: ITaskDbFilter): Promise<T> {
     const taskCollection = this.database.collection('tasks')
 
     const updatedTask = await taskCollection.updateOne<ITask>({ id }, update)

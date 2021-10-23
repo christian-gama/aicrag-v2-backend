@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
-import { EncrypterProtocol } from '@/domain/cryptography'
-import { IRefreshToken, VerifyTokenProtocol } from '@/domain/providers'
+import { IEncrypter } from '@/domain/cryptography'
+import { IRefreshToken, IVerifyToken } from '@/domain/providers'
 
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 
@@ -9,22 +9,17 @@ import { ProtectedMiddleware } from '@/presentation/middlewares'
 
 import { makeHttpHelper } from '@/factories/helpers'
 
-import {
-  makeEncrypterStub,
-  makeFakeRefreshToken,
-  makeFakeUser,
-  makeVerifyTokenStub
-} from '@/tests/__mocks__'
+import { makeEncrypterStub, makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
-  refreshTokenEncrypter: EncrypterProtocol
+  refreshTokenEncrypter: IEncrypter
   request: HttpRequest
   sut: ProtectedMiddleware
-  verifyAccessTokenStub: VerifyTokenProtocol
-  verifyRefreshTokenStub: VerifyTokenProtocol
+  verifyAccessTokenStub: IVerifyToken
+  verifyRefreshTokenStub: IVerifyToken
 }
 
 const makeSut = (): SutTypes => {
@@ -36,12 +31,7 @@ const makeSut = (): SutTypes => {
   const verifyAccessTokenStub = makeVerifyTokenStub(fakeUser)
   const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
 
-  const sut = new ProtectedMiddleware(
-    httpHelper,
-    refreshTokenEncrypter,
-    verifyAccessTokenStub,
-    verifyRefreshTokenStub
-  )
+  const sut = new ProtectedMiddleware(httpHelper, refreshTokenEncrypter, verifyAccessTokenStub, verifyRefreshTokenStub)
 
   return {
     fakeRefreshToken,
@@ -71,9 +61,7 @@ describe('protectedMiddleware', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, verifyRefreshTokenStub } = makeSut()
-    jest
-      .spyOn(verifyRefreshTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+    jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     const response = await sut.handle(request)
 
@@ -84,9 +72,7 @@ describe('protectedMiddleware', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
-    jest
-      .spyOn(verifyAccessTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
+    jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
     const response = await sut.handle(request)
 
@@ -97,9 +83,7 @@ describe('protectedMiddleware', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
-    jest
-      .spyOn(verifyAccessTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(new TokenMissingError()))
+    jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new TokenMissingError()))
 
     const response = await sut.handle(request)
 
@@ -123,9 +107,7 @@ describe('protectedMiddleware', () => {
 
     const { sut, fakeUser, refreshTokenEncrypter, request, verifyAccessTokenStub } = makeSut()
     const encryptSpy = jest.spyOn(refreshTokenEncrypter, 'encrypt')
-    jest
-      .spyOn(verifyAccessTokenStub, 'verify')
-      .mockReturnValueOnce(Promise.resolve(new ExpiredTokenError()))
+    jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new ExpiredTokenError()))
 
     await sut.handle(request)
 

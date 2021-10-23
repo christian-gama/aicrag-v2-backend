@@ -1,15 +1,12 @@
-import { ValidatorErrorProtocol } from './validation-error-protocol'
+import { IValidatorError } from './validation-error-protocol'
 
-type ValidatorReturnProtocol =
-  | Promise<ValidatorErrorProtocol | undefined>
-  | ValidatorErrorProtocol
-  | undefined
+type IValidatorReturn = Promise<IValidatorError | undefined> | IValidatorError | undefined
 
-export interface ValidatorProtocol {
+export interface IValidator {
   /**
    * @description Receive a generic object and validate it.
    * @param input Is the object to be validated.
    * @returns Return an Error if validation fails and return undefined if succeeds.
    */
-  validate: (input: Record<any, any>) => ValidatorReturnProtocol
+  validate: (input: Record<any, any>) => IValidatorReturn
 }

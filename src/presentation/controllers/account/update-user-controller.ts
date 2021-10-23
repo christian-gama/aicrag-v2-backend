@@ -1,23 +1,23 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol, ValidationCodeProtocol } from '@/domain/helpers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData, IValidationCode } from '@/domain/helpers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { ConflictParamError, MustLoginError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class UpdateUserController implements ControllerProtocol {
+export class UpdateUserController implements IController {
   constructor (
-    private readonly emailCode: ValidationCodeProtocol,
-    private readonly filterUserData: FilterUserDataProtocol,
+    private readonly emailCode: IValidationCode,
+    private readonly filterUserData: IFilterUserData,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol,
-    private readonly validateCurrency: ValidatorProtocol,
-    private readonly validateEmail: ValidatorProtocol,
-    private readonly validateName: ValidatorProtocol
+    private readonly userRepository: IUserRepository,
+    private readonly validateCurrency: IValidator,
+    private readonly validateEmail: IValidator,
+    private readonly validateName: IValidator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

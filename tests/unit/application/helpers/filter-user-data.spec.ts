@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
+import { IFilterUserData } from '@/domain/helpers'
 
 import { FilterUserData } from '@/application/helpers'
 
@@ -7,7 +7,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeUser: IUser
-  sut: FilterUserDataProtocol
+  sut: IFilterUserData
 }
 
 const makeSut = (): SutTypes => {

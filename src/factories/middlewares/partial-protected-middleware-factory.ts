@@ -1,11 +1,11 @@
 import { PartialProtectedMiddleware } from '@/presentation/middlewares'
-import { MiddlewareProtocol } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
 
 import { makeTryCatchDecorator } from '../decorators'
 import { makeHttpHelper } from '../helpers'
 import { makeVerifyAccessToken } from '../providers/token'
 
-export const makePartialProtectedMiddleware = (): MiddlewareProtocol => {
+export const makePartialProtectedMiddleware = (): IMiddleware => {
   const httpHelper = makeHttpHelper()
   const verifyAccessToken = makeVerifyAccessToken()
 

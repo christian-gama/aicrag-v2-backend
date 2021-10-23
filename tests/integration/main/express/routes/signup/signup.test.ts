@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -19,7 +19,7 @@ describe('post /signup', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let refreshToken: string
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -47,20 +47,13 @@ describe('post /signup', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .post('/api/v1/signup')
-      .set('Cookie', `refreshToken=${refreshToken}`)
-      .send()
-      .expect(403)
+    await request(app).post('/api/v1/signup').set('Cookie', `refreshToken=${refreshToken}`).send().expect(403)
   })
 
   it('should return 400 if validation fails', async () => {
     expect.assertions(0)
 
-    await request(app)
-      .post('/api/v1/signup')
-      .send({})
-      .expect(400)
+    await request(app).post('/api/v1/signup').send({}).expect(400)
   })
 
   it('should return 409 if email already exists', async () => {
@@ -74,27 +67,18 @@ describe('post /signup', () => {
     }
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .post('/api/v1/signup')
-      .send(fakeSignUpUserCredentials)
-      .expect(409)
+    await request(app).post('/api/v1/signup').send(fakeSignUpUserCredentials).expect(409)
   })
 
   it('should return 400 if miss a param or param is invalid', async () => {
     expect.assertions(0)
 
-    await request(app)
-      .post('/api/v1/signup')
-      .send()
-      .expect(400)
+    await request(app).post('/api/v1/signup').send().expect(400)
   })
 
   it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
-    await request(app)
-      .post('/api/v1/signup')
-      .send(makeFakeSignUpUserCredentials())
-      .expect(200)
+    await request(app).post('/api/v1/signup').send(makeFakeSignUpUserCredentials()).expect(200)
   }, 12000)
 })

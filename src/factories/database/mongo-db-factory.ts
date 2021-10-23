@@ -1,9 +1,9 @@
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { DatabaseProtocol } from '@/infra/database/protocols'
+import { IDatabase } from '@/infra/database/protocols'
 
 import { makeMongoQueries } from './mongo-queries-factory'
 
-export const makeMongoDb = (): DatabaseProtocol => {
+export const makeMongoDb = (): IDatabase => {
   const mongoQueries = makeMongoQueries()
 
   return new MongoAdapter(mongoQueries)

@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IUserRepository } from '@/domain/repositories'
 
 import { MissingParamError } from '@/application/errors'
 import { ValidatePasswordToken } from '@/application/validators/user'
@@ -9,7 +9,7 @@ import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 interface SutTypes {
   sut: ValidatePasswordToken
   fakeUser: IUser
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {

@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IUserRepository } from '@/domain/repositories'
 
 import {
   InvalidCodeError,
@@ -17,7 +17,7 @@ interface SutTypes {
   fakeUser: IUser
   request: HttpRequest
   sut: ValidateActivationCode
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -108,9 +108,7 @@ describe('validateActivationCode', () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const value = await sut.validate(request.body)
 

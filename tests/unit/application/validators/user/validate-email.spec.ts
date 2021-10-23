@@ -1,4 +1,4 @@
-import { ValidatorProtocol, EmailValidatorProtocol } from '@/domain/validators'
+import { IValidator, IEmailValidator } from '@/domain/validators'
 
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateEmail } from '@/application/validators/user'
@@ -10,9 +10,9 @@ import { makeEmailValidatorStub } from '@/tests/__mocks__'
 import faker from 'faker'
 
 interface SutTypes {
-  emailValidatorStub: EmailValidatorProtocol
+  emailValidatorStub: IEmailValidator
   request: HttpRequest
-  sut: ValidatorProtocol
+  sut: IValidator
 }
 
 const makeSut = (): SutTypes => {

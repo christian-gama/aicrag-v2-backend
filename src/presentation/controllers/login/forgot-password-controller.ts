@@ -1,32 +1,32 @@
 import { IUser } from '@/domain'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MustLogoutError } from '@/application/errors'
 import { FilterUserData } from '@/application/helpers'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class ForgotPasswordController implements ControllerProtocol {
+export class ForgotPasswordController implements IController {
   constructor (
     private readonly filterUserData: FilterUserData,
-    private readonly forgotPasswordValidator: ValidatorProtocol,
-    private readonly generateAccessToken: GenerateTokenProtocol,
+    private readonly forgotPasswordValidator: IValidator,
+    private readonly generateAccessToken: IGenerateToken,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol
+    private readonly userRepository: IUserRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    if (httpRequest.user != null) return this.httpHelper.forbidden(new MustLogoutError())
+    if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
     const data = httpRequest.body
 
     const error = await this.forgotPasswordValidator.validate(data)
 
-    if (error != null) return this.httpHelper.badRequest(error)
+    if (error) return this.httpHelper.badRequest(error)
 
     let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
 

@@ -1,8 +1,8 @@
 import { IPublicUser, IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import {
   UserCredentialError,
@@ -31,14 +31,14 @@ import MockDate from 'mockdate'
 interface SutTypes {
   fakePublicUser: IPublicUser
   fakeUser: IUser
-  filterUserDataStub: FilterUserDataProtocol
-  generateAccessTokenStub: GenerateTokenProtocol
-  generateRefreshTokenStub: GenerateTokenProtocol
+  filterUserDataStub: IFilterUserData
+  generateAccessTokenStub: IGenerateToken
+  generateRefreshTokenStub: IGenerateToken
   httpHelper: HttpHelperProtocol
-  loginValidatorStub: ValidatorProtocol
+  loginValidatorStub: IValidator
   request: HttpRequest
   sut: LoginController
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -156,9 +156,7 @@ describe('loginController', () => {
 
     const response = await sut.handle(request)
 
-    expect(response).toStrictEqual(
-      httpHelper.ok({ accessToken: 'any_token', message: error.message })
-    )
+    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', message: error.message }))
   })
 
   it('should call generate with correct user', async () => {

@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
-import { DecoderProtocol } from '@/domain/cryptography'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IDecoder } from '@/domain/cryptography'
+import { IUserRepository } from '@/domain/repositories'
 
 import { TokenMissingError, InvalidTokenError } from '@/application/errors'
 
@@ -11,8 +11,8 @@ import { makeFakeUser, makeDecoderStub, makeUserRepositoryStub } from '@/tests/_
 interface SutTypes {
   sut: VerifyResetPasswordToken
   fakeUser: IUser
-  accessTokenDecoderStub: DecoderProtocol
-  userRepositoryStub: UserRepositoryProtocol
+  accessTokenDecoderStub: IDecoder
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -102,9 +102,7 @@ describe('verifyResetPasswordToken', () => {
     const { accessTokenDecoderStub, fakeUser, sut, userRepositoryStub } = makeSut()
     jest
       .spyOn(accessTokenDecoderStub, 'decode')
-      .mockReturnValueOnce(
-        Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() })
-      )
+      .mockReturnValueOnce(Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() }))
     jest.spyOn(userRepositoryStub, 'findUserById').mockImplementation(async () => {
       fakeUser.temporary.resetPasswordToken = 'any_token'
 

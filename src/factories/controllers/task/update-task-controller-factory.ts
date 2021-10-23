@@ -1,4 +1,4 @@
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { UpdateTaskController } from '@/presentation/controllers/task'
 
 import { makeTryCatchDecorator } from '@/factories/decorators'
@@ -14,7 +14,7 @@ import {
   makeValidateType
 } from '@/factories/validators/task'
 
-export const makeUpdateTaskController = (): ControllerProtocol => {
+export const makeUpdateTaskController = (): IController => {
   const httpHelper = makeHttpHelper()
   const taskRepository = makeTaskRepository()
   const validateCommentary = makeValidateCommentary()

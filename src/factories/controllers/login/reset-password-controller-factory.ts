@@ -1,5 +1,5 @@
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeBcryptAdapter } from '../../cryptography'
 import { makeTryCatchDecorator } from '../../decorators'
@@ -9,7 +9,7 @@ import { makeVerifyResetPasswordToken } from '../../providers/token/verify-reset
 import { makeUserRepository } from '../../repositories'
 import { makeResetPasswordValidator } from '../../validators/user/reset-password-validator-factory'
 
-export const makeResetPasswordController = (): ControllerProtocol => {
+export const makeResetPasswordController = (): IController => {
   const filterUserData = makeFilterUserData()
   const generateRefreshToken = makeGenerateRefreshToken()
   const hasher = makeBcryptAdapter()

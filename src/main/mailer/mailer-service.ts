@@ -1,4 +1,4 @@
-import { MailerSettingsProtocol } from '@/domain/mailer'
+import { IMailerSettings } from '@/domain/mailer'
 
 import { MailerServiceError } from '@/application/errors'
 
@@ -9,7 +9,7 @@ import { Transporter } from 'nodemailer'
 import sendgrid from 'nodemailer-sendgrid'
 
 export abstract class MailerService {
-  protected async sendEmail (settings: MailerSettingsProtocol): Promise<true | MailerServiceError> {
+  protected async sendEmail (settings: IMailerSettings): Promise<true | MailerServiceError> {
     try {
       await this.transporter.sendMail({
         from: environment.MAILER.SETTINGS.FROM,
@@ -48,8 +48,6 @@ export abstract class MailerService {
   }
 
   private sendgrid (): Transporter {
-    return nodemailer.createTransport(
-      sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY })
-    )
+    return nodemailer.createTransport(sendgrid({ apiKey: environment.MAILER.SENDGRID.APIKEY }))
   }
 }

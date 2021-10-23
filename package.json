@@ -24,7 +24,8 @@
     "test": "yarn test:unit && yarn test:integration",
     "tsc:watch": "tsc -w -p tsconfig.build.json && yarn copy-assets",
     "graphql:diff": "graphql diff",
-    "graphql:similar": "graphql similar"
+    "graphql:similar": "graphql similar",
+    "format": "prettier --write . && eslint . --fix"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",

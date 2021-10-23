@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -19,7 +19,7 @@ describe('get /verify-reset-password-token', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let refreshToken: string
-  let userCollection: CollectionProtocol
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -57,9 +57,7 @@ describe('get /verify-reset-password-token', () => {
   it('should return 401 if token is invalid', async () => {
     expect.assertions(0)
 
-    await request(app)
-      .get('/api/v1/token/verify-reset-password-token/invalid_token')
-      .expect(401)
+    await request(app).get('/api/v1/token/verify-reset-password-token/invalid_token').expect(401)
   })
 
   it("should return 401 if param's token does not match user's token", async () => {
@@ -71,9 +69,7 @@ describe('get /verify-reset-password-token', () => {
 
     const differentResetPasswordToken = makeGenerateAccessToken().generate(makeFakeUser())
 
-    await request(app)
-      .get(`/api/v1/token/verify-reset-password-token/${differentResetPasswordToken}`)
-      .expect(401)
+    await request(app).get(`/api/v1/token/verify-reset-password-token/${differentResetPasswordToken}`).expect(401)
   })
 
   it('should return 200 if token is valid', async () => {
@@ -83,8 +79,6 @@ describe('get /verify-reset-password-token', () => {
     fakeUser.temporary.resetPasswordToken = resetPasswordToken
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .get(`/api/v1/token/verify-reset-password-token/${resetPasswordToken}`)
-      .expect(200)
+    await request(app).get(`/api/v1/token/verify-reset-password-token/${resetPasswordToken}`).expect(200)
   })
 })

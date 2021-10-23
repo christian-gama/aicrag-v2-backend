@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IUserRepository } from '@/domain/repositories'
 
 import { UserCredentialError } from '@/application/errors'
 import { ValidateEmailExists } from '@/application/validators/user'
@@ -9,7 +9,7 @@ import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 interface SutTypes {
   fakeUser: IUser
   sut: ValidateEmailExists
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -27,9 +27,7 @@ describe('validateEmailExists', () => {
 
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
-    jest
-      .spyOn(userRepositoryStub, 'findUserByEmail')
-      .mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const error = await sut.validate(data)
 

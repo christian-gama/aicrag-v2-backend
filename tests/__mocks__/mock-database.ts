@@ -1,21 +1,21 @@
 import { ILogError, IUser, ISignUpUserData, ITask, ITaskData } from '@/domain'
-import { LogErrorRepositoryProtocol, UserRepositoryProtocol } from '@/domain/repositories'
+import { ILogErrorRepository, IUserRepository } from '@/domain/repositories'
 import {
-  AllInvoicesDocument,
-  InvoiceRepositoryProtocol,
-  QueryAllInvoicesProtocol,
-  QueryInvoiceProtocol
+  IAllInvoicesDocument,
+  IInvoiceRepository,
+  IQueryAllInvoices,
+  IQueryInvoice
 } from '@/domain/repositories/invoice'
-import { TaskRepositoryProtocol } from '@/domain/repositories/task'
+import { ITaskRepository } from '@/domain/repositories/task'
 
-import { QueryResultProtocol } from '@/infra/database/protocols/queries-protocol'
-import { TaskDbFilter } from '@/infra/database/protocols/update-task-options'
-import { UserDbFilter } from '@/infra/database/protocols/update-user-options'
+import { IQueryResult } from '@/infra/database/protocols/queries-protocol'
+import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options'
+import { IUserDbFilter } from '@/infra/database/protocols/update-user-options'
 
 import { makeFakeLogError } from './mock-log-error'
 
-export const makeLogErrorRepositoryStub = (error: Error): LogErrorRepositoryProtocol => {
-  class LogErrorRepositoryStub implements LogErrorRepositoryProtocol {
+export const makeLogErrorRepositoryStub = (error: Error): ILogErrorRepository => {
+  class LogErrorRepositoryStub implements ILogErrorRepository {
     async saveLog (_error: Error): Promise<ILogError> {
       return await Promise.resolve(makeFakeLogError(error))
     }
@@ -24,12 +24,12 @@ export const makeLogErrorRepositoryStub = (error: Error): LogErrorRepositoryProt
   return new LogErrorRepositoryStub()
 }
 
-export const makeInvoiceRepositoryStub = (fakeTask: ITask): InvoiceRepositoryProtocol => {
-  class InvoiceRepositoryStub implements InvoiceRepositoryProtocol {
-    async getAllInvoices<T extends AllInvoicesDocument>(
-      query: QueryAllInvoicesProtocol,
+export const makeInvoiceRepositoryStub = (fakeTask: ITask): IInvoiceRepository => {
+  class InvoiceRepositoryStub implements IInvoiceRepository {
+    async getAllInvoices<T extends IAllInvoicesDocument>(
+      query: IQueryAllInvoices,
       userId: string
-    ): Promise<QueryResultProtocol<T>> {
+    ): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,
         displaying: 1,
@@ -41,38 +41,35 @@ export const makeInvoiceRepositoryStub = (fakeTask: ITask): InvoiceRepositoryPro
           }
         ],
         page: '1 of 1'
-      })) as QueryResultProtocol<T>
+      })) as IQueryResult<T>
     }
 
-    async getInvoiceByMonth<T extends ITask>(
-      query: QueryInvoiceProtocol,
-      userId: string
-    ): Promise<QueryResultProtocol<T>> {
+    async getInvoiceByMonth<T extends ITask>(query: IQueryInvoice, userId: string): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,
         displaying: 1,
         documents: [fakeTask],
         page: '1 of 1'
-      })) as QueryResultProtocol<T>
+      })) as IQueryResult<T>
     }
   }
 
   return new InvoiceRepositoryStub()
 }
 
-export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol => {
-  class TaskRepositoryStub implements TaskRepositoryProtocol {
+export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
+  class TaskRepositoryStub implements ITaskRepository {
     async deleteTask (id: string, userId: string): Promise<boolean> {
       return await Promise.resolve(true)
     }
 
-    async findAllTasks<T extends ITask>(userId: string): Promise<QueryResultProtocol<T>> {
+    async findAllTasks<T extends ITask>(userId: string): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,
         displaying: 1,
         documents: [fakeTask],
         page: '1 of 1'
-      })) as QueryResultProtocol<T>
+      })) as IQueryResult<T>
     }
 
     async findTaskById (id: string, userId: string): Promise<ITask | null> {
@@ -87,7 +84,7 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol 
       return await Promise.resolve(fakeTask)
     }
 
-    async updateTask<T extends ITask | null>(id: string, update: TaskDbFilter): Promise<T> {
+    async updateTask<T extends ITask | null>(id: string, update: ITaskDbFilter): Promise<T> {
       return (await Promise.resolve(fakeTask)) as T
     }
   }
@@ -95,8 +92,8 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): TaskRepositoryProtocol 
   return new TaskRepositoryStub()
 }
 
-export const makeUserRepositoryStub = (fakeUser: IUser): UserRepositoryProtocol => {
-  class UserRepositoryStub implements UserRepositoryProtocol {
+export const makeUserRepositoryStub = (fakeUser: IUser): IUserRepository => {
+  class UserRepositoryStub implements IUserRepository {
     async saveUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
       return await Promise.resolve(fakeUser)
     }
@@ -109,7 +106,7 @@ export const makeUserRepositoryStub = (fakeUser: IUser): UserRepositoryProtocol 
       return await Promise.resolve(fakeUser)
     }
 
-    async updateUser<T extends IUser | null>(id: string, update: UserDbFilter): Promise<T> {
+    async updateUser<T extends IUser | null>(id: string, update: IUserDbFilter): Promise<T> {
       return (await Promise.resolve(fakeUser)) as T
     }
   }

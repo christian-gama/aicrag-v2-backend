@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
@@ -9,12 +9,12 @@ import {
   makeValidateStatus,
   makeValidateTaskId,
   makeValidateType,
-  makeValidateUniqueTaskId
-  , makeValidateCommentary
+  makeValidateUniqueTaskId,
+  makeValidateCommentary
 } from '.'
 
-export const makeCreateTaskValidator = (): ValidatorProtocol => {
-  const validations: ValidatorProtocol[] = []
+export const makeCreateTaskValidator = (): IValidator => {
+  const validations: IValidator[] = []
 
   const fields = ['date', 'duration', 'status', 'type']
   for (const field of fields) {

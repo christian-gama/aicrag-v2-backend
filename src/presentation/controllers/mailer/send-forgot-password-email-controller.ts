@@ -1,23 +1,23 @@
 import { IUser } from '@/domain'
-import { MailerServiceProtocol } from '@/domain/mailer'
-import { GenerateTokenProtocol, VerifyTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IMailerService } from '@/domain/mailer'
+import { IGenerateToken, IVerifyToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MailerServiceError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class SendForgotPasswordEmailController implements ControllerProtocol {
+export class SendForgotPasswordEmailController implements IController {
   constructor (
-    private readonly forgotPasswordEmail: MailerServiceProtocol,
-    private readonly forgotPasswordEmailValidator: ValidatorProtocol,
-    private readonly generateAccessToken: GenerateTokenProtocol,
+    private readonly forgotPasswordEmail: IMailerService,
+    private readonly forgotPasswordEmailValidator: IValidator,
+    private readonly generateAccessToken: IGenerateToken,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol,
-    private readonly verifyResetPasswordToken: VerifyTokenProtocol
+    private readonly userRepository: IUserRepository,
+    private readonly verifyResetPasswordToken: IVerifyToken
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

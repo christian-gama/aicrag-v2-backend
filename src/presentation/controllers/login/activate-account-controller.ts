@@ -1,28 +1,28 @@
 import { IUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
-import { GenerateTokenProtocol } from '@/domain/providers'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IFilterUserData } from '@/domain/helpers'
+import { IGenerateToken } from '@/domain/providers'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
-import { ControllerProtocol } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller-protocol'
 
-export class ActivateAccountController implements ControllerProtocol {
+export class ActivateAccountController implements IController {
   constructor (
-    private readonly activateAccountValidator: ValidatorProtocol,
-    private readonly filterUserData: FilterUserDataProtocol,
-    private readonly generateAccessToken: GenerateTokenProtocol,
-    private readonly generateRefreshToken: GenerateTokenProtocol,
+    private readonly activateAccountValidator: IValidator,
+    private readonly filterUserData: IFilterUserData,
+    private readonly generateAccessToken: IGenerateToken,
+    private readonly generateRefreshToken: IGenerateToken,
     private readonly httpHelper: HttpHelperProtocol,
-    private readonly userRepository: UserRepositoryProtocol
+    private readonly userRepository: IUserRepository
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const data = httpRequest.body
 
     const error = await this.activateAccountValidator.validate(data)
-    if (error != null) return this.httpHelper.badRequest(error)
+    if (error) return this.httpHelper.badRequest(error)
 
     const user = (await this.userRepository.findUserByEmail(data.email)) as IUser
 

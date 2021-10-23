@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 
-export interface GenerateTokenProtocol {
+export interface IGenerateToken {
   /**
    * @description Get a user id and create a token based on the user id.
    * @param user The user that will be used to create a token.

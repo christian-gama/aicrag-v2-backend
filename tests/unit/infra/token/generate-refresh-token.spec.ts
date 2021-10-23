@@ -1,16 +1,16 @@
 import { IUser } from '@/domain'
-import { EncrypterProtocol } from '@/domain/cryptography'
-import { UserRepositoryProtocol } from '@/domain/repositories'
+import { IEncrypter } from '@/domain/cryptography'
+import { IUserRepository } from '@/domain/repositories'
 
 import { GenerateRefreshToken } from '@/infra/token'
 
 import { makeEncrypterStub, makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  encrypterStub: EncrypterProtocol
+  encrypterStub: IEncrypter
   fakeUser: IUser
   sut: GenerateRefreshToken
-  userRepositoryStub: UserRepositoryProtocol
+  userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -32,7 +32,9 @@ describe('generateAccessToken', () => {
 
     await sut.generate(fakeUser)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, { tokenVersion: fakeUser.tokenVersion })
+    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+      tokenVersion: fakeUser.tokenVersion
+    })
   })
 
   it('should call encrypt with correct value', async () => {

@@ -12,7 +12,7 @@ import {
 /**
  * @description Errors that can be returned by validator.
  */
-export type ValidatorErrorProtocol =
+export type IValidatorError =
   | AccountAlreadyActivatedError
   | CodeIsExpiredError
   | ConflictParamError

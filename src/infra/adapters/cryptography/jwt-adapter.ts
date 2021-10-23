@@ -1,16 +1,16 @@
-import { DecodedProtocol, DecoderProtocol, EncrypterProtocol } from '@/domain/cryptography'
+import { IDecoded, IDecoder, IEncrypter } from '@/domain/cryptography'
 
 import { ExpiredTokenError, InvalidTokenError } from '@/application/errors'
 
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'
 
-export class JwtAdapter implements EncrypterProtocol, DecoderProtocol {
+export class JwtAdapter implements IEncrypter, IDecoder {
   constructor (private readonly expires: string, private readonly secret: string) {}
 
-  async decode (token: string): Promise<DecodedProtocol | InvalidTokenError | ExpiredTokenError> {
+  async decode (token: string): Promise<IDecoded | InvalidTokenError | ExpiredTokenError> {
     try {
-      return await promisify<string, string, DecodedProtocol>(jwt.verify)(token, this.secret)
+      return await promisify<string, string, IDecoded>(jwt.verify)(token, this.secret)
     } catch (error) {
       if (error.name === 'TokenExpiredError') return new ExpiredTokenError()
       else return new InvalidTokenError()

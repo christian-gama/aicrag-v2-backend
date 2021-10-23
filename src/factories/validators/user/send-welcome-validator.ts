@@ -1,11 +1,11 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/user'
 
 import { makeRequiredFields, makeValidateEmail, makeValidateEmailExists } from '.'
 
-export const makeSendWelcomeEmailValidator = (): ValidatorProtocol => {
-  const validations: ValidatorProtocol[] = []
+export const makeSendWelcomeEmailValidator = (): IValidator => {
+  const validations: IValidator[] = []
 
   const fields = ['email']
   for (const field of fields) {

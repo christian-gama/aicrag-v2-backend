@@ -1,8 +1,8 @@
 import { ILogError } from '@/domain'
-import { CreateLogErrorRepositoryProtocol } from '@/domain/repositories'
+import { ICreateLogErrorRepository } from '@/domain/repositories'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 import { LogErrorRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -12,7 +12,7 @@ import { makeFakeLogError, makeCreateLogErrorRepositoryStub } from '@/tests/__mo
 interface SutTypes {
   error: Error
   fakeLogError: ILogError
-  createLogErrorRepositoryStub: CreateLogErrorRepositoryProtocol
+  createLogErrorRepositoryStub: ICreateLogErrorRepository
   sut: LogErrorRepository
 }
 
@@ -29,7 +29,7 @@ const makeSut = (): SutTypes => {
 
 describe('logErrorRepository', () => {
   const client = makeMongoDb()
-  let logCollection: CollectionProtocol
+  let logCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()

@@ -1,8 +1,8 @@
 import { IUser } from '@/domain'
-import { ValidationCodeProtocol } from '@/domain/helpers'
-import { MailerServiceProtocol } from '@/domain/mailer'
-import { UserRepositoryProtocol } from '@/domain/repositories'
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidationCode } from '@/domain/helpers'
+import { IMailerService } from '@/domain/mailer'
+import { IUserRepository } from '@/domain/repositories'
+import { IValidator } from '@/domain/validators'
 
 import { MailerServiceError } from '@/application/errors'
 
@@ -22,14 +22,14 @@ import {
 import MockDate from 'mockdate'
 
 interface SutTypes {
-  emailCodeStub: MailerServiceProtocol
+  emailCodeStub: IMailerService
   fakeUser: IUser
   httpHelper: HttpHelperProtocol
   request: HttpRequest
-  sendEmailCodeValidatorStub: ValidatorProtocol
+  sendEmailCodeValidatorStub: IValidator
   sut: SendEmailCodeController
-  userRepositoryStub: UserRepositoryProtocol
-  validationCodeStub: ValidationCodeProtocol
+  userRepositoryStub: IUserRepository
+  validationCodeStub: IValidationCode
 }
 
 const makeSut = (): SutTypes => {
@@ -85,9 +85,7 @@ describe('sendEmailCodeController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sendEmailCodeValidatorStub, sut } = makeSut()
-    jest
-      .spyOn(sendEmailCodeValidatorStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(new Error()))
+    jest.spyOn(sendEmailCodeValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const response = await sut.handle(request)
 

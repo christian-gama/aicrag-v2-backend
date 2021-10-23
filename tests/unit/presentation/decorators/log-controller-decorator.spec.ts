@@ -1,6 +1,6 @@
-import { LogErrorRepositoryProtocol } from '@/domain/repositories'
+import { ILogErrorRepository } from '@/domain/repositories'
 
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { LogDecorator } from '@/presentation/decorators'
 import { HttpHelper } from '@/presentation/http/http-helper'
 
@@ -9,11 +9,11 @@ import { makeHttpHelper } from '@/factories/helpers'
 import { makeControllerStub, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {
-  controllerStub: ControllerProtocol
+  controllerStub: IController
   error: Error
   httpHelper: HttpHelper
-  logErrorRepositoryStub: LogErrorRepositoryProtocol
-  sut: LogDecorator<ControllerProtocol>
+  logErrorRepositoryStub: ILogErrorRepository
+  sut: LogDecorator<IController>
 }
 
 const makeSut = (): SutTypes => {
@@ -38,9 +38,7 @@ describe('logDecorator', () => {
       stack: error.stack
     }
     const saveLogSpy = jest.spyOn(logErrorRepositoryStub, 'saveLog')
-    jest
-      .spyOn(controllerStub, 'handle')
-      .mockReturnValueOnce(Promise.resolve(httpHelper.serverError(error)))
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(httpHelper.serverError(error)))
 
     await sut.handle({})
 
@@ -56,9 +54,7 @@ describe('logDecorator', () => {
       name: error.name,
       stack: error.stack
     }
-    jest
-      .spyOn(controllerStub, 'handle')
-      .mockReturnValueOnce(Promise.resolve(httpHelper.serverError(error)))
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(httpHelper.serverError(error)))
 
     const response = await sut.handle({})
 

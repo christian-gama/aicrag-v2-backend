@@ -1,4 +1,4 @@
-import { ValidatorProtocol } from '@/domain/validators'
+import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
@@ -23,7 +23,7 @@ describe('getInvoiceByMonthValidator', () => {
 
     makeInvoiceByMonthValidator()
 
-    const validations: ValidatorProtocol[] = []
+    const validations: IValidator[] = []
 
     const fields = ['month', 'type', 'year']
     for (const field of fields) {

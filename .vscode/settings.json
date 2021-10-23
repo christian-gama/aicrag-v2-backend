@@ -1,6 +1,3 @@
 {
-  "editor.codeActionsOnSave": [
-    "editor.formatDocument",
-    "source.fixAll.eslint"
-  ],
+  "editor.codeActionsOnSave": ["editor.formatDocument", "source.fixAll.eslint"]
 }

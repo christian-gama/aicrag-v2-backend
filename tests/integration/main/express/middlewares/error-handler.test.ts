@@ -1,6 +1,6 @@
 import { InternalError } from '@/application/errors'
 
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { environment } from '@/main/config/environment'
 import { controllerAdapter } from '@/main/express/adapters/controller-adapter'
@@ -13,8 +13,8 @@ import request from 'supertest'
 let app: Express
 
 const error = new Error('any_message')
-const makeControllerStub = (): ControllerProtocol => {
-  class ControllerStub implements ControllerProtocol {
+const makeControllerStub = (): IController => {
+  class ControllerStub implements IController {
     async handle (httpRequest: any): Promise<any> {
       throw error
     }

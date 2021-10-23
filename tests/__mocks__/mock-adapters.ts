@@ -1,7 +1,7 @@
-import { EmailValidatorProtocol } from '@/domain/validators'
+import { IEmailValidator } from '@/domain/validators'
 
-export const makeEmailValidatorStub = (): EmailValidatorProtocol => {
-  class EmailValidatorStub implements EmailValidatorProtocol {
+export const makeEmailValidatorStub = (): IEmailValidator => {
+  class EmailValidatorStub implements IEmailValidator {
     isEmail (value: string): boolean {
       return true
     }

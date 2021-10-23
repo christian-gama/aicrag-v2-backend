@@ -1,7 +1,7 @@
-import { EmailValidatorProtocol } from '@/domain/validators'
+import { IEmailValidator } from '@/domain/validators'
 
 import { ValidatorAdapter } from '@/infra/adapters/validators'
 
-export const makeEmailValidator = (): EmailValidatorProtocol => {
+export const makeEmailValidator = (): IEmailValidator => {
   return new ValidatorAdapter()
 }

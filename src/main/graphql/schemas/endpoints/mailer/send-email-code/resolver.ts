@@ -6,7 +6,6 @@ import { makeSendEmailCodeController } from '@/factories/controllers/mailer'
 
 export const resolver: Resolvers = {
   Mutation: {
-    sendEmailCode: async (_, args, context) =>
-      await resolverAdapter(makeSendEmailCodeController(), args, context)
+    sendEmailCode: async (_, args, context) => await resolverAdapter(makeSendEmailCodeController(), args, context)
   }
 }

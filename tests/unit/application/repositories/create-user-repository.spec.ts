@@ -1,23 +1,18 @@
-import { HasherProtocol } from '@/domain/cryptography'
-import { UuidProtocol } from '@/domain/helpers'
-import { CreateUserRepositoryProtocol } from '@/domain/repositories'
+import { IHasher } from '@/domain/cryptography'
+import { IUuid } from '@/domain/helpers'
+import { ICreateUserRepository } from '@/domain/repositories'
 
 import { ValidationCode } from '@/application/helpers'
 import { CreateUserRepository } from '@/application/repositories'
 
-import {
-  makeHasherStub,
-  makeValidationCodeStub,
-  makeUuidStub,
-  makeFakeSignUpUserCredentials
-} from '@/tests/__mocks__'
+import { makeHasherStub, makeValidationCodeStub, makeUuidStub, makeFakeSignUpUserCredentials } from '@/tests/__mocks__'
 
 import MockDate from 'mockdate'
 interface SutTypes {
-  sut: CreateUserRepositoryProtocol
+  sut: ICreateUserRepository
   activationCodeStub: ValidationCode
-  hasherStub: HasherProtocol
-  uuidStub: UuidProtocol
+  hasherStub: IHasher
+  uuidStub: IUuid
 }
 
 const makeSut = (): SutTypes => {

@@ -1,11 +1,11 @@
 import { LogoutController } from '@/presentation/controllers/account'
-import { ControllerProtocol } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'
 import { makeUserRepository } from '../../repositories'
 
-export const makeLogoutController = (): ControllerProtocol => {
+export const makeLogoutController = (): IController => {
   const httpHelper = makeHttpHelper()
   const userRepository = makeUserRepository()
 

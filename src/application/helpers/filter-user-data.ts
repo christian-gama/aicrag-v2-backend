@@ -1,7 +1,7 @@
 import { IUser, IPublicUser } from '@/domain'
-import { FilterUserDataProtocol } from '@/domain/helpers'
+import { IFilterUserData } from '@/domain/helpers'
 
-export class FilterUserData implements FilterUserDataProtocol {
+export class FilterUserData implements IFilterUserData {
   filter (user: IUser): IPublicUser {
     return {
       personal: {

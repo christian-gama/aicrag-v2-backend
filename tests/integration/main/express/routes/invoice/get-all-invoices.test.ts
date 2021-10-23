@@ -1,7 +1,7 @@
 import { ITask, IUser } from '@/domain'
 
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { CollectionProtocol } from '@/infra/database/protocols'
+import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
 
@@ -21,8 +21,8 @@ describe('get /invoice/get-all-invoices', () => {
   let fakeTask: ITask
   let fakeUser: IUser
   let refreshToken: string
-  let taskCollection: CollectionProtocol
-  let userCollection: CollectionProtocol
+  let taskCollection: ICollectionMethods
+  let userCollection: ICollectionMethods
 
   afterAll(async () => {
     await client.disconnect()
@@ -119,9 +119,7 @@ describe('get /invoice/get-all-invoices', () => {
     await taskCollection.insertOne(fakeTask)
 
     await request(app)
-      .get(
-        `/api/v1/invoice/get-all-invoices?type=${fakeTask.type}&sort=usd,-date.full&limit=2&page=1`
-      )
+      .get(`/api/v1/invoice/get-all-invoices?type=${fakeTask.type}&sort=usd,-date.full&limit=2&page=1`)
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)
   }, 12000)
@@ -133,9 +131,7 @@ describe('get /invoice/get-all-invoices', () => {
     await taskCollection.insertOne(fakeTask)
 
     await request(app)
-      .get(
-        `/api/v1/invoice/get-all-invoices?type=both&taskId=${fakeTask.taskId}&sort=usd,-date.full&limit=2&page=1`
-      )
+      .get(`/api/v1/invoice/get-all-invoices?type=both&taskId=${fakeTask.taskId}&sort=usd,-date.full&limit=2&page=1`)
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)
   }, 12000)
