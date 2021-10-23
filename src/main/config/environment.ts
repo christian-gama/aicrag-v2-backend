@@ -13,9 +13,9 @@ export const environment = {
     MONGO_URL: (process.env.MONGO_URL as string)
   },
   JWT: {
-    ACCESS_EXPIRES: (process.env.JWT_EXPIRES as string).toLowerCase(),
+    ACCESS_EXPIRES: (process.env.JWT_EXPIRES as string),
     ACCESS_SECRET: (process.env.JWT_SECRET as string),
-    REFRESH_EXPIRES: (process.env.JWT_REFRESH_EXPIRES as string).toLowerCase(),
+    REFRESH_EXPIRES: (process.env.JWT_REFRESH_EXPIRES as string),
     REFRESH_SECRET: (process.env.JWT_REFRESH_SECRET as string)
   },
   MAILER: {
