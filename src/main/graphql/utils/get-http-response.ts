@@ -11,18 +11,18 @@ export const getHttpResponse = (httpResponse: HttpResponse): any => {
     case 204:
       return httpResponse
     case 400:
-      throw apolloErrorAdapter(httpResponse.data.message, 400, 'BadRequestError')
+      throw apolloErrorAdapter('BadRequestError', httpResponse.data.message, 400)
     case 401:
-      throw apolloErrorAdapter(httpResponse.data.message, 401, 'UnauthorizedError')
+      throw apolloErrorAdapter('UnauthorizedError', httpResponse.data.message, 401)
     case 403:
-      throw apolloErrorAdapter(httpResponse.data.message, 403, 'ForbiddenError')
+      throw apolloErrorAdapter('ForbiddenError', httpResponse.data.message, 403)
     case 404:
-      throw apolloErrorAdapter(httpResponse.data.message, 404, 'NotFoundError')
+      throw apolloErrorAdapter('NotFoundError', httpResponse.data.message, 404)
     case 409:
-      throw apolloErrorAdapter(httpResponse.data.message, 409, 'ConflictError')
+      throw apolloErrorAdapter('ConflictError', httpResponse.data.message, 409)
     case 429:
-      throw apolloErrorAdapter(httpResponse.data.message, 409, 'TooManyRequestsError')
+      throw apolloErrorAdapter('TooManyRequestsError', httpResponse.data.message, 429)
     default:
-      throw apolloErrorAdapter(httpResponse.data.message, 500, 'InternalError')
+      throw apolloErrorAdapter('InternalError', httpResponse.data.message, 500)
   }
 }

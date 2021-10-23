@@ -1,5 +1,5 @@
 type Mutation {
-  deleteTask(param: FindOneTaskParam!): DeleteTask!
+  deleteTask(param: FindOneTaskParam!): DeleteTask! @protected
 }
 
 type DeleteTask {

@@ -1,5 +1,5 @@
 type Mutation {
-  updateTask(param: UpdateTaskParam!, input: UpdateTaskInput!): UpdateTask!
+  updateTask(param: UpdateTaskParam!, input: UpdateTaskInput!): UpdateTask! @protected
 }
 
 type UpdateTask {

@@ -5,7 +5,7 @@ import { environment } from '@/main/config/environment'
 
 import { Request, Response } from 'express'
 
-export const apolloMiddlewareAdapter = async (
+export const contextAdapter = async (
   middleware: MiddlewareProtocol,
   req: Request,
   res: Response

@@ -1,5 +1,5 @@
 type Mutation {
-  updateEmailByCode(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
+  updateEmailByCode(input: UpdateEmailByCodeInput!): UpdateEmailByCode! @protected
 }
 
 input UpdateEmailByCodeInput {

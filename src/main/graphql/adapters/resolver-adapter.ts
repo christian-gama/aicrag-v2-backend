@@ -8,7 +8,7 @@ import {
 
 import { getHttpResponse } from '../utils'
 
-export const apolloControllerAdapter = async (
+export const resolverAdapter = async (
   controller: ControllerProtocol,
   args: any,
   context?: any

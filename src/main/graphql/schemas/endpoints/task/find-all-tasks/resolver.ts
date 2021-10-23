@@ -2,11 +2,11 @@
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
 
-import { makeUpdateTaskController } from '@/factories/controllers/task'
+import { makeFindAllTasksController } from '@/factories/controllers/task'
 
 export const resolver: Resolvers = {
-  Mutation: {
-    updateTask: async (_, args, context) =>
-      await resolverAdapter(makeUpdateTaskController(), args, context)
+  Query: {
+    findAllTasks: async (_, args, context) =>
+      await resolverAdapter(makeFindAllTasksController(), args, context)
   }
 }

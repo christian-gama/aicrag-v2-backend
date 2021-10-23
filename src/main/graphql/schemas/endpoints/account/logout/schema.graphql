@@ -1,5 +1,5 @@
 type Mutation {
-  logout: Logout!
+  logout: Logout! @protected
 }
 
 type Logout {

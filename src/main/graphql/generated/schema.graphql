@@ -1,3 +1,7 @@
+directive @partialProtected on FIELD_DEFINITION
+
+directive @protected on FIELD_DEFINITION
+
 type ActivateAccount {
   accessToken: JWT!
   refreshToken: JWT!

@@ -1,5 +1,5 @@
 type Query {
-  findOneTask(param: FindOneTaskParam!): FindOneTask!
+  findOneTask(param: FindOneTaskParam!): FindOneTask! @protected
 }
 
 type FindOneTask {

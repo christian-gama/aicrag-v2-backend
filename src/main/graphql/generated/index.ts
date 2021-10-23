@@ -726,6 +726,14 @@ export type ResolversParentTypes = {
   VerifyResetPasswordTokenInput: VerifyResetPasswordTokenInput;
 };
 
+export type PartialProtectedDirectiveArgs = { };
+
+export type PartialProtectedDirectiveResolver<Result, Parent, ContextType = any, Args = PartialProtectedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type ProtectedDirectiveArgs = { };
+
+export type ProtectedDirectiveResolver<Result, Parent, ContextType = any, Args = ProtectedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type ActivateAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivateAccount'] = ResolversParentTypes['ActivateAccount']> = {
   accessToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
   refreshToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
@@ -1051,3 +1059,7 @@ export type Resolvers<ContextType = any> = {
   VerifyResetPasswordToken?: VerifyResetPasswordTokenResolvers<ContextType>;
 };
 
+export type DirectiveResolvers<ContextType = any> = {
+  partialProtected?: PartialProtectedDirectiveResolver<any, any, ContextType>;
+  protected?: ProtectedDirectiveResolver<any, any, ContextType>;
+};

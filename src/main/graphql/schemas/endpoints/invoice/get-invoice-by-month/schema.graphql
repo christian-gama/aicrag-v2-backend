@@ -1,5 +1,5 @@
 type Query {
-  getInvoiceByMonth(query: GetInvoiceByMonthQuery!): GetInvoiceByMonth!
+  getInvoiceByMonth(query: GetInvoiceByMonthQuery!): GetInvoiceByMonth! @protected
 }
 
 type GetInvoiceByMonth {

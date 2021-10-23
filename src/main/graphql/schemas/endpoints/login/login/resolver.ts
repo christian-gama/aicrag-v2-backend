@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-import { apolloControllerAdapter } from '@/main/graphql/adapters'
+import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
 
 import { makeLoginController } from '@/factories/controllers/login'
@@ -31,10 +31,6 @@ export const resolver: Resolvers = {
     }
   },
   Mutation: {
-    login: async (_, args, context) => {
-      const response = await apolloControllerAdapter(makeLoginController(), args, context)
-
-      return response
-    }
+    login: async (_, args, context) => await resolverAdapter(makeLoginController(), args, context)
   }
 }

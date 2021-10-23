@@ -1,19 +1,21 @@
-import { createGraphqlSchema, handleStatus } from '@/main/graphql/utils'
+import { createGraphqlSchema, handleError } from '@/main/graphql/utils'
 
+import { protectedDirectiveTransformer } from '../directives'
 import { context } from './context'
 
 import { ApolloServer } from 'apollo-server-express'
 import { Express } from 'express'
 
 export default async (app: Express): Promise<ApolloServer> => {
-  const schema = createGraphqlSchema()
+  let schema = createGraphqlSchema()
+  schema = protectedDirectiveTransformer(schema)
 
   const server = new ApolloServer({
     context,
     plugins: [
       {
         requestDidStart: async () => ({
-          willSendResponse: async ({ response, errors }) => handleStatus(response, errors)
+          willSendResponse: async ({ response, errors }) => handleError(response, errors)
         })
       }
     ],

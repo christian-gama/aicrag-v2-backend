@@ -1,5 +1,5 @@
 type Mutation {
-  updateUser(input: UpdateUserInput!): UpdateUser!
+  updateUser(input: UpdateUserInput!): UpdateUser! @protected
 }
 
 input UpdateUserInput {

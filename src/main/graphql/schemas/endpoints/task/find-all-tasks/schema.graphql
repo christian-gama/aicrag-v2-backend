@@ -1,5 +1,5 @@
 type Query {
-  findAllTasks(query: FindAllTasksQuery!): FindAllTasks!
+  findAllTasks(query: FindAllTasksQuery!): FindAllTasks! @protected
 }
 
 type FindAllTasks {

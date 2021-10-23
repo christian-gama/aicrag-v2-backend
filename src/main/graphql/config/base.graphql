@@ -1,0 +1,15 @@
+directive @protected on FIELD_DEFINITION
+directive @partialProtected on FIELD_DEFINITION
+
+scalar EmailAddress
+scalar DateString
+scalar JWT
+scalar UUID
+
+type Query {
+  empty: String
+}
+
+type Mutation {
+  empty: String
+}
