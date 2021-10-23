@@ -6,17 +6,17 @@ dotenv.config({ path: path.resolve(__dirname, '../../../config.env') })
 
 export const environment = {
   COOKIES: {
-    EXPIRES: (process.env.COOKIE_EXPIRES as string),
-    SECRET: (process.env.COOKIE_SECRET as string)
+    EXPIRES: (process.env.COOKIE_EXPIRES as string) ?? '30s',
+    SECRET: (process.env.COOKIE_SECRET as string) ?? 'Development_Secret_Key'
   },
   DB: {
     MONGO_URL: (process.env.MONGO_URL as string)
   },
   JWT: {
-    ACCESS_EXPIRES: (process.env.JWT_EXPIRES as string),
-    ACCESS_SECRET: (process.env.JWT_SECRET as string),
-    REFRESH_EXPIRES: (process.env.JWT_REFRESH_EXPIRES as string),
-    REFRESH_SECRET: (process.env.JWT_REFRESH_SECRET as string)
+    ACCESS_EXPIRES: (process.env.JWT_EXPIRES as string) ?? '30s',
+    ACCESS_SECRET: (process.env.JWT_SECRET as string) ?? 'Development_Secret_Key',
+    REFRESH_EXPIRES: (process.env.JWT_REFRESH_EXPIRES as string) ?? '30s',
+    REFRESH_SECRET: (process.env.JWT_REFRESH_SECRET as string) ?? 'Development_Secret_Key'
   },
   MAILER: {
     MAILTRAP: {
