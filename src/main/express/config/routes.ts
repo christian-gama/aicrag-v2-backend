@@ -1,7 +1,6 @@
 import { environment } from '@/main/config/environment'
 
 import { notFound, errorRequestHandler } from '../middlewares'
-import { isLoggedInMiddleware } from '../routes'
 import accountRoutes from '../routes/account-routes'
 import invoiceRoutes from '../routes/invoice-routes'
 import loginRoutes from '../routes/login-routes'
@@ -13,7 +12,6 @@ import tokenRoutes from '../routes/token-routes'
 import { Express } from 'express'
 
 export default (app: Express): void => {
-  app.use(isLoggedInMiddleware)
   app.use('/api/v1/account', accountRoutes)
   app.use('/api/v1/invoice', invoiceRoutes)
   app.use('/api/v1/login', loginRoutes)
