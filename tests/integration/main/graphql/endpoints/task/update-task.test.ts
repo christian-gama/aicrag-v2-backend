@@ -79,7 +79,16 @@ describe('mutation updateTask', () => {
                   taskId
                   type
                   usd
-                  user
+                  user {
+                    personal {
+                      email
+                      name
+                      id
+                    }
+                    settings {
+                      currency
+                    }
+                  }
               }
             }
             ... on UpdateTaskNoChanges {

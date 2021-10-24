@@ -71,7 +71,16 @@ describe('query getInvoiceByMonth', () => {
               taskId
               type
               usd
-              user
+              user {
+                personal {
+                  email
+                  name
+                  id
+                }
+                settings {
+                  currency
+                }
+              }
           }
           page
         }

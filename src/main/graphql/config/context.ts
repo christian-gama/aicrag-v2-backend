@@ -1,11 +1,8 @@
-import { makeIsLoggedInMiddleware } from '@/factories/middlewares'
 
-import { contextAdapter } from '../adapters'
+import { makeUserDataLoader } from './data-loaders'
 
 export const context = async ({ req, res }): Promise<Record<string, any>> => {
-  const isLoggedIn = await contextAdapter(makeIsLoggedInMiddleware(), req, res)
+  const userDataLoader = makeUserDataLoader()
 
-  if (isLoggedIn.data.user) req.user = isLoggedIn.data.user
-
-  return { req, res }
+  return { req, res, userDataLoader }
 }

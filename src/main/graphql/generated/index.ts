@@ -381,7 +381,7 @@ export type Task = {
   taskId: Scalars['String'];
   type: Scalars['String'];
   usd: Scalars['Float'];
-  user: Scalars['UUID'];
+  user: PublicUser;
 };
 
 export type TaskDate = {
@@ -934,7 +934,7 @@ export type TaskResolvers<ContextType = any, ParentType extends ResolversParentT
   taskId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   usd?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

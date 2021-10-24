@@ -76,7 +76,16 @@ describe('mutation createTask', () => {
               taskId
               type
               usd
-              user
+              user {
+                personal {
+                  email
+                  name
+                  id
+                }
+                settings {
+                  currency
+                }
+              }
           }
         }
       }

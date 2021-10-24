@@ -251,7 +251,7 @@ type Task {
   taskId: String!
   type: String!
   usd: Float!
-  user: UUID!
+  user: PublicUser!
 }
 
 type TaskDate {
