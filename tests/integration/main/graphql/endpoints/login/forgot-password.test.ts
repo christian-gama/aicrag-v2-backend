@@ -87,10 +87,6 @@ describe('mutation forgotPassword', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken}`)
-      .send({ query })
-      .expect(403)
+    await request(app).post('/graphql').set('Cookie', `refreshToken=${refreshToken}`).send({ query }).expect(403)
   })
 })

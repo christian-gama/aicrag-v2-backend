@@ -85,11 +85,7 @@ describe('mutation activateAccount', () => {
     await userCollection.insertOne(fakeUser)
     query = query.replace('any_code', 'invalid_code')
 
-    await request(app)
-      .post('/graphql')
-      .set('Cookie', `accessToken=${accessToken}`)
-      .send({ query })
-      .expect(400)
+    await request(app).post('/graphql').set('Cookie', `accessToken=${accessToken}`).send({ query }).expect(400)
   })
 
   it('should return 400 if code is expired', async () => {
@@ -98,11 +94,7 @@ describe('mutation activateAccount', () => {
     fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .post('/graphql')
-      .set('Cookie', `accessToken=${accessToken}`)
-      .send({ query })
-      .expect(400)
+    await request(app).post('/graphql').set('Cookie', `accessToken=${accessToken}`).send({ query }).expect(400)
   })
 
   it('should return 400 if account is already activated', async () => {
@@ -111,10 +103,6 @@ describe('mutation activateAccount', () => {
     fakeUser.settings.accountActivated = true
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .post('/graphql')
-      .set('Cookie', `accessToken=${accessToken}`)
-      .send({ query })
-      .expect(400)
+    await request(app).post('/graphql').set('Cookie', `accessToken=${accessToken}`).send({ query }).expect(400)
   })
 })
