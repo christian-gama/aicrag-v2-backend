@@ -147,6 +147,7 @@ export type GetInvoiceByMonthQuery = {
   month: Scalars['String'];
   page?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
+  taskId?: Maybe<Scalars['String']>;
   type: GetInvoiceByMonthType;
   year: Scalars['String'];
 };
@@ -193,7 +194,6 @@ export type Mutation = {
   updatePassword: UpdatePassword;
   updateTask: UpdateTask;
   updateUser: UpdateUser;
-  verifyResetPasswordToken: VerifyResetPasswordToken;
 };
 
 
@@ -267,11 +267,6 @@ export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
-
-export type MutationVerifyResetPasswordTokenArgs = {
-  param: VerifyResetPasswordTokenInput;
-};
-
 export type PublicUser = {
   __typename?: 'PublicUser';
   personal: PublicUserPersonal;
@@ -297,6 +292,7 @@ export type Query = {
   findOneTask: FindOneTask;
   getAllInvoices: GetAllInvoices;
   getInvoiceByMonth: GetInvoiceByMonth;
+  verifyResetPasswordToken: VerifyResetPasswordToken;
 };
 
 
@@ -317,6 +313,11 @@ export type QueryGetAllInvoicesArgs = {
 
 export type QueryGetInvoiceByMonthArgs = {
   query: GetInvoiceByMonthQuery;
+};
+
+
+export type QueryVerifyResetPasswordTokenArgs = {
+  param: VerifyResetPasswordTokenInput;
 };
 
 export type ResetPassword = {
@@ -414,7 +415,6 @@ export type UpdateEmailByCode = {
 };
 
 export type UpdateEmailByCodeInput = {
-  email: Scalars['EmailAddress'];
   emailCode: Scalars['String'];
 };
 
@@ -429,8 +429,10 @@ export type UpdatePasswordInput = {
   passwordConfirmation: Scalars['String'];
 };
 
-export type UpdateTask = {
-  __typename?: 'UpdateTask';
+export type UpdateTask = UpdateTaskHasChanges | UpdateTaskNoChanges;
+
+export type UpdateTaskHasChanges = {
+  __typename?: 'UpdateTaskHasChanges';
   task: Task;
 };
 
@@ -441,6 +443,11 @@ export type UpdateTaskInput = {
   status?: Maybe<TaskStatus>;
   taskId?: Maybe<Scalars['String']>;
   type?: Maybe<TaskType>;
+};
+
+export type UpdateTaskNoChanges = {
+  __typename?: 'UpdateTaskNoChanges';
+  message: Scalars['String'];
 };
 
 export type UpdateTaskParam = {
@@ -639,8 +646,10 @@ export type ResolversTypes = {
   UpdateEmailByCodeInput: UpdateEmailByCodeInput;
   UpdatePassword: ResolverTypeWrapper<UpdatePassword>;
   UpdatePasswordInput: UpdatePasswordInput;
-  UpdateTask: ResolverTypeWrapper<UpdateTask>;
+  UpdateTask: ResolversTypes['UpdateTaskHasChanges'] | ResolversTypes['UpdateTaskNoChanges'];
+  UpdateTaskHasChanges: ResolverTypeWrapper<UpdateTaskHasChanges>;
   UpdateTaskInput: UpdateTaskInput;
+  UpdateTaskNoChanges: ResolverTypeWrapper<UpdateTaskNoChanges>;
   UpdateTaskParam: UpdateTaskParam;
   UpdateUser: ResolversTypes['UpdateUserHasChanges'] | ResolversTypes['UpdateUserNoChanges'];
   UpdateUserHasChanges: ResolverTypeWrapper<UpdateUserHasChanges>;
@@ -711,8 +720,10 @@ export type ResolversParentTypes = {
   UpdateEmailByCodeInput: UpdateEmailByCodeInput;
   UpdatePassword: UpdatePassword;
   UpdatePasswordInput: UpdatePasswordInput;
-  UpdateTask: UpdateTask;
+  UpdateTask: ResolversParentTypes['UpdateTaskHasChanges'] | ResolversParentTypes['UpdateTaskNoChanges'];
+  UpdateTaskHasChanges: UpdateTaskHasChanges;
   UpdateTaskInput: UpdateTaskInput;
+  UpdateTaskNoChanges: UpdateTaskNoChanges;
   UpdateTaskParam: UpdateTaskParam;
   UpdateUser: ResolversParentTypes['UpdateUserHasChanges'] | ResolversParentTypes['UpdateUserNoChanges'];
   UpdateUserHasChanges: UpdateUserHasChanges;
@@ -858,7 +869,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updatePassword?: Resolver<ResolversTypes['UpdatePassword'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
   updateUser?: Resolver<ResolversTypes['UpdateUser'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
-  verifyResetPasswordToken?: Resolver<ResolversTypes['VerifyResetPasswordToken'], ParentType, ContextType, RequireFields<MutationVerifyResetPasswordTokenArgs, 'param'>>;
 };
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
@@ -885,6 +895,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findOneTask?: Resolver<ResolversTypes['FindOneTask'], ParentType, ContextType, RequireFields<QueryFindOneTaskArgs, 'param'>>;
   getAllInvoices?: Resolver<ResolversTypes['GetAllInvoices'], ParentType, ContextType, RequireFields<QueryGetAllInvoicesArgs, 'query'>>;
   getInvoiceByMonth?: Resolver<ResolversTypes['GetInvoiceByMonth'], ParentType, ContextType, RequireFields<QueryGetInvoiceByMonthArgs, 'query'>>;
+  verifyResetPasswordToken?: Resolver<ResolversTypes['VerifyResetPasswordToken'], ParentType, ContextType, RequireFields<QueryVerifyResetPasswordTokenArgs, 'param'>>;
 };
 
 export type ResetPasswordResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResetPassword'] = ResolversParentTypes['ResetPassword']> = {
@@ -957,7 +968,16 @@ export type UpdatePasswordResolvers<ContextType = any, ParentType extends Resolv
 };
 
 export type UpdateTaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateTask'] = ResolversParentTypes['UpdateTask']> = {
+  __resolveType: TypeResolveFn<'UpdateTaskHasChanges' | 'UpdateTaskNoChanges', ParentType, ContextType>;
+};
+
+export type UpdateTaskHasChangesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateTaskHasChanges'] = ResolversParentTypes['UpdateTaskHasChanges']> = {
   task?: Resolver<ResolversTypes['Task'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdateTaskNoChangesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateTaskNoChanges'] = ResolversParentTypes['UpdateTaskNoChanges']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1049,6 +1069,8 @@ export type Resolvers<ContextType = any> = {
   UpdateEmailByCode?: UpdateEmailByCodeResolvers<ContextType>;
   UpdatePassword?: UpdatePasswordResolvers<ContextType>;
   UpdateTask?: UpdateTaskResolvers<ContextType>;
+  UpdateTaskHasChanges?: UpdateTaskHasChangesResolvers<ContextType>;
+  UpdateTaskNoChanges?: UpdateTaskNoChangesResolvers<ContextType>;
   UpdateUser?: UpdateUserResolvers<ContextType>;
   UpdateUserHasChanges?: UpdateUserHasChangesResolvers<ContextType>;
   UpdateUserNoChanges?: UpdateUserNoChangesResolvers<ContextType>;

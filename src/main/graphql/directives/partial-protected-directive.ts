@@ -5,7 +5,7 @@ import { apolloErrorAdapter } from '../adapters'
 import { mapSchema, MapperKind, getDirective } from '@graphql-tools/utils'
 import { GraphQLSchema } from 'graphql'
 
-export const protectedDirectiveTransformer = (schema: GraphQLSchema): GraphQLSchema => {
+export const partialProtectedDirectiveTransformer = (schema: GraphQLSchema): GraphQLSchema => {
   return mapSchema(schema, {
     [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
       const protectedDirective = getDirective(schema, fieldConfig, 'partialProtected')

@@ -124,6 +124,7 @@ input GetInvoiceByMonthQuery {
   month: String!
   page: String
   sort: String
+  taskId: String
   type: GetInvoiceByMonthType!
   year: String!
 }
@@ -169,7 +170,6 @@ type Mutation {
   updatePassword(input: UpdatePasswordInput!): UpdatePassword!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
   updateUser(input: UpdateUserInput!): UpdateUser!
-  verifyResetPasswordToken(param: VerifyResetPasswordTokenInput!): VerifyResetPasswordToken!
 }
 
 type PublicUser {
@@ -193,6 +193,7 @@ type Query {
   findOneTask(param: FindOneTaskParam!): FindOneTask!
   getAllInvoices(query: GetAllInvoicesQuery!): GetAllInvoices!
   getInvoiceByMonth(query: GetInvoiceByMonthQuery!): GetInvoiceByMonth!
+  verifyResetPasswordToken(param: VerifyResetPasswordTokenInput!): VerifyResetPasswordToken!
 }
 
 type ResetPassword {
@@ -283,7 +284,6 @@ type UpdateEmailByCode {
 }
 
 input UpdateEmailByCodeInput {
-  email: EmailAddress!
   emailCode: String!
 }
 
@@ -297,7 +297,9 @@ input UpdatePasswordInput {
   passwordConfirmation: String!
 }
 
-type UpdateTask {
+union UpdateTask = UpdateTaskHasChanges | UpdateTaskNoChanges
+
+type UpdateTaskHasChanges {
   task: Task!
 }
 
@@ -308,6 +310,10 @@ input UpdateTaskInput {
   status: TaskStatus
   taskId: String
   type: TaskType
+}
+
+type UpdateTaskNoChanges {
+  message: String!
 }
 
 input UpdateTaskParam {

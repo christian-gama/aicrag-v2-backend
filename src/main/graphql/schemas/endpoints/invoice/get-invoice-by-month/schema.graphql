@@ -11,10 +11,11 @@ type GetInvoiceByMonth {
 
 input GetInvoiceByMonthQuery {
   limit: String
+  month: String!
   page: String
   sort: String
+  taskId: String
   type: GetInvoiceByMonthType!
-  month: String!
   year: String!
 }
 

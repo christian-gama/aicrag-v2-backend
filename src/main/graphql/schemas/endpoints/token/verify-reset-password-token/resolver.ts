@@ -5,7 +5,7 @@ import { Resolvers } from '@/main/graphql/generated'
 import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/token'
 
 export const resolver: Resolvers = {
-  Mutation: {
+  Query: {
     verifyResetPasswordToken: async (_, args, context) =>
       await resolverAdapter(makeVerifyResetPasswordTokenController(), args, context)
   }

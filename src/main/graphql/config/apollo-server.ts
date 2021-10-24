@@ -1,6 +1,6 @@
 import { createGraphqlSchema, handleError } from '@/main/graphql/utils'
 
-import { protectedDirectiveTransformer } from '../directives'
+import { protectedDirectiveTransformer, partialProtectedDirectiveTransformer } from '../directives'
 import { context } from './context'
 
 import { ApolloServer } from 'apollo-server-express'
@@ -9,6 +9,7 @@ import { Express } from 'express'
 export default async (app: Express): Promise<ApolloServer> => {
   let schema = createGraphqlSchema()
   schema = protectedDirectiveTransformer(schema)
+  schema = partialProtectedDirectiveTransformer(schema)
 
   const server = new ApolloServer({
     context,

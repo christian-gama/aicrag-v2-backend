@@ -2,8 +2,12 @@ type Mutation {
   updateTask(param: UpdateTaskParam!, input: UpdateTaskInput!): UpdateTask! @protected
 }
 
-type UpdateTask {
+type UpdateTaskHasChanges {
   task: Task!
+}
+
+type UpdateTaskNoChanges {
+  message: String!
 }
 
 input UpdateTaskParam {
@@ -18,3 +22,5 @@ input UpdateTaskInput {
   status: TaskStatus
   type: TaskType
 }
+
+union UpdateTask = UpdateTaskHasChanges | UpdateTaskNoChanges
