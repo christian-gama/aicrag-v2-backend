@@ -10,7 +10,10 @@ export const environment = {
     SECRET: (process.env.COOKIE_SECRET as string) ?? 'Development_Secret_Key'
   },
   DB: {
-    MONGO_URL: process.env.MONGO_URL as string
+    MONGO_URL:
+      process.env.NODE_ENV === 'production'
+        ? (process.env.MONGO_URL as string)
+        : (process.env.MONGO_LOCAL_URL as string)
   },
   JWT: {
     ACCESS_EXPIRES: (process.env.JWT_EXPIRES as string) ?? '30s',
