@@ -123,16 +123,4 @@ describe('get /invoice/get-all-invoices', () => {
       .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
       .expect(200)
   }, 12000)
-
-  it('should return 200 if all validations succeeds and find a task with a taskId', async () => {
-    expect.assertions(0)
-
-    await userCollection.insertOne(fakeUser)
-    await taskCollection.insertOne(fakeTask)
-
-    await request(app)
-      .get(`/api/v1/invoice/get-all-invoices?type=both&taskId=${fakeTask.taskId}&sort=usd,-date.full&limit=2&page=1`)
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
-      .expect(200)
-  }, 12000)
 })
