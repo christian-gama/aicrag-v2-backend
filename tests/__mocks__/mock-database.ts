@@ -84,7 +84,7 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
       return await Promise.resolve(fakeTask)
     }
 
-    async updateTask<T extends ITask | null>(id: string, update: ITaskDbFilter): Promise<T> {
+    async updateTask<T extends ITask | null>(id: string, userId: string, update: ITaskDbFilter): Promise<T> {
       return (await Promise.resolve(fakeTask)) as T
     }
   }

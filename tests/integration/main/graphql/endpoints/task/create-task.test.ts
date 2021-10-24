@@ -76,7 +76,7 @@ describe('mutation createTask', () => {
               taskId
               type
               usd
-              userId
+              user
           }
         }
       }

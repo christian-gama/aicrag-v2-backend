@@ -145,7 +145,7 @@ describe('mongoAdapter', () => {
         [
           {
             $match: {
-              userId: fakeTask.userId
+              user: fakeTask.user
             }
           }
         ],
@@ -259,7 +259,7 @@ describe('mongoAdapter', () => {
 
       const query = { fields: '-duration' }
 
-      const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+      const result = await collection.findAll({ user: fakeUser.personal.id }, query)
 
       expect(result.documents[0]).not.toHaveProperty('duration')
 
@@ -276,7 +276,7 @@ describe('mongoAdapter', () => {
 
       const query = { fields: 'duration,-_id' }
 
-      const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+      const result = await collection.findAll({ user: fakeUser.personal.id }, query)
 
       expect(Object.keys(result.documents[0])).toHaveLength(1)
 
@@ -297,7 +297,7 @@ describe('mongoAdapter', () => {
 
       const query = { fields: 'duration', sort: 'duration,-usd' }
 
-      const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+      const result = await collection.findAll({ user: fakeUser.personal.id }, query)
 
       expect(result.documents[1].duration).toBeGreaterThanOrEqual(result.documents[0].duration)
 
@@ -324,7 +324,7 @@ describe('mongoAdapter', () => {
 
       const query = { limit: '2', page: '1' }
 
-      const result = await collection.findAll({ userId: fakeUser.personal.id }, query)
+      const result = await collection.findAll({ user: fakeUser.personal.id }, query)
 
       expect(result.documents).toHaveLength(2)
 
@@ -349,7 +349,7 @@ describe('mongoAdapter', () => {
       await collection.insertOne(fakeTask5)
       await collection.insertOne(fakeTask6)
 
-      const result = await collection.findAll({ userId: fakeUser.personal.id }, {})
+      const result = await collection.findAll({ user: fakeUser.personal.id }, {})
 
       expect(result.documents).toHaveLength(6)
 

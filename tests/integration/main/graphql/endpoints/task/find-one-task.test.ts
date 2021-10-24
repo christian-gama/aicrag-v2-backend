@@ -69,7 +69,7 @@ describe('query findOneTask', () => {
               taskId
               type
               usd
-              userId
+              user
           }
         }
       }

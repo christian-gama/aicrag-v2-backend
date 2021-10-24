@@ -33,8 +33,8 @@ export const resolver: Resolvers = {
     usd: ({ usd }) => {
       return usd
     },
-    userId: ({ userId }) => {
-      return userId
+    user: ({ user }) => {
+      return user
     }
   }
 }

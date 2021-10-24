@@ -20,5 +20,5 @@ export interface ITask {
   taskId: string
   type: 'QA' | 'TX'
   usd: number
-  userId: string
+  user: string
 }

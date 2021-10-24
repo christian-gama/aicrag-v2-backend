@@ -33,7 +33,7 @@ export class CreateTaskRepository implements ICreateTaskRepository {
       taskId: taskId ?? '',
       type,
       usd: Math.round(usd * 100) / 100,
-      userId: user.personal.id
+      user: user.personal.id
     }
   }
 }

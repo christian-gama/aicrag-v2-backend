@@ -62,8 +62,8 @@ export const UserSchema = {
               description: 'must be a string and is required'
             },
             handicap: {
-              bsonType: 'decimal',
-              description: 'must be a decimal and is required'
+              bsonType: ['int', 'double'],
+              description: 'must be an int or double and is required'
             }
           }
         },
@@ -105,8 +105,8 @@ export const UserSchema = {
           }
         },
         tokenVersion: {
-          bsonType: 'int32',
-          description: 'must be a int32 is required'
+          bsonType: 'number',
+          description: 'must be a number is required'
         }
       }
     }

@@ -91,7 +91,9 @@ export class UpdateTaskController implements IController {
     if (isEmpty) return this.httpHelper.ok({ message: 'No changes were made' })
     else update['logs.updatedAt'] = new Date(Date.now())
 
-    const updatedTask = await this.taskRepository.updateTask(task.id, update)
+    const updatedTask = await this.taskRepository.updateTask(task.id, user.personal.id, update)
+    console.log(updatedTask)
+    if (!updatedTask) return this.httpHelper.badRequest(new TaskNotFoundError())
 
     return this.httpHelper.ok({ task: updatedTask })
   }

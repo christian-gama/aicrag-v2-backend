@@ -110,7 +110,7 @@ describe('taskRepository', () => {
         taskId: fakeTask.taskId,
         type: fakeTask.type,
         usd: fakeTask.usd,
-        userId: fakeUser.personal.id
+        user: fakeUser.personal.id
       })
     })
 
@@ -188,7 +188,7 @@ describe('taskRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(task.id, { taskId: 'changed_task_id' })
+      const updatedTask = await sut.updateTask(task.id, task.user, { taskId: 'changed_task_id' })
 
       expect(updatedTask).toHaveProperty('_id')
     })
@@ -198,7 +198,7 @@ describe('taskRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(task.id, { taskId: 'changed_task_id' })
+      const updatedTask = await sut.updateTask(task.id, task.user, { taskId: 'changed_task_id' })
 
       expect(updatedTask?.taskId).toBe('changed_task_id')
     })
@@ -208,7 +208,7 @@ describe('taskRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(task.id, {
+      const updatedTask = await sut.updateTask(task.id, task.user, {
         commentary: 'changed_commentary',
         taskId: 'changed_task_id'
       })
@@ -222,7 +222,7 @@ describe('taskRepository', () => {
 
       const { fakeTask, sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(fakeTask.id, { commentary: 'changed_commentary' })
+      const updatedTask = await sut.updateTask(fakeTask.id, fakeTask.user, { commentary: 'changed_commentary' })
 
       expect(updatedTask).toBeNull()
     })

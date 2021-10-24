@@ -25,7 +25,7 @@ export class InvoiceRepository implements IGetInvoiceByMonth {
       [
         {
           $match: {
-            $and: [{ type: type }, { userId }]
+            $and: [{ type: type }, { user: userId }]
           }
         },
         {
@@ -78,7 +78,7 @@ export class InvoiceRepository implements IGetInvoiceByMonth {
             $and: [{ 'date.month': { $eq: +month } }, { 'date.year': { $eq: +year } }],
             taskId: _taskId,
             type: _type,
-            userId
+            user: userId
           }
         }
       ],

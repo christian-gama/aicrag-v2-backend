@@ -143,13 +143,13 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes commentary', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.commentary = 'any_commentary'
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, fakeUser.personal.id, {
       commentary: 'any_commentary',
       'logs.updatedAt': new Date()
     })
@@ -191,7 +191,7 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes date', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     const date = new Date()
 
@@ -202,7 +202,7 @@ describe('updateTaskController', () => {
     // Must parse date because of innacuracy, which makes the test fail
     const parsedDate = new Date(Date.parse(date.toLocaleString()))
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, fakeUser.personal.id, {
       'date.day': parsedDate.getDate(),
       'date.full': parsedDate,
       'date.hours': parsedDate.toLocaleTimeString(),
@@ -266,13 +266,13 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes duration', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.duration = 15
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, fakeUser.personal.id, {
       duration: 15,
       'logs.updatedAt': new Date(Date.now()),
       type: 'TX',
@@ -330,13 +330,13 @@ describe('updateTaskController', () => {
   it('should call updateTask with correct values if changes status', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.status = 'in_progress'
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       status: 'in_progress'
     })
@@ -354,16 +354,28 @@ describe('updateTaskController', () => {
     expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('taskId')))
   })
 
+  it('should return badRequest if is unable to update the task', async () => {
+    expect.hasAssertions()
+
+    const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
+    jest.spyOn(taskRepositoryStub, 'updateTask').mockReturnValueOnce(Promise.resolve(null))
+    request.body.taskId = 'any_value'
+
+    const error = await sut.handle(request)
+
+    expect(error).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
+  })
+
   it('should call updateTask with correct values if changes taskId', async () => {
     expect.hasAssertions()
 
-    const { fakeTask, request, sut, taskRepositoryStub } = makeSut()
+    const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
     request.body.taskId = 'any_value'
 
     await sut.handle(request)
 
-    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, {
+    expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       taskId: 'any_value'
     })

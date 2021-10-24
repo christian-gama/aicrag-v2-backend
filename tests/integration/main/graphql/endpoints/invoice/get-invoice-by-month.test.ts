@@ -71,7 +71,7 @@ describe('query getInvoiceByMonth', () => {
               taskId
               type
               usd
-              userId
+              user
           }
           page
         }

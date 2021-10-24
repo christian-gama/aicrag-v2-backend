@@ -64,7 +64,7 @@ describe('createTaskRepository', () => {
       taskId,
       type,
       usd,
-      userId: user.personal.id
+      user: user.personal.id
     })
   })
 
@@ -101,7 +101,7 @@ describe('createTaskRepository', () => {
       taskId: '',
       type,
       usd,
-      userId: user.personal.id
+      user: user.personal.id
     })
   })
 

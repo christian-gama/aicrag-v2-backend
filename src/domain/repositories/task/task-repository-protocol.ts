@@ -72,5 +72,5 @@ export interface IUpdateTask {
    * @param update Properties that will be updated.
    * @returns Return the updated task or null.
    */
-  updateTask: <T extends ITask | null>(id: string, update: ITaskDbFilter) => Promise<T>
+  updateTask: <T extends ITask | null>(id: string, userId: string, update: ITaskDbFilter) => Promise<T>
 }

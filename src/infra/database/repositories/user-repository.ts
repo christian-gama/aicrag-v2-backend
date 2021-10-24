@@ -29,6 +29,8 @@ export class UserRepository implements IUserRepository {
 
     const user = await this.createUserRepository.createUser(signUpUserCredentials)
 
+    console.log(user)
+
     return await userCollection.insertOne(user)
   }
 

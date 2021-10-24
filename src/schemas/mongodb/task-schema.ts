@@ -3,7 +3,7 @@ export const TaskSchema = {
   validator: {
     $jsonSchema: {
       bsonType: 'object',
-      required: ['commentary', 'date', 'duration', 'id', 'logs', 'taskId', 'type', 'userId'],
+      required: ['commentary', 'date', 'duration', 'id', 'logs', 'taskId', 'type', 'usd', 'user'],
       properties: {
         commentary: {
           bsonType: 'string',
@@ -69,7 +69,11 @@ export const TaskSchema = {
           enum: ['QA', 'TX'],
           description: 'can only be one of the enum values and is required'
         },
-        userId: {
+        usd: {
+          bsonType: ['int', 'double'],
+          description: 'must be an int or double and is required'
+        },
+        user: {
           bsonType: 'string',
           description: 'must be a string and is required'
         }

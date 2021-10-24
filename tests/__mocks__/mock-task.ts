@@ -37,6 +37,6 @@ export const makeFakeTask = (fakeUser: IUser): ITask => {
     taskId: faker.datatype.uuid(),
     type: 'TX',
     usd: Math.round((duration / 60) * 65 * fakeUser.settings.handicap * 100) / 100,
-    userId: fakeUser.personal.id
+    user: fakeUser.personal.id
   }
 }
