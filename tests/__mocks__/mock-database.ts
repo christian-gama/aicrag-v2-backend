@@ -8,7 +8,7 @@ import {
 } from '@/domain/repositories/invoice'
 import { ITaskRepository } from '@/domain/repositories/task'
 
-import { IQueryResult } from '@/infra/database/protocols/queries-protocol'
+import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
 import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options'
 import { IUserDbFilter } from '@/infra/database/protocols/update-user-options'
 
@@ -91,6 +91,15 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
 
 export const makeUserRepositoryStub = (fakeUser: IUser): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
+    async findAllById<T extends IUser>(ids: string[], query: IQuery): Promise<IQueryResult<T>> {
+      return (await Promise.resolve({
+        count: 1,
+        displaying: 1,
+        documents: [fakeUser],
+        page: '1 of 1'
+      })) as IQueryResult<T>
+    }
+
     async save (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
       return await Promise.resolve(fakeUser)
     }

@@ -2,9 +2,19 @@ import { ISignUpUserData, IUser } from '@/domain'
 import { IUserRepository, ICreateUserRepository } from '@/domain/repositories'
 
 import { IDatabase, IUserDbFilter } from '../protocols'
+import { IQuery, IQueryResult } from '../protocols/queries-protocol'
 
 export class UserRepository implements IUserRepository {
   constructor (private readonly createUserRepository: ICreateUserRepository, private readonly database: IDatabase) {}
+
+  async findAllById<T extends IUser>(ids: string[], query: IQuery): Promise<IQueryResult<T>> {
+    const userCollection = this.database.collection('users')
+
+    const filter = { 'personal.id': { $in: ids } }
+    const result = await userCollection.findAll<IUser>(filter, query)
+
+    return result as IQueryResult<T>
+  }
 
   async findByEmail (email: string): Promise<IUser | null> {
     const userCollection = this.database.collection('users')
