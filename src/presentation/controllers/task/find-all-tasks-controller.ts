@@ -15,15 +15,13 @@ export class FindAllTasksController implements IController {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const query = httpRequest.query
     const user = httpRequest.user
-
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
+    const query = httpRequest.query
+
     const error = await this.queryValidator.validate(query)
-    if (error) {
-      return this.httpHelper.badRequest(error)
-    }
+    if (error) return this.httpHelper.badRequest(error)
 
     const result = await this.taskRepository.findAllTasks(user.personal.id, query)
 

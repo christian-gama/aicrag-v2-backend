@@ -21,11 +21,11 @@ export class UpdateTaskController implements IController {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    const user = httpRequest.user
+    if (!user) return this.httpHelper.unauthorized(new MustLoginError())
+
     const data = httpRequest.body
     const params = httpRequest.params
-    const user = httpRequest.user
-
-    if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     const error = await this.validateTaskParam.validate(params)
     if (error) return this.httpHelper.badRequest(error)

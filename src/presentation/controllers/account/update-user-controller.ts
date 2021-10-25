@@ -22,11 +22,12 @@ export class UpdateUserController implements IController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = httpRequest.user
-    const data = httpRequest.body
-
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
+    const data = httpRequest.body
+
     const update = {}
+
     if (data.currency) {
       const error = await this.validateCurrency.validate(data)
       if (error) return this.httpHelper.badRequest(error)

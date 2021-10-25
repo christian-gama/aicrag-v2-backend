@@ -18,8 +18,7 @@ export class VerifyRefreshToken implements IVerifyToken {
     if (decodedRefreshToken instanceof Error) return decodedRefreshToken
 
     const user = await this.userRepository.findUserById(decodedRefreshToken.userId)
-
-    if (user == null) return new InvalidTokenError()
+    if (!user) return new InvalidTokenError()
 
     if (user.tokenVersion !== +decodedRefreshToken.version) {
       return new InvalidTokenError()

@@ -10,7 +10,6 @@ export class ValidateUniqueTaskId implements IValidator {
     if (!input.taskId) return
 
     const task = await this.taskRepository.findTaskByTaskId(input.taskId, input.user.personal.id)
-
     if (task) return new ConflictParamError('taskId')
   }
 }

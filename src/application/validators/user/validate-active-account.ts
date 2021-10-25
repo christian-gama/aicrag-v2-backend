@@ -11,7 +11,6 @@ export class ValidateActiveAccount implements IValidator {
     const { email } = input
 
     const user = (await this.userRepository.findUserByEmail(email)) as IUser
-
     if (!user.settings.accountActivated) return new InactiveAccountError()
   }
 }

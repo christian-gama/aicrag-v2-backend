@@ -16,13 +16,10 @@ export class GetAllInvoicesController implements IController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = httpRequest.user
-
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     const error = await this.getAllInvoicesValidator.validate(httpRequest.query)
-    if (error) {
-      return this.httpHelper.badRequest(error)
-    }
+    if (error) return this.httpHelper.badRequest(error)
 
     const query = httpRequest.query as IQueryAllInvoices
 

@@ -10,8 +10,7 @@ export class ValidateTempEmail implements IValidator {
     const { email } = input
 
     const user = await this.userRepository.findUserByEmail(email)
-
-    if (user == null) return new UserCredentialError()
+    if (!user) return new UserCredentialError()
 
     if (!user.temporary.tempEmail) return new UserCredentialError()
   }

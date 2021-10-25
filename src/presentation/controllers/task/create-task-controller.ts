@@ -16,9 +16,9 @@ export class CreateTaskController implements IController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = httpRequest.user
-    const data = Object.assign({ user }, httpRequest.body)
-
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
+
+    const data = Object.assign({ user }, httpRequest.body)
 
     const error = await this.createTaskValidator.validate(data)
     if (error) {

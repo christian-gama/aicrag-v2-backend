@@ -24,9 +24,9 @@ export class UpdatePasswordController implements IController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = httpRequest.user
-    const data = Object.assign({ user }, httpRequest.body)
-
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
+
+    const data = Object.assign({ user }, httpRequest.body)
 
     const error = await this.updatePasswordValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)

@@ -23,7 +23,6 @@ export class SendWelcomeEmailController implements IController {
     const data = httpRequest.body
 
     const error = await this.sendWelcomeValidator.validate(data)
-
     if (error) return this.httpHelper.badRequest(error)
 
     let user = (await this.userRepository.findUserByEmail(data.email)) as IUser

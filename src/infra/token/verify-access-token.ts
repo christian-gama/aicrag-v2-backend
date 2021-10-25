@@ -18,8 +18,7 @@ export class VerifyAccessToken implements IVerifyToken {
     if (decodedAccessToken instanceof Error) return decodedAccessToken
 
     const user = await this.userRepository.findUserById(decodedAccessToken.userId)
-
-    if (user == null) return new InvalidTokenError()
+    if (!user) return new InvalidTokenError()
 
     return user
   }

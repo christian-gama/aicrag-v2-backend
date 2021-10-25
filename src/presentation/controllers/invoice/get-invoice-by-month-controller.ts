@@ -16,7 +16,6 @@ export class GetInvoiceByMonthController implements IController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = httpRequest.user
-
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     const error = await this.getInvoiceByMonthValidator.validate(httpRequest.query)

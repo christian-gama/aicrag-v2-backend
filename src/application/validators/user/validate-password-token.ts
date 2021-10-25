@@ -10,7 +10,6 @@ export class ValidatePasswordToken implements IValidator {
     const { email } = input
 
     const user = await this.userRepository.findUserByEmail(email)
-
     if (!user?.temporary.resetPasswordToken) return new MissingParamError('resetPasswordToken')
   }
 }

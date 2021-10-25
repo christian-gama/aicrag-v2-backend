@@ -18,8 +18,7 @@ export class VerifyResetPasswordToken implements IVerifyToken {
     if (decodedAccessToken instanceof Error) return decodedAccessToken
 
     const user = await this.userRepository.findUserById(decodedAccessToken.userId)
-
-    if (user == null) return new InvalidTokenError()
+    if (!user) return new InvalidTokenError()
 
     if (user.temporary.resetPasswordToken !== token) {
       return new InvalidTokenError()

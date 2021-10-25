@@ -16,15 +16,14 @@ export class FindOneTaskController implements IController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = httpRequest.user
-    const data = httpRequest.params
-
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
+
+    const data = httpRequest.params
 
     const error = await this.validateTaskParam.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
     const task = await this.taskRepository.findTaskById(data.id, user.personal.id)
-
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 
     return this.httpHelper.ok({ task })
