@@ -30,7 +30,7 @@ export class UpdateEmailByCodeController implements IController {
     Object.assign(update, this.updateEmail(user))
     Object.assign(update, this.clearTemporary(user))
 
-    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
+    const updatedUser = await this.userRepository.updateById<IUser>(user.personal.id, update)
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 

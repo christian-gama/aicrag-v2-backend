@@ -37,7 +37,7 @@ describe('logDecorator', () => {
       name: error.name,
       stack: error.stack
     }
-    const saveLogSpy = jest.spyOn(logErrorRepositoryStub, 'saveLog')
+    const saveLogSpy = jest.spyOn(logErrorRepositoryStub, 'save')
     jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(httpHelper.serverError(error)))
 
     await sut.handle({})

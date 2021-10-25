@@ -42,7 +42,7 @@ export class ResetPasswordController implements IController {
       'personal.password': hashedPassword,
       'temporary.resetPasswordToken': null
     }
-    const updatedUser = await this.userRepository.updateUser<IUser>(response.personal.id, update)
+    const updatedUser = await this.userRepository.updateById<IUser>(response.personal.id, update)
 
     const refreshToken = await this.generateRefreshToken.generate(updatedUser)
 

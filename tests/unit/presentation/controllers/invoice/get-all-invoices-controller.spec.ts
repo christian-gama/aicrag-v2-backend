@@ -42,7 +42,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('getAllInvoices', () => {
+describe('getAll', () => {
   it('should return unauthorized if there is no user', async () => {
     expect.hasAssertions()
 
@@ -70,7 +70,7 @@ describe('getAllInvoices', () => {
 
     const { httpHelper, invoiceRepositoryStub, request, sut } = makeSut()
     jest
-      .spyOn(invoiceRepositoryStub, 'getAllInvoices')
+      .spyOn(invoiceRepositoryStub, 'getAll')
       .mockReturnValueOnce(Promise.resolve({ count: 1, displaying: 1, documents: [], page: '1 of 1' }))
 
     const result = await sut.handle(request)
@@ -96,11 +96,11 @@ describe('getAllInvoices', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.query)
   })
 
-  it('should call getAllInvoices with correct data', async () => {
+  it('should call getAll with correct data', async () => {
     expect.hasAssertions()
 
     const { invoiceRepositoryStub, request, sut } = makeSut()
-    const getAllInvoicesSpy = jest.spyOn(invoiceRepositoryStub, 'getAllInvoices')
+    const getAllInvoicesSpy = jest.spyOn(invoiceRepositoryStub, 'getAll')
 
     await sut.handle(request)
 

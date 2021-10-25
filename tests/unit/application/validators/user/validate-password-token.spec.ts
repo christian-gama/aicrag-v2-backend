@@ -28,19 +28,19 @@ describe('validatePasswordToken', () => {
 
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com' }
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const result = await sut.validate(data)
 
     expect(result).toStrictEqual(new MissingParamError('resetPasswordToken'))
   })
 
-  it('should call findUserByEmail with correct value', async () => {
+  it('should call findByEmail with correct value', async () => {
     expect.hasAssertions()
 
     const { fakeUser, sut, userRepositoryStub } = makeSut()
     const data = { email: fakeUser.personal.email }
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.validate(data)
 

@@ -27,11 +27,11 @@ export class ForgotPasswordController implements IController {
     const error = await this.forgotPasswordValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    let user = (await this.userRepository.findByEmail(data.email)) as IUser
 
     const resetPasswordToken = await this.generateAccessToken.generate(user)
 
-    user = await this.userRepository.updateUser<IUser>(user.personal.id, {
+    user = await this.userRepository.updateById<IUser>(user.personal.id, {
       'temporary.resetPasswordToken': resetPasswordToken
     })
 

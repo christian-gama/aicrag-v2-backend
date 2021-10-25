@@ -14,7 +14,7 @@ export interface IFindUserByEmail {
    * @param email The email that will be searched for.
    * @returns Return a user if finds it or null if does not.
    */
-  findUserByEmail: (email: string) => Promise<IUser | null>
+  findByEmail: (email: string) => Promise<IUser | null>
 }
 
 export interface IFindUserById {
@@ -24,7 +24,7 @@ export interface IFindUserById {
    * @param id The user id that will be searched for.
    * @returns Return a user if finds it or null if does not.
    */
-  findUserById: (id: string) => Promise<IUser | null>
+  findById: (id: string) => Promise<IUser | null>
 }
 
 export interface ISaveUser {
@@ -34,7 +34,7 @@ export interface ISaveUser {
    * @param userData User data that will be saved as a user.
    * @returns Return the saved user.
    */
-  saveUser: (userData: ISignUpUserData) => Promise<IUser>
+  save: (userData: ISignUpUserData) => Promise<IUser>
 }
 
 export interface IUpdateUser {
@@ -45,5 +45,5 @@ export interface IUpdateUser {
    * @param update Object that contains the changes to be updated.
    * @returns Return a user if updates it or null if does not.
    */
-  updateUser: <T extends IUser | null>(id: string, update: IUserDbFilter) => Promise<T>
+  updateById: <T extends IUser | null>(id: string, update: IUserDbFilter) => Promise<T>
 }

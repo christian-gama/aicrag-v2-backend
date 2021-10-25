@@ -37,7 +37,7 @@ export class UpdatePasswordController implements IController {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': hashedPassword
     }
-    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
+    const updatedUser = await this.userRepository.updateById<IUser>(user.personal.id, update)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

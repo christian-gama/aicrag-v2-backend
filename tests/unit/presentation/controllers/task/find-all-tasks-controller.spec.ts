@@ -70,7 +70,7 @@ describe('findAllTasksController', () => {
 
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest
-      .spyOn(taskRepositoryStub, 'findAllTasks')
+      .spyOn(taskRepositoryStub, 'findAll')
       .mockReturnValueOnce(Promise.resolve({ count: 1, displaying: 1, documents: [], page: '1 of 1' }))
 
     const result = await sut.handle(request)
@@ -96,11 +96,11 @@ describe('findAllTasksController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.query)
   })
 
-  it('should call findAllTasks with correct data', async () => {
+  it('should call findAll with correct data', async () => {
     expect.hasAssertions()
 
     const { request, sut, taskRepositoryStub } = makeSut()
-    const findTaskByIdSpy = jest.spyOn(taskRepositoryStub, 'findAllTasks')
+    const findTaskByIdSpy = jest.spyOn(taskRepositoryStub, 'findAll')
 
     await sut.handle(request)
 

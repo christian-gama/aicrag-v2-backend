@@ -32,7 +32,7 @@ export interface IGetAllInvoices {
    * @param query Query that will refine the final result of the search.
    * @returns Return an array of tasks if finds it or an empty array if does not.
    */
-  getAllInvoices: <T extends IAllInvoicesDocument>(query: IQueryAllInvoices, userId: string) => Promise<IQueryResult<T>>
+  getAll: <T extends IAllInvoicesDocument>(query: IQueryAllInvoices, userId: string) => Promise<IQueryResult<T>>
 }
 
 export interface IGetInvoiceByMonth {
@@ -43,5 +43,5 @@ export interface IGetInvoiceByMonth {
    * @param query Query that will refine the final result of the search.
    * @returns Return an array of tasks if finds it or an empty array if does not.
    */
-  getInvoiceByMonth: <T extends ITask>(query: IQueryInvoice, userId: string) => Promise<IQueryResult<T>>
+  getByMonth: <T extends ITask>(query: IQueryInvoice, userId: string) => Promise<IQueryResult<T>>
 }

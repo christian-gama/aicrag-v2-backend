@@ -30,7 +30,7 @@ export class UpdateTaskController implements IController {
     const error = await this.validateTaskParam.validate(params)
     if (error) return this.httpHelper.badRequest(error)
 
-    const task = await this.taskRepository.findTaskById(params.id, user.personal.id)
+    const task = await this.taskRepository.findById(params.id, user.personal.id)
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 
     const update: Record<string, any> = {}
@@ -91,7 +91,7 @@ export class UpdateTaskController implements IController {
     if (isEmpty) return this.httpHelper.ok({ message: 'No changes were made' })
     else update['logs.updatedAt'] = new Date(Date.now())
 
-    const updatedTask = await this.taskRepository.updateTask(task.id, user.personal.id, update)
+    const updatedTask = await this.taskRepository.updateById(task.id, user.personal.id, update)
     if (!updatedTask) return this.httpHelper.badRequest(new TaskNotFoundError())
 
     const result = this.httpHelper.ok({ task: updatedTask })

@@ -35,12 +35,12 @@ describe('validatedata', () => {
     expect(result).toStrictEqual(new InactiveAccountError())
   })
 
-  it('should call findUserByEmail with correct value', async () => {
+  it('should call findByEmail with correct value', async () => {
     expect.hasAssertions()
 
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.validate(data)
 

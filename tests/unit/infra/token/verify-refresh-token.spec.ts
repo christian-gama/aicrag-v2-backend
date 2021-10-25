@@ -50,11 +50,11 @@ describe('verifyRefreshToken', () => {
     expect(unauthorizedSpy).toHaveBeenCalledWith('any_token')
   })
 
-  it('should call userRepository.findUserById with correct user id', async () => {
+  it('should call userRepository.findById with correct user id', async () => {
     expect.hasAssertions()
 
     const { sut, userRepositoryStub } = makeSut()
-    const findUserByIdSpy = jest.spyOn(userRepositoryStub, 'findUserById')
+    const findUserByIdSpy = jest.spyOn(userRepositoryStub, 'findById')
 
     await sut.verify('any_token')
 
@@ -65,7 +65,7 @@ describe('verifyRefreshToken', () => {
     expect.hasAssertions()
 
     const { sut, userRepositoryStub } = makeSut()
-    jest.spyOn(userRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
 
     const result = await sut.verify('any_token')
 

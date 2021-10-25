@@ -5,7 +5,7 @@ import { ITask, ITaskData } from '@/domain/task'
 export class CreateTaskRepository implements ICreateTaskRepository {
   constructor (private readonly uuid: IUuid) {}
 
-  createTask (taskData: ITaskData): ITask {
+  create (taskData: ITaskData): ITask {
     const { commentary, date, duration, status, taskId, type, user } = taskData
 
     const d = new Date(Date.parse(date))

@@ -3,7 +3,7 @@ import { ICreateLogErrorRepository, ICreateTaskRepository, ICreateUserRepository
 
 export const makeCreateLogErrorRepositoryStub = (fakeLogError: ILogError): ICreateLogErrorRepository => {
   class CreateLogErrorRepositoryStub implements ICreateLogErrorRepository {
-    createLog (_error: Error): ILogError {
+    create (_error: Error): ILogError {
       return fakeLogError
     }
   }
@@ -13,7 +13,7 @@ export const makeCreateLogErrorRepositoryStub = (fakeLogError: ILogError): ICrea
 
 export const makeCreateTaskRepositoryStub = (fakeTask: ITask): ICreateTaskRepository => {
   class CreateTaskRepositoryStub implements ICreateTaskRepository {
-    createTask (taskData: ITaskData): ITask {
+    create (taskData: ITaskData): ITask {
       return fakeTask
     }
   }

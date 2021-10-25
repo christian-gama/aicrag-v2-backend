@@ -42,7 +42,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('getInvoiceByMonth', () => {
+describe('getByMonth', () => {
   it('should return unauthorized if there is no user', async () => {
     expect.hasAssertions()
 
@@ -70,7 +70,7 @@ describe('getInvoiceByMonth', () => {
 
     const { httpHelper, invoiceRepository, request, sut } = makeSut()
     jest
-      .spyOn(invoiceRepository, 'getInvoiceByMonth')
+      .spyOn(invoiceRepository, 'getByMonth')
       .mockReturnValueOnce(Promise.resolve({ count: 1, displaying: 1, documents: [], page: '1 of 1' }))
 
     const result = await sut.handle(request)
@@ -96,11 +96,11 @@ describe('getInvoiceByMonth', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.query)
   })
 
-  it('should call getInvoiceByMonth with correct data', async () => {
+  it('should call getByMonth with correct data', async () => {
     expect.hasAssertions()
 
     const { request, sut, invoiceRepository } = makeSut()
-    const getInvoiceByMonthSpy = jest.spyOn(invoiceRepository, 'getInvoiceByMonth')
+    const getInvoiceByMonthSpy = jest.spyOn(invoiceRepository, 'getByMonth')
 
     await sut.handle(request)
 

@@ -23,8 +23,7 @@ export class DeleteTaskController implements IController {
     const error = await this.validateTaskParam.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    const deleted = await this.taskRepository.deleteTask(data.id, user.personal.id)
-
+    const deleted = await this.taskRepository.deleteById(data.id, user.personal.id)
     if (!deleted) return this.httpHelper.badRequest(new TaskNotFoundError())
 
     const result = this.httpHelper.deleted()

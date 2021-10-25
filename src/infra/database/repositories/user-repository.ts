@@ -6,7 +6,7 @@ import { IDatabase, IUserDbFilter } from '../protocols'
 export class UserRepository implements IUserRepository {
   constructor (private readonly createUserRepository: ICreateUserRepository, private readonly database: IDatabase) {}
 
-  async findUserByEmail (email: string): Promise<IUser | null> {
+  async findByEmail (email: string): Promise<IUser | null> {
     const userCollection = this.database.collection('users')
 
     const filter: IUserDbFilter = { 'personal.email': email.toLowerCase() }
@@ -15,7 +15,7 @@ export class UserRepository implements IUserRepository {
     return user
   }
 
-  async findUserById (id: string): Promise<IUser | null> {
+  async findById (id: string): Promise<IUser | null> {
     const userCollection = this.database.collection('users')
 
     const filter: IUserDbFilter = { 'personal.id': id }
@@ -24,7 +24,7 @@ export class UserRepository implements IUserRepository {
     return result
   }
 
-  async saveUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
+  async save (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
     const userCollection = this.database.collection('users')
 
     const user = await this.createUserRepository.createUser(signUpUserCredentials)
@@ -34,7 +34,7 @@ export class UserRepository implements IUserRepository {
     return result as IUser
   }
 
-  async updateUser<T extends IUser | null>(id: string, update: IUserDbFilter): Promise<T> {
+  async updateById<T extends IUser | null>(id: string, update: IUserDbFilter): Promise<T> {
     const userCollection = this.database.collection('users')
 
     const result = await userCollection.updateOne<IUser>({ 'personal.id': id }, update)

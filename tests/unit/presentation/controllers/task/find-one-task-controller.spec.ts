@@ -69,7 +69,7 @@ describe('findOneTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
-    jest.spyOn(taskRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(taskRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
 
     const result = await sut.handle(request)
 
@@ -87,11 +87,11 @@ describe('findOneTaskController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.params)
   })
 
-  it('should call findTaskById with correct data', async () => {
+  it('should call findById with correct data', async () => {
     expect.hasAssertions()
 
     const { request, sut, taskRepositoryStub } = makeSut()
-    const findTaskByIdSpy = jest.spyOn(taskRepositoryStub, 'findTaskById')
+    const findTaskByIdSpy = jest.spyOn(taskRepositoryStub, 'findById')
 
     await sut.handle(request)
 

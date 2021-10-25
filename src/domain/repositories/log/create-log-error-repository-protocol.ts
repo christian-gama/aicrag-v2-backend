@@ -7,5 +7,5 @@ export interface ICreateLogErrorRepository {
    * @param error Error that will serve the necessary data to create a log.
    * @returns Return a log.
    */
-  createLog: (error: Error) => ILogError
+  create: (error: Error) => ILogError
 }

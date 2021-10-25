@@ -10,7 +10,7 @@ export class ValidateActiveAccount implements IValidator {
   async validate (input: any): Promise<InactiveAccountError | undefined> {
     const { email } = input
 
-    const user = (await this.userRepository.findUserByEmail(email)) as IUser
+    const user = (await this.userRepository.findByEmail(email)) as IUser
     if (!user.settings.accountActivated) return new InactiveAccountError()
   }
 }

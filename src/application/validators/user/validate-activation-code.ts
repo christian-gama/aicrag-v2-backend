@@ -13,7 +13,7 @@ export class ValidateActivationCode implements IValidator {
 
     if (typeof activationCode !== 'string') return new InvalidTypeError('activationCode')
 
-    const user = await this.userRepository.findUserByEmail(email)
+    const user = await this.userRepository.findByEmail(email)
     if (!user) return new InvalidCodeError()
 
     if (user.temporary.activationCodeExpiration == null) return new InvalidCodeError()

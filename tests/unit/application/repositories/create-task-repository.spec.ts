@@ -44,7 +44,7 @@ describe('createTaskRepository', () => {
     const usd =
       type === 'TX' ? (duration / 60) * 65 * user.settings.handicap : (duration / 60) * 112.5 * user.settings.handicap
 
-    const result = sut.createTask(fakeTaskData)
+    const result = sut.create(fakeTaskData)
 
     expect(result).toStrictEqual({
       commentary,
@@ -81,7 +81,7 @@ describe('createTaskRepository', () => {
     fakeTaskData.commentary = null
     fakeTaskData.taskId = null
 
-    const result = sut.createTask(fakeTaskData)
+    const result = sut.create(fakeTaskData)
 
     expect(result).toStrictEqual({
       commentary: '',
@@ -112,7 +112,7 @@ describe('createTaskRepository', () => {
     const { fakeTaskData, sut } = makeSut()
     fakeTaskData.type = 'TX'
 
-    const result = sut.createTask(fakeTaskData)
+    const result = sut.create(fakeTaskData)
 
     expect(result.usd).toBe(32.5)
   })
@@ -124,7 +124,7 @@ describe('createTaskRepository', () => {
     fakeTaskData.duration = 2.4
     fakeTaskData.type = 'QA'
 
-    const result = sut.createTask(fakeTaskData)
+    const result = sut.create(fakeTaskData)
 
     expect(result.usd).toBe(4.5)
   })

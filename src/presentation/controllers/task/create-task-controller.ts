@@ -30,7 +30,7 @@ export class CreateTaskController implements IController {
       }
     }
 
-    const task = await this.taskRepository.saveTask(data)
+    const task = await this.taskRepository.save(data)
 
     const result = this.httpHelper.created({ task })
 

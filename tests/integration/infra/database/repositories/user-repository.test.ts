@@ -47,56 +47,56 @@ describe('userRepository', () => {
   beforeEach(async () => {
     const { sut } = makeSut()
 
-    user = await sut.saveUser(makeFakeSignUpUserCredentials())
+    user = await sut.save(makeFakeSignUpUserCredentials())
   })
 
-  describe('findUserByEmail', () => {
-    it('should return a user if findUserByEmail finds a user', async () => {
+  describe('findByEmail', () => {
+    it('should return a user if findByEmail finds a user', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
-      const foundUser = await sut.findUserByEmail(user.personal.email)
+      const foundUser = await sut.findByEmail(user.personal.email)
 
       expect(foundUser).toHaveProperty('_id')
     })
 
-    it('should return null if does not findUserByEmail finds a user', async () => {
+    it('should return null if does not findByEmail finds a user', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
-      const foundUser = await sut.findUserByEmail('non_existent@email.com')
+      const foundUser = await sut.findByEmail('non_existent@email.com')
 
       expect(foundUser).toBeNull()
     })
   })
 
-  describe('findUserById', () => {
-    it('should return a user if findUserById finds a user', async () => {
+  describe('findById', () => {
+    it('should return a user if findById finds a user', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
-      const foundUser = await sut.findUserById(user.personal.id)
+      const foundUser = await sut.findById(user.personal.id)
 
       expect(foundUser).toHaveProperty('_id')
     })
 
-    it('should return null if does not findUserById finds a user', async () => {
+    it('should return null if does not findById finds a user', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
-      const foundUser = await sut.findUserById('invalid_id')
+      const foundUser = await sut.findById('invalid_id')
 
       expect(foundUser).toBeNull()
     })
   })
 
-  describe('saveUser', () => {
+  describe('save', () => {
     it('should return a user on success', async () => {
       expect.hasAssertions()
 
       const { fakeUser, sut } = makeSut()
 
-      const user = await sut.saveUser(makeFakeSignUpUserCredentials())
+      const user = await sut.save(makeFakeSignUpUserCredentials())
 
       expect(user).toHaveProperty('_id')
 
@@ -133,13 +133,13 @@ describe('userRepository', () => {
     })
   })
 
-  describe('updateUser', () => {
-    it('should return a user if updateUser finds a user', async () => {
+  describe('updateById', () => {
+    it('should return a user if updateById finds a user', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser<IUser>(user.personal.id, {
+      const updatedUser = await sut.updateById<IUser>(user.personal.id, {
         'personal.name': 'changed_name'
       })
 
@@ -151,7 +151,7 @@ describe('userRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser<IUser>(user.personal.id, {
+      const updatedUser = await sut.updateById<IUser>(user.personal.id, {
         'personal.name': 'changed_name'
       })
 
@@ -163,7 +163,7 @@ describe('userRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedUser = await sut.updateUser<IUser>(user.personal.id, {
+      const updatedUser = await sut.updateById<IUser>(user.personal.id, {
         'personal.email': 'changed_email',
         'personal.name': 'changed_name'
       })
@@ -172,12 +172,12 @@ describe('userRepository', () => {
       expect(updatedUser?.personal.email).toBe('changed_email')
     })
 
-    it('should return null if does not updateUser finds a user', async () => {
+    it('should return null if does not updateById finds a user', async () => {
       expect.hasAssertions()
 
       const { fakeUser, sut } = makeSut()
 
-      const updatedUser = await sut.updateUser<IUser>(fakeUser.personal.id, {
+      const updatedUser = await sut.updateById<IUser>(fakeUser.personal.id, {
         'personal.name': 'any_name'
       })
 

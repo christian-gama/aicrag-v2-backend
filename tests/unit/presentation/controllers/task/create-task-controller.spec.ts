@@ -102,12 +102,12 @@ describe('createTaskController', () => {
     expect(validateSpy).toHaveBeenCalledWith(data)
   })
 
-  it('should call saveTask with correct data', async () => {
+  it('should call save with correct data', async () => {
     expect.hasAssertions()
 
     const { request, sut, taskRepositoryStub } = makeSut()
     const data = Object.assign({ user: request.user }, request.body)
-    const saveTaskSpy = jest.spyOn(taskRepositoryStub, 'saveTask')
+    const saveTaskSpy = jest.spyOn(taskRepositoryStub, 'save')
 
     await sut.handle(request)
 

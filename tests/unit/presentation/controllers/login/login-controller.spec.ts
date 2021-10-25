@@ -170,11 +170,11 @@ describe('loginController', () => {
     expect(generateSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('should call findUserByEmail with the correct value', async () => {
+  it('should call findByEmail with the correct value', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.handle(request)
 
@@ -240,11 +240,11 @@ describe('loginController', () => {
     })
   })
 
-  it('should call updateUser with correct values', async () => {
+  it('should call updateById with correct values', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 

@@ -58,13 +58,13 @@ describe('taskRepository', () => {
     await taskCollection.insertOne(task)
   })
 
-  describe('deleteTask', () => {
+  describe('delete', () => {
     it('should return true if delete a task', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
 
-      const deleted = await sut.deleteTask(task.id, taskData.user.personal.id)
+      const deleted = await sut.deleteById(task.id, taskData.user.personal.id)
 
       expect(deleted).toBeTruthy()
     })
@@ -74,19 +74,19 @@ describe('taskRepository', () => {
 
       const { fakeTaskData, sut } = makeSut()
 
-      const deleted = await sut.deleteTask('invalid_id', fakeTaskData.user.personal.id)
+      const deleted = await sut.deleteById('invalid_id', fakeTaskData.user.personal.id)
 
       expect(deleted).toBeFalsy()
     })
   })
 
-  describe('saveTask', () => {
+  describe('save', () => {
     it('should return a task on success', async () => {
       expect.hasAssertions()
 
       const { fakeTask, fakeTaskData, fakeUser, sut } = makeSut()
 
-      const task = await sut.saveTask(fakeTaskData)
+      const task = await sut.save(fakeTaskData)
 
       const { _id, ...obj } = task as any
 
@@ -114,37 +114,37 @@ describe('taskRepository', () => {
       })
     })
 
-    it('should call createTask with correct value', async () => {
+    it('should call create with correct value', async () => {
       expect.hasAssertions()
 
       const { fakeTaskData, sut, createTaskRepository } = makeSut()
-      const createTaskSpy = jest.spyOn(createTaskRepository, 'createTask')
+      const createTaskSpy = jest.spyOn(createTaskRepository, 'create')
 
-      await sut.saveTask(fakeTaskData)
+      await sut.save(fakeTaskData)
 
       expect(createTaskSpy).toHaveBeenCalledWith(fakeTaskData)
     })
   })
 
-  describe('findAllTasks', () => {
+  describe('findAll', () => {
     it('should return a result if finds one or more tasks', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
 
-      const result = await sut.findAllTasks(taskData.user.personal.id, {})
+      const result = await sut.findAll(taskData.user.personal.id, {})
 
       expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
     })
   })
 
-  describe('findTaskById', () => {
+  describe('findById', () => {
     it('should return a task if finds it', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
 
-      const found = await sut.findTaskById(task.id, taskData.user.personal.id)
+      const found = await sut.findById(task.id, taskData.user.personal.id)
 
       expect(found).toStrictEqual(task)
     })
@@ -154,19 +154,19 @@ describe('taskRepository', () => {
 
       const { fakeTaskData, sut } = makeSut()
 
-      const found = await sut.findTaskById('invalid_id', fakeTaskData.user.personal.id)
+      const found = await sut.findById('invalid_id', fakeTaskData.user.personal.id)
 
       expect(found).toBeNull()
     })
   })
 
-  describe('findTaskByTaskId', () => {
+  describe('findByTaskId', () => {
     it('should return a task if finds a task by taskId', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
 
-      const found = await sut.findTaskByTaskId(task.taskId, taskData.user.personal.id)
+      const found = await sut.findByTaskId(task.taskId, taskData.user.personal.id)
 
       expect(found).toStrictEqual(task)
     })
@@ -176,19 +176,19 @@ describe('taskRepository', () => {
 
       const { fakeTaskData, sut } = makeSut()
 
-      const found = await sut.findTaskByTaskId('invalid_id', fakeTaskData.user.personal.id)
+      const found = await sut.findByTaskId('invalid_id', fakeTaskData.user.personal.id)
 
       expect(found).toBeNull()
     })
   })
 
-  describe('updateTask', () => {
-    it('should return a task if updateTask finds a task', async () => {
+  describe('updateById', () => {
+    it('should return a task if updateById finds a task', async () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(task.id, task.user, { taskId: 'changed_task_id' })
+      const updatedTask = await sut.updateById(task.id, task.user, { taskId: 'changed_task_id' })
 
       expect(updatedTask).toHaveProperty('_id')
     })
@@ -198,7 +198,7 @@ describe('taskRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(task.id, task.user, { taskId: 'changed_task_id' })
+      const updatedTask = await sut.updateById(task.id, task.user, { taskId: 'changed_task_id' })
 
       expect(updatedTask?.taskId).toBe('changed_task_id')
     })
@@ -208,7 +208,7 @@ describe('taskRepository', () => {
 
       const { sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(task.id, task.user, {
+      const updatedTask = await sut.updateById(task.id, task.user, {
         commentary: 'changed_commentary',
         taskId: 'changed_task_id'
       })
@@ -217,12 +217,12 @@ describe('taskRepository', () => {
       expect(updatedTask?.taskId).toBe('changed_task_id')
     })
 
-    it('should return null if does not updateUser finds a user', async () => {
+    it('should return null if does not updateById finds a user', async () => {
       expect.hasAssertions()
 
       const { fakeTask, sut } = makeSut()
 
-      const updatedTask = await sut.updateTask(fakeTask.id, fakeTask.user, { commentary: 'changed_commentary' })
+      const updatedTask = await sut.updateById(fakeTask.id, fakeTask.user, { commentary: 'changed_commentary' })
 
       expect(updatedTask).toBeNull()
     })

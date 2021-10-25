@@ -11,8 +11,8 @@ export class LogErrorRepository implements ILogErrorRepository {
     private readonly database: IDatabase
   ) {}
 
-  async saveLog (error: Error): Promise<ILogError> {
-    const log = this.createLogErrorRepository.createLog(error)
+  async save (error: Error): Promise<ILogError> {
+    const log = this.createLogErrorRepository.create(error)
 
     const logCollection = this.database.collection('logs')
 

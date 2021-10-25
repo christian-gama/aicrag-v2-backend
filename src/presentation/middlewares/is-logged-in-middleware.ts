@@ -17,7 +17,7 @@ export class IsLoggedInMiddleware implements IMiddleware {
 
     if (user instanceof Error) return this.httpHelper.ok({ user: undefined })
 
-    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, {
+    const updatedUser = await this.userRepository.updateById<IUser>(user.personal.id, {
       'logs.lastSeenAt': new Date(Date.now())
     })
 

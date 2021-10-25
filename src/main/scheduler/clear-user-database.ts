@@ -36,7 +36,7 @@ export class ClearUserDatabase {
 
       return deletedCount
     } catch (error) {
-      return await this.logErrorRepository.saveLog(error)
+      return await this.logErrorRepository.save(error)
     }
   }
 }

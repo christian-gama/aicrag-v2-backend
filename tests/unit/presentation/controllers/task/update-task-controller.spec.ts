@@ -107,7 +107,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
-    jest.spyOn(taskRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(taskRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
 
     const result = await sut.handle(request)
 
@@ -140,11 +140,11 @@ describe('updateTaskController', () => {
     expect(result.data.task.commentary).toBe('new_commentary')
   })
 
-  it('should call updateTask with correct values if changes commentary', async () => {
+  it('should call updateById with correct values if changes commentary', async () => {
     expect.hasAssertions()
 
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.commentary = 'any_commentary'
 
     await sut.handle(request)
@@ -188,11 +188,11 @@ describe('updateTaskController', () => {
     expect(result.year).toBe(date.getFullYear())
   })
 
-  it('should call updateTask with correct values if changes date', async () => {
+  it('should call updateById with correct values if changes date', async () => {
     expect.hasAssertions()
 
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     const date = new Date()
 
     request.body.date = date
@@ -263,11 +263,11 @@ describe('updateTaskController', () => {
     expect(result.type).toBe('QA')
   })
 
-  it('should call updateTask with correct values if changes duration', async () => {
+  it('should call updateById with correct values if changes duration', async () => {
     expect.hasAssertions()
 
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.duration = 15
 
     await sut.handle(request)
@@ -327,11 +327,11 @@ describe('updateTaskController', () => {
     expect(result.status).toBe('in_progress')
   })
 
-  it('should call updateTask with correct values if changes status', async () => {
+  it('should call updateById with correct values if changes status', async () => {
     expect.hasAssertions()
 
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.status = 'in_progress'
 
     await sut.handle(request)
@@ -358,7 +358,7 @@ describe('updateTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
-    jest.spyOn(taskRepositoryStub, 'updateTask').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(taskRepositoryStub, 'updateById').mockReturnValueOnce(Promise.resolve(null))
     request.body.taskId = 'any_value'
 
     const result = await sut.handle(request)
@@ -366,11 +366,11 @@ describe('updateTaskController', () => {
     expect(result).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
   })
 
-  it('should call updateTask with correct values if changes taskId', async () => {
+  it('should call updateById with correct values if changes taskId', async () => {
     expect.hasAssertions()
 
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
-    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateTask')
+    const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.taskId = 'any_value'
 
     await sut.handle(request)

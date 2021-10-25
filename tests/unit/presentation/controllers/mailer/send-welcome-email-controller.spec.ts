@@ -96,7 +96,7 @@ describe('sendWelcomeEmailController', () => {
     expect.hasAssertions()
 
     const { fakeUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockImplementationOnce(async () => {
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockImplementationOnce(async () => {
       fakeUser.settings.accountActivated = true
 
       return fakeUser
@@ -107,11 +107,11 @@ describe('sendWelcomeEmailController', () => {
     expect(result).toStrictEqual(httpHelper.forbidden(new AccountAlreadyActivatedError()))
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should call findByEmail with correct email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.handle(request)
 
@@ -140,11 +140,11 @@ describe('sendWelcomeEmailController', () => {
     expect(result.data.error.name).toBe('MailerServiceError')
   })
 
-  it('should call updateUser with correct values if activation code has expired', async () => {
+  it('should call updateById with correct values if activation code has expired', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub, validationCodeStub } = makeSut()
-    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
     fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 10 * 60 * 1000)
 
     await sut.handle(request)

@@ -7,7 +7,7 @@ export class GenerateRefreshToken implements IGenerateToken {
   constructor (private readonly refreshTokenEncrypter: IEncrypter, private readonly userRepository: IUserRepository) {}
 
   async generate (user: IUser): Promise<string> {
-    await this.userRepository.updateUser(user.personal.id, { tokenVersion: ++user.tokenVersion })
+    await this.userRepository.updateById(user.personal.id, { tokenVersion: ++user.tokenVersion })
 
     const result = this.refreshTokenEncrypter.encrypt({
       userId: user.personal.id,

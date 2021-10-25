@@ -25,7 +25,7 @@ export class SendWelcomeEmailController implements IController {
     const error = await this.sendWelcomeValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    let user = (await this.userRepository.findByEmail(data.email)) as IUser
 
     if (user.settings.accountActivated) {
       return this.httpHelper.forbidden(new AccountAlreadyActivatedError())
@@ -49,7 +49,7 @@ export class SendWelcomeEmailController implements IController {
   }
 
   private async generateNewActivationCode (user: IUser): Promise<IUser> {
-    const result = await this.userRepository.updateUser(user.personal.id, {
+    const result = await this.userRepository.updateById(user.personal.id, {
       'temporary.activationCode': this.validationCode.generate(),
       'temporary.activationCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })

@@ -16,7 +16,7 @@ import { makeFakeLogError } from './mock-log-error'
 
 export const makeLogErrorRepositoryStub = (error: Error): ILogErrorRepository => {
   class LogErrorRepositoryStub implements ILogErrorRepository {
-    async saveLog (_error: Error): Promise<ILogError> {
+    async save (_error: Error): Promise<ILogError> {
       return await Promise.resolve(makeFakeLogError(error))
     }
   }
@@ -26,10 +26,7 @@ export const makeLogErrorRepositoryStub = (error: Error): ILogErrorRepository =>
 
 export const makeInvoiceRepositoryStub = (fakeTask: ITask): IInvoiceRepository => {
   class InvoiceRepositoryStub implements IInvoiceRepository {
-    async getAllInvoices<T extends IAllInvoicesDocument>(
-      query: IQueryAllInvoices,
-      userId: string
-    ): Promise<IQueryResult<T>> {
+    async getAll<T extends IAllInvoicesDocument>(query: IQueryAllInvoices, userId: string): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,
         displaying: 1,
@@ -44,7 +41,7 @@ export const makeInvoiceRepositoryStub = (fakeTask: ITask): IInvoiceRepository =
       })) as IQueryResult<T>
     }
 
-    async getInvoiceByMonth<T extends ITask>(query: IQueryInvoice, userId: string): Promise<IQueryResult<T>> {
+    async getByMonth<T extends ITask>(query: IQueryInvoice, userId: string): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,
         displaying: 1,
@@ -59,11 +56,11 @@ export const makeInvoiceRepositoryStub = (fakeTask: ITask): IInvoiceRepository =
 
 export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
   class TaskRepositoryStub implements ITaskRepository {
-    async deleteTask (id: string, userId: string): Promise<boolean> {
+    async deleteById (id: string, userId: string): Promise<boolean> {
       return await Promise.resolve(true)
     }
 
-    async findAllTasks<T extends ITask>(userId: string): Promise<IQueryResult<T>> {
+    async findAll<T extends ITask>(userId: string): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,
         displaying: 1,
@@ -72,19 +69,19 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
       })) as IQueryResult<T>
     }
 
-    async findTaskById (id: string, userId: string): Promise<ITask | null> {
+    async findById (id: string, userId: string): Promise<ITask | null> {
       return await Promise.resolve(fakeTask)
     }
 
-    async findTaskByTaskId (taskId: string, userId: string): Promise<ITask | null> {
+    async findByTaskId (taskId: string, userId: string): Promise<ITask | null> {
       return await Promise.resolve(fakeTask)
     }
 
-    async saveTask (taskData: ITaskData): Promise<ITask> {
+    async save (taskData: ITaskData): Promise<ITask> {
       return await Promise.resolve(fakeTask)
     }
 
-    async updateTask<T extends ITask | null>(id: string, userId: string, update: ITaskDbFilter): Promise<T> {
+    async updateById<T extends ITask | null>(id: string, userId: string, update: ITaskDbFilter): Promise<T> {
       return (await Promise.resolve(fakeTask)) as T
     }
   }
@@ -94,19 +91,19 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
 
 export const makeUserRepositoryStub = (fakeUser: IUser): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
-    async saveUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
+    async save (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
       return await Promise.resolve(fakeUser)
     }
 
-    async findUserByEmail (email: string): Promise<IUser | null> {
+    async findByEmail (email: string): Promise<IUser | null> {
       return await Promise.resolve(fakeUser)
     }
 
-    async findUserById (id: string): Promise<IUser | null> {
+    async findById (id: string): Promise<IUser | null> {
       return await Promise.resolve(fakeUser)
     }
 
-    async updateUser<T extends IUser | null>(id: string, update: IUserDbFilter): Promise<T> {
+    async updateById<T extends IUser | null>(id: string, update: IUserDbFilter): Promise<T> {
       return (await Promise.resolve(fakeUser)) as T
     }
   }

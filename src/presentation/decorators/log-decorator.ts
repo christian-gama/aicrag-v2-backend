@@ -12,7 +12,7 @@ export class LogDecorator<T extends LogDecoratorProtocol> {
     const result = await this.fn.handle(httpRequest)
 
     if (result.statusCode === 500) {
-      await this.logErrorRepository.saveLog(result.data.error)
+      await this.logErrorRepository.save(result.data.error)
     }
 
     return result

@@ -25,7 +25,7 @@ export class SendEmailCodeController implements IController {
     const error = await this.sendEmailCodeValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    let user = (await this.userRepository.findByEmail(data.email)) as IUser
 
     if (user?.temporary.tempEmailCodeExpiration && user.temporary.tempEmailCodeExpiration.getTime() < Date.now()) {
       user = await this.generateNewEmailCode(user)
@@ -45,7 +45,7 @@ export class SendEmailCodeController implements IController {
   }
 
   private async generateNewEmailCode (user: IUser): Promise<IUser> {
-    const result = await this.userRepository.updateUser(user.personal.id, {
+    const result = await this.userRepository.updateById(user.personal.id, {
       'temporary.tempEmailCode': this.validationCode.generate(),
       'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })

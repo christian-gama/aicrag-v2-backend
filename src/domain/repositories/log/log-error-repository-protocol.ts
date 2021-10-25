@@ -7,5 +7,5 @@ export interface ILogErrorRepository {
    * @param log The log that will be saved.
    * @returns Return a log after saving it.
    */
-  saveLog: (log: ILogError) => Promise<ILogError>
+  save: (log: ILogError) => Promise<ILogError>
 }

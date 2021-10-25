@@ -173,11 +173,11 @@ describe('updateUserController', () => {
     expect(validateSpy).toHaveBeenCalledTimes(0)
   })
 
-  it('should not call findUserByEmail if there is no email', async () => {
+  it('should not call findByEmail if there is no email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const validateSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const validateSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
     request.body.email = undefined
 
     await sut.handle(request)
@@ -196,11 +196,11 @@ describe('updateUserController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should call findByEmail with correct email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.handle(request)
 
@@ -217,12 +217,12 @@ describe('updateUserController', () => {
     expect(result).toStrictEqual(httpHelper.conflict(new ConflictParamError('email')))
   })
 
-  it('should call updateUser with correct values if only currency is changed', async () => {
+  it('should call updateById with correct values if only currency is changed', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.email = undefined
     request.body.name = undefined
 
@@ -234,12 +234,12 @@ describe('updateUserController', () => {
     })
   })
 
-  it('should call updateUser with correct values if only name is changed', async () => {
+  it('should call updateById with correct values if only name is changed', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.currency = undefined
     request.body.email = undefined
 
@@ -251,12 +251,12 @@ describe('updateUserController', () => {
     })
   })
 
-  it('should call updateUser with correct values if only email is changed', async () => {
+  it('should call updateById with correct values if only email is changed', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.currency = undefined
     request.body.name = undefined
 
@@ -270,12 +270,12 @@ describe('updateUserController', () => {
     })
   })
 
-  it('should call updateUser with correct values if currency, email and name are changed', async () => {
+  it('should call updateById with correct values if currency, email and name are changed', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -294,7 +294,7 @@ describe('updateUserController', () => {
 
     const { fakeUser, filterUserDataStub, request, sut, userRepositoryStub } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
@@ -305,7 +305,7 @@ describe('updateUserController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, userRepositoryStub } = makeSut()
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.email = undefined
     request.body.name = undefined
     request.body.currency = undefined
@@ -319,7 +319,7 @@ describe('updateUserController', () => {
     expect.hasAssertions()
 
     const { fakeUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const result = await sut.handle(request)
 

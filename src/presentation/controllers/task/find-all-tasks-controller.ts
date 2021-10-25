@@ -23,7 +23,7 @@ export class FindAllTasksController implements IController {
     const error = await this.queryValidator.validate(query)
     if (error) return this.httpHelper.badRequest(error)
 
-    const allTasks = await this.taskRepository.findAllTasks(user.personal.id, query)
+    const allTasks = await this.taskRepository.findAll(user.personal.id, query)
 
     const result = this.httpHelper.ok({
       count: allTasks.count,

@@ -26,7 +26,7 @@ export class SendForgotPasswordEmailController implements IController {
     const error = await this.forgotPasswordEmailValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    let user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    let user = (await this.userRepository.findByEmail(data.email)) as IUser
 
     const decoded = await this.verifyResetPasswordToken.verify(user.temporary.resetPasswordToken)
     if (decoded instanceof Error) {
@@ -47,7 +47,7 @@ export class SendForgotPasswordEmailController implements IController {
   }
 
   private async generateNewResetPasswordToken (user: IUser): Promise<IUser> {
-    const result = await this.userRepository.updateUser(user.personal.id, {
+    const result = await this.userRepository.updateById(user.personal.id, {
       'temporary.resetPasswordToken': await this.generateAccessToken.generate(user)
     })
 

@@ -159,11 +159,11 @@ describe('updateEmailByCodeController', () => {
     expect(fakeUser.temporary.tempEmailCodeExpiration).toBeNull()
   })
 
-  it('should call updateUser with correct values', async () => {
+  it('should call updateById with correct values', async () => {
     expect.hasAssertions()
 
     const { fakeUser, sut, request, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 

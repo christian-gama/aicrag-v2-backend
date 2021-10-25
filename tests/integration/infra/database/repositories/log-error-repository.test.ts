@@ -45,14 +45,14 @@ describe('logErrorRepository', () => {
     await logCollection.deleteMany({})
   })
 
-  describe('createLog', () => {
-    it('should call createLog with correct error', async () => {
+  describe('create', () => {
+    it('should call create with correct error', async () => {
       expect.hasAssertions()
 
       const { sut, error, createLogErrorRepositoryStub } = makeSut()
-      const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'createLog')
+      const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'create')
 
-      await sut.saveLog(error)
+      await sut.save(error)
 
       expect(createLogSpy).toHaveBeenCalledWith(error)
     })
@@ -62,7 +62,7 @@ describe('logErrorRepository', () => {
 
       const { error, fakeLogError, sut } = makeSut()
 
-      const log = await sut.saveLog(error)
+      const log = await sut.save(error)
 
       const { _id, ...obj } = log as any
 

@@ -39,7 +39,7 @@ export class UpdateUserController implements IController {
       const error = await this.validateEmail.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      const userExists = await this.userRepository.findUserByEmail(data.email)
+      const userExists = await this.userRepository.findByEmail(data.email)
 
       if (userExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
@@ -65,7 +65,7 @@ export class UpdateUserController implements IController {
     } else {
       update['logs.updatedAt'] = new Date(Date.now())
 
-      const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
+      const updatedUser = await this.userRepository.updateById<IUser>(user.personal.id, update)
 
       const filteredUser = this.filterUserData.filter(updatedUser)
 

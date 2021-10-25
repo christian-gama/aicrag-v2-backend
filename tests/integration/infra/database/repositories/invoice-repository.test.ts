@@ -51,7 +51,7 @@ describe('invoiceRepository', () => {
     task = fakeTask
   })
 
-  describe('getAllInvoices', () => {
+  describe('getAll', () => {
     it('should return a result if finds one or more tasks', async () => {
       expect.hasAssertions()
 
@@ -63,7 +63,7 @@ describe('invoiceRepository', () => {
         type: 'TX' as 'TX'
       }
 
-      const result = await sut.getAllInvoices(query, task.user)
+      const result = await sut.getAll(query, task.user)
 
       expect(result.count).toBe(1)
       expect(result.displaying).toBe(1)
@@ -95,7 +95,7 @@ describe('invoiceRepository', () => {
         type: 'TX' as 'TX'
       }
 
-      const result = await sut.getAllInvoices(query, fakeUser.personal.id)
+      const result = await sut.getAll(query, fakeUser.personal.id)
 
       expect(result.count).toBe(1)
       expect(result.displaying).toBe(1)
@@ -110,7 +110,7 @@ describe('invoiceRepository', () => {
     })
   })
 
-  describe('getInvoiceByMonth', () => {
+  describe('getByMonth', () => {
     it('should return a result if finds one or more tasks', async () => {
       expect.hasAssertions()
 
@@ -125,7 +125,7 @@ describe('invoiceRepository', () => {
         year: task.date.year.toString()
       }
 
-      const result = await sut.getInvoiceByMonth(query, task.user)
+      const result = await sut.getByMonth(query, task.user)
 
       expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
     })
@@ -153,7 +153,7 @@ describe('invoiceRepository', () => {
         year: fakeTask.date.year.toString()
       }
 
-      const result = await sut.getInvoiceByMonth(query, fakeUser.personal.id)
+      const result = await sut.getByMonth(query, fakeUser.personal.id)
 
       expect(result).toStrictEqual({
         count: 3,
@@ -181,7 +181,7 @@ describe('invoiceRepository', () => {
         year: fakeTask.date.year.toString()
       }
 
-      const result = await sut.getInvoiceByMonth(query, fakeTask.user)
+      const result = await sut.getByMonth(query, fakeTask.user)
 
       expect(result).toStrictEqual({
         count: 1,

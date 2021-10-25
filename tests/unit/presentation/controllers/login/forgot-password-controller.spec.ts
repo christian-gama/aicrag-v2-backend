@@ -105,22 +105,22 @@ describe('forgot Password', () => {
     expect(encryptSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should call findByEmail with correct email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.handle(request)
 
     expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
   })
 
-  it('should call updateUser with correct email', async () => {
+  it('should call updateById with correct email', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 

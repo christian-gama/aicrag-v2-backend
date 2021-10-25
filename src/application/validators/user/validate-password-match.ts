@@ -11,7 +11,7 @@ export class ValidatePasswordMatch implements IValidator {
   async validate (input: any): Promise<UserCredentialError | undefined> {
     const { email, password } = input
 
-    const user = (await this.userRepository.findUserByEmail(email)) as IUser
+    const user = (await this.userRepository.findByEmail(email)) as IUser
     if (!user) return new UserCredentialError()
 
     const isSamePassword = await this.hasher.compare(password, user.personal.password)

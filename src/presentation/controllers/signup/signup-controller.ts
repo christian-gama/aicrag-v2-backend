@@ -26,10 +26,10 @@ export class SignUpController implements IController {
     const error = await this.userValidator.validate(signUpUserCredentials)
     if (error) return this.httpHelper.badRequest(error)
 
-    const emailExists = await this.userRepository.findUserByEmail(signUpUserCredentials.email)
+    const emailExists = await this.userRepository.findByEmail(signUpUserCredentials.email)
     if (emailExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
-    const user = await this.userRepository.saveUser(signUpUserCredentials)
+    const user = await this.userRepository.save(signUpUserCredentials)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

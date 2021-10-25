@@ -27,7 +27,7 @@ describe('validateTempEmail', () => {
 
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const result = await sut.validate(data)
 
@@ -58,12 +58,12 @@ describe('validateTempEmail', () => {
     expect(result).toBeUndefined()
   })
 
-  it('should call findUserByEmail with correct value', async () => {
+  it('should call findByEmail with correct value', async () => {
     expect.hasAssertions()
 
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.validate(data)
 

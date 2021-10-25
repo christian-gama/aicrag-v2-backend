@@ -9,7 +9,7 @@ export class ValidateEmailExists implements IValidator {
   async validate (input: any): Promise<UserCredentialError | undefined> {
     const { email } = input
 
-    const user = await this.userRepository.findUserByEmail(email)
+    const user = await this.userRepository.findByEmail(email)
     if (!user) return new UserCredentialError()
   }
 }

@@ -87,11 +87,11 @@ describe('sendForgotPasswordEmail', () => {
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should call findByEmail with correct email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.handle(request)
 
@@ -120,11 +120,11 @@ describe('sendForgotPasswordEmail', () => {
     expect(result.data.error.name).toBe('MailerServiceError')
   })
 
-  it('should call updateUser with correct values if the reset token is no longer valid', async () => {
+  it('should call updateById with correct values if the reset token is no longer valid', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub, verifyResetPasswordTokenStub } = makeSut()
-    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
     fakeUser.temporary.resetPasswordToken = null
     jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 

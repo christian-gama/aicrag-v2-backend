@@ -69,7 +69,7 @@ describe('deleteTaskController', () => {
     expect.hasAssertions()
 
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
-    jest.spyOn(taskRepositoryStub, 'deleteTask').mockReturnValueOnce(Promise.resolve(false))
+    jest.spyOn(taskRepositoryStub, 'deleteById').mockReturnValueOnce(Promise.resolve(false))
 
     const result = await sut.handle(request)
 
@@ -87,11 +87,11 @@ describe('deleteTaskController', () => {
     expect(validateSpy).toHaveBeenCalledWith(request.params)
   })
 
-  it('should call deleteTask with correct data', async () => {
+  it('should call delete with correct data', async () => {
     expect.hasAssertions()
 
     const { request, sut, taskRepositoryStub } = makeSut()
-    const deleteTaskSpy = jest.spyOn(taskRepositoryStub, 'deleteTask')
+    const deleteTaskSpy = jest.spyOn(taskRepositoryStub, 'deleteById')
 
     await sut.handle(request)
 

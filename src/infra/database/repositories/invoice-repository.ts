@@ -14,10 +14,7 @@ import { IQueryResult } from '../protocols/queries-protocol'
 export class InvoiceRepository implements IGetInvoiceByMonth {
   constructor (private readonly database: IDatabase) {}
 
-  async getAllInvoices<T extends IAllInvoicesDocument>(
-    query: IQueryAllInvoices,
-    userId: string
-  ): Promise<IQueryResult<T>> {
+  async getAll<T extends IAllInvoicesDocument>(query: IQueryAllInvoices, userId: string): Promise<IQueryResult<T>> {
     const taskCollection = this.database.collection('tasks')
     const type = getType(query.type as 'QA' | 'TX' | 'both')
 
@@ -65,7 +62,7 @@ export class InvoiceRepository implements IGetInvoiceByMonth {
     return result
   }
 
-  async getInvoiceByMonth<T extends ITask>(query: IQueryInvoice, userId: string): Promise<IQueryResult<T>> {
+  async getByMonth<T extends ITask>(query: IQueryInvoice, userId: string): Promise<IQueryResult<T>> {
     const { month, taskId, type, year } = query
     const _taskId = getRegexTaskId(taskId)
     const _type = getType(type as 'QA' | 'TX' | 'both')

@@ -19,7 +19,7 @@ export interface IDeleteTask {
    * @param userId The user id which belongs to the task
    * @returns Return true if deleted, false otherwise.
    */
-  deleteTask: (id: string, userId: string) => Promise<boolean>
+  deleteById: (id: string, userId: string) => Promise<boolean>
 }
 export interface IFindAllTasks {
   /**
@@ -29,7 +29,7 @@ export interface IFindAllTasks {
    * @param query Query that will refine the final result of the search.
    * @returns Return all tasks that belongs to that user or null if there is no task.
    */
-  findAllTasks: <T extends ITask>(userId: string, query: IQuery) => Promise<IQueryResult<T>>
+  findAll: <T extends ITask>(userId: string, query: IQuery) => Promise<IQueryResult<T>>
 }
 
 export interface IFindTaskById {
@@ -40,7 +40,7 @@ export interface IFindTaskById {
    * @param userId The user id which belongs to the task
    * @returns Return a task if finds it or null if does not.
    */
-  findTaskById: (id: string, userId: string) => Promise<ITask | null>
+  findById: (id: string, userId: string) => Promise<ITask | null>
 }
 
 export interface IFindTaskByTaskId {
@@ -51,7 +51,7 @@ export interface IFindTaskByTaskId {
    * @param userId The user id which belongs to the task
    * @returns Return a task if finds it or null if does not.
    */
-  findTaskByTaskId: (taskId: string | null, userId: string) => Promise<ITask | null>
+  findByTaskId: (taskId: string | null, userId: string) => Promise<ITask | null>
 }
 
 export interface ISaveTask {
@@ -61,7 +61,7 @@ export interface ISaveTask {
    * @param taskData Task that will be saved on database.
    * @returns Return the saved task.
    */
-  saveTask: (taskData: ITaskData) => Promise<ITask>
+  save: (taskData: ITaskData) => Promise<ITask>
 }
 
 export interface IUpdateTask {
@@ -72,5 +72,5 @@ export interface IUpdateTask {
    * @param update Properties that will be updated.
    * @returns Return the updated task or null.
    */
-  updateTask: <T extends ITask | null>(id: string, userId: string, update: ITaskDbFilter) => Promise<T>
+  updateById: <T extends ITask | null>(id: string, userId: string, update: ITaskDbFilter) => Promise<T>
 }

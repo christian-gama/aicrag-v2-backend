@@ -49,11 +49,11 @@ describe('validateActivationCode', () => {
     expect(result).toStrictEqual(new InvalidTypeError('activationCode'))
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should call findByEmail with correct email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.validate(request.body)
 
@@ -108,7 +108,7 @@ describe('validateActivationCode', () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const value = await sut.validate(request.body)
 

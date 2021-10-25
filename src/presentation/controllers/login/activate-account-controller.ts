@@ -24,13 +24,13 @@ export class ActivateAccountController implements IController {
     const error = await this.activateAccountValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    const user = (await this.userRepository.findByEmail(data.email)) as IUser
 
     const update = {}
     Object.assign(update, this.activateAccount(user))
     Object.assign(update, this.clearTemporary(user))
 
-    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
+    const updatedUser = await this.userRepository.updateById<IUser>(user.personal.id, update)
 
     const accessToken = this.generateAccessToken.generate(user) as string
 

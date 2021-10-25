@@ -92,11 +92,11 @@ describe('sendEmailCodeController', () => {
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should call findByEmail with correct email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.handle(request)
 
@@ -114,11 +114,11 @@ describe('sendEmailCodeController', () => {
     expect(sendSpy).toHaveBeenCalledWith(fakeUser)
   })
 
-  it('should call updateUser with correct values if the email code is expired', async () => {
+  it('should call updateById with correct values if the email code is expired', async () => {
     expect.hasAssertions()
 
     const { validationCodeStub, fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
     fakeUser.temporary.tempEmailCodeExpiration = new Date(Date.now() - 10 * 60 * 1000)
 
     await sut.handle(request)

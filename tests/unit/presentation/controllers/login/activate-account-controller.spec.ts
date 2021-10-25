@@ -103,11 +103,11 @@ describe('activateAccountController', () => {
     expect(result).toStrictEqual(httpHelper.badRequest(error))
   })
 
-  it('should call findUserByEmail with correct email', async () => {
+  it('should call findByEmail with correct email', async () => {
     expect.hasAssertions()
 
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findUserByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.handle(request)
 
@@ -184,11 +184,11 @@ describe('activateAccountController', () => {
     expect(fakeUser.temporary.activationCodeExpiration).toBeNull()
   })
 
-  it('should call updateUser with correct values', async () => {
+  it('should call updateById with correct values', async () => {
     expect.hasAssertions()
 
     const { fakeUser, sut, request, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateUser')
+    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 

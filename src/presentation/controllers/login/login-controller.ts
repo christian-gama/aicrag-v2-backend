@@ -32,7 +32,7 @@ export class LoginController implements IController {
     if (error?.name === 'MissingParamError') return this.httpHelper.badRequest(error)
     if (error?.name === 'UserCredentialError') return this.httpHelper.unauthorized(error)
 
-    const user = (await this.userRepository.findUserByEmail(data.email)) as IUser
+    const user = (await this.userRepository.findByEmail(data.email)) as IUser
 
     const accessToken = this.generateAccessToken.generate(user) as string
 
@@ -45,7 +45,7 @@ export class LoginController implements IController {
 
     const refreshToken = await this.generateRefreshToken.generate(user)
 
-    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, {
+    const updatedUser = await this.userRepository.updateById<IUser>(user.personal.id, {
       'logs.lastLoginAt': new Date(Date.now())
     })
 
