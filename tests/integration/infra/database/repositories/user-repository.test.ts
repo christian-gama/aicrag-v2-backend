@@ -27,7 +27,6 @@ const makeSut = (): SutTypes => {
 
 describe('userRepository', () => {
   const client = makeMongoDb()
-  let user: IUser
   let userCollection: ICollectionMethods
 
   afterAll(async () => {
@@ -44,10 +43,34 @@ describe('userRepository', () => {
     userCollection = client.collection('users')
   })
 
-  beforeEach(async () => {
-    const { sut } = makeSut()
+  describe('findAllById', () => {
+    it('should return a result if finds one or more users', async () => {
+      expect.hasAssertions()
 
-    user = await sut.save(makeFakeSignUpUserCredentials())
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser())
+      const user2 = await userCollection.insertOne(makeFakeUser())
+      const user3 = await userCollection.insertOne(makeFakeUser())
+
+      const result = await sut.findAllById([user1.personal.id, user2.personal.id, user3.personal.id], {})
+
+      expect(result).toStrictEqual({ count: 3, displaying: 3, documents: [user1, user2, user3], page: '1 of 1' })
+    })
+
+    it('should return a result with empty documents if does not finds a user', async () => {
+      expect.hasAssertions()
+
+      const { sut } = makeSut()
+
+      await userCollection.insertOne(makeFakeUser())
+      await userCollection.insertOne(makeFakeUser())
+      await userCollection.insertOne(makeFakeUser())
+
+      const result = await sut.findAllById(['a', 'b', 'c'], {})
+
+      expect(result).toStrictEqual({ count: 0, displaying: 0, documents: [], page: '1 of 0' })
+    })
   })
 
   describe('findByEmail', () => {
@@ -55,6 +78,8 @@ describe('userRepository', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
+      const user = await userCollection.insertOne(makeFakeUser())
+
       const foundUser = await sut.findByEmail(user.personal.email)
 
       expect(foundUser).toHaveProperty('_id')
@@ -75,6 +100,8 @@ describe('userRepository', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
+      const user = await userCollection.insertOne(makeFakeUser())
+
       const foundUser = await sut.findById(user.personal.id)
 
       expect(foundUser).toHaveProperty('_id')
@@ -84,6 +111,7 @@ describe('userRepository', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
+
       const foundUser = await sut.findById('invalid_id')
 
       expect(foundUser).toBeNull()
@@ -138,6 +166,7 @@ describe('userRepository', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
+      const user = await userCollection.insertOne(makeFakeUser())
 
       const updatedUser = await sut.updateById<IUser>(user.personal.id, {
         'personal.name': 'changed_name'
@@ -150,6 +179,7 @@ describe('userRepository', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
+      const user = await userCollection.insertOne(makeFakeUser())
 
       const updatedUser = await sut.updateById<IUser>(user.personal.id, {
         'personal.name': 'changed_name'
@@ -162,6 +192,7 @@ describe('userRepository', () => {
       expect.hasAssertions()
 
       const { sut } = makeSut()
+      const user = await userCollection.insertOne(makeFakeUser())
 
       const updatedUser = await sut.updateById<IUser>(user.personal.id, {
         'personal.email': 'changed_email',
