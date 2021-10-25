@@ -6,7 +6,7 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
-import { ForgotPasswordEmail } from '@/main/mailer/forgot-password-email'
+import { RecoverPasswordEmail } from '@/main/mailer/recover-password-email'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -17,7 +17,7 @@ import request from 'supertest'
 
 let app: Express
 
-describe('post /send-forgot-password-email', () => {
+describe('post /send-recover-password-email', () => {
   const client = makeMongoDb()
   let fakeUser: IUser
   let userCollection: ICollectionMethods
@@ -56,7 +56,7 @@ describe('post /send-forgot-password-email', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
+    jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     await request(app)
       .post('/api/v1/mailer/send-forgot-password-email')
@@ -68,7 +68,7 @@ describe('post /send-forgot-password-email', () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
-    jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+    jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 
     await request(app)
       .post('/api/v1/mailer/send-forgot-password-email')

@@ -52,7 +52,7 @@ export const loginController = controllerAdapter(makeLoginController())
 export const resetPasswordController = controllerAdapter(makeResetPasswordController())
 
 // Mailer Routes
-export const sendForgotPasswordEmailController = controllerAdapter(makeSendForgotPasswordEmailController())
+export const sendRecoverPasswordController = controllerAdapter(makeSendForgotPasswordEmailController())
 export const sendEmailCodeController = controllerAdapter(makeSendEmailCodeController())
 export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 

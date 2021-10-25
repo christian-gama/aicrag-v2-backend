@@ -10,10 +10,10 @@ import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/ht
 
 import { IController } from '../protocols/controller-protocol'
 
-export class SendForgotPasswordEmailController implements IController {
+export class SendRecoverPasswordController implements IController {
   constructor (
     private readonly forgotPasswordEmail: IMailerService,
-    private readonly forgotPasswordEmailValidator: IValidator,
+    private readonly sendRecoverPasswordValidator: IValidator,
     private readonly generateAccessToken: IGenerateToken,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly userRepository: IUserRepository,
@@ -23,7 +23,7 @@ export class SendForgotPasswordEmailController implements IController {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const data = httpRequest.body
 
-    const error = await this.forgotPasswordEmailValidator.validate(data)
+    const error = await this.sendRecoverPasswordValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
     let user = (await this.userRepository.findByEmail(data.email)) as IUser

@@ -4,7 +4,7 @@ import { ValidationComposite } from '@/application/validators/user'
 
 import { makeRequiredFields, makeValidateEmail, makeValidateEmailExists, makeValidatePasswordToken } from '.'
 
-export const makeForgotPasswordEmailValidator = (): IValidator => {
+export const makeRecoverPasswordEmailValidator = (): IValidator => {
   const validations: IValidator[] = []
 
   const fields = ['email']

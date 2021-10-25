@@ -6,7 +6,7 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
-import { ForgotPasswordEmail } from '@/main/mailer/forgot-password-email'
+import { RecoverPasswordEmail } from '@/main/mailer'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -70,7 +70,7 @@ describe('mutation sendForgotPasswordEmail', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
+    jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
     await request(app).post('/graphql').send({ query }).expect(500)
   })
@@ -79,7 +79,7 @@ describe('mutation sendForgotPasswordEmail', () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
-    jest.spyOn(ForgotPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+    jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
 
     await request(app).post('/graphql').send({ query }).expect(200)
   })

@@ -7,7 +7,7 @@ import { htmlToText } from 'html-to-text'
 import path from 'path'
 import pug from 'pug'
 
-export class ForgotPasswordEmail extends MailerService implements IMailerService {
+export class RecoverPasswordEmail extends MailerService implements IMailerService {
   async send (user: IUser): Promise<true | Error> {
     const subject = 'Recupere a sua senha clicando no botão abaixo:'
 

@@ -3,7 +3,7 @@ import { IValidator } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
 
 import {
-  makeForgotPasswordEmailValidator,
+  makeRecoverPasswordEmailValidator,
   makeRequiredFields,
   makeValidateEmail,
   makeValidateEmailExists,
@@ -16,7 +16,7 @@ describe('forgotPasswordValidator', () => {
   it('should create factory with all validations', () => {
     expect.hasAssertions()
 
-    makeForgotPasswordEmailValidator()
+    makeRecoverPasswordEmailValidator()
 
     const validations: IValidator[] = []
 

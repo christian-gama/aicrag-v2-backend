@@ -6,7 +6,7 @@ import { IValidator } from '@/domain/validators'
 
 import { InvalidTokenError, MailerServiceError } from '@/application/errors'
 
-import { SendForgotPasswordEmailController } from '@/presentation/controllers/mailer'
+import { SendRecoverPasswordController } from '@/presentation/controllers/mailer'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
 
 import { makeHttpHelper } from '@/factories/helpers'
@@ -26,7 +26,7 @@ interface SutTypes {
   forgotPasswordValidatorStub: IValidator
   httpHelper: HttpHelperProtocol
   request: HttpRequest
-  sut: SendForgotPasswordEmailController
+  sut: SendRecoverPasswordController
   userRepositoryStub: IUserRepository
   generateAccessTokenStub: IGenerateToken
   verifyResetPasswordTokenStub: IVerifyToken
@@ -42,7 +42,7 @@ const makeSut = (): SutTypes => {
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const verifyResetPasswordTokenStub = makeVerifyTokenStub(fakeUser)
 
-  const sut = new SendForgotPasswordEmailController(
+  const sut = new SendRecoverPasswordController(
     forgotPasswordEmailStub,
     forgotPasswordValidatorStub,
     generateAccessTokenStub,
