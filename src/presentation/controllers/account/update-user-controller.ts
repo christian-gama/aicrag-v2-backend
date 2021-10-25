@@ -57,13 +57,21 @@ export class UpdateUserController implements IController {
 
     const isEmpty = Object.keys(update).length === 0
 
-    if (isEmpty) return this.httpHelper.ok({ message: 'No changes were made' })
-    else update['logs.updatedAt'] = new Date(Date.now())
+    let result: HttpResponse
+    if (isEmpty) {
+      result = this.httpHelper.ok({ message: 'No changes were made' })
 
-    const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
+      return result
+    } else {
+      update['logs.updatedAt'] = new Date(Date.now())
 
-    const filteredUser = this.filterUserData.filter(updatedUser)
+      const updatedUser = await this.userRepository.updateUser<IUser>(user.personal.id, update)
 
-    return this.httpHelper.ok({ user: filteredUser })
+      const filteredUser = this.filterUserData.filter(updatedUser)
+
+      result = this.httpHelper.ok({ user: filteredUser })
+
+      return result
+    }
   }
 }

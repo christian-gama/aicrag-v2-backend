@@ -18,52 +18,64 @@ export class HttpHelper implements HttpHelperProtocol {
   // ****************
   // Range: 400 ~ 409
   badRequest (error: Error): HttpResponse {
-    return {
+    const result = {
       data: { message: error.message },
       status: false,
       statusCode: 400
     }
+
+    return result
   }
 
   unauthorized (error: Error): HttpResponse {
-    return {
+    const result = {
       data: { message: error.message },
       status: false,
       statusCode: 401
     }
+
+    return result
   }
 
   forbidden (error: Error): HttpResponse {
-    return {
+    const result = {
       data: { message: error.message },
       status: false,
       statusCode: 403
     }
+
+    return result
   }
 
   notFound (error: Error): HttpResponse {
-    return {
+    const result = {
       data: { message: error.message },
       status: false,
       statusCode: 404
     }
+
+    return result
   }
 
   conflict (error: Error): HttpResponse {
-    return {
+    const result = {
       data: { message: error.message },
       status: false,
       statusCode: 409
     }
+
+    return result
   }
 
   // ****************
   // Range: 500
   serverError (error: Error): HttpResponse {
-    return {
+    const result = {
       data: { error: { message: error.message, name: error.name, stack: error.stack } },
       status: false,
       statusCode: 500
     }
+
+    return result
   }
 }

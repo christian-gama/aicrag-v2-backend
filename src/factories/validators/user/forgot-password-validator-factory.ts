@@ -16,7 +16,5 @@ export const makeForgotPasswordValidator = (): IValidator => {
   validations.push(makeValidateEmail())
   validations.push(makeValidateEmailExists())
 
-  const forgotPasswordComposite = new ValidationComposite(validations)
-
-  return forgotPasswordComposite
+  return new ValidationComposite(validations)
 }

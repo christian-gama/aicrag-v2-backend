@@ -20,7 +20,5 @@ export const makeAllInvoicesValidator = (): IValidator => {
   validations.push(makeValidatePage())
   validations.push(makeValidateSort())
 
-  const getInvoiceByMonthValidator = new ValidationComposite(validations)
-
-  return getInvoiceByMonthValidator
+  return new ValidationComposite(validations)
 }

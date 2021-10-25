@@ -67,9 +67,9 @@ describe('forgot Password', () => {
     const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
+    expect(result).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
   })
 
   it('should call validate with correct value', async () => {
@@ -89,9 +89,9 @@ describe('forgot Password', () => {
     const { forgotPasswordValidatorStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(forgotPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should call encrypt with correct values', async () => {
@@ -145,8 +145,8 @@ describe('forgot Password', () => {
 
     const { fakeUser, httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
+    expect(result).toStrictEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
   })
 })

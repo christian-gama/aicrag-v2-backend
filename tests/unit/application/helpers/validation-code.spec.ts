@@ -18,9 +18,9 @@ describe('codeGenerator', () => {
 
     const { sut } = makeSut()
 
-    const value = sut.generate()
+    const result = sut.generate()
 
-    expect(value).toHaveLength(5)
+    expect(result).toHaveLength(5)
   })
 
   it('should return random digits', () => {
@@ -34,9 +34,9 @@ describe('codeGenerator', () => {
       values.push(value)
     }
 
-    const filteredValues = [...new Set(values)]
+    const result = [...new Set(values)]
 
-    expect(filteredValues).toHaveLength(3)
+    expect(result).toHaveLength(3)
   })
 
   it('should return a string', () => {
@@ -44,9 +44,9 @@ describe('codeGenerator', () => {
 
     const { sut } = makeSut()
 
-    const value = sut.generate()
+    const result = typeof sut.generate()
 
-    expect(typeof value).toBe('string')
+    expect(result).toBe('string')
   })
 
   it('should contain only alphanumerics', () => {
@@ -54,8 +54,8 @@ describe('codeGenerator', () => {
 
     const { sut } = makeSut()
 
-    const value = sut.generate()
+    const result = sut.generate().match(/[a-zA-Z0-9]{5}/g)
 
-    expect(value.match(/[a-zA-Z0-9]{5}/g)).toBeTruthy()
+    expect(result).toBeTruthy()
   })
 })

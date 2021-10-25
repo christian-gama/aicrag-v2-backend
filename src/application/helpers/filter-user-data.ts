@@ -3,7 +3,7 @@ import { IFilterUserData } from '@/domain/helpers'
 
 export class FilterUserData implements IFilterUserData {
   filter (user: IUser): IPublicUser {
-    return {
+    const result = {
       personal: {
         email: user.personal.email,
         id: user.personal.id,
@@ -13,5 +13,7 @@ export class FilterUserData implements IFilterUserData {
         currency: user.settings.currency
       }
     }
+
+    return result
   }
 }

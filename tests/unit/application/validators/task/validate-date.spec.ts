@@ -22,9 +22,9 @@ describe('validateDate', () => {
     const { request, sut } = makeSut()
     request.body.date = 'invalid_date'
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('date'))
+    expect(result).toStrictEqual(new InvalidParamError('date'))
   })
 
   it('should return undefined if is a valid date', () => {
@@ -32,9 +32,9 @@ describe('validateDate', () => {
 
     const { request, sut } = makeSut()
 
-    const response = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if is a valid date as string', () => {
@@ -43,8 +43,8 @@ describe('validateDate', () => {
     const { request, sut } = makeSut()
     request.body.date = request.body.date.toString()
 
-    const response = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

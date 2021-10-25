@@ -16,6 +16,8 @@ export class LogoutController implements IController {
     user.tokenVersion++
     await this.userRepository.updateUser(user.personal.id, { tokenVersion: user.tokenVersion })
 
-    return this.httpHelper.ok({ message: "You've been logged out" })
+    const result = this.httpHelper.ok({ message: "You've been logged out" })
+
+    return result
   }
 }

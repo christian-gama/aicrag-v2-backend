@@ -24,7 +24,5 @@ export const makeUserValidator = (): IValidator => {
   validations.push(makeValidatePassword())
   validations.push(makeValidatePasswordComparison())
 
-  const userValidationComposite = new ValidationComposite(validations)
-
-  return userValidationComposite
+  return new ValidationComposite(validations)
 }

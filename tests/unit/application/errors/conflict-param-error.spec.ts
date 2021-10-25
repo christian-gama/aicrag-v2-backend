@@ -14,6 +14,8 @@ describe('conflictParamError', () => {
 
     const sut = new ConflictParamError('any_field')
 
-    expect(sut.message).toBe('Param already exists: any_field')
+    const result = sut.message
+
+    expect(result).toBe('Param already exists: any_field')
   })
 })

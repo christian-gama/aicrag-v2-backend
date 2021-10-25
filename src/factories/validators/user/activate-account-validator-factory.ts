@@ -14,7 +14,5 @@ export const makeActivateAccountValidator = (): IValidator => {
 
   validations.push(makeValidateActivationCode())
 
-  const activateAccountValidator = new ValidationComposite(validations)
-
-  return activateAccountValidator
+  return new ValidationComposite(validations)
 }

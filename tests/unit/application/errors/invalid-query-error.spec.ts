@@ -14,6 +14,8 @@ describe('invalidQueryError', () => {
 
     const sut = new InvalidQueryError('any_field')
 
-    expect(sut.message).toBe('Invalid query: any_field')
+    const result = sut.message
+
+    expect(result).toBe('Invalid query: any_field')
   })
 })

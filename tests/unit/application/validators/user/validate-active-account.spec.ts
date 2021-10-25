@@ -53,8 +53,8 @@ describe('validatedata', () => {
     const { sut } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
 
-    const value = await sut.validate(data)
+    const result = await sut.validate(data)
 
-    expect(value).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

@@ -87,9 +87,9 @@ describe('updateTaskController', () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
   it('should return badRequest if param is invalid', async () => {
@@ -98,9 +98,9 @@ describe('updateTaskController', () => {
     const { httpHelper, request, sut, validateTaskParamStub } = makeSut()
     jest.spyOn(validateTaskParamStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should return badRequest if there is no task', async () => {
@@ -109,9 +109,9 @@ describe('updateTaskController', () => {
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest.spyOn(taskRepositoryStub, 'findTaskById').mockReturnValueOnce(Promise.resolve(null))
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
   })
 
   it('should return badRequest if there is a commentary and it is invalid', async () => {
@@ -123,9 +123,9 @@ describe('updateTaskController', () => {
       .mockReturnValueOnce(Promise.resolve(new InvalidParamError('commentary')))
     request.body.commentary = 'invalid_commentary'
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('commentary')))
+    expect(result).toStrictEqual(httpHelper.badRequest(new InvalidParamError('commentary')))
   })
 
   it('should return task with new commentary if changes only commentary', async () => {
@@ -135,9 +135,9 @@ describe('updateTaskController', () => {
     fakeTask.commentary = 'new_commentary'
     request.body.commentary = fakeTask.commentary
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response.data.task.commentary).toBe('new_commentary')
+    expect(result.data.task.commentary).toBe('new_commentary')
   })
 
   it('should call updateTask with correct values if changes commentary', async () => {
@@ -162,9 +162,9 @@ describe('updateTaskController', () => {
     jest.spyOn(validateDateStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('date')))
     request.body.date = 'invalid_date'
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('date')))
+    expect(result).toStrictEqual(httpHelper.badRequest(new InvalidParamError('date')))
   })
 
   it('should return task with new date if changes only date', async () => {
@@ -179,13 +179,13 @@ describe('updateTaskController', () => {
     fakeTask.date.year = date.getFullYear()
     request.body.date = fakeTask.date.full
 
-    const response = await sut.handle(request)
+    const result = (await sut.handle(request)).data.task.date
 
-    expect(response.data.task.date.day).toBe(date.getDate())
-    expect(response.data.task.date.full).toBe(date)
-    expect(response.data.task.date.hours).toBe(date.toLocaleTimeString())
-    expect(response.data.task.date.month).toBe(date.getMonth())
-    expect(response.data.task.date.year).toBe(date.getFullYear())
+    expect(result.day).toBe(date.getDate())
+    expect(result.full).toBe(date)
+    expect(result.hours).toBe(date.toLocaleTimeString())
+    expect(result.month).toBe(date.getMonth())
+    expect(result.year).toBe(date.getFullYear())
   })
 
   it('should call updateTask with correct values if changes date', async () => {
@@ -219,9 +219,9 @@ describe('updateTaskController', () => {
     jest.spyOn(validateTypeStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('type')))
     request.body.type = 'invalid_type'
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('type')))
+    expect(result).toStrictEqual(httpHelper.badRequest(new InvalidParamError('type')))
   })
 
   it('should return badRequest if there is a duration and it is invalid', async () => {
@@ -231,9 +231,9 @@ describe('updateTaskController', () => {
     jest.spyOn(validateDurationStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('duration')))
     request.body.duration = 'invalid_duration'
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('duration')))
+    expect(result).toStrictEqual(httpHelper.badRequest(new InvalidParamError('duration')))
   })
 
   it('should return task with new duration if changes only duration', async () => {
@@ -243,9 +243,9 @@ describe('updateTaskController', () => {
     fakeTask.duration = 12.3
     request.body.duration = fakeTask.duration
 
-    const response = await sut.handle(request)
+    const result = (await sut.handle(request)).data.task
 
-    expect(response.data.task.duration).toBe(12.3)
+    expect(result.duration).toBe(12.3)
   })
 
   it('should return task with new type and duration if changes only type', async () => {
@@ -257,10 +257,10 @@ describe('updateTaskController', () => {
     request.body.duration = fakeTask.duration
     request.body.type = fakeTask.type
 
-    const response = await sut.handle(request)
+    const result = (await sut.handle(request)).data.task
 
-    expect(response.data.task.duration).toBe(2.4)
-    expect(response.data.task.type).toBe('QA')
+    expect(result.duration).toBe(2.4)
+    expect(result.type).toBe('QA')
   })
 
   it('should call updateTask with correct values if changes duration', async () => {
@@ -285,9 +285,9 @@ describe('updateTaskController', () => {
 
     const { httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
+    expect(result).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
   })
 
   it('should return update the updatedAt property if there is a change', async () => {
@@ -298,9 +298,9 @@ describe('updateTaskController', () => {
     fakeTask.logs.updatedAt = date
     request.body.commentary = fakeTask.commentary
 
-    const response = await sut.handle(request)
+    const result = (await sut.handle(request)).data.task.logs
 
-    expect(response.data.task.logs.updatedAt).toBe(date)
+    expect(result.updatedAt).toBe(date)
   })
 
   it('should return badRequest if there is a status and it is invalid', async () => {
@@ -310,9 +310,9 @@ describe('updateTaskController', () => {
     jest.spyOn(validateStatusStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('status')))
     request.body.status = 'invalid_status'
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('status')))
+    expect(result).toStrictEqual(httpHelper.badRequest(new InvalidParamError('status')))
   })
 
   it('should return a task with new status if changes only status', async () => {
@@ -322,9 +322,9 @@ describe('updateTaskController', () => {
     fakeTask.status = 'in_progress'
     request.body.status = fakeTask.status
 
-    const response = await sut.handle(request)
+    const result = (await sut.handle(request)).data.task
 
-    expect(response.data.task.status).toBe('in_progress')
+    expect(result.status).toBe('in_progress')
   })
 
   it('should call updateTask with correct values if changes status', async () => {
@@ -349,9 +349,9 @@ describe('updateTaskController', () => {
     jest.spyOn(validateTaskIdStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('taskId')))
     request.body.taskId = 'invalid_taskId'
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new InvalidParamError('taskId')))
+    expect(result).toStrictEqual(httpHelper.badRequest(new InvalidParamError('taskId')))
   })
 
   it('should return badRequest if is unable to update the task', async () => {
@@ -361,9 +361,9 @@ describe('updateTaskController', () => {
     jest.spyOn(taskRepositoryStub, 'updateTask').mockReturnValueOnce(Promise.resolve(null))
     request.body.taskId = 'any_value'
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
   })
 
   it('should call updateTask with correct values if changes taskId', async () => {

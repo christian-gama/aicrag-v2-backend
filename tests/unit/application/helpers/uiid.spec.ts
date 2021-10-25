@@ -18,9 +18,9 @@ describe('uiid', () => {
 
     const { sut } = makeSut()
 
-    const value = sut.generate()
+    const result = sut.generate()
 
-    expect(value).toHaveLength(36)
+    expect(result).toHaveLength(36)
   })
 
   it('should return a string', () => {
@@ -28,9 +28,9 @@ describe('uiid', () => {
 
     const { sut } = makeSut()
 
-    const value = sut.generate()
+    const result = sut.generate()
 
-    expect(typeof value).toBe('string')
+    expect(typeof result).toBe('string')
   })
 
   it('should return an unique id', () => {
@@ -45,8 +45,8 @@ describe('uiid', () => {
       values.push(value)
     }
 
-    const filteredValues = [...new Set(values)]
+    const result = [...new Set(values)]
 
-    expect(filteredValues).toHaveLength(5)
+    expect(result).toHaveLength(5)
   })
 })

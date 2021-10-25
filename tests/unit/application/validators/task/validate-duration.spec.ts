@@ -22,9 +22,9 @@ describe('validateDuration', () => {
     const { request, sut } = makeSut()
     request.body.duration = '123'
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidTypeError('duration'))
+    expect(result).toStrictEqual(new InvalidTypeError('duration'))
   })
 
   it('should return InvalidParamError if type is TX and duration is longer than 30', () => {
@@ -33,9 +33,9 @@ describe('validateDuration', () => {
     const { request, sut } = makeSut()
     request.body.duration = 31
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('duration'))
+    expect(result).toStrictEqual(new InvalidParamError('duration'))
   })
 
   it('should return InvalidParamError if type is TX and duration is lesser equal to 0', () => {
@@ -44,15 +44,15 @@ describe('validateDuration', () => {
     const { request, sut } = makeSut()
     request.body.duration = 0
 
-    let error = sut.validate(request.body)
+    let result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('duration'))
+    expect(result).toStrictEqual(new InvalidParamError('duration'))
 
     request.body.duration = -1
 
-    error = sut.validate(request.body)
+    result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('duration'))
+    expect(result).toStrictEqual(new InvalidParamError('duration'))
   })
 
   it('should return undefined if type is TX and duration is equal to 30', () => {
@@ -72,9 +72,9 @@ describe('validateDuration', () => {
     request.body.duration = 2.6
     request.body.type = 'QA'
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('duration'))
+    expect(result).toStrictEqual(new InvalidParamError('duration'))
   })
 
   it('should return InvalidParamError if type is QA and duration is lesser equal to 0', () => {
@@ -84,15 +84,15 @@ describe('validateDuration', () => {
     request.body.duration = 0
     request.body.type = 'QA'
 
-    let error = sut.validate(request.body)
+    let result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('duration'))
+    expect(result).toStrictEqual(new InvalidParamError('duration'))
 
     request.body.duration = -1
 
-    error = sut.validate(request.body)
+    result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('duration'))
+    expect(result).toStrictEqual(new InvalidParamError('duration'))
   })
 
   it('should return undefined if type is QA and duration is equal to 2.5', () => {

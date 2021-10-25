@@ -15,7 +15,5 @@ export const makeResetPasswordValidator = (): IValidator => {
   validations.push(makeValidatePassword())
   validations.push(makeValidatePasswordComparison())
 
-  const resetPasswordValidator = new ValidationComposite(validations)
-
-  return resetPasswordValidator
+  return new ValidationComposite(validations)
 }

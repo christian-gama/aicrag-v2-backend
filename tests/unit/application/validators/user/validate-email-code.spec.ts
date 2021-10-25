@@ -37,9 +37,9 @@ describe('validateEmailCode', () => {
     const { request, sut } = makeSut()
     request.body.emailCode = 123
 
-    const error = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidTypeError('tempEmailCode'))
+    expect(result).toStrictEqual(new InvalidTypeError('tempEmailCode'))
   })
 
   it('should return an InvalidCodeError if email code is not valid', async () => {
@@ -48,9 +48,9 @@ describe('validateEmailCode', () => {
     const { request, sut } = makeSut()
     request.body.emailCode = '123'
 
-    const value = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(value).toStrictEqual(new InvalidCodeError())
+    expect(result).toStrictEqual(new InvalidCodeError())
   })
 
   it('should return an InvalidCode if there is no temporary email', async () => {
@@ -59,9 +59,9 @@ describe('validateEmailCode', () => {
     const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.tempEmail = null
 
-    const value = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(value).toStrictEqual(new InvalidCodeError())
+    expect(result).toStrictEqual(new InvalidCodeError())
   })
 
   it('should return an InvalidCode if there is no temporary email code', async () => {
@@ -70,9 +70,9 @@ describe('validateEmailCode', () => {
     const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.tempEmailCode = null
 
-    const value = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(value).toStrictEqual(new InvalidCodeError())
+    expect(result).toStrictEqual(new InvalidCodeError())
   })
 
   it('should return a CodeIsExpiredError if temporary email code is expired', async () => {
@@ -81,9 +81,9 @@ describe('validateEmailCode', () => {
     const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.tempEmailCodeExpiration = new Date(Date.now() - 1000)
 
-    const value = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(value).toStrictEqual(new CodeIsExpiredError())
+    expect(result).toStrictEqual(new CodeIsExpiredError())
   })
 
   it('should return an InvalidCodeError if there is no tempCodeExpiration', async () => {
@@ -92,9 +92,9 @@ describe('validateEmailCode', () => {
     const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.tempEmailCodeExpiration = null
 
-    const value = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(value).toStrictEqual(new InvalidCodeError())
+    expect(result).toStrictEqual(new InvalidCodeError())
   })
 
   it('should return an InvalidCodeError if there is no user', async () => {
@@ -103,8 +103,8 @@ describe('validateEmailCode', () => {
     const { request, sut } = makeSut()
     request.body.user = undefined
 
-    const value = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(value).toStrictEqual(new InvalidCodeError())
+    expect(result).toStrictEqual(new InvalidCodeError())
   })
 })

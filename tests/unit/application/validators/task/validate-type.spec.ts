@@ -23,9 +23,9 @@ describe('validateType', () => {
     const { request, sut } = makeSut()
     request.body.type = 'invalid_type'
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('type'))
+    expect(result).toStrictEqual(new InvalidParamError('type'))
   })
 
   it('should return undefined if type is equal to QA or TX', () => {
@@ -33,14 +33,14 @@ describe('validateType', () => {
 
     const { request, sut } = makeSut()
 
-    let response = sut.validate(request.body)
+    let result = sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
 
     request.body.type = 'TX'
 
-    response = sut.validate(request.body)
+    result = sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

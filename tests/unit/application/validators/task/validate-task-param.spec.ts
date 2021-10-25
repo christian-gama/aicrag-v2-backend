@@ -22,9 +22,9 @@ describe('validateTaskParam', () => {
     const { request, sut } = makeSut()
     request.params.id = 123
 
-    const error = sut.validate(request.params)
+    const result = sut.validate(request.params)
 
-    expect(error).toStrictEqual(new InvalidTypeError('id'))
+    expect(result).toStrictEqual(new InvalidTypeError('id'))
   })
 
   it('should return InvalidParamError if there is no id', () => {
@@ -33,9 +33,9 @@ describe('validateTaskParam', () => {
     const { request, sut } = makeSut()
     request.params.id = undefined
 
-    const error = sut.validate(request.params)
+    const result = sut.validate(request.params)
 
-    expect(error).toStrictEqual(new InvalidParamError('id'))
+    expect(result).toStrictEqual(new InvalidParamError('id'))
   })
 
   it('should return InvalidParamError if it is not a valid uuid', () => {
@@ -44,9 +44,9 @@ describe('validateTaskParam', () => {
     const { request, sut } = makeSut()
     request.params.id = 'invalid_id'
 
-    const error = sut.validate(request.params)
+    const result = sut.validate(request.params)
 
-    expect(error).toStrictEqual(new InvalidParamError('id'))
+    expect(result).toStrictEqual(new InvalidParamError('id'))
   })
 
   it('should return undefined if succeeds', () => {
@@ -54,15 +54,15 @@ describe('validateTaskParam', () => {
 
     const { request, sut } = makeSut()
 
-    let response = sut.validate(request.params)
+    let result = sut.validate(request.params)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
 
     // Test with {12} characters too
     request.params.id = `${request.params.id as string}x`
 
-    response = sut.validate(request.params)
+    result = sut.validate(request.params)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

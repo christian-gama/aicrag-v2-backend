@@ -16,7 +16,5 @@ export const makeQueryValidator = (): IValidator => {
   validations.push(makeValidatePage())
   validations.push(makeValidateSort())
 
-  const queryValidator = new ValidationComposite(validations)
-
-  return queryValidator
+  return new ValidationComposite(validations)
 }

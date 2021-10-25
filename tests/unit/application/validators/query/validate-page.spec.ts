@@ -22,9 +22,9 @@ describe('validatePage', () => {
     const { request, sut } = makeSut()
     request.query.page = ['a', 'b']
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidQueryError('page'))
   })
 
   it('should return InvalidQueryError if page does not contain a number', async () => {
@@ -33,9 +33,9 @@ describe('validatePage', () => {
     const { request, sut } = makeSut()
     request.query.page = 'abc'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidQueryError('page'))
   })
 
   it('should return InvalidQueryError if page is not an integer', async () => {
@@ -44,9 +44,9 @@ describe('validatePage', () => {
     const { request, sut } = makeSut()
     request.query.page = '1.2'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidQueryError('page'))
   })
 
   it('should return InvalidQueryError if page is not a safe integer', async () => {
@@ -55,9 +55,9 @@ describe('validatePage', () => {
     const { request, sut } = makeSut()
     request.query.page = '9007199254740992'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidQueryError('page'))
   })
 
   it('should return InvalidQueryError if page lesser or equal to 0', async () => {
@@ -66,9 +66,9 @@ describe('validatePage', () => {
     const { request, sut } = makeSut()
     request.query.page = '0'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidQueryError('page'))
   })
 
   it('should return undefined if succeeds', async () => {
@@ -76,9 +76,9 @@ describe('validatePage', () => {
 
     const { request, sut } = makeSut()
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if there is no page', async () => {
@@ -87,8 +87,8 @@ describe('validatePage', () => {
     const { request, sut } = makeSut()
     request.query.page = undefined
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

@@ -14,6 +14,8 @@ describe('tokenMissingError', () => {
 
     const sut = new TokenMissingError()
 
-    expect(sut.message).toBe('Token is missing')
+    const result = sut.message
+
+    expect(result).toBe('Token is missing')
   })
 })

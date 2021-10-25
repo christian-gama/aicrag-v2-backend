@@ -92,9 +92,10 @@ export class UpdateTaskController implements IController {
     else update['logs.updatedAt'] = new Date(Date.now())
 
     const updatedTask = await this.taskRepository.updateTask(task.id, user.personal.id, update)
-    console.log(updatedTask)
     if (!updatedTask) return this.httpHelper.badRequest(new TaskNotFoundError())
 
-    return this.httpHelper.ok({ task: updatedTask })
+    const result = this.httpHelper.ok({ task: updatedTask })
+
+    return result
   }
 }

@@ -14,6 +14,8 @@ export class PartialProtectedMiddleware implements IMiddleware {
 
     if (response instanceof Error) return this.httpHelper.unauthorized(response)
 
-    return this.httpHelper.ok({ accessToken })
+    const result = this.httpHelper.ok({ accessToken })
+
+    return result
   }
 }

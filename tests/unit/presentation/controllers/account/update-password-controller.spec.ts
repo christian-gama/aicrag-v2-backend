@@ -106,9 +106,9 @@ describe('updatePasswordController', () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
   it('should return badRequest if validation fails', async () => {
@@ -117,9 +117,9 @@ describe('updatePasswordController', () => {
     const { httpHelper, request, sut, updatePasswordValidatorStub } = makeSut()
     jest.spyOn(updatePasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should call hash with correct password', async () => {
@@ -185,9 +185,9 @@ describe('updatePasswordController', () => {
 
     const { fakeUser, httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(
+    expect(result).toStrictEqual(
       httpHelper.ok({
         accessToken: 'any_token',
         refreshToken: 'any_token',

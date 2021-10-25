@@ -26,7 +26,5 @@ export const makeLoginValidator = (): IValidator => {
   validations.push(makeValidatePasswordMatch())
   validations.push(makeValidateActiveAccount())
 
-  const dataValidationComposite = new ValidationComposite(validations)
-
-  return dataValidationComposite
+  return new ValidationComposite(validations)
 }

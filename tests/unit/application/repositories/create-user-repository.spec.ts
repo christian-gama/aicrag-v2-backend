@@ -43,25 +43,25 @@ describe('createUserRepository', () => {
     const fakeHashedPassword = await hasherStub.hash(fakeSignUpUserCredentials.password)
     const fakeId = uuidStub.generate()
 
-    const user = await sut.createUser(fakeSignUpUserCredentials)
+    const result = await sut.createUser(fakeSignUpUserCredentials)
 
-    expect(user.logs).toStrictEqual({
+    expect(result.logs).toStrictEqual({
       createdAt: new Date(Date.now()),
       lastLoginAt: null,
       lastSeenAt: null,
       updatedAt: null
     })
 
-    expect(user.personal).toStrictEqual({
+    expect(result.personal).toStrictEqual({
       email: fakeSignUpUserCredentials.email,
       id: fakeId,
       name: fakeSignUpUserCredentials.name,
       password: fakeHashedPassword
     })
 
-    expect(user.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1 })
+    expect(result.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1 })
 
-    expect(user.temporary).toStrictEqual({
+    expect(result.temporary).toStrictEqual({
       activationCode: fakeActivationCode,
       activationCodeExpiration: new Date(Date.now() + 10 * 60 * 1000),
       resetPasswordToken: null,
@@ -70,7 +70,7 @@ describe('createUserRepository', () => {
       tempEmailCodeExpiration: null
     })
 
-    expect(user.tokenVersion).toBe(0)
+    expect(result.tokenVersion).toBe(0)
   })
 
   it('should call hash with correct values', async () => {

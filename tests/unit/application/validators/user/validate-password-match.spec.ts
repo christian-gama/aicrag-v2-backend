@@ -32,9 +32,9 @@ describe('validatePasswordMatch', () => {
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
-    const error = await sut.validate(data)
+    const result = await sut.validate(data)
 
-    expect(error).toStrictEqual(new UserCredentialError())
+    expect(result).toStrictEqual(new UserCredentialError())
   })
 
   it('should call findUserByEmail with correct value', async () => {

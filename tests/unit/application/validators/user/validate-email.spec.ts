@@ -33,9 +33,9 @@ describe('validateEmail', () => {
     const { request, sut } = makeSut()
     request.body.email = 123
 
-    const error = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidTypeError('email'))
+    expect(result).toStrictEqual(new InvalidTypeError('email'))
   })
 
   it('should return a new InvalidParamError if email is invalid', () => {
@@ -45,9 +45,9 @@ describe('validateEmail', () => {
     jest.spyOn(emailValidatorStub, 'isEmail').mockReturnValueOnce(false)
     request.body.email = 'invalid_email'
 
-    const value = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(value).toStrictEqual(new InvalidParamError('email'))
+    expect(result).toStrictEqual(new InvalidParamError('email'))
   })
 
   it('should call emailValidator with correct value', async () => {
@@ -77,8 +77,8 @@ describe('validateEmail', () => {
 
     const { request, sut } = makeSut()
 
-    const value = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(value).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

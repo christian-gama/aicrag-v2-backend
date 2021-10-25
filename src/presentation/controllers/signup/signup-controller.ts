@@ -35,6 +35,8 @@ export class SignUpController implements IController {
 
     const filteredUser = this.filterUserData.filter(user)
 
-    return this.httpHelper.ok({ accessToken, user: filteredUser })
+    const result = this.httpHelper.ok({ accessToken, user: filteredUser })
+
+    return result
   }
 }

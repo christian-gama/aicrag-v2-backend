@@ -17,7 +17,7 @@ export class CreateUserRepository implements ICreateUserRepository {
     const hashedPassword = await this.hasher.hash(signUpUserCredentials.password)
     const id = this.uuid.generate()
 
-    const user: IUser = {
+    const result: IUser = {
       logs: {
         createdAt: dateNow,
         lastLoginAt: null,
@@ -42,6 +42,6 @@ export class CreateUserRepository implements ICreateUserRepository {
       tokenVersion: 0
     }
 
-    return user
+    return result
   }
 }

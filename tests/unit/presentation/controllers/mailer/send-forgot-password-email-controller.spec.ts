@@ -82,9 +82,9 @@ describe('sendForgotPasswordEmail', () => {
     const { forgotPasswordValidatorStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(forgotPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should call findUserByEmail with correct email', async () => {
@@ -115,9 +115,9 @@ describe('sendForgotPasswordEmail', () => {
     const { forgotPasswordEmailStub, request, sut } = makeSut()
     jest.spyOn(forgotPasswordEmailStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response.data.error.name).toBe('MailerServiceError')
+    expect(result.data.error.name).toBe('MailerServiceError')
   })
 
   it('should call updateUser with correct values if the reset token is no longer valid', async () => {
@@ -140,9 +140,9 @@ describe('sendForgotPasswordEmail', () => {
 
     const { fakeUser, httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(
+    expect(result).toStrictEqual(
       httpHelper.ok({
         message: `Instructions to reset your password were sent to ${fakeUser.personal.email}`
       })

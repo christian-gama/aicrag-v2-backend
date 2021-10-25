@@ -14,6 +14,8 @@ describe('invalidCodeError', () => {
 
     const sut = new InvalidCodeError()
 
-    expect(sut.message).toBe('Invalid code')
+    const result = sut.message
+
+    expect(result).toBe('Invalid code')
   })
 })

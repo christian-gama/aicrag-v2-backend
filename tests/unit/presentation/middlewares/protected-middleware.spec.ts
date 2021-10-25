@@ -63,9 +63,9 @@ describe('protectedMiddleware', () => {
     const { httpHelper, request, sut, verifyRefreshTokenStub } = makeSut()
     jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
   it('should return unauthorized if access token response is instance of InvalidTokenError', async () => {
@@ -74,9 +74,9 @@ describe('protectedMiddleware', () => {
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
   it('should return unauthorized if access token response is instance of TokenMissingError', async () => {
@@ -85,9 +85,9 @@ describe('protectedMiddleware', () => {
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new TokenMissingError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new TokenMissingError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new TokenMissingError()))
   })
 
   it('should return ok if succeeds', async () => {
@@ -95,9 +95,9 @@ describe('protectedMiddleware', () => {
 
     const { httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(
+    expect(result).toStrictEqual(
       httpHelper.ok({ accessToken: 'any_token', refreshToken: request.cookies?.refreshToken })
     )
   })

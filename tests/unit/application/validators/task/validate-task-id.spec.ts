@@ -27,9 +27,9 @@ describe('validateTaskId', () => {
     const { request, sut } = makeSut()
     request.body.taskId = 123
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidTypeError('taskId'))
+    expect(result).toStrictEqual(new InvalidTypeError('taskId'))
   })
 
   it('should return InvalidParamError if taskId length is greater than 120', () => {
@@ -38,9 +38,9 @@ describe('validateTaskId', () => {
     const { request, sut } = makeSut()
     request.body.taskId = faker.random.alphaNumeric(121)
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('taskId'))
+    expect(result).toStrictEqual(new InvalidParamError('taskId'))
   })
 
   it('should return undefined if succeeds', () => {
@@ -48,9 +48,9 @@ describe('validateTaskId', () => {
 
     const { request, sut } = makeSut()
 
-    const response = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if taskId is null', () => {
@@ -59,8 +59,8 @@ describe('validateTaskId', () => {
     const { request, sut } = makeSut()
     request.body.taskId = null
 
-    const response = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

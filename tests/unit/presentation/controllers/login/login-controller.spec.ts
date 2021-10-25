@@ -154,9 +154,9 @@ describe('loginController', () => {
     const error = new InactiveAccountError()
     jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', message: error.message }))
+    expect(result).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', message: error.message }))
   })
 
   it('should call generate with correct user', async () => {
@@ -220,9 +220,9 @@ describe('loginController', () => {
     const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
+    expect(result).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
   })
 
   it('should call ok with the correct value', async () => {
@@ -258,9 +258,9 @@ describe('loginController', () => {
 
     const { fakePublicUser, httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(
+    expect(result).toStrictEqual(
       httpHelper.ok({ accessToken: 'any_token', refreshToken: 'any_token', user: fakePublicUser })
     )
   })

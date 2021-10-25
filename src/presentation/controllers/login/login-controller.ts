@@ -51,10 +51,12 @@ export class LoginController implements IController {
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
-    return this.httpHelper.ok({
+    const result = this.httpHelper.ok({
       accessToken,
       refreshToken,
       user: filteredUser
     })
+
+    return result
   }
 }

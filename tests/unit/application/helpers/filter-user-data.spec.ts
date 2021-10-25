@@ -23,9 +23,9 @@ describe('filterUserData', () => {
 
     const { fakeUser, sut } = makeSut()
 
-    const value = sut.filter(fakeUser)
+    const result = sut.filter(fakeUser)
 
-    expect(value).toStrictEqual({
+    expect(result).toStrictEqual({
       personal: {
         email: fakeUser.personal.email,
         id: fakeUser.personal.id,

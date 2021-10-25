@@ -22,9 +22,9 @@ describe('validateFields', () => {
     const { request, sut } = makeSut()
     request.query.fields = 123
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('fields'))
+    expect(result).toStrictEqual(new InvalidQueryError('fields'))
   })
 
   it('should return InvalidQueryError if fields has more than 10 properties', async () => {
@@ -33,9 +33,9 @@ describe('validateFields', () => {
     const { request, sut } = makeSut()
     request.query.fields = 'a,b,c,d,e,f,g,h,i,j,k'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('Only 10 fields are allowed'))
+    expect(result).toStrictEqual(new InvalidQueryError('Only 10 fields are allowed'))
   })
 
   it('should return InvalidQueryError if field has more than 24 characters', async () => {
@@ -44,9 +44,9 @@ describe('validateFields', () => {
     const { request, sut } = makeSut()
     request.query.fields = 'this_is_a_very_long_property'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('this_is_a_very_long_property'))
+    expect(result).toStrictEqual(new InvalidQueryError('this_is_a_very_long_property'))
   })
 
   it('should return InvalidQueryError if contain duplicated fields values', async () => {
@@ -55,9 +55,9 @@ describe('validateFields', () => {
     const { request, sut } = makeSut()
     request.query.fields = 'a,-a'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('-a'))
+    expect(result).toStrictEqual(new InvalidQueryError('-a'))
   })
 
   it('should return InvalidQueryError if field is not an alphanumeric string', async () => {
@@ -66,9 +66,9 @@ describe('validateFields', () => {
     const { request, sut } = makeSut()
     request.query.fields = 'th!s_i$_@n_inv#lid_prop'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('th!s_i$_@n_inv#lid_prop'))
+    expect(result).toStrictEqual(new InvalidQueryError('th!s_i$_@n_inv#lid_prop'))
   })
 
   it('should return undefined if succeeds', async () => {
@@ -76,9 +76,9 @@ describe('validateFields', () => {
 
     const { request, sut } = makeSut()
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if there is multiple valid fields', async () => {
@@ -87,9 +87,9 @@ describe('validateFields', () => {
     const { request, sut } = makeSut()
     request.query.fields = 'a,-b,c.b,-d'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if there is no fields', async () => {
@@ -98,8 +98,8 @@ describe('validateFields', () => {
     const { request, sut } = makeSut()
     request.query.fields = undefined
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

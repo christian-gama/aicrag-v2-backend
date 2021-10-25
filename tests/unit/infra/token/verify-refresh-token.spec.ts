@@ -34,9 +34,9 @@ describe('verifyRefreshToken', () => {
     const { sut } = makeSut()
     const refreshToken = undefined
 
-    const response = await sut.verify(refreshToken)
+    const result = await sut.verify(refreshToken)
 
-    expect(response).toStrictEqual(new TokenMissingError())
+    expect(result).toStrictEqual(new TokenMissingError())
   })
 
   it('should call refreshTokenDecoder.decode with correct token', async () => {
@@ -67,9 +67,9 @@ describe('verifyRefreshToken', () => {
     const { sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
 
-    const response = await sut.verify('any_token')
+    const result = await sut.verify('any_token')
 
-    expect(response).toStrictEqual(new InvalidTokenError())
+    expect(result).toStrictEqual(new InvalidTokenError())
   })
 
   it('should return an error if decode returns an error', async () => {
@@ -78,18 +78,18 @@ describe('verifyRefreshToken', () => {
     const { sut, refreshTokenDecoderStub } = makeSut()
     jest.spyOn(refreshTokenDecoderStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.verify('any_token')
+    const result = await sut.verify('any_token')
 
-    expect(response).toStrictEqual(new Error())
+    expect(result).toStrictEqual(new Error())
   })
 
   it("should return InvalidTokenError if token version is different from user's token version", async () => {
     expect.hasAssertions()
 
     const { sut } = makeSut()
-    const response = await sut.verify('any_token')
+    const result = await sut.verify('any_token')
 
-    expect(response).toStrictEqual(new InvalidTokenError())
+    expect(result).toStrictEqual(new InvalidTokenError())
   })
 
   it('should return a user if succeeds', async () => {
@@ -100,8 +100,8 @@ describe('verifyRefreshToken', () => {
       .spyOn(refreshTokenDecoderStub, 'decode')
       .mockReturnValueOnce(Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() }))
 
-    const response = await sut.verify('any_token')
+    const result = await sut.verify('any_token')
 
-    expect(response).toStrictEqual(fakeUser)
+    expect(result).toStrictEqual(fakeUser)
   })
 })

@@ -46,9 +46,9 @@ describe('logDecorator', () => {
     }
     jest.spyOn(controllerStub, 'handle').mockImplementationOnce(async () => await Promise.reject(error))
 
-    const promise = await sut.handle({})
+    const result = await sut.handle({})
 
-    expect(promise).toStrictEqual(httpHelper.serverError(errorData))
+    expect(result).toStrictEqual(httpHelper.serverError(errorData))
   })
 
   it('should return a http response if succeeds', async () => {
@@ -56,8 +56,8 @@ describe('logDecorator', () => {
 
     const { httpHelper, sut } = makeSut()
 
-    const promise = await sut.handle({})
+    const result = await sut.handle({})
 
-    expect(promise).toStrictEqual(httpHelper.ok({}))
+    expect(result).toStrictEqual(httpHelper.ok({}))
   })
 })

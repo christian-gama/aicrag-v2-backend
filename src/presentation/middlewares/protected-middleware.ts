@@ -40,6 +40,8 @@ export class ProtectedMiddleware implements IMiddleware {
         break
     }
 
-    return this.httpHelper.ok({ accessToken, refreshToken })
+    const result = this.httpHelper.ok({ accessToken, refreshToken })
+
+    return result
   }
 }

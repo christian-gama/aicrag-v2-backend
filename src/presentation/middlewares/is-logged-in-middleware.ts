@@ -21,6 +21,8 @@ export class IsLoggedInMiddleware implements IMiddleware {
       'logs.lastSeenAt': new Date(Date.now())
     })
 
-    return this.httpHelper.ok({ user: updatedUser })
+    const result = this.httpHelper.ok({ user: updatedUser })
+
+    return result
   }
 }

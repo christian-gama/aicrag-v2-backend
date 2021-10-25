@@ -94,9 +94,9 @@ describe('resetPasswordController', () => {
     const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
+    expect(result).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
   })
 
   it('should call verify with correct token', async () => {
@@ -116,9 +116,9 @@ describe('resetPasswordController', () => {
     const { sut, httpHelper, request, verifyResetPasswordTokenStub } = makeSut()
     jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
   it('should call updateUser with correct values', async () => {
@@ -153,9 +153,9 @@ describe('resetPasswordController', () => {
     const { sut, httpHelper, request, resetPasswordValidatorStub } = makeSut()
     jest.spyOn(resetPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should call hash with correct password', async () => {
@@ -197,8 +197,8 @@ describe('resetPasswordController', () => {
     const { filteredUser, filterUserDataStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(filterUserDataStub, 'filter').mockReturnValueOnce(filteredUser)
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ refreshToken: 'any_token', user: filteredUser }))
+    expect(result).toStrictEqual(httpHelper.ok({ refreshToken: 'any_token', user: filteredUser }))
   })
 })

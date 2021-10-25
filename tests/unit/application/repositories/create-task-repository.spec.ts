@@ -43,9 +43,10 @@ describe('createTaskRepository', () => {
     const fakeId = uuidStub.generate()
     const usd =
       type === 'TX' ? (duration / 60) * 65 * user.settings.handicap : (duration / 60) * 112.5 * user.settings.handicap
-    const task = sut.createTask(fakeTaskData)
 
-    expect(task).toStrictEqual({
+    const result = sut.createTask(fakeTaskData)
+
+    expect(result).toStrictEqual({
       commentary,
       date: {
         day: d.getDate(),
@@ -80,9 +81,9 @@ describe('createTaskRepository', () => {
     fakeTaskData.commentary = null
     fakeTaskData.taskId = null
 
-    const task = sut.createTask(fakeTaskData)
+    const result = sut.createTask(fakeTaskData)
 
-    expect(task).toStrictEqual({
+    expect(result).toStrictEqual({
       commentary: '',
       date: {
         day: d.getDate(),
@@ -111,9 +112,9 @@ describe('createTaskRepository', () => {
     const { fakeTaskData, sut } = makeSut()
     fakeTaskData.type = 'TX'
 
-    const task = sut.createTask(fakeTaskData)
+    const result = sut.createTask(fakeTaskData)
 
-    expect(task.usd).toBe(32.5)
+    expect(result.usd).toBe(32.5)
   })
 
   it('should return correct usd value if type is QA', async () => {
@@ -123,8 +124,8 @@ describe('createTaskRepository', () => {
     fakeTaskData.duration = 2.4
     fakeTaskData.type = 'QA'
 
-    const task = sut.createTask(fakeTaskData)
+    const result = sut.createTask(fakeTaskData)
 
-    expect(task.usd).toBe(4.5)
+    expect(result.usd).toBe(4.5)
   })
 })

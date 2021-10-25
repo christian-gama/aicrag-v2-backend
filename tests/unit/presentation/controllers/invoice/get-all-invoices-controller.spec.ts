@@ -49,20 +49,20 @@ describe('getAllInvoices', () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
-  it('should return badRequest if validation returns an error', async () => {
+  it('should return badRequest if validation returns an result', async () => {
     expect.hasAssertions()
 
     const { getAllInvoicesValidatorStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(getAllInvoicesValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should return ok if does not find a task', async () => {
@@ -73,9 +73,9 @@ describe('getAllInvoices', () => {
       .spyOn(invoiceRepositoryStub, 'getAllInvoices')
       .mockReturnValueOnce(Promise.resolve({ count: 1, displaying: 1, documents: [], page: '1 of 1' }))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(
+    expect(result).toStrictEqual(
       httpHelper.ok({
         count: 1,
         displaying: 1,

@@ -19,9 +19,9 @@ export class UserRepository implements IUserRepository {
     const userCollection = this.database.collection('users')
 
     const filter: IUserDbFilter = { 'personal.id': id }
-    const user = await userCollection.findOne<IUser>(filter)
+    const result = await userCollection.findOne<IUser>(filter)
 
-    return user
+    return result
   }
 
   async saveUser (signUpUserCredentials: ISignUpUserData): Promise<IUser> {
@@ -29,14 +29,16 @@ export class UserRepository implements IUserRepository {
 
     const user = await this.createUserRepository.createUser(signUpUserCredentials)
 
-    return await userCollection.insertOne(user)
+    const result = await userCollection.insertOne(user)
+
+    return result as IUser
   }
 
   async updateUser<T extends IUser | null>(id: string, update: IUserDbFilter): Promise<T> {
     const userCollection = this.database.collection('users')
 
-    const updatedUser = await userCollection.updateOne<IUser>({ 'personal.id': id }, update)
+    const result = await userCollection.updateOne<IUser>({ 'personal.id': id }, update)
 
-    return updatedUser as T
+    return result as T
   }
 }

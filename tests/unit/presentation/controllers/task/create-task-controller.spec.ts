@@ -74,9 +74,9 @@ describe('createTaskController', () => {
       .spyOn(createTaskValidatorStub, 'validate')
       .mockReturnValueOnce(Promise.resolve(new ConflictParamError('any_field')))
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.conflict(new ConflictParamError('any_field')))
+    expect(result).toStrictEqual(httpHelper.conflict(new ConflictParamError('any_field')))
   })
 
   it('should return badRequest if validation returns a generic error', async () => {
@@ -85,9 +85,9 @@ describe('createTaskController', () => {
     const { httpHelper, request, sut, createTaskValidatorStub } = makeSut()
     jest.spyOn(createTaskValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should call validate with correct data', async () => {
@@ -119,8 +119,8 @@ describe('createTaskController', () => {
 
     const { fakeTask, httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.created({ task: fakeTask }))
+    expect(result).toStrictEqual(httpHelper.created({ task: fakeTask }))
   })
 })

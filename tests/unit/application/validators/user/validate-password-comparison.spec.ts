@@ -25,9 +25,9 @@ describe('validatePasswordComparison', () => {
       passwordConfirmation: faker.internet.password()
     }
 
-    const value = sut.validate(data)
+    const result = sut.validate(data)
 
-    expect(value).toStrictEqual(new InvalidParamError('passwordConfirmation'))
+    expect(result).toStrictEqual(new InvalidParamError('passwordConfirmation'))
   })
 
   it('should return nothing if succeeds', () => {
@@ -37,8 +37,8 @@ describe('validatePasswordComparison', () => {
     const password = faker.internet.password()
     const data = { password: password, passwordConfirmation: password }
 
-    const value = sut.validate(data)
+    const result = sut.validate(data)
 
-    expect(value).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

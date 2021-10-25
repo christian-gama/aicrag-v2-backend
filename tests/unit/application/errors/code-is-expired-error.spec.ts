@@ -14,6 +14,8 @@ describe('codeIsExpiredError', () => {
 
     const sut = new CodeIsExpiredError()
 
-    expect(sut.message).toBe('Code is expired')
+    const result = sut.message
+
+    expect(result).toBe('Code is expired')
   })
 })

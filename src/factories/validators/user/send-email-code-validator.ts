@@ -17,7 +17,5 @@ export const makeSendEmailCodeValidator = (): IValidator => {
   validations.push(makeValidateEmailExists())
   validations.push(makeValidateTempEmail())
 
-  const sendEmailCodeValidator = new ValidationComposite(validations)
-
-  return sendEmailCodeValidator
+  return new ValidationComposite(validations)
 }

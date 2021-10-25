@@ -20,9 +20,9 @@ describe('validateCurrency', () => {
     const { sut } = makeSut()
     const data = { currency: 'invalid_currency' }
 
-    const value = sut.validate(data)
+    const result = sut.validate(data)
 
-    expect(value).toStrictEqual(new InvalidParamError('currency'))
+    expect(result).toStrictEqual(new InvalidParamError('currency'))
   })
 
   it('should return undefined if currency is equal to USD', () => {
@@ -31,9 +31,9 @@ describe('validateCurrency', () => {
     const { sut } = makeSut()
     const data = { currency: 'USD' }
 
-    const value = sut.validate(data)
+    const result = sut.validate(data)
 
-    expect(value).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if currency is equal to BRL', () => {
@@ -42,8 +42,8 @@ describe('validateCurrency', () => {
     const { sut } = makeSut()
     const data = { currency: 'BRL' }
 
-    const value = sut.validate(data)
+    const result = sut.validate(data)
 
-    expect(value).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

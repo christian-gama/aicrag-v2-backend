@@ -45,6 +45,8 @@ export class UpdatePasswordController implements IController {
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
-    return this.httpHelper.ok({ accessToken, refreshToken, user: filteredUser })
+    const result = this.httpHelper.ok({ accessToken, refreshToken, user: filteredUser })
+
+    return result
   }
 }

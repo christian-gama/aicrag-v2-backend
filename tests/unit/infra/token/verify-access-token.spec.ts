@@ -32,9 +32,9 @@ describe('verifyAccessToken', () => {
     const { sut } = makeSut()
     const refreshToken = undefined
 
-    const response = await sut.verify(refreshToken)
+    const result = await sut.verify(refreshToken)
 
-    expect(response).toStrictEqual(new TokenMissingError())
+    expect(result).toStrictEqual(new TokenMissingError())
   })
 
   it('should call accessTokenDecoder.decode with correct token', async () => {
@@ -65,9 +65,9 @@ describe('verifyAccessToken', () => {
     const { sut, accessTokenDecoderStub } = makeSut()
     jest.spyOn(accessTokenDecoderStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.verify('any_token')
+    const result = await sut.verify('any_token')
 
-    expect(response).toStrictEqual(new Error())
+    expect(result).toStrictEqual(new Error())
   })
 
   it('should return InvalidTokenError if there is no user', async () => {
@@ -76,9 +76,9 @@ describe('verifyAccessToken', () => {
     const { sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findUserById').mockReturnValueOnce(Promise.resolve(null))
 
-    const response = await sut.verify('any_token')
+    const result = await sut.verify('any_token')
 
-    expect(response).toStrictEqual(new InvalidTokenError())
+    expect(result).toStrictEqual(new InvalidTokenError())
   })
 
   it('should return a user if succeeds', async () => {
@@ -89,8 +89,8 @@ describe('verifyAccessToken', () => {
       .spyOn(accessTokenDecoderStub, 'decode')
       .mockReturnValueOnce(Promise.resolve({ userId: fakeUser.personal.id, version: fakeUser.tokenVersion.toString() }))
 
-    const response = await sut.verify('any_token')
+    const result = await sut.verify('any_token')
 
-    expect(response).toStrictEqual(fakeUser)
+    expect(result).toStrictEqual(fakeUser)
   })
 })

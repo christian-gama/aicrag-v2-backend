@@ -32,7 +32,5 @@ export const makeInvoiceByMonthValidator = (): IValidator => {
   validations.push(makeValidateType())
   validations.push(makeValidateYear())
 
-  const getInvoiceByMonthValidator = new ValidationComposite(validations)
-
-  return getInvoiceByMonthValidator
+  return new ValidationComposite(validations)
 }

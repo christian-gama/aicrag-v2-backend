@@ -22,9 +22,9 @@ describe('validateYear', () => {
     const { request, sut } = makeSut()
     request.query.year = ['a', 'b']
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('year'))
+    expect(result).toStrictEqual(new InvalidQueryError('year'))
   })
 
   it('should return InvalidQueryError if year is not valid', async () => {
@@ -33,9 +33,9 @@ describe('validateYear', () => {
     const { request, sut } = makeSut()
     request.query.year = '123'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('year'))
+    expect(result).toStrictEqual(new InvalidQueryError('year'))
   })
 
   it('should return undefined if succeeds', async () => {
@@ -43,9 +43,9 @@ describe('validateYear', () => {
 
     const { request, sut } = makeSut()
 
-    const response = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if there is no taskId', async () => {
@@ -54,8 +54,8 @@ describe('validateYear', () => {
     const { request, sut } = makeSut()
     request.query.taskId = undefined
 
-    const response = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

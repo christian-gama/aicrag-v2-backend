@@ -17,13 +17,13 @@ export class VerifyRefreshToken implements IVerifyToken {
 
     if (decodedRefreshToken instanceof Error) return decodedRefreshToken
 
-    const user = await this.userRepository.findUserById(decodedRefreshToken.userId)
-    if (!user) return new InvalidTokenError()
+    const result = await this.userRepository.findUserById(decodedRefreshToken.userId)
+    if (!result) return new InvalidTokenError()
 
-    if (user.tokenVersion !== +decodedRefreshToken.version) {
+    if (result.tokenVersion !== +decodedRefreshToken.version) {
       return new InvalidTokenError()
     }
 
-    return user
+    return result
   }
 }

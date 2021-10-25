@@ -93,9 +93,9 @@ describe('updateEmailByCodeController', () => {
     const error = new InvalidCodeError()
     jest.spyOn(updateEmailByCodeValidatorStub, 'validate').mockReturnValueOnce(error)
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(error))
+    expect(result).toStrictEqual(httpHelper.badRequest(error))
   })
 
   it('should return unauthorized if there is no user', async () => {
@@ -104,9 +104,9 @@ describe('updateEmailByCodeController', () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
   it('should call filter with correct user', async () => {

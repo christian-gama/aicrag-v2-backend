@@ -64,9 +64,9 @@ describe('verifyResetPasswordTokenController', () => {
     const { httpHelper, request, sut, verifyResetPasswordTokenStub } = makeSut()
     jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new InvalidTokenError()))
   })
 
   it('should return ok if finds a user', async () => {
@@ -74,8 +74,8 @@ describe('verifyResetPasswordTokenController', () => {
 
     const { httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'param_token' }))
+    expect(result).toStrictEqual(httpHelper.ok({ accessToken: 'param_token' }))
   })
 })

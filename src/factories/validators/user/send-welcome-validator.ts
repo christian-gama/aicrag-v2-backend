@@ -16,7 +16,5 @@ export const makeSendWelcomeEmailValidator = (): IValidator => {
   validations.push(makeValidateEmail())
   validations.push(makeValidateEmailExists())
 
-  const sendWelcomeEmailValidator = new ValidationComposite(validations)
-
-  return sendWelcomeEmailValidator
+  return new ValidationComposite(validations)
 }

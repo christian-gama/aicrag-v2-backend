@@ -38,33 +38,35 @@ export class ActivateAccountController implements IController {
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
-    return this.httpHelper.ok({
+    const result = this.httpHelper.ok({
       accessToken,
       refreshToken,
       user: filteredUser
     })
+
+    return result
   }
 
   private activateAccount (user: IUser): Record<string, any> {
     user.settings.accountActivated = true
 
-    const update = {
+    const result = {
       'settings.accountActivated': user.settings.accountActivated
     }
 
-    return update
+    return result
   }
 
   private clearTemporary (user: IUser): Record<string, any> {
     user.temporary.activationCode = null
     user.temporary.activationCodeExpiration = null
 
-    const update = {
+    const result = {
       'logs.updatedAt': new Date(Date.now()),
       'temporary.activationCode': user.temporary.activationCode,
       'temporary.activationCodeExpiration': user.temporary.activationCode
     }
 
-    return update
+    return result
   }
 }

@@ -22,9 +22,9 @@ describe('validateMonth', () => {
     const { request, sut } = makeSut()
     request.query.month = ['a', 'b']
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('month'))
+    expect(result).toStrictEqual(new InvalidQueryError('month'))
   })
 
   it('should return InvalidQueryError if month contains more than 2 characters', async () => {
@@ -33,9 +33,9 @@ describe('validateMonth', () => {
     const { request, sut } = makeSut()
     request.query.month = '123'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('month'))
+    expect(result).toStrictEqual(new InvalidQueryError('month'))
   })
 
   it('should return InvalidQueryError if month is not valid', async () => {
@@ -44,9 +44,9 @@ describe('validateMonth', () => {
     const { request, sut } = makeSut()
     request.query.month = '13'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('month'))
+    expect(result).toStrictEqual(new InvalidQueryError('month'))
   })
 
   it('should return undefined if succeeds', async () => {
@@ -54,8 +54,8 @@ describe('validateMonth', () => {
 
     const { request, sut } = makeSut()
 
-    const response = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

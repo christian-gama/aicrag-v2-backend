@@ -37,6 +37,8 @@ export class ForgotPasswordController implements IController {
 
     const filteredUser = this.filterUserData.filter(user)
 
-    return this.httpHelper.ok({ user: filteredUser })
+    const result = this.httpHelper.ok({ user: filteredUser })
+
+    return result
   }
 }

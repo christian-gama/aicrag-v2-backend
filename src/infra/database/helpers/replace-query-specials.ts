@@ -1,17 +1,19 @@
-export const replaceQuerySpecials = (queryStr: string): string => {
-  queryStr = queryStr.split(' ').join('+')
-  queryStr = queryStr.replace(/\+/g, '\\+')
-  queryStr = queryStr.replace(/:/g, '\\:')
-  queryStr = queryStr.replace(/=/g, '\\=')
-  queryStr = queryStr.replace(/-/g, '\\-')
-  queryStr = queryStr.replace(/\./g, '\\.')
-  queryStr = queryStr.replace(/,/g, '\\,')
-  queryStr = queryStr.replace(/\?/g, '\\=')
-  queryStr = queryStr.replace(/\$/g, '\\$')
-  queryStr = queryStr.replace(/@/g, '\\@')
-  queryStr = queryStr.replace(/!/g, '\\!')
-  queryStr = queryStr.replace(/#/g, '\\#')
-  queryStr = queryStr.replace(/%/g, '\\%')
+export const replaceQuerySpecials = (query: string): string => {
+  let result = query
 
-  return queryStr
+  result = result.split(' ').join('+')
+  result = result.replace(/\+/g, '\\+')
+  result = result.replace(/:/g, '\\:')
+  result = result.replace(/=/g, '\\=')
+  result = result.replace(/-/g, '\\-')
+  result = result.replace(/\./g, '\\.')
+  result = result.replace(/,/g, '\\,')
+  result = result.replace(/\?/g, '\\=')
+  result = result.replace(/\$/g, '\\$')
+  result = result.replace(/@/g, '\\@')
+  result = result.replace(/!/g, '\\!')
+  result = result.replace(/#/g, '\\#')
+  result = result.replace(/%/g, '\\%')
+
+  return result
 }

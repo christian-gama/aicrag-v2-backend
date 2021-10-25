@@ -14,6 +14,8 @@ describe('accountAlreadyActivatedError', () => {
 
     const sut = new AccountAlreadyActivatedError()
 
-    expect(sut.message).toBe('Account is already activated')
+    const result = sut.message
+
+    expect(result).toBe('Account is already activated')
   })
 })

@@ -30,7 +30,5 @@ export const makeCreateTaskValidator = (): IValidator => {
   validations.push(makeValidateStatus())
   validations.push(makeValidateTaskId())
 
-  const createTaskValidator = new ValidationComposite(validations)
-
-  return createTaskValidator
+  return new ValidationComposite(validations)
 }

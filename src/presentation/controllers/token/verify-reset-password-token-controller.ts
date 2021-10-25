@@ -23,6 +23,8 @@ export class VerifyResetPasswordTokenController implements IController {
       return this.httpHelper.unauthorized(response)
     }
 
-    return this.httpHelper.ok({ accessToken: token })
+    const result = this.httpHelper.ok({ accessToken: token })
+
+    return result
   }
 }

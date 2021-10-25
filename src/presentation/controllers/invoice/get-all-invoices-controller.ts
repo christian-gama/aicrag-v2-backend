@@ -23,13 +23,15 @@ export class GetAllInvoicesController implements IController {
 
     const query = httpRequest.query as IQueryAllInvoices
 
-    const result = await this.invoiceRepository.getAllInvoices(query, user.personal.id)
+    const allInvoices = await this.invoiceRepository.getAllInvoices(query, user.personal.id)
 
-    return this.httpHelper.ok({
-      count: result.count,
-      displaying: result.displaying,
-      documents: result.documents,
-      page: result.page
+    const result = this.httpHelper.ok({
+      count: allInvoices.count,
+      displaying: allInvoices.displaying,
+      documents: allInvoices.documents,
+      page: allInvoices.page
     })
+
+    return result
   }
 }

@@ -87,9 +87,9 @@ describe('sendEmailCodeController', () => {
     const { httpHelper, request, sendEmailCodeValidatorStub, sut } = makeSut()
     jest.spyOn(sendEmailCodeValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should call findUserByEmail with correct email', async () => {
@@ -135,9 +135,9 @@ describe('sendEmailCodeController', () => {
     const { sut, request, emailCodeStub } = makeSut()
     jest.spyOn(emailCodeStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response.data.error.name).toBe('MailerServiceError')
+    expect(result.data.error.name).toBe('MailerServiceError')
   })
 
   it('should return ok if send email', async () => {
@@ -146,9 +146,9 @@ describe('sendEmailCodeController', () => {
     const { sut, fakeUser, httpHelper, request } = makeSut()
     fakeUser.temporary.tempEmail = 'any_email@mail.com'
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(
+    expect(result).toStrictEqual(
       httpHelper.ok({
         message: `An email with your code has been sent to ${fakeUser.temporary.tempEmail}`
       })

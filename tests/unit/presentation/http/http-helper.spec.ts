@@ -20,9 +20,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }
 
-      const response = sut.ok(fakeData)
+      const result = sut.ok(fakeData)
 
-      expect(response).toStrictEqual({ data: fakeData, status: true, statusCode: 200 })
+      expect(result).toStrictEqual({ data: fakeData, status: true, statusCode: 200 })
     })
 
     it('should return 201 and a data when calls created', () => {
@@ -31,9 +31,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }
 
-      const response = sut.created(fakeData)
+      const result = sut.created(fakeData)
 
-      expect(response).toStrictEqual({ data: fakeData, status: true, statusCode: 201 })
+      expect(result).toStrictEqual({ data: fakeData, status: true, statusCode: 201 })
     })
 
     it('should return 204 and a data when calls deleted', () => {
@@ -41,9 +41,9 @@ describe('httpHelper', () => {
 
       const { sut } = makeSut()
 
-      const response = sut.deleted()
+      const result = sut.deleted()
 
-      expect(response).toStrictEqual({
+      expect(result).toStrictEqual({
         data: { message: 'Content deleted' },
         status: true,
         statusCode: 204
@@ -58,9 +58,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
-      const response = sut.badRequest(new Error(errorMessage))
+      const result = sut.badRequest(new Error(errorMessage))
 
-      expect(response).toStrictEqual({
+      expect(result).toStrictEqual({
         data: { message: errorMessage },
         status: false,
         statusCode: 400
@@ -73,9 +73,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
-      const response = sut.unauthorized(new Error(errorMessage))
+      const result = sut.unauthorized(new Error(errorMessage))
 
-      expect(response).toStrictEqual({
+      expect(result).toStrictEqual({
         data: { message: errorMessage },
         status: false,
         statusCode: 401
@@ -88,9 +88,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
-      const response = sut.forbidden(new Error(errorMessage))
+      const result = sut.forbidden(new Error(errorMessage))
 
-      expect(response).toStrictEqual({
+      expect(result).toStrictEqual({
         data: { message: errorMessage },
         status: false,
         statusCode: 403
@@ -103,9 +103,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
-      const response = sut.notFound(new Error(errorMessage))
+      const result = sut.notFound(new Error(errorMessage))
 
-      expect(response).toStrictEqual({
+      expect(result).toStrictEqual({
         data: { message: errorMessage },
         status: false,
         statusCode: 404
@@ -118,9 +118,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
-      const response = sut.conflict(new Error(errorMessage))
+      const result = sut.conflict(new Error(errorMessage))
 
-      expect(response).toStrictEqual({
+      expect(result).toStrictEqual({
         data: { message: errorMessage },
         status: false,
         statusCode: 409
@@ -135,9 +135,9 @@ describe('httpHelper', () => {
       const { sut } = makeSut()
       const error = new Error('any_message')
 
-      const response = sut.serverError(error)
+      const result = sut.serverError(error)
 
-      expect(response).toStrictEqual({
+      expect(result).toStrictEqual({
         data: { error: { message: error.message, name: error.name, stack: error.stack } },
         status: false,
         statusCode: 500

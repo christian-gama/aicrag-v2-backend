@@ -14,7 +14,5 @@ export const makeUpdateEmailByCodeValidator = (): IValidator => {
 
   validations.push(makeValidateEmailCode())
 
-  const updateEmailByCodeController = new ValidationComposite(validations)
-
-  return updateEmailByCodeController
+  return new ValidationComposite(validations)
 }

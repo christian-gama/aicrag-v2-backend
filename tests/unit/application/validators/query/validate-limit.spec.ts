@@ -22,9 +22,9 @@ describe('validateLimit', () => {
     const { request, sut } = makeSut()
     request.query.limit = ['a', 'b']
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('limit'))
+    expect(result).toStrictEqual(new InvalidQueryError('limit'))
   })
 
   it('should return InvalidQueryError if limit does not contain a number', async () => {
@@ -33,9 +33,9 @@ describe('validateLimit', () => {
     const { request, sut } = makeSut()
     request.query.limit = 'abc'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('limit'))
+    expect(result).toStrictEqual(new InvalidQueryError('limit'))
   })
 
   it('should return InvalidQueryError if limit is not an integer', async () => {
@@ -44,9 +44,9 @@ describe('validateLimit', () => {
     const { request, sut } = makeSut()
     request.query.limit = '1.2'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('limit'))
+    expect(result).toStrictEqual(new InvalidQueryError('limit'))
   })
 
   it('should return InvalidQueryError if limit is not a safe integer', async () => {
@@ -55,9 +55,9 @@ describe('validateLimit', () => {
     const { request, sut } = makeSut()
     request.query.limit = '9007199254740992'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('limit'))
+    expect(result).toStrictEqual(new InvalidQueryError('limit'))
   })
 
   it('should return InvalidQueryError if limit greater than 1000', async () => {
@@ -66,9 +66,9 @@ describe('validateLimit', () => {
     const { request, sut } = makeSut()
     request.query.limit = '1001'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('limit'))
+    expect(result).toStrictEqual(new InvalidQueryError('limit'))
   })
 
   it('should return InvalidQueryError if limit lesser or equal to 0', async () => {
@@ -77,9 +77,9 @@ describe('validateLimit', () => {
     const { request, sut } = makeSut()
     request.query.limit = '0'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('limit'))
+    expect(result).toStrictEqual(new InvalidQueryError('limit'))
   })
 
   it('should return undefined if succeeds', async () => {
@@ -87,9 +87,9 @@ describe('validateLimit', () => {
 
     const { request, sut } = makeSut()
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if there is no limit', async () => {
@@ -98,8 +98,8 @@ describe('validateLimit', () => {
     const { request, sut } = makeSut()
     request.query.limit = undefined
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

@@ -48,6 +48,8 @@ export class ResetPasswordController implements IController {
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
-    return this.httpHelper.ok({ refreshToken, user: filteredUser })
+    const result = this.httpHelper.ok({ refreshToken, user: filteredUser })
+
+    return result
   }
 }

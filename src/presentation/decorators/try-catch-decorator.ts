@@ -9,13 +9,13 @@ export class TryCatchDecorator<T extends IController | IMiddleware> {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const httpResponse = await this.fn.handle(httpRequest)
+      const result = await this.fn.handle(httpRequest)
 
-      return httpResponse
+      return result
     } catch (error) {
-      const httpHelper = makeHttpHelper()
+      const result = makeHttpHelper().serverError(error)
 
-      return httpHelper.serverError(error)
+      return result
     }
   }
 }

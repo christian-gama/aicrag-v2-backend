@@ -36,9 +36,9 @@ describe('logoutController', () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.forbidden(new MustLoginError()))
+    expect(result).toStrictEqual(httpHelper.forbidden(new MustLoginError()))
   })
 
   it('should call updateUser with correct values', async () => {
@@ -59,8 +59,8 @@ describe('logoutController', () => {
 
     const { httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ message: "You've been logged out" }))
+    expect(result).toStrictEqual(httpHelper.ok({ message: "You've been logged out" }))
   })
 })

@@ -34,19 +34,21 @@ export class UpdateEmailByCodeController implements IController {
 
     const filteredUser = this.filterUserData.filter(updatedUser)
 
-    return this.httpHelper.ok({
+    const result = this.httpHelper.ok({
       user: filteredUser
     })
+
+    return result
   }
 
   private updateEmail (user: IUser): Record<string, any> {
     user.personal.email = user.temporary.tempEmail as string
 
-    const update = {
+    const result = {
       'personal.email': user.personal.email
     }
 
-    return update
+    return result
   }
 
   private clearTemporary (user: IUser): Record<string, any> {
@@ -54,13 +56,13 @@ export class UpdateEmailByCodeController implements IController {
     user.temporary.tempEmailCode = null
     user.temporary.tempEmailCodeExpiration = null
 
-    const update = {
+    const result = {
       'logs.updatedAt': new Date(Date.now()),
       'temporary.tempEmail': user.temporary.tempEmail,
       'temporary.tempEmailCode': user.temporary.tempEmailCode,
       'temporary.tempEmailCodeExpiration': user.temporary.tempEmailCodeExpiration
     }
 
-    return update
+    return result
   }
 }

@@ -14,6 +14,8 @@ describe('invalidParamError', () => {
 
     const sut = new MissingParamError('any_field')
 
-    expect(sut.message).toBe('Missing param: any_field')
+    const result = sut.message
+
+    expect(result).toBe('Missing param: any_field')
   })
 })

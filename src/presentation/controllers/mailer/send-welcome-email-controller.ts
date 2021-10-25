@@ -41,17 +41,19 @@ export class SendWelcomeEmailController implements IController {
       return this.httpHelper.serverError(mailerResponse)
     }
 
-    return this.httpHelper.ok({
+    const result = this.httpHelper.ok({
       message: `A welcome email with activation code has been sent to ${user.personal.email}`
     })
+
+    return result
   }
 
   private async generateNewActivationCode (user: IUser): Promise<IUser> {
-    const updatedUser = await this.userRepository.updateUser(user.personal.id, {
+    const result = await this.userRepository.updateUser(user.personal.id, {
       'temporary.activationCode': this.validationCode.generate(),
       'temporary.activationCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })
 
-    return updatedUser as IUser
+    return result as IUser
   }
 }

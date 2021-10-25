@@ -1,5 +1,7 @@
 export const getType = (type: 'QA' | 'TX' | 'both'): 'QA' | 'TX' | { $ne: null } => {
-  if (type === 'both') return { $ne: null }
+  let result: any = type
 
-  return type
+  if (type === 'both') result = { $ne: null }
+
+  return result
 }

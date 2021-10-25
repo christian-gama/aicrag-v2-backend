@@ -27,6 +27,8 @@ export class DeleteTaskController implements IController {
 
     if (!deleted) return this.httpHelper.badRequest(new TaskNotFoundError())
 
-    return this.httpHelper.deleted()
+    const result = this.httpHelper.deleted()
+
+    return result
   }
 }

@@ -29,9 +29,9 @@ describe('validateTempEmail', () => {
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
-    const error = await sut.validate(data)
+    const result = await sut.validate(data)
 
-    expect(error).toStrictEqual(new UserCredentialError())
+    expect(result).toStrictEqual(new UserCredentialError())
   })
 
   it('should return a UserCredentialError if temporary email does not exists', async () => {
@@ -41,9 +41,9 @@ describe('validateTempEmail', () => {
     const data = { email: 'invalid_email@email.com' }
     fakeUser.temporary.tempEmail = null
 
-    const error = await sut.validate(data)
+    const result = await sut.validate(data)
 
-    expect(error).toStrictEqual(new UserCredentialError())
+    expect(result).toStrictEqual(new UserCredentialError())
   })
 
   it('should return a undefined if temporary email exist', async () => {
@@ -53,9 +53,9 @@ describe('validateTempEmail', () => {
     const data = { email: 'invalid_email@email.com' }
     fakeUser.temporary.tempEmail = 'any_email@mail.com'
 
-    const response = await sut.validate(data)
+    const result = await sut.validate(data)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should call findUserByEmail with correct value', async () => {

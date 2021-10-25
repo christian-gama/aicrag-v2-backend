@@ -39,16 +39,18 @@ export class SendForgotPasswordEmailController implements IController {
       return this.httpHelper.serverError(mailerResponse)
     }
 
-    return this.httpHelper.ok({
+    const result = this.httpHelper.ok({
       message: `Instructions to reset your password were sent to ${user.personal.email}`
     })
+
+    return result
   }
 
   private async generateNewResetPasswordToken (user: IUser): Promise<IUser> {
-    const updatedUser = await this.userRepository.updateUser(user.personal.id, {
+    const result = await this.userRepository.updateUser(user.personal.id, {
       'temporary.resetPasswordToken': await this.generateAccessToken.generate(user)
     })
 
-    return updatedUser as IUser
+    return result as IUser
   }
 }

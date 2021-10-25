@@ -49,9 +49,9 @@ describe('deleteTaskController', () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
   it('should return badRequest if validation returns an error', async () => {
@@ -60,9 +60,9 @@ describe('deleteTaskController', () => {
     const { httpHelper, request, sut, validateTaskParamStub } = makeSut()
     jest.spyOn(validateTaskParamStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should return badRequest if does not delete a task', async () => {
@@ -71,9 +71,9 @@ describe('deleteTaskController', () => {
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest.spyOn(taskRepositoryStub, 'deleteTask').mockReturnValueOnce(Promise.resolve(false))
 
-    const error = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(error).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new TaskNotFoundError()))
   })
 
   it('should call validate with correct data', async () => {
@@ -103,8 +103,8 @@ describe('deleteTaskController', () => {
 
     const { httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.deleted())
+    expect(result).toStrictEqual(httpHelper.deleted())
   })
 })

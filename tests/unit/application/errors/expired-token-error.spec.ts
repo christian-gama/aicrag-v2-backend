@@ -14,6 +14,8 @@ describe('expiredTokenError', () => {
 
     const sut = new ExpiredTokenError()
 
-    expect(sut.message).toBe('Token is expired')
+    const result = sut.message
+
+    expect(result).toBe('Token is expired')
   })
 })

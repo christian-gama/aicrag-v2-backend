@@ -56,9 +56,9 @@ describe('logDecorator', () => {
     }
     jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(httpHelper.serverError(error)))
 
-    const response = await sut.handle({})
+    const result = await sut.handle({})
 
-    expect(response).toStrictEqual(httpHelper.serverError(errorData))
+    expect(result).toStrictEqual(httpHelper.serverError(errorData))
   })
 
   it('should return any http response', async () => {
@@ -66,10 +66,10 @@ describe('logDecorator', () => {
 
     const { sut } = makeSut()
 
-    const response = await sut.handle({})
+    const result = await sut.handle({})
 
-    expect(response.data).toBeTruthy()
-    expect(response.status).toBeTruthy()
-    expect(response.statusCode).toBeTruthy()
+    expect(result.data).toBeTruthy()
+    expect(result.status).toBeTruthy()
+    expect(result.statusCode).toBeTruthy()
   })
 })

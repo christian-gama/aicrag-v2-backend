@@ -37,17 +37,19 @@ export class SendEmailCodeController implements IController {
       return this.httpHelper.serverError(mailerResponse)
     }
 
-    return this.httpHelper.ok({
+    const result = this.httpHelper.ok({
       message: `An email with your code has been sent to ${user.temporary.tempEmail as string}`
     })
+
+    return result
   }
 
   private async generateNewEmailCode (user: IUser): Promise<IUser> {
-    const updatedUser = await this.userRepository.updateUser(user.personal.id, {
+    const result = await this.userRepository.updateUser(user.personal.id, {
       'temporary.tempEmailCode': this.validationCode.generate(),
       'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })
 
-    return updatedUser as IUser
+    return result as IUser
   }
 }

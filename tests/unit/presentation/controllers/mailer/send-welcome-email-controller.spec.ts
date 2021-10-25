@@ -87,9 +87,9 @@ describe('sendWelcomeEmailController', () => {
     const { httpHelper, request, sendWelcomeValidatorStub, sut } = makeSut()
     jest.spyOn(sendWelcomeValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should return forbidden if account is already activated', async () => {
@@ -102,9 +102,9 @@ describe('sendWelcomeEmailController', () => {
       return fakeUser
     })
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.forbidden(new AccountAlreadyActivatedError()))
+    expect(result).toStrictEqual(httpHelper.forbidden(new AccountAlreadyActivatedError()))
   })
 
   it('should call findUserByEmail with correct email', async () => {
@@ -135,9 +135,9 @@ describe('sendWelcomeEmailController', () => {
     const { sut, request, welcomeEmailStub } = makeSut()
     jest.spyOn(welcomeEmailStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response.data.error.name).toBe('MailerServiceError')
+    expect(result.data.error.name).toBe('MailerServiceError')
   })
 
   it('should call updateUser with correct values if activation code has expired', async () => {
@@ -160,9 +160,9 @@ describe('sendWelcomeEmailController', () => {
 
     const { sut, fakeUser, httpHelper, request } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(
+    expect(result).toStrictEqual(
       httpHelper.ok({
         message: `A welcome email with activation code has been sent to ${fakeUser.personal.email}`
       })

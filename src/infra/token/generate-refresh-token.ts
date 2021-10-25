@@ -9,9 +9,11 @@ export class GenerateRefreshToken implements IGenerateToken {
   async generate (user: IUser): Promise<string> {
     await this.userRepository.updateUser(user.personal.id, { tokenVersion: ++user.tokenVersion })
 
-    return this.refreshTokenEncrypter.encrypt({
+    const result = this.refreshTokenEncrypter.encrypt({
       userId: user.personal.id,
       version: user.tokenVersion.toString()
     })
+
+    return result
   }
 }

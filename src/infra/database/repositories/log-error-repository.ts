@@ -16,6 +16,8 @@ export class LogErrorRepository implements ILogErrorRepository {
 
     const logCollection = this.database.collection('logs')
 
-    return await logCollection.insertOne(log)
+    const result = await logCollection.insertOne(log)
+
+    return result as ILogError
   }
 }

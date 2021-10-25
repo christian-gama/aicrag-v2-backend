@@ -10,6 +10,8 @@ export class ValidationCode implements IValidationCode {
       code.push(randomAlphanumeric())
     }
 
-    return code.join('')
+    const result = code.join('')
+
+    return result
   }
 }

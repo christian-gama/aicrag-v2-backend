@@ -22,9 +22,9 @@ describe('validateType', () => {
     const { request, sut } = makeSut()
     request.query.type = 'invalid_type'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('type'))
+    expect(result).toStrictEqual(new InvalidQueryError('type'))
   })
 
   it('should return undefined if succeeds', async () => {
@@ -32,8 +32,8 @@ describe('validateType', () => {
 
     const { request, sut } = makeSut()
 
-    const response = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

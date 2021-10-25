@@ -109,9 +109,9 @@ describe('updateUserController', () => {
     const { httpHelper, request, sut, validateCurrencyStub } = makeSut()
     jest.spyOn(validateCurrencyStub, 'validate').mockReturnValueOnce(new Error())
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should call validate name with correct data', async () => {
@@ -133,9 +133,9 @@ describe('updateUserController', () => {
     jest.spyOn(validateNameStub, 'validate').mockReturnValueOnce(new Error())
     request.body.email = undefined
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should not call validate name if there is no name', async () => {
@@ -156,9 +156,9 @@ describe('updateUserController', () => {
     const { httpHelper, request, sut, validateEmailStub } = makeSut()
     jest.spyOn(validateEmailStub, 'validate').mockReturnValueOnce(new Error())
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(new Error()))
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
 
   it('should not call validate email if there is no email', async () => {
@@ -212,9 +212,9 @@ describe('updateUserController', () => {
 
     const { httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.conflict(new ConflictParamError('email')))
+    expect(result).toStrictEqual(httpHelper.conflict(new ConflictParamError('email')))
   })
 
   it('should call updateUser with correct values if only currency is changed', async () => {
@@ -310,9 +310,9 @@ describe('updateUserController', () => {
     request.body.name = undefined
     request.body.currency = undefined
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
+    expect(result).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
   })
 
   it('should return ok if succeeds', async () => {
@@ -321,8 +321,8 @@ describe('updateUserController', () => {
     const { fakeUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
+    expect(result).toStrictEqual(httpHelper.ok({ user: makeFakePublicUser(fakeUser) }))
   })
 })

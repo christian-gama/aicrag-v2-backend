@@ -44,9 +44,9 @@ describe('validateActivationCode', () => {
     const { request, sut } = makeSut()
     request.body.activationCode = 123
 
-    const error = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidTypeError('activationCode'))
+    expect(result).toStrictEqual(new InvalidTypeError('activationCode'))
   })
 
   it('should call findUserByEmail with correct email', async () => {

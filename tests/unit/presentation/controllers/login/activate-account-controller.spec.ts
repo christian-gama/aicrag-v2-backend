@@ -98,9 +98,9 @@ describe('activateAccountController', () => {
     const error = new InvalidCodeError()
     jest.spyOn(activateAccountValidatorStub, 'validate').mockReturnValueOnce(error)
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(error))
+    expect(result).toStrictEqual(httpHelper.badRequest(error))
   })
 
   it('should call findUserByEmail with correct email', async () => {

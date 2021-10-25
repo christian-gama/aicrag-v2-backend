@@ -22,9 +22,9 @@ describe('validateTaskId', () => {
     const { request, sut } = makeSut()
     request.query.taskId = ['a', 'b']
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('taskId'))
+    expect(result).toStrictEqual(new InvalidQueryError('taskId'))
   })
 
   it('should return InvalidQueryError if taskId is longer than 120 characters', async () => {
@@ -34,9 +34,9 @@ describe('validateTaskId', () => {
     request.query.taskId =
       'this_is_a_really_really_really_really_really_really_really_really_really_really_really_really_really_really_really_long_string'
 
-    const error = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(error).toStrictEqual(new InvalidQueryError('taskId'))
+    expect(result).toStrictEqual(new InvalidQueryError('taskId'))
   })
 
   it('should return undefined if succeeds', async () => {
@@ -44,8 +44,8 @@ describe('validateTaskId', () => {
 
     const { request, sut } = makeSut()
 
-    const response = await sut.validate(request.query)
+    const result = await sut.validate(request.query)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

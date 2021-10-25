@@ -26,6 +26,8 @@ export class FindOneTaskController implements IController {
     const task = await this.taskRepository.findTaskById(data.id, user.personal.id)
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 
-    return this.httpHelper.ok({ task })
+    const result = this.httpHelper.ok({ task })
+
+    return result
   }
 }

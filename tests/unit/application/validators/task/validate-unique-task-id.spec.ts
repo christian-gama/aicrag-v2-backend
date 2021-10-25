@@ -33,9 +33,9 @@ describe('validateUniqueTaskId', () => {
     const { fakeTask, request, sut } = makeSut()
     request.body.taskId = fakeTask.taskId
 
-    const error = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(error).toStrictEqual(new ConflictParamError('taskId'))
+    expect(result).toStrictEqual(new ConflictParamError('taskId'))
   })
 
   it('should return undefined if taskId is null', async () => {
@@ -44,9 +44,9 @@ describe('validateUniqueTaskId', () => {
     const { request, sut } = makeSut()
     request.body.taskId = null
 
-    const response = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if task does not exist', async () => {
@@ -55,8 +55,8 @@ describe('validateUniqueTaskId', () => {
     const { request, sut, taskRepositoryStub } = makeSut()
     jest.spyOn(taskRepositoryStub, 'findTaskByTaskId').mockReturnValueOnce(Promise.resolve(null))
 
-    const response = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

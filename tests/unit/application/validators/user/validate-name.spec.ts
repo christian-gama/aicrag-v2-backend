@@ -27,9 +27,9 @@ describe('validateName', () => {
     const { request, sut } = makeSut()
     request.body.name = 123
 
-    const error = await sut.validate(request.body)
+    const result = await sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidTypeError('name'))
+    expect(result).toStrictEqual(new InvalidTypeError('name'))
   })
 
   it('should return InvalidParamError if name is invalid with symbols', () => {

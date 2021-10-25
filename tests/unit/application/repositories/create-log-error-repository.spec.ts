@@ -27,9 +27,9 @@ describe('createLogErrorRepository', () => {
     const { sut } = makeSut()
     const error = new Error('any_message')
 
-    const value = sut.createLog(error)
+    const result = sut.createLog(error)
 
-    expect(value).toStrictEqual({
+    expect(result).toStrictEqual({
       date: new Date(Date.now()).toLocaleString(),
       message: error.message,
       name: error.name,

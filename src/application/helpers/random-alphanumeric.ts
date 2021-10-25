@@ -54,6 +54,10 @@ export const randomAlphanumeric = (): string => {
 
   const randomNumber = Math.floor(Math.random() * (alphanumerics.length - 1))
 
-  if (randomNumber % 2 === 0) return alphanumerics[randomNumber]
-  else return alphanumerics[randomNumber].toUpperCase()
+  let result = ''
+
+  if (randomNumber % 2 === 0) result = alphanumerics[randomNumber]
+  else result = alphanumerics[randomNumber].toUpperCase()
+
+  return result
 }

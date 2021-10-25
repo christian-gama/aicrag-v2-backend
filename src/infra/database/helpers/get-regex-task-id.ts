@@ -1,12 +1,17 @@
 import { replaceQuerySpecials } from './replace-query-specials'
 
 export const getRegexTaskId = (taskId: string | undefined): Record<string, any> | null => {
-  if (taskId) {
-    if (taskId === '--') return { $ne: false }
+  let result: any = { $ne: false }
 
-    const regex = new RegExp(replaceQuerySpecials(taskId), 'g')
-    return { $regex: regex }
+  if (taskId) {
+    if (taskId === '--') {
+      result = { $ne: false }
+    } else {
+      const regex = new RegExp(replaceQuerySpecials(taskId), 'g')
+
+      result = { $regex: regex }
+    }
   }
 
-  return { $ne: false }
+  return result
 }

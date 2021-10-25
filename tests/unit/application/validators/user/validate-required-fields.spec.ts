@@ -21,9 +21,9 @@ describe('validateRequiredFields', () => {
 
     const { fakeField, sut } = makeSut()
 
-    const value = sut.validate({ invalidField: fakeField })
+    const result = sut.validate({ invalidField: fakeField })
 
-    expect(value).toStrictEqual(new MissingParamError(fakeField))
+    expect(result).toStrictEqual(new MissingParamError(fakeField))
   })
 
   it('should return MissingParamError if field is empty', () => {
@@ -31,9 +31,9 @@ describe('validateRequiredFields', () => {
 
     const { fakeField, sut } = makeSut()
 
-    const value = sut.validate({ [fakeField]: '' })
+    const result = sut.validate({ [fakeField]: '' })
 
-    expect(value).toStrictEqual(new MissingParamError(fakeField))
+    expect(result).toStrictEqual(new MissingParamError(fakeField))
   })
 
   it('should return nothing if succeeds', () => {
@@ -41,8 +41,8 @@ describe('validateRequiredFields', () => {
 
     const { sut, fakeField } = makeSut()
 
-    const value = sut.validate({ [fakeField]: 'any_text' })
+    const result = sut.validate({ [fakeField]: 'any_text' })
 
-    expect(value).toBeFalsy()
+    expect(result).toBeFalsy()
   })
 })

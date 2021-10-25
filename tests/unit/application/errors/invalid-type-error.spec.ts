@@ -14,6 +14,8 @@ describe('invalidTypeError', () => {
 
     const sut = new InvalidTypeError('any_field')
 
-    expect(sut.message).toBe('Invalid type: any_field')
+    const result = sut.message
+
+    expect(result).toBe('Invalid type: any_field')
   })
 })

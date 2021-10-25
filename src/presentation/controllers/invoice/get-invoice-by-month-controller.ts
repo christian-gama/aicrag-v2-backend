@@ -23,13 +23,15 @@ export class GetInvoiceByMonthController implements IController {
 
     const query = httpRequest.query as IQueryInvoice
 
-    const result = await this.invoiceRepository.getInvoiceByMonth(query, user.personal.id)
+    const invoice = await this.invoiceRepository.getInvoiceByMonth(query, user.personal.id)
 
-    return this.httpHelper.ok({
-      count: result.count,
-      displaying: result.displaying,
-      documents: result.documents,
-      page: result.page
+    const result = this.httpHelper.ok({
+      count: invoice.count,
+      displaying: invoice.displaying,
+      documents: invoice.documents,
+      page: invoice.page
     })
+
+    return result
   }
 }

@@ -77,9 +77,9 @@ describe('signUpController', () => {
     const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
+    expect(result).toStrictEqual(httpHelper.forbidden(new MustLogoutError()))
   })
 
   it('should call findUserByEmail with the correct value', async () => {
@@ -99,9 +99,9 @@ describe('signUpController', () => {
     const { httpHelper, request, sut } = makeSut()
     const error = new ConflictParamError('email')
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.conflict(error))
+    expect(result).toStrictEqual(httpHelper.conflict(error))
   })
 
   it('should call the saveUser with correct values', async () => {
@@ -162,9 +162,9 @@ describe('signUpController', () => {
     jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
     jest.spyOn(userValidatorStub, 'validate').mockReturnValueOnce(error)
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.badRequest(error))
+    expect(result).toStrictEqual(httpHelper.badRequest(error))
   })
 
   it('should call ok with the correct value', async () => {
@@ -185,8 +185,8 @@ describe('signUpController', () => {
     const { fakePublicUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findUserByEmail').mockReturnValueOnce(Promise.resolve(null))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', user: fakePublicUser }))
+    expect(result).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', user: fakePublicUser }))
   })
 })

@@ -6,8 +6,10 @@ export class GenerateAccessToken implements IGenerateToken {
   constructor (private readonly accessTokenEncrypter: IEncrypter) {}
 
   generate (user: IUser): string {
-    return this.accessTokenEncrypter.encrypt({
+    const result = this.accessTokenEncrypter.encrypt({
       userId: user.personal.id
     })
+
+    return result
   }
 }

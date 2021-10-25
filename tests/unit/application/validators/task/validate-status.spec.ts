@@ -22,9 +22,9 @@ describe('validateStatus', () => {
     const { request, sut } = makeSut()
     request.body.status = 'invalid_status'
 
-    const error = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(error).toStrictEqual(new InvalidParamError('status'))
+    expect(result).toStrictEqual(new InvalidParamError('status'))
   })
 
   it('should return undefined if is a valid status', () => {
@@ -32,8 +32,8 @@ describe('validateStatus', () => {
 
     const { request, sut } = makeSut()
 
-    const response = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
-    expect(response).toBeUndefined()
+    expect(result).toBeUndefined()
   })
 })

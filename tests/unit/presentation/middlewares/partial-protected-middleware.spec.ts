@@ -54,9 +54,9 @@ describe('partialProtectedMiddleware', () => {
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.unauthorized(new Error()))
+    expect(result).toStrictEqual(httpHelper.unauthorized(new Error()))
   })
 
   it('should return ok if succeeds', async () => {
@@ -64,8 +64,8 @@ describe('partialProtectedMiddleware', () => {
 
     const { httpHelper, request, sut } = makeSut()
 
-    const response = await sut.handle(request)
+    const result = await sut.handle(request)
 
-    expect(response).toStrictEqual(httpHelper.ok({ accessToken: 'any_token' }))
+    expect(result).toStrictEqual(httpHelper.ok({ accessToken: 'any_token' }))
   })
 })
