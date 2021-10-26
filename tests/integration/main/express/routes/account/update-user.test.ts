@@ -59,7 +59,8 @@ describe('patch /update-user', () => {
 
     await request(app)
       .patch('/api/v1/account/update-user')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ name: '1nv@lid_name' })
       .expect(400)
   })
@@ -71,7 +72,8 @@ describe('patch /update-user', () => {
 
     await request(app)
       .patch('/api/v1/account/update-user')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ currency: 'invalid_currency' })
       .expect(400)
   })
@@ -83,7 +85,8 @@ describe('patch /update-user', () => {
 
     await request(app)
       .patch('/api/v1/account/update-user')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ email: 'invalid_email' })
       .expect(400)
   })
@@ -95,7 +98,8 @@ describe('patch /update-user', () => {
 
     await request(app)
       .patch('/api/v1/account/update-user')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ email: fakeUser.personal.email })
       .expect(409)
   })
@@ -107,7 +111,8 @@ describe('patch /update-user', () => {
 
     await request(app)
       .patch('/api/v1/account/update-user')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send()
       .expect(200)
   })
@@ -119,7 +124,8 @@ describe('patch /update-user', () => {
 
     await request(app)
       .patch('/api/v1/account/update-user')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ currency: 'BRL', email: 'example@mail.com', name: 'Example' })
       .expect(200)
   })

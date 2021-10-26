@@ -18,8 +18,12 @@ export const protectedDirectiveTransformer = (schema: GraphQLSchema): GraphQLSch
         fieldConfig.resolve = async (parent, args, context, info) => {
           const request = {
             cookies: {
-              accessToken: context?.req?.cookies.accessToken,
-              refreshToken: context?.req?.cookies.refreshToken
+              accessToken: context?.req?.cookies?.accessToken,
+              refreshToken: context?.req?.cookies?.refreshToken
+            },
+            headers: {
+              'x-access-token': context?.req?.headers?.['x-access-token'],
+              'x-refresh-token': context?.req?.headers?.['x-refresh-token']
             }
           }
 
@@ -31,9 +35,8 @@ export const protectedDirectiveTransformer = (schema: GraphQLSchema): GraphQLSch
               secure: environment.SERVER.NODE_ENV === 'production'
             })
 
+            context.req.headers['x-access-token'] = httpResponse.data.accessToken
             context.req.cookies.accessToken = httpResponse.data.accessToken
-
-            Object.assign(context?.req, httpResponse.data)
 
             return resolve?.call(this, parent, args, context, info)
           } else {

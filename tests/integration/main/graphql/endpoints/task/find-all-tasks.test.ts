@@ -103,7 +103,8 @@ describe('query findAllTasks', () => {
 
     const response = await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
 
     expect(response.status).toBe(200)
@@ -118,7 +119,8 @@ describe('query findAllTasks', () => {
 
     const response = await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
 
     expect(response.status).toBe(200)

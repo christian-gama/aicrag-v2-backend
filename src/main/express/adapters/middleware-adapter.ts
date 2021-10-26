@@ -7,7 +7,7 @@ import { defaultResponse } from '../handlers/express-responses'
 
 import { Request, Response, NextFunction } from 'express'
 
-type AdaptRequest = Request & Pick<HttpRequest, 'user'>
+type AdaptRequest = Request & Pick<HttpRequest, 'user' | 'headers'>
 
 export const middlewareAdapter = (middleware: IMiddleware) => {
   return async (req: AdaptRequest, res: Response, next: NextFunction) => {
@@ -30,6 +30,8 @@ export const middlewareAdapter = (middleware: IMiddleware) => {
           httpOnly: true,
           secure: environment.SERVER.NODE_ENV === 'production'
         })
+
+        req.headers['X-Access-Token'] = httpResponse.data.accessToken
 
         req.cookies.accessToken = httpResponse.data.accessToken
       }

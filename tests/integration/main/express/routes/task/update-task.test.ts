@@ -64,7 +64,8 @@ describe('patch /task/:id', () => {
 
     await request(app)
       .patch('/api/v1/task/invalid_id')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ duration: 30, type: 'QA' })
       .expect(400)
   })
@@ -76,7 +77,8 @@ describe('patch /task/:id', () => {
 
     await request(app)
       .patch('/api/v1/task/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -88,7 +90,8 @@ describe('patch /task/:id', () => {
 
     await request(app)
       .patch(`/api/v1/task/${fakeTask.id}`)
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ duration: 2.4, type: 'QA' })
       .expect(200)
       .then((response) => {
@@ -105,7 +108,8 @@ describe('patch /task/:id', () => {
 
     await request(app)
       .patch(`/api/v1/task/${fakeTask.id}`)
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({})
       .expect(200)
       .then((response) => assert(response.body.data.message === 'No changes were made'))

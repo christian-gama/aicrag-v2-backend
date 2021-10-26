@@ -104,7 +104,8 @@ describe('query getInvoiceByMonth', () => {
 
     await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
       .expect(400)
   })
@@ -116,7 +117,8 @@ describe('query getInvoiceByMonth', () => {
 
     await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
       .expect(200)
   })
@@ -131,7 +133,8 @@ describe('query getInvoiceByMonth', () => {
 
     const response = await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
 
     expect(response.statusCode).toBe(200)
@@ -148,7 +151,8 @@ describe('query getInvoiceByMonth', () => {
 
     const response = await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
 
     expect(response.statusCode).toBe(200)
@@ -166,7 +170,8 @@ describe('query getInvoiceByMonth', () => {
     const response = await request(app)
       .post('/graphql')
       .send({ query })
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
 
     expect(response.statusCode).toBe(200)
     expect(response.body.data.getInvoiceByMonth.documents[0].taskId).toBe(fakeTask.taskId)

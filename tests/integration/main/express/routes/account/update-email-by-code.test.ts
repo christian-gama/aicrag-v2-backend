@@ -56,7 +56,8 @@ describe('patch /update-email-by-code', () => {
 
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ emailCode: tempEmailCode })
       .expect(200)
   })
@@ -76,7 +77,8 @@ describe('patch /update-email-by-code', () => {
 
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ emailCode: 'invalid_code' })
       .expect(400)
   })
@@ -91,7 +93,8 @@ describe('patch /update-email-by-code', () => {
 
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ emailCode: tempEmailCode })
       .expect(400)
   })
@@ -103,7 +106,8 @@ describe('patch /update-email-by-code', () => {
 
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send()
       .expect(400)
   })
@@ -117,7 +121,8 @@ describe('patch /update-email-by-code', () => {
 
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ emailCode: 'any_code' })
       .expect(400)
   })
@@ -131,7 +136,8 @@ describe('patch /update-email-by-code', () => {
 
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ emailCode: 'any_code' })
       .expect(400)
   })
@@ -145,7 +151,8 @@ describe('patch /update-email-by-code', () => {
 
     await request(app)
       .patch('/api/v1/account/update-email-by-code')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ emailCode: 'any_code' })
       .expect(400)
   })

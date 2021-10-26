@@ -72,7 +72,7 @@ describe('post /forgot-password', () => {
 
     await request(app)
       .post('/api/v1/login/forgot-password')
-      .set('Cookie', `refreshToken=${refreshToken}`)
+      .set('x-refresh-token', refreshToken)
       .send({ email: fakeUser.personal.email })
       .expect(403)
   })

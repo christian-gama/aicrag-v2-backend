@@ -63,7 +63,8 @@ describe('get /invoice/get-all-invoices', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-all-invoices?sort=a&sort=b')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -74,7 +75,8 @@ describe('get /invoice/get-all-invoices', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-all-invoices?type=invalid_type')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -85,7 +87,8 @@ describe('get /invoice/get-all-invoices', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-all-invoices')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -96,7 +99,8 @@ describe('get /invoice/get-all-invoices', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-all-invoices?type=TX')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   })
 
@@ -108,7 +112,8 @@ describe('get /invoice/get-all-invoices', () => {
 
     await request(app)
       .get(`/api/v1/invoice/get-all-invoices?type=${fakeTask.type}`)
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   }, 12000)
 
@@ -120,7 +125,8 @@ describe('get /invoice/get-all-invoices', () => {
 
     await request(app)
       .get(`/api/v1/invoice/get-all-invoices?type=${fakeTask.type}&sort=usd,-date.full&limit=2&page=1`)
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   }, 12000)
 })

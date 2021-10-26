@@ -49,7 +49,7 @@ describe('get /verify-reset-password-token', () => {
 
     await request(app)
       .get('/api/v1/token/verify-reset-password-token/any_token')
-      .set('Cookie', `refreshToken=${refreshToken}`)
+      .set('x-refresh-token', refreshToken)
       .send()
       .expect(403)
   })

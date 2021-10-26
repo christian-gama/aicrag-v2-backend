@@ -52,7 +52,8 @@ describe('post /login', () => {
 
     await request(app)
       .post('/api/v1/login')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send()
       .expect(403)
   })

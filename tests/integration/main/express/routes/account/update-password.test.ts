@@ -61,7 +61,8 @@ describe('patch /update-password', () => {
 
     await request(app)
       .patch('/api/v1/account/update-password')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({
         currentPassword: userPassword,
         password: '123',
@@ -77,7 +78,8 @@ describe('patch /update-password', () => {
 
     await request(app)
       .patch('/api/v1/account/update-password')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send()
       .expect(400)
   })
@@ -91,7 +93,8 @@ describe('patch /update-password', () => {
 
     await request(app)
       .patch('/api/v1/account/update-password')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({
         currentPassword: '123',
         password: '123456789',
@@ -110,7 +113,8 @@ describe('patch /update-password', () => {
 
     await request(app)
       .patch('/api/v1/account/update-password')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({
         currentPassword: userPassword,
         password: '123456789',
@@ -129,7 +133,8 @@ describe('patch /update-password', () => {
 
     await request(app)
       .patch('/api/v1/account/update-password')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({
         currentPassword: userPassword,
         password: '123456789',

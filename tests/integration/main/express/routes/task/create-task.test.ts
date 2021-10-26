@@ -73,7 +73,8 @@ describe('post /task', () => {
 
     await request(app)
       .post('/api/v1/task')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({})
       .expect(400)
   })
@@ -86,7 +87,8 @@ describe('post /task', () => {
 
     await request(app)
       .post('/api/v1/task')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send(fakeTaskData)
       .expect(409)
   })
@@ -98,7 +100,8 @@ describe('post /task', () => {
 
     await request(app)
       .post('/api/v1/task')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send()
       .expect(400)
   })
@@ -110,7 +113,8 @@ describe('post /task', () => {
 
     await request(app)
       .post('/api/v1/task')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send(fakeTaskData)
       .expect(201)
   }, 12000)

@@ -62,7 +62,8 @@ describe('protectedMiddleware', () => {
 
     await request(app)
       .get('/protected')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=invalid_token`)
+      .set('x-access-token', 'invalid-token')
+      .set('x-refresh-token', refreshToken)
       .expect(401)
   })
 
@@ -73,7 +74,8 @@ describe('protectedMiddleware', () => {
 
     await request(app)
       .get('/protected')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   })
 })

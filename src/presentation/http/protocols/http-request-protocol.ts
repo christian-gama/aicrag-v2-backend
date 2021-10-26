@@ -15,4 +15,8 @@ export interface HttpRequest {
   params?: any
   query?: any
   user?: IUser
+  headers?: {
+    'x-access-token'?: string
+    'x-refresh-token'?: string
+  }
 }

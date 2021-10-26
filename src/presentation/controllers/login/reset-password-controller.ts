@@ -7,6 +7,8 @@ import { IValidator } from '@/domain/validators'
 
 import { MustLogoutError } from '@/application/errors'
 
+import { getToken } from '@/infra/token'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { IController } from '../protocols/controller-protocol'
@@ -25,7 +27,9 @@ export class ResetPasswordController implements IController {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     if (httpRequest.user) return this.httpHelper.forbidden(new MustLogoutError())
 
-    const response = await this.verifyResetPasswordToken.verify(httpRequest.cookies?.accessToken)
+    const token = getToken.accessToken(httpRequest)
+
+    const response = await this.verifyResetPasswordToken.verify(token)
     if (response instanceof Error) {
       return this.httpHelper.unauthorized(response)
     }

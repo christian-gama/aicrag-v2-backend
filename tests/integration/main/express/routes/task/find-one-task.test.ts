@@ -63,7 +63,8 @@ describe('get /task/:id', () => {
 
     await request(app)
       .get('/api/v1/task/invalid_id')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -74,7 +75,8 @@ describe('get /task/:id', () => {
 
     await request(app)
       .get('/api/v1/task/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -86,7 +88,8 @@ describe('get /task/:id', () => {
 
     await request(app)
       .get(`/api/v1/task/${fakeTask.id}`)
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   }, 12000)
 })

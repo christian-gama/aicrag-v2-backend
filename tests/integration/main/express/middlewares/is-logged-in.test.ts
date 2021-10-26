@@ -60,6 +60,6 @@ describe('isLoggedInMiddleware', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app).get('/is-logged-in').set('Cookie', `refreshToken=${refreshToken}`).expect('true')
+    await request(app).get('/is-logged-in').set('x-refresh-token', refreshToken).expect('true')
   })
 })

@@ -51,7 +51,7 @@ describe('patch /activate-account', () => {
 
     await request(app)
       .patch('/api/v1/login/activate-account')
-      .set('Cookie', `accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(200)
   })
@@ -71,7 +71,7 @@ describe('patch /activate-account', () => {
 
     await request(app)
       .patch('/api/v1/login/activate-account')
-      .set('Cookie', `accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
       .send({ activationCode: 'invalid_code', email: fakeUser.personal.email })
       .expect(400)
   })
@@ -85,7 +85,7 @@ describe('patch /activate-account', () => {
 
     await request(app)
       .patch('/api/v1/login/activate-account')
-      .set('Cookie', `accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(400)
   })
@@ -95,11 +95,7 @@ describe('patch /activate-account', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .patch('/api/v1/login/activate-account')
-      .set('Cookie', `accessToken=${accessToken}`)
-      .send()
-      .expect(400)
+    await request(app).patch('/api/v1/login/activate-account').set('x-access-token', accessToken).send().expect(400)
   })
 
   it('should return 400 if account is already activated', async () => {
@@ -111,7 +107,7 @@ describe('patch /activate-account', () => {
 
     await request(app)
       .patch('/api/v1/login/activate-account')
-      .set('Cookie', `accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
       .send({ activationCode: activationCode, email: fakeUser.personal.email })
       .expect(400)
   })

@@ -58,6 +58,6 @@ describe('partialProtectedMiddleware', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app).get('/partial-protected').set('Cookie', `accessToken=${accessToken}`).expect(200)
+    await request(app).get('/partial-protected').set('x-access-token', accessToken).expect(200)
   })
 })

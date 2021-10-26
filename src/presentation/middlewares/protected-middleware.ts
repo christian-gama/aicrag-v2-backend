@@ -3,6 +3,8 @@ import { IVerifyToken } from '@/domain/providers'
 
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 
+import { getToken } from '@/infra/token'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
 import { IMiddleware } from './protocols/middleware-protocol'
@@ -16,7 +18,7 @@ export class ProtectedMiddleware implements IMiddleware {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const refreshToken = httpRequest.cookies?.refreshToken
+    const refreshToken = getToken.refreshToken(httpRequest)
 
     const refreshTokenResponse = await this.verifyRefreshToken.verify(refreshToken)
 
@@ -24,7 +26,7 @@ export class ProtectedMiddleware implements IMiddleware {
       return this.httpHelper.unauthorized(refreshTokenResponse)
     }
 
-    let accessToken = httpRequest.cookies?.accessToken
+    let accessToken = getToken.accessToken(httpRequest)
 
     const accessTokenResponse = await this.verifyAccessToken.verify(accessToken)
 

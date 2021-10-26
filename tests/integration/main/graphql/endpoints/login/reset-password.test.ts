@@ -69,7 +69,8 @@ describe('mutation resetPassword', () => {
 
     await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
       .expect(403)
   })
@@ -83,7 +84,7 @@ describe('mutation resetPassword', () => {
   it('should return 401 if token is invalid', async () => {
     expect.assertions(0)
 
-    await request(app).post('/graphql').set('Cookie', 'accessToken=invalid_token').send({ query }).expect(401)
+    await request(app).post('/graphql').set('x-access-token', accessToken).send({ query }).expect(401)
   })
 
   it('should return 400 if params are invalid', async () => {
@@ -94,7 +95,7 @@ describe('mutation resetPassword', () => {
 
     query = query.replace('new_password', 'invalid_password')
 
-    await request(app).post('/graphql').set('Cookie', `accessToken=${accessToken}`).send({ query }).expect(400)
+    await request(app).post('/graphql').set('x-access-token', accessToken).send({ query }).expect(400)
   })
 
   it('should return 200 if params are valid', async () => {
@@ -103,6 +104,6 @@ describe('mutation resetPassword', () => {
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
-    await request(app).post('/graphql').set('Cookie', `accessToken=${accessToken}`).send({ query }).expect(200)
+    await request(app).post('/graphql').set('x-access-token', accessToken).send({ query }).expect(200)
   })
 })

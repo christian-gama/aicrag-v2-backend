@@ -49,11 +49,7 @@ describe('patch /reset-password', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .patch('/api/v1/login/reset-password')
-      .set('Cookie', `refreshToken=${refreshToken}`)
-      .send()
-      .expect(403)
+    await request(app).patch('/api/v1/login/reset-password').set('x-refresh-token', refreshToken).send().expect(403)
   })
 
   it('should return 401 if token is missing', async () => {
@@ -65,7 +61,7 @@ describe('patch /reset-password', () => {
   it('should return 401 if token is invalid', async () => {
     expect.assertions(0)
 
-    await request(app).patch('/api/v1/login/reset-password').set('Cookie', 'accessToken=invalid_token').expect(401)
+    await request(app).patch('/api/v1/login/reset-password').set('x-access-token', 'invalid-token').expect(401)
   })
 
   it('should return 400 if params are missing', async () => {
@@ -74,11 +70,7 @@ describe('patch /reset-password', () => {
     fakeUser.temporary.resetPasswordToken = accessToken
     await userCollection.insertOne(fakeUser)
 
-    await request(app)
-      .patch('/api/v1/login/reset-password')
-      .set('Cookie', `accessToken=${accessToken}`)
-      .send()
-      .expect(400)
+    await request(app).patch('/api/v1/login/reset-password').set('x-access-token', accessToken).send().expect(400)
   })
 
   it('should return 400 if params are invalid', async () => {
@@ -89,7 +81,7 @@ describe('patch /reset-password', () => {
 
     await request(app)
       .patch('/api/v1/login/reset-password')
-      .set('Cookie', `accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
       .send({ password: '123', passwordConfirmation: '1234' })
       .expect(400)
   })
@@ -102,7 +94,7 @@ describe('patch /reset-password', () => {
 
     await request(app)
       .patch('/api/v1/login/reset-password')
-      .set('Cookie', `accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
       .send({ password: '123456', passwordConfirmation: '123456' })
       .expect(200)
   })

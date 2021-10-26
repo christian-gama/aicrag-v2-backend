@@ -109,7 +109,8 @@ describe('mutation createTask', () => {
 
     await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
       .expect(400)
   })
@@ -122,7 +123,8 @@ describe('mutation createTask', () => {
 
     await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
       .expect(409)
   })
@@ -134,7 +136,8 @@ describe('mutation createTask', () => {
 
     await request(app)
       .post('/graphql')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .send({ query })
       .expect(200)
   }, 12000)

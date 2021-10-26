@@ -64,7 +64,8 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-invoice-by-month?sort=a&sort=b&month=0&year=2021')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -75,7 +76,8 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-invoice-by-month?month=123&year=123')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -86,7 +88,8 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-invoice-by-month')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -97,7 +100,8 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-invoice-by-month?month=0&year=2021&type=invalid_type')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -108,7 +112,8 @@ describe('get /invoice/get-invoice-by-month', () => {
 
     await request(app)
       .get('/api/v1/invoice/get-invoice-by-month?month=0&year=2021&type=TX')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   })
 
@@ -122,7 +127,8 @@ describe('get /invoice/get-invoice-by-month', () => {
       .get(
         `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&type=${fakeTask.type}`
       )
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   }, 12000)
 
@@ -136,7 +142,8 @@ describe('get /invoice/get-invoice-by-month', () => {
       .get(
         `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&type=${fakeTask.type}&sort=usd,-date.full&limit=2&page=1`
       )
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
       .then((response) => assert(response.body.data.documents[0].id === fakeTask.id))
   }, 12000)
@@ -151,7 +158,8 @@ describe('get /invoice/get-invoice-by-month', () => {
       .get(
         `/api/v1/invoice/get-invoice-by-month?month=${fakeTask.date.month}&year=${fakeTask.date.year}&type=both&taskId=${fakeTask.taskId}&sort=usd,-date.full&limit=2&page=1`
       )
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
       .then((response) => assert(response.body.data.documents[0].taskId === fakeTask.taskId))
   }, 12000)

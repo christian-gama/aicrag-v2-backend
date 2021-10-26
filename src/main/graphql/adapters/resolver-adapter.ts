@@ -10,6 +10,7 @@ export const resolverAdapter = async (controller: IController, args: any, contex
   const request: HttpRequest = {
     ...req,
     body: { ...(args.input || args) },
+    headers: { ...req.headers },
     params: { ...(args.param || args) },
     query: { ...(args.query || args) }
   }

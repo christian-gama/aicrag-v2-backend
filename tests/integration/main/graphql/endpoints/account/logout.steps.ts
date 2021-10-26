@@ -67,7 +67,8 @@ defineFeature(feature, (test) => {
     when('I request to logout', async () => {
       response = await request(app)
         .post('/graphql')
-        .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
         .send({ query })
     })
 
@@ -99,7 +100,8 @@ defineFeature(feature, (test) => {
     when('I request to logout', async () => {
       response = await request(app)
         .post('/graphql')
-        .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
         .send({ query })
     })
 

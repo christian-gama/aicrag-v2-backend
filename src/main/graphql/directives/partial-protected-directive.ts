@@ -16,7 +16,10 @@ export const partialProtectedDirectiveTransformer = (schema: GraphQLSchema): Gra
         fieldConfig.resolve = async (parent, args, context, info) => {
           const request = {
             cookies: {
-              accessToken: context?.req?.cookies.accessToken
+              accessToken: context?.req?.cookies?.accessToken
+            },
+            headers: {
+              'x-access-token': context?.req?.headers?.['x-access-token']
             }
           }
 

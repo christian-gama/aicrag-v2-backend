@@ -63,7 +63,8 @@ describe('get /task', () => {
 
     await request(app)
       .get('/api/v1/task?sort=a&sort=b')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(400)
   })
 
@@ -74,7 +75,8 @@ describe('get /task', () => {
 
     await request(app)
       .get('/api/v1/task')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   })
 
@@ -86,7 +88,8 @@ describe('get /task', () => {
 
     await request(app)
       .get('/api/v1/task')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   }, 12000)
 
@@ -98,7 +101,8 @@ describe('get /task', () => {
 
     await request(app)
       .get('/api/v1/task?fields=duration,commentary,usd&sort=usd,-date.full&limit=2&page=1')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   }, 12000)
 })

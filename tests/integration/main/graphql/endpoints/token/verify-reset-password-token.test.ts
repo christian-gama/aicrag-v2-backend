@@ -57,7 +57,7 @@ describe('query /verify-reset-password-token', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app).post('/graphql').set('Cookie', `refreshToken=${refreshToken}`).send({ query }).expect(403)
+    await request(app).post('/graphql').set('x-refresh-token', refreshToken).send({ query }).expect(403)
   })
 
   it('should return 401 if token is invalid', async () => {

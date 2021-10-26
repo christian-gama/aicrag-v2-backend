@@ -51,7 +51,8 @@ describe('get /logout', () => {
 
     await request(app)
       .get('/api/v1/account/logout')
-      .set('Cookie', `refreshToken=${refreshToken};accessToken=${accessToken}`)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
       .expect(200)
   })
 

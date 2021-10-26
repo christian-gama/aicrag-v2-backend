@@ -2,6 +2,8 @@ import { IUser } from '@/domain'
 import { IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 
+import { getToken } from '@/infra/token'
+
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '../http/protocols'
 import { IMiddleware } from './protocols/middleware-protocol'
 
@@ -13,8 +15,9 @@ export class IsLoggedInMiddleware implements IMiddleware {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const user = await this.verifyRefreshToken.verify(httpRequest.cookies?.refreshToken)
+    const refreshToken = getToken.refreshToken(httpRequest)
 
+    const user = await this.verifyRefreshToken.verify(refreshToken)
     if (user instanceof Error) return this.httpHelper.ok({ user: undefined })
 
     const updatedUser = await this.userRepository.updateById<IUser>(user.personal.id, {

@@ -1,4 +1,5 @@
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { HttpRequest } from '@/presentation/http/protocols'
 
 import { environment } from '@/main/config/environment'
 
@@ -11,8 +12,10 @@ import {
 
 import { NextFunction, Request, Response } from 'express'
 
+type AdaptRequest = Request & Pick<HttpRequest, 'headers'>
+
 export const controllerAdapter = (controller: IController) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: AdaptRequest, res: Response, next: NextFunction) => {
     try {
       const httpResponseData = await controller.handle(req)
 

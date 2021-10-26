@@ -6,7 +6,7 @@ import { ICollectionMethods } from '@/infra/database/protocols'
 import { setupApp } from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateRefreshToken } from '@/factories/providers/token'
+import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
 
 import { makeFakeUser } from '@/tests/__mocks__'
 
@@ -17,6 +17,7 @@ let app: Express
 
 describe('mutation signUp', () => {
   const client = makeMongoDb()
+  let accessToken: string
   let fakeUser: IUser
   let refreshToken: string
   let query: string
@@ -40,6 +41,7 @@ describe('mutation signUp', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
     refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
     query = `
       mutation {
@@ -69,7 +71,12 @@ describe('mutation signUp', () => {
 
     await userCollection.insertOne(fakeUser)
 
-    await request(app).post('/graphql').set('Cookie', `refreshToken=${refreshToken}`).send({ query }).expect(403)
+    await request(app)
+      .post('/graphql')
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
+      .send({ query })
+      .expect(403)
   })
 
   it('should return 400 if validation fails', async () => {
