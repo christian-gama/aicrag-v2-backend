@@ -1,14 +1,10 @@
-import { IUser } from '@/domain'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
+import { updateEmailByCodeMutation } from '@/main/graphql/queries/mutations'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
-import { makeFakeUser } from '@/tests/__mocks__'
-import { userHelper } from '@/tests/helpers/user-helper'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
@@ -22,9 +18,7 @@ let app: Express
 defineFeature(feature, (test) => {
   const client = makeMongoDb()
   let accessToken: string
-  let fakeUser: IUser
   let refreshToken: string
-  let query: string
   let userCollection: ICollectionMethods
   let response: request.Response
 
@@ -44,42 +38,17 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  beforeEach(async () => {
-    fakeUser = makeFakeUser()
-    fakeUser.temporary.tempEmail = 'any_email@mail.com'
-    fakeUser.temporary.tempEmailCode = 'any_code'
-    fakeUser.temporary.tempEmailCodeExpiration = new Date(Date.now() + 10 * 60 * 1000)
-    ;[accessToken, refreshToken] = await userHelper.login(fakeUser)
-
-    query = `
-    mutation {
-      updateEmailByCode (input: { emailCode: "any_code" }) {
-          user {
-              personal {
-                  email
-                  id
-                  name
-              }
-              settings {
-                  currency
-              }
-          }
-      }
-    }
-  `
-  })
-
   test('requesting to update my email being logged out', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged out', async () => {
-      fakeUser = makeFakeUser()
-      await userCollection.insertOne(fakeUser)
       accessToken = ''
       refreshToken = ''
     })
 
     when('I request to update my email', async () => {
+      const query = updateEmailByCodeMutation('any_code')
+
       response = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)
