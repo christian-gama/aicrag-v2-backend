@@ -5,6 +5,9 @@ import path from 'path'
 dotenv.config({ path: path.resolve(__dirname, '../../../config.env') })
 
 export const environment = {
+  API: {
+    ENDPOINT: process.env.API_ENDPOINT as string
+  },
   COOKIES: {
     EXPIRES: (process.env.COOKIE_EXPIRES as string) ?? '30s',
     SECRET: (process.env.COOKIE_SECRET as string) ?? 'Development_Secret_Key'
@@ -14,6 +17,9 @@ export const environment = {
       process.env.NODE_ENV === 'production'
         ? (process.env.MONGO_URL as string)
         : (process.env.MONGO_LOCAL_URL as string)
+  },
+  GRAPHQL: {
+    ENDPOINT: `${process.env.API_URL as string}${process.env.GRAPHQL_ENDPOINT as string}`
   },
   JWT: {
     ACCESS_EXPIRES: (process.env.JWT_EXPIRES as string) ?? '30s',
