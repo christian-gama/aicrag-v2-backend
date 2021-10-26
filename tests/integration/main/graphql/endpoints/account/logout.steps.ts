@@ -72,7 +72,7 @@ defineFeature(feature, (test) => {
         .send({ query })
     })
 
-    then(/^I should see a message that I says "You've been logged out"$/, () => {
+    then(/^I should see a message "You've been logged out"$/, () => {
       expect(response.body.data.logout.message).toBe("You've been logged out")
     })
 
@@ -105,7 +105,7 @@ defineFeature(feature, (test) => {
         .send({ query })
     })
 
-    then(/^I should see an error that contains the "Token is missing"$/, () => {
+    then(/^I should see an error that contains a message "Token is missing"$/, () => {
       expect(response.body.errors[0].message).toBe('Token is missing')
     })
 
