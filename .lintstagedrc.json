@@ -3,6 +3,7 @@
     "prettier --write",
     "eslint --fix",
     "yarn test:unit --bail --findRelatedTests",
+    "yarn test:cucumber --bail --findRelatedTests",
     "yarn test:integration --bail --findRelatedTests"
   ]
 }
