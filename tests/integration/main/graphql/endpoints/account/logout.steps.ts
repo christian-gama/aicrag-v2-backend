@@ -4,28 +4,26 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
+import { logoutMutation } from '@/main/graphql/queries/mutations/logout'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
 
-import { makeFakeUser } from '@/tests/__mocks__'
+import { userHelper } from '@/tests/helpers/user-helper'
 
 import { Express } from 'express'
 import { defineFeature, loadFeature } from 'jest-cucumber'
 import path from 'path'
 import request from 'supertest'
 
-let app: Express
-
 const feature = loadFeature(path.resolve(__dirname, 'logout.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()
   let accessToken: string
+  let app: Express
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: ICollectionMethods
-  let query: string
   let response: request.Response
 
   afterAll(async () => {
@@ -44,27 +42,17 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  beforeEach(async () => {
-    query = `
-      mutation {
-        logout {
-            message
-        }
-      }
-    `
-  })
-
   test('requesting to logout being logged in', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {
-      fakeUser = makeFakeUser()
-      await userCollection.insertOne(fakeUser)
-      accessToken = makeGenerateAccessToken().generate(fakeUser)
-      refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+      fakeUser = await userHelper.create(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.login(fakeUser)
     })
 
     when('I request to logout', async () => {
+      const query = logoutMutation()
+
       response = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)
@@ -91,13 +79,13 @@ defineFeature(feature, (test) => {
     expect.hasAssertions()
 
     given('I am logged out', async () => {
-      fakeUser = makeFakeUser()
-      await userCollection.insertOne(fakeUser)
       accessToken = ''
       refreshToken = ''
     })
 
     when('I request to logout', async () => {
+      const query = logoutMutation()
+
       response = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)

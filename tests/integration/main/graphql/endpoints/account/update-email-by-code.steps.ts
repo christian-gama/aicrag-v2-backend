@@ -13,11 +13,10 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'update-email-by-code.feature'))
 
-let app: Express
-
 defineFeature(feature, (test) => {
   const client = makeMongoDb()
   let accessToken: string
+  let app: Express
   let refreshToken: string
   let userCollection: ICollectionMethods
   let response: request.Response
