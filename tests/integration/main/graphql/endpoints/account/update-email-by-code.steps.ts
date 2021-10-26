@@ -6,9 +6,9 @@ import { ICollectionMethods } from '@/infra/database/protocols'
 import { setupApp } from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
 
 import { makeFakeUser } from '@/tests/__mocks__'
+import { userHelper } from '@/tests/helpers/user-helper'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
@@ -49,8 +49,8 @@ defineFeature(feature, (test) => {
     fakeUser.temporary.tempEmail = 'any_email@mail.com'
     fakeUser.temporary.tempEmailCode = 'any_code'
     fakeUser.temporary.tempEmailCodeExpiration = new Date(Date.now() + 10 * 60 * 1000)
-    accessToken = makeGenerateAccessToken().generate(fakeUser)
-    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+    ;[accessToken, refreshToken] = await userHelper.login(fakeUser)
+
     query = `
     mutation {
       updateEmailByCode (input: { emailCode: "any_code" }) {
