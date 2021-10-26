@@ -18,7 +18,7 @@
     "test:ci": "jest --clearCache && yarn test:silent --coverage",
     "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
     "test:integration": "yarn test:silent -c jest-integration-config.js",
-    "test:cucumber": "yarn jest -c jest-cucumber-config.js",
+    "test:cucumber": "yarn test:silent -c jest-cucumber-config.js",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
     "test:unit": "yarn test:silent -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests --detectOpenHandles",
