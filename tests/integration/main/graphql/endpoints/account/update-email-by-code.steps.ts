@@ -107,4 +107,37 @@ defineFeature(feature, (test) => {
       expect(response.statusCode).toBe(200)
     })
   })
+
+  test('requesting to update my email using a temporary invalid code', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.create(userCollection, {
+        temporary: {
+          tempEmail: 'any_email@mail.com',
+          tempEmailCode: '12345',
+          tempEmailCodeExpiration: new Date(Date.now() + 10 * 60 * 1000)
+        }
+      })
+      ;[accessToken, refreshToken] = await userHelper.login(fakeUser)
+    })
+
+    when('I request to update my email', async () => {
+      const query = updateEmailByCodeMutation('invalid_code')
+
+      response = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should have receive an error that contains a message "Invalid code"$/, async () => {
+      expect(response.body.errors[0].message).toBe('Invalid code')
+    })
+
+    and('I must receive a status code of 400', async () => {
+      expect(response.statusCode).toBe(400)
+    })
+  })
 })

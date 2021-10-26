@@ -16,9 +16,9 @@ Feature: Update email by code
         And I must receive a status code of 200
 
 
-    # Scenario: Requesting to update my email using a temporary valid code
-    #   Given I am logged in
-    #   When I request to update my email
-    #   Then I should have receive an error that contains a message "Invalid code"
-    #   And I must receive a status code of 400
+    Scenario: Requesting to update my email using a temporary invalid code
+      Given I am logged in
+      When I request to update my email
+      Then I should have receive an error that contains a message "Invalid code"
+      And I must receive a status code of 400
 
