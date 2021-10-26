@@ -23,28 +23,28 @@ import {
 interface SutTypes {
   fakeUser: IUser
   forgotPasswordEmailStub: IMailerService
-  forgotPasswordValidatorStub: IValidator
+  generateAccessTokenStub: IGenerateToken
   httpHelper: HttpHelperProtocol
+  recoverPasswordValidatorStub: IValidator
   request: HttpRequest
   sut: SendRecoverPasswordController
   userRepositoryStub: IUserRepository
-  generateAccessTokenStub: IGenerateToken
   verifyResetPasswordTokenStub: IVerifyToken
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const forgotPasswordEmailStub = makeMailerServiceStub()
-  const forgotPasswordValidatorStub = makeValidatorStub()
   const generateAccessTokenStub = makeGenerateTokenStub()
   const httpHelper = makeHttpHelper()
+  const recoverPasswordValidatorStub = makeValidatorStub()
   const request: HttpRequest = { body: { email: fakeUser.personal.email } }
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const verifyResetPasswordTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new SendRecoverPasswordController(
     forgotPasswordEmailStub,
-    forgotPasswordValidatorStub,
+    recoverPasswordValidatorStub,
     generateAccessTokenStub,
     httpHelper,
     userRepositoryStub,
@@ -54,9 +54,9 @@ const makeSut = (): SutTypes => {
   return {
     fakeUser,
     forgotPasswordEmailStub,
-    forgotPasswordValidatorStub,
     generateAccessTokenStub,
     httpHelper,
+    recoverPasswordValidatorStub,
     request,
     sut,
     userRepositoryStub,
@@ -64,12 +64,12 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('sendForgotPasswordEmail', () => {
+describe('sendRecoverPasswordEmail', () => {
   it('should call validate with correct data', async () => {
     expect.hasAssertions()
 
-    const { forgotPasswordValidatorStub, request, sut } = makeSut()
-    const validateSpy = jest.spyOn(forgotPasswordValidatorStub, 'validate')
+    const { recoverPasswordValidatorStub, request, sut } = makeSut()
+    const validateSpy = jest.spyOn(recoverPasswordValidatorStub, 'validate')
 
     await sut.handle(request)
 
@@ -79,8 +79,8 @@ describe('sendForgotPasswordEmail', () => {
   it('should return badRequest if validation fails', async () => {
     expect.hasAssertions()
 
-    const { forgotPasswordValidatorStub, httpHelper, request, sut } = makeSut()
-    jest.spyOn(forgotPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
+    const { recoverPasswordValidatorStub, httpHelper, request, sut } = makeSut()
+    jest.spyOn(recoverPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const result = await sut.handle(request)
 

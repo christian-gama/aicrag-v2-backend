@@ -13,7 +13,7 @@ import {
 import { makeResetPasswordController } from '@/factories/controllers/login/reset-password-controller-factory'
 import {
   makeSendEmailCodeController,
-  makeSendForgotPasswordEmailController,
+  makeSendRecoverPasswordEmailController,
   makeSendWelcomeEmailController
 } from '@/factories/controllers/mailer'
 import { makeSignUpController } from '@/factories/controllers/signup'
@@ -52,7 +52,7 @@ export const loginController = controllerAdapter(makeLoginController())
 export const resetPasswordController = controllerAdapter(makeResetPasswordController())
 
 // Mailer Routes
-export const sendRecoverPasswordController = controllerAdapter(makeSendForgotPasswordEmailController())
+export const sendRecoverPasswordController = controllerAdapter(makeSendRecoverPasswordEmailController())
 export const sendEmailCodeController = controllerAdapter(makeSendEmailCodeController())
 export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 

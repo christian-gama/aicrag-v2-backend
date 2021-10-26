@@ -9,7 +9,7 @@ import { makeRecoverPasswordEmail } from '../../mailer'
 import { makeUserRepository } from '../../repositories'
 import { makeRecoverPasswordEmailValidator } from '../../validators/user'
 
-export const makeSendForgotPasswordEmailController = (): IController => {
+export const makeSendRecoverPasswordEmailController = (): IController => {
   const forgotPasswordEmail = makeRecoverPasswordEmail()
   const sendRecoverPasswordValidator = makeRecoverPasswordEmailValidator()
   const generateAccessToken = makeGenerateAccessToken()

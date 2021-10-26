@@ -1,0 +1,11 @@
+type Mutation {
+  sendRecoverPasswordEmail(input: SendRecoverPasswordEmailInput!): SendRecoverPasswordEmail!
+}
+
+input SendRecoverPasswordEmailInput {
+  email: EmailAddress!
+}
+
+type SendRecoverPasswordEmail {
+  message: String!
+}

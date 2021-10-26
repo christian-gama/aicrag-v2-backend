@@ -44,7 +44,7 @@ describe('mutation sendForgotPasswordEmail', () => {
     fakeUser.temporary.resetPasswordToken = 'any_token'
     query = `
       mutation {
-        sendForgotPasswordEmail (input: { email: "${fakeUser.personal.email}" }) {
+        sendRecoverPasswordEmail(input: { email: "${fakeUser.personal.email}" }) {
           message
         }
       }

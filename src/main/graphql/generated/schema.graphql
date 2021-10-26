@@ -163,7 +163,7 @@ type Mutation {
   logout: Logout!
   resetPassword(input: ResetPasswordInput!): ResetPassword!
   sendEmailCode(input: SendEmailCodeInput!): SendEmailCode!
-  sendForgotPasswordEmail(input: SendForgotPasswordEmailInput!): SendForgotPasswordEmail!
+  sendRecoverPasswordEmail(input: SendRecoverPasswordEmailInput!): SendRecoverPasswordEmail!
   sendWelcomeEmail(input: SendWelcomeEmailInput!): SendWelcomeEmail!
   signUp(input: SignUpInput!): SignUp!
   updateEmailByCode(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
@@ -214,11 +214,11 @@ input SendEmailCodeInput {
   email: EmailAddress!
 }
 
-type SendForgotPasswordEmail {
+type SendRecoverPasswordEmail {
   message: String!
 }
 
-input SendForgotPasswordEmailInput {
+input SendRecoverPasswordEmailInput {
   email: EmailAddress!
 }
 
