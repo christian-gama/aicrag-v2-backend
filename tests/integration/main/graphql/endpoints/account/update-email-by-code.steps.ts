@@ -45,7 +45,7 @@ defineFeature(feature, (test) => {
   test('requesting to update my email being logged out', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
-    given('I am logged out', async () => {
+    given('I am logged out', () => {
       accessToken = ''
       refreshToken = ''
     })
@@ -64,7 +64,7 @@ defineFeature(feature, (test) => {
       expect(response.body.errors[0].message).toBe('Token is missing')
     })
 
-    and('I must receive a status code of 401', async () => {
+    and('I must receive a status code of 401', () => {
       expect(response.statusCode).toBe(401)
     })
   })
@@ -93,7 +93,7 @@ defineFeature(feature, (test) => {
         .send({ query })
     })
 
-    then('I should have my email updated', async () => {
+    then('I should have my email updated', () => {
       expect(response.body.data.updateEmailByCode.user.personal.email).toBe('any_email@mail.com')
     })
 
@@ -132,11 +132,11 @@ defineFeature(feature, (test) => {
         .send({ query })
     })
 
-    then(/^I should have receive an error that contains a message "Invalid code"$/, async () => {
+    then(/^I should have receive an error that contains a message "Invalid code"$/, () => {
       expect(response.body.errors[0].message).toBe('Invalid code')
     })
 
-    and('I must receive a status code of 400', async () => {
+    and('I must receive a status code of 400', () => {
       expect(response.statusCode).toBe(400)
     })
   })
