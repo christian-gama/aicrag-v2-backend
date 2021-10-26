@@ -21,7 +21,7 @@ export const makeFakeSignUpUserCredentials = (): ISignUpUserData => {
   }
 }
 
-export const makeFakeUser = (): IUser => {
+export const makeFakeUser = (userProperty?: Record<any, any>): IUser => {
   return {
     logs: {
       createdAt: new Date(Date.now()),
@@ -44,6 +44,7 @@ export const makeFakeUser = (): IUser => {
       tempEmailCode: null,
       tempEmailCodeExpiration: null
     },
-    tokenVersion: 0
+    tokenVersion: 0,
+    ...userProperty
   }
 }

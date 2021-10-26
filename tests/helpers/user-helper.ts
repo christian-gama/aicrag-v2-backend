@@ -10,16 +10,16 @@ type AccessToken = string
 type RefreshToken = string
 
 export const userHelper = {
+  create: async (collection: ICollectionMethods, userProperty?: Record<any, any>): Promise<IUser> => {
+    const fakeUser = makeFakeUser(userProperty)
+    await collection.insertOne(fakeUser)
+
+    return fakeUser
+  },
   login: async (user: IUser): Promise<[AccessToken, RefreshToken]> => {
     const accessToken = makeGenerateAccessToken().generate(user)
     const refreshToken = await makeGenerateRefreshToken().generate(user)
 
     return [accessToken, refreshToken]
-  },
-  create: async (collection: ICollectionMethods, userProperty?: Record<string, string>): Promise<IUser> => {
-    const fakeUser = makeFakeUser()
-    await collection.insertOne(fakeUser)
-
-    return fakeUser
   }
 }
