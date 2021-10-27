@@ -23,3 +23,9 @@ Feature: Update user
         And I should have my temporary email code set to a random code
         And I should have my temporary email code expiration set to expire in 10 minutes
         And I must receive a status code of 200
+
+      Scenario: Requesting to update my name
+        Given I am logged in
+        When I request to update my name with "New Name"
+        Then I should have my name set to "New Name"
+        And I must receive a status code of 200

@@ -143,4 +143,31 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('requesting to update my name', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
+
+    when(/^I request to update my name with "(.*)"$/, async (name) => {
+      const query = updateUserMutation({ name })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should have my name set to "(.*)"$/, (name) => {
+      expect(result.body.data.updateUser.user.personal.name).toBe(name)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })
