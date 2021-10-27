@@ -8,8 +8,8 @@ Feature: Update password
         Given My current password is "12345678"
         Given I am logged out
         When I request to update my password with the following valid input:
-          | Current password | New password | Password confirmation |
-          |        12345678  |     87654321 |              87654321 |
+          | currentPassword | password | passwordConfirmation |
+          |        12345678 | 87654321 |             87654321 |
         Then I should see an error that contains a message "Token is missing"
         And I must receive a status code of 401
 
@@ -17,8 +17,8 @@ Feature: Update password
         Given My current password is "12345678"
         Given I am logged in
         When I request to update my password with the following valid input:
-          | Current password | New password | Password confirmation |
-          |        12345678  |     87654321 |              87654321 |
+          | currentPassword | password | passwordConfirmation |
+          |       12345678  | 87654321 |             87654321 |
         Then I should have my password updated
         And I should have my temporary email removed
         And I must receive a status code of 200
@@ -27,8 +27,8 @@ Feature: Update password
         Given My current password is "12345678"
         Given I am logged in
         When I request to update my password with the following invalid current password:
-          | Current password | New password | Password confirmation |
-          |        12121212  |     87654321 |              87654321 |
+          | currentPassword | password | passwordConfirmation |
+          |        12121212 | 87654321 |             87654321 |
         Then I should receive an error with a message "Credentials are invalid"
         And I must receive a status code of 400
 
@@ -37,8 +37,8 @@ Feature: Update password
         Given My current password is "12345678"
         Given I am logged in
         When I request to update my password with the following invalid passwords:
-          | Current password | New password | Password confirmation |
-          |        12345678  |          123 |                   123 |
+          | currentPassword | password | passwordConfirmation |
+          |        12345678 |      123 |                  123 |
         Then I should receive an error with a message "Invalid param: password"
         And I must receive a status code of 400
 

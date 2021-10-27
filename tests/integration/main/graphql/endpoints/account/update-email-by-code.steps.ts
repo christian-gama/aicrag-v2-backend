@@ -48,8 +48,8 @@ defineFeature(feature, (test) => {
     given('The following temporaries:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         temporary: {
-          tempEmail: table[0]['Temporary email'],
-          tempEmailCode: table[0]['Temporary email code'],
+          tempEmail: table[0].tempEmail,
+          tempEmailCode: table[0].tempEmailCode,
           tempEmailCodeExpiration: new Date(Date.now() + 1000 * 60 * 60)
         }
       })
@@ -85,8 +85,8 @@ defineFeature(feature, (test) => {
     given('The following temporaries:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         temporary: {
-          tempEmail: table[0]['Temporary email'],
-          tempEmailCode: table[0]['Temporary email code'],
+          tempEmail: table[0].tempEmail,
+          tempEmailCode: table[0].tempEmailCode,
           tempEmailCodeExpiration: new Date(Date.now() + 1000 * 60 * 60)
         }
       })
@@ -127,8 +127,8 @@ defineFeature(feature, (test) => {
     given('The following temporaries:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         temporary: {
-          tempEmail: table[0]['Temporary email'],
-          tempEmailCode: table[0]['Temporary email code'],
+          tempEmail: table[0].tempEmail,
+          tempEmailCode: table[0].tempEmailCode,
           tempEmailCodeExpiration: new Date(Date.now() + 1000 * 60 * 60)
         }
       })

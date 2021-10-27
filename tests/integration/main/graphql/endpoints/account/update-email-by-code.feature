@@ -4,8 +4,8 @@ Feature: Update email by code
 
     Scenario: Requesting to update my email being logged out
       Given The following temporaries:
-        | Temporary email    | Temporary email code |
-        | any_email@mail.com |                12345 |
+        |          tempEmail | tempEmailCode |
+        | any_email@mail.com |         12345 |
       Given I am logged out
       When I request to update my email using "12345"
       Then I should see an error that contains a message "Token is missing"
@@ -13,8 +13,8 @@ Feature: Update email by code
 
     Scenario: Requesting to update my email using a temporary valid code
       Given The following temporaries:
-        | Temporary email    | Temporary email code |
-        | any_email@mail.com |                12345 |
+        |          tempEmail | tempEmailCode |
+        | any_email@mail.com |         12345 |
       Given I am logged in
       When I request to update my email using "12345"
       Then I should have my email updated
@@ -23,8 +23,8 @@ Feature: Update email by code
 
     Scenario: Requesting to update my email using a temporary invalid code
       Given The following temporaries:
-        | Temporary email    | Temporary email code |
-        | any_email@mail.com |                12345 |
+        |          tempEmail | tempEmailCode |
+        | any_email@mail.com |         12345 |
       Given I am logged in
       When I request to update my email using "54321"
       Then I should have receive an error that contains a message "Invalid code"

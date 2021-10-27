@@ -65,9 +65,9 @@ defineFeature(feature, (test) => {
 
     when('I request to update my password with the following valid input:', async (table) => {
       const input = {
-        currentPassword: table[0]['Current password'],
-        password: table[0]['New password'],
-        passwordConfirmation: table[0]['Password confirmation']
+        currentPassword: table[0].currentPassword,
+        password: table[0].password,
+        passwordConfirmation: table[0].passwordConfirmation
       }
 
       const query = updatePasswordMutation(input)
@@ -108,9 +108,9 @@ defineFeature(feature, (test) => {
 
     when('I request to update my password with the following valid input:', async (table) => {
       const input = {
-        currentPassword: table[0]['Current password'],
-        password: table[0]['New password'],
-        passwordConfirmation: table[0]['Password confirmation']
+        currentPassword: table[0].currentPassword,
+        password: table[0].password,
+        passwordConfirmation: table[0].passwordConfirmation
       }
 
       const query = updatePasswordMutation(input)
@@ -157,9 +157,9 @@ defineFeature(feature, (test) => {
 
     when('I request to update my password with the following invalid current password:', async (table) => {
       const input = {
-        currentPassword: table[0]['Current password'],
-        password: table[0]['New password'],
-        passwordConfirmation: table[0]['Password confirmation']
+        currentPassword: table[0].currentPassword,
+        password: table[0].password,
+        passwordConfirmation: table[0].passwordConfirmation
       }
 
       const query = updatePasswordMutation(input)
@@ -200,9 +200,9 @@ defineFeature(feature, (test) => {
 
     when('I request to update my password with the following invalid passwords:', async (table) => {
       const input = {
-        currentPassword: table[0]['Current password'],
-        password: table[0]['New password'],
-        passwordConfirmation: table[0]['Password confirmation']
+        currentPassword: table[0].currentPassword,
+        password: table[0].password,
+        passwordConfirmation: table[0].passwordConfirmation
       }
 
       const query = updatePasswordMutation(input)
