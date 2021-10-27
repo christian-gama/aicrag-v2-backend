@@ -21,3 +21,9 @@ Feature: Get invoice by month
       | Any commentary | 2021-10-15T08:41:54.351Z | 30       | completed | 3      | TX   | 32.5 |
       | Any commentary | 2021-10-19T07:11:15.912Z | 30       | completed | 4      | TX   | 32.5 |
     And I must receive a status code of 200
+
+  Scenario: Requesting to get an invoice by month being logged out
+    Given I am logged out
+    When I request to get my invoices from month "9" and year "2021" of type "both"
+    Then I should receive an error with message "Token is missing"
+    And I must receive a status code of 401
