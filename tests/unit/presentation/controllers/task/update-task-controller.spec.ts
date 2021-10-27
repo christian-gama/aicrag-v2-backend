@@ -172,20 +172,20 @@ describe('updateTaskController', () => {
 
     const { fakeTask, request, sut } = makeSut()
     const date = new Date()
-    fakeTask.date.day = date.getDate()
+    fakeTask.date.day = date.getUTCDate()
     fakeTask.date.full = date
-    fakeTask.date.hours = date.toLocaleTimeString()
-    fakeTask.date.month = date.getMonth()
-    fakeTask.date.year = date.getFullYear()
+    fakeTask.date.hours = date.toLocaleTimeString('pt-br', { timeZone: 'UTC' })
+    fakeTask.date.month = date.getUTCMonth()
+    fakeTask.date.year = date.getUTCFullYear()
     request.body.date = fakeTask.date.full
 
     const result = (await sut.handle(request)).data.task.date
 
-    expect(result.day).toBe(date.getDate())
+    expect(result.day).toBe(date.getUTCDate())
     expect(result.full).toBe(date)
-    expect(result.hours).toBe(date.toLocaleTimeString())
-    expect(result.month).toBe(date.getMonth())
-    expect(result.year).toBe(date.getFullYear())
+    expect(result.hours).toBe(date.toLocaleTimeString('pt-br', { timeZone: 'UTC' }))
+    expect(result.month).toBe(date.getUTCMonth())
+    expect(result.year).toBe(date.getUTCFullYear())
   })
 
   it('should call updateById with correct values if changes date', async () => {
@@ -200,14 +200,14 @@ describe('updateTaskController', () => {
     await sut.handle(request)
 
     // Must parse date because of innacuracy, which makes the test fail
-    const parsedDate = new Date(Date.parse(date.toLocaleString()))
+    const parsedDate = new Date(Date.parse(date.toString()))
 
     expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, fakeUser.personal.id, {
-      'date.day': parsedDate.getDate(),
+      'date.day': parsedDate.getUTCDate(),
       'date.full': parsedDate,
-      'date.hours': parsedDate.toLocaleTimeString(),
-      'date.month': parsedDate.getMonth(),
-      'date.year': parsedDate.getFullYear(),
+      'date.hours': parsedDate.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
+      'date.month': parsedDate.getUTCMonth(),
+      'date.year': parsedDate.getUTCFullYear(),
       'logs.updatedAt': date
     })
   })

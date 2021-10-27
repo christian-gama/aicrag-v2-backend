@@ -48,11 +48,11 @@ export class UpdateTaskController implements IController {
 
       const date = new Date(Date.parse(data.date))
 
-      update['date.day'] = date.getDate()
+      update['date.day'] = date.getUTCDate()
       update['date.full'] = date
-      update['date.hours'] = date.toLocaleTimeString()
-      update['date.month'] = date.getMonth()
-      update['date.year'] = date.getFullYear()
+      update['date.hours'] = date.toLocaleTimeString('pt-br', { timeZone: 'UTC' })
+      update['date.month'] = date.getUTCMonth()
+      update['date.year'] = date.getUTCFullYear()
     }
 
     if (data.duration || data.type) {

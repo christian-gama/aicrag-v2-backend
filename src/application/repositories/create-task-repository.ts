@@ -17,11 +17,11 @@ export class CreateTaskRepository implements ICreateTaskRepository {
     const result: ITask = {
       commentary: commentary ?? '',
       date: {
-        day: d.getDate(),
+        day: d.getUTCDate(),
         full: d,
-        hours: d.toLocaleTimeString(),
-        month: d.getMonth(),
-        year: d.getFullYear()
+        hours: d.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
+        month: d.getUTCMonth(),
+        year: d.getUTCFullYear()
       },
       duration: _duration,
       id,
