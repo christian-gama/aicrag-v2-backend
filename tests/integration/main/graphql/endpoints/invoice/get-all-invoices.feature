@@ -2,6 +2,12 @@ Feature: Get all invoices
 
     I should get all my invoices with the total earning of each month.
 
+    Scenario: Requesting to get all invoices being logged out
+      Given I am logged out
+      When I request to get all invoices of type "both"
+      Then I should receive an error with message "Token is missing"
+      And I must receive a status code of 401
+
     Scenario: I have invoices from different months
       Given I am logged in
       Given I have the following tasks:

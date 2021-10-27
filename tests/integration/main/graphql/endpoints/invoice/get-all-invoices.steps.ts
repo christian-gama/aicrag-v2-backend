@@ -111,4 +111,31 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('requesting to get all invoices being logged out', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
+      const query = getAllInvoicesQuery({ type })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })
