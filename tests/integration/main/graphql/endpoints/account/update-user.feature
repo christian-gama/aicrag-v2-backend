@@ -9,3 +9,9 @@ Feature: Update user
         |      BRL | new_email@mail.com | New Name |
         Then I should see an error that contains a message "Token is missing"
         And I must receive a status code of 401
+
+      Scenario: Requesting to update my currency
+        Given I am logged in
+        When I request to update my currency settings with "BRL"
+        Then I should have my currency updated to "BRL"
+        And I must receive a status code of 200
