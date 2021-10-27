@@ -13,7 +13,7 @@ export const getInvoiceByMonthQuery = (query: {
       ${query.sort ? `sort: "${query.sort}",` : ''}
       month: "${query.month}",
       year: "${query.year}",
-      type: "${query.type}"
+      type: ${query.type}
     }) {
         count
         displaying
