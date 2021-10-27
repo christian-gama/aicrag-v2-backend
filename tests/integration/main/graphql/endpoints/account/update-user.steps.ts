@@ -107,7 +107,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to update my email', ({ given, when, then, and }) => {
+  test('requesting to update my email using a valid email', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {
@@ -144,7 +144,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to update my name', ({ given, when, then, and }) => {
+  test('requesting to update my name using a valid name', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {
@@ -164,6 +164,33 @@ defineFeature(feature, (test) => {
 
     then(/^I should have my name set to "(.*)"$/, (name) => {
       expect(result.body.data.updateUser.user.personal.name).toBe(name)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('requesting to update my email using an invalid email', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
+
+    when(/^I request to update my email with "(.*)"$/, async (email) => {
+      const query = updateUserMutation({ email })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error that contains a message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {

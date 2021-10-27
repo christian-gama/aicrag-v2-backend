@@ -16,7 +16,7 @@ Feature: Update user
         Then I should have my currency updated to "BRL"
         And I must receive a status code of 200
 
-      Scenario: Requesting to update my email
+      Scenario: Requesting to update my email using a valid email
         Given I am logged in
         When I request to update my email with "new_email@mail.com"
         Then I should have my temporary email set to "new_email@mail.com"
@@ -24,7 +24,13 @@ Feature: Update user
         And I should have my temporary email code expiration set to expire in 10 minutes
         And I must receive a status code of 200
 
-      Scenario: Requesting to update my name
+      Scenario: Requesting to update my email using an invalid email
+        Given I am logged in
+        When I request to update my email with "invalid@email"
+        Then I should receive an error that contains a message "Invalid param: email"
+        And I must receive a status code of 400
+
+      Scenario: Requesting to update my name using a valid name
         Given I am logged in
         When I request to update my name with "New Name"
         Then I should have my name set to "New Name"
