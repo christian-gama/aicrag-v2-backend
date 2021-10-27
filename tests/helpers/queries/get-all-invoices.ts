@@ -9,7 +9,7 @@ export const getAllInvoicesQuery = (query: {
       ${query.limit ? `limit: "${query.limit}",` : ''}
       ${query.page ? `page: "${query.page}",` : ''}
       ${query.sort ? `sort: "${query.sort}",` : ''}
-      type: "${query.type}"
+      type: ${query.type}
     }) {
         count
         displaying
