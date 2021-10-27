@@ -138,4 +138,40 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('i do not have any invoices yet', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
+
+    given('I do not have any invoices', async () => {
+      await taskCollection.deleteMany({})
+    })
+
+    when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
+      const query = getAllInvoicesQuery({ type })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then('I should not get any invoices', () => {
+      expect(result.body.data.getAllInvoices).toStrictEqual({
+        count: 0,
+        displaying: 0,
+        documents: [],
+        page: '1 of 0'
+      })
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })

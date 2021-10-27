@@ -26,3 +26,10 @@ Feature: Get all invoices
       | 8     | 2021 | 1     | 32.5     |
       | 9     | 2021 | 2     | 65       |
     And I must receive a status code of 200
+
+  Scenario: I do not have any invoices yet
+    Given I am logged in
+    Given I do not have any invoices
+    When I request to get all invoices of type "both"
+    Then I should not get any invoices
+    And I must receive a status code of 200
