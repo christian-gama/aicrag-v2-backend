@@ -76,7 +76,7 @@ defineFeature(feature, (test) => {
             status: row.status,
             taskId: row.taskId,
             type: row.type,
-            usd: Math.round((+row.duration / 60) * 65 * 100) / 100
+            usd: Math.round((+row.duration / 60) * (row.type === 'TX' ? 65 : 112.5) * 100) / 100
           })
         })
       )
@@ -100,8 +100,8 @@ defineFeature(feature, (test) => {
       }))
 
       expect(result.body.data.getAllInvoices).toStrictEqual({
-        count: 3,
-        displaying: 3,
+        count: table.length,
+        displaying: table.length,
         documents: invoice,
         page: '1 of 1'
       })
