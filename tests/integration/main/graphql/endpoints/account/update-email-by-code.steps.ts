@@ -4,10 +4,10 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
-import { updateEmailByCodeMutation } from '@/main/graphql/queries/mutations'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
+import { updateEmailByCodeMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
 
 import { Express } from 'express'
@@ -24,7 +24,7 @@ defineFeature(feature, (test) => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: ICollectionMethods
-  let response: request.Response
+  let result: request.Response
 
   afterAll(async () => {
     await client.disconnect()
@@ -45,48 +45,61 @@ defineFeature(feature, (test) => {
   test('requesting to update my email being logged out', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
+    given('The following temporaries:', async (table) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        temporary: {
+          tempEmail: table[0]['Temporary email'],
+          tempEmailCode: table[0]['Temporary email code'],
+          tempEmailCodeExpiration: new Date(Date.now() + 1000 * 60 * 60)
+        }
+      })
+    })
+
     given('I am logged out', () => {
       accessToken = ''
       refreshToken = ''
     })
 
-    when('I request to update my email', async () => {
-      const query = updateEmailByCodeMutation('any_code')
+    when(/^I request to update my email using "(.*)"$/, async (emailCode) => {
+      const query = updateEmailByCodeMutation({ emailCode })
 
-      response = await request(app)
+      result = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
     })
 
-    then(/^I should see an error that contains a message "Token is missing"$/, () => {
-      expect(response.body.errors[0].message).toBe('Token is missing')
+    then(/^I should see an error that contains a message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
     })
 
-    and('I must receive a status code of 401', () => {
-      expect(response.statusCode).toBe(401)
+    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+      expect(result.statusCode).toBe(+statusCode)
     })
   })
 
   test('requesting to update my email using a temporary valid code', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
-    given('I am logged in', async () => {
-      fakeUser = await userHelper.create(userCollection, {
+    given('The following temporaries:', async (table) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
         temporary: {
-          tempEmail: 'any_email@mail.com',
-          tempEmailCode: '12345',
-          tempEmailCodeExpiration: new Date(Date.now() + 10 * 60 * 1000)
+          tempEmail: table[0]['Temporary email'],
+          tempEmailCode: table[0]['Temporary email code'],
+          tempEmailCodeExpiration: new Date(Date.now() + 1000 * 60 * 60)
         }
       })
-      ;[accessToken, refreshToken] = await userHelper.login(fakeUser)
     })
 
-    when('I request to update my email', async () => {
-      const query = updateEmailByCodeMutation('12345')
+    given('I am logged in', async () => {
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
 
-      response = await request(app)
+    when(/^I request to update my email using "(.*)"$/, async (emailCode) => {
+      const query = updateEmailByCodeMutation({ emailCode })
+
+      result = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
@@ -94,7 +107,7 @@ defineFeature(feature, (test) => {
     })
 
     then('I should have my email updated', () => {
-      expect(response.body.data.updateEmailByCode.user.personal.email).toBe('any_email@mail.com')
+      expect(result.body.data.updateEmailByCode.user.personal.email).toBe('any_email@mail.com')
     })
 
     and('I should have my temporary email removed', async () => {
@@ -103,41 +116,44 @@ defineFeature(feature, (test) => {
       expect(fakeUser.temporary.tempEmail).toBeNull()
     })
 
-    and('I must receive a status code of 200', async () => {
-      expect(response.statusCode).toBe(200)
+    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+      expect(result.statusCode).toBe(+statusCode)
     })
   })
 
   test('requesting to update my email using a temporary invalid code', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
-    given('I am logged in', async () => {
-      fakeUser = await userHelper.create(userCollection, {
+    given('The following temporaries:', async (table) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
         temporary: {
-          tempEmail: 'any_email@mail.com',
-          tempEmailCode: '12345',
-          tempEmailCodeExpiration: new Date(Date.now() + 10 * 60 * 1000)
+          tempEmail: table[0]['Temporary email'],
+          tempEmailCode: table[0]['Temporary email code'],
+          tempEmailCodeExpiration: new Date(Date.now() + 1000 * 60 * 60)
         }
       })
-      ;[accessToken, refreshToken] = await userHelper.login(fakeUser)
     })
 
-    when('I request to update my email', async () => {
-      const query = updateEmailByCodeMutation('invalid_code')
+    given('I am logged in', async () => {
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
 
-      response = await request(app)
+    when(/^I request to update my email using "(.*)"$/, async (emailCode) => {
+      const query = updateEmailByCodeMutation({ emailCode })
+
+      result = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
     })
 
-    then(/^I should have receive an error that contains a message "Invalid code"$/, () => {
-      expect(response.body.errors[0].message).toBe('Invalid code')
+    then(/^I should have receive an error that contains a message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
     })
 
-    and('I must receive a status code of 400', () => {
-      expect(response.statusCode).toBe(400)
+    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+      expect(result.statusCode).toBe(+statusCode)
     })
   })
 })

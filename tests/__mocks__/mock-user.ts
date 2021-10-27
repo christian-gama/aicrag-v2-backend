@@ -33,7 +33,7 @@ export const makeFakeUser = (userProperty?: Record<any, any>): IUser => {
       email: faker.internet.email().toLowerCase(),
       id: faker.datatype.uuid(),
       name: faker.name.findName(),
-      password: faker.internet.password(8)
+      password: '12345678'
     },
     settings: { accountActivated: false, currency: 'BRL', handicap: 1 },
     temporary: {

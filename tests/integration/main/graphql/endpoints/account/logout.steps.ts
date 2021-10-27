@@ -4,10 +4,10 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
-import { logoutMutation } from '@/main/graphql/queries/mutations/logout'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
+import { logoutMutation } from '@/tests/helpers/queries/logout'
 import { userHelper } from '@/tests/helpers/user-helper'
 
 import { Express } from 'express'
@@ -24,7 +24,7 @@ defineFeature(feature, (test) => {
   let fakeUser: IUser
   let refreshToken: string
   let userCollection: ICollectionMethods
-  let response: request.Response
+  let result: request.Response
 
   afterAll(async () => {
     await client.disconnect()
@@ -46,22 +46,22 @@ defineFeature(feature, (test) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {
-      fakeUser = await userHelper.create(userCollection)
-      ;[accessToken, refreshToken] = await userHelper.login(fakeUser)
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
     })
 
     when('I request to logout', async () => {
       const query = logoutMutation()
 
-      response = await request(app)
+      result = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
     })
 
-    then(/^I should see a message "You've been logged out"$/, () => {
-      expect(response.body.data.logout.message).toBe("You've been logged out")
+    then(/^I should see a message "(.*)"$/, (message) => {
+      expect(result.body.data.logout.message).toBe(message)
     })
 
     and('I should have my tokenVersion incremented by 1', async () => {
@@ -70,8 +70,8 @@ defineFeature(feature, (test) => {
       expect(user.tokenVersion).toBe(2)
     })
 
-    and('I must receive a status code of 200', async () => {
-      expect(response.statusCode).toBe(200)
+    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+      expect(result.statusCode).toBe(+statusCode)
     })
   })
 
@@ -86,19 +86,19 @@ defineFeature(feature, (test) => {
     when('I request to logout', async () => {
       const query = logoutMutation()
 
-      response = await request(app)
+      result = await request(app)
         .post('/graphql')
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
     })
 
-    then(/^I should see an error that contains a message "Token is missing"$/, () => {
-      expect(response.body.errors[0].message).toBe('Token is missing')
+    then(/^I should see an error that contains a message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
     })
 
-    and('I must receive a status code of 401', async () => {
-      expect(response.statusCode).toBe(401)
+    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+      expect(result.statusCode).toBe(+statusCode)
     })
   })
 })
