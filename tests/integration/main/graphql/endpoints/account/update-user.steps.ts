@@ -12,6 +12,7 @@ import { userHelper } from '@/tests/helpers/user-helper'
 
 import { Express } from 'express'
 import { defineFeature, loadFeature } from 'jest-cucumber'
+import MockDate from 'mockdate'
 import path from 'path'
 import request from 'supertest'
 
@@ -27,6 +28,8 @@ defineFeature(feature, (test) => {
   let userCollection: ICollectionMethods
 
   afterAll(async () => {
+    MockDate.reset()
+
     await client.disconnect()
   })
 
@@ -35,6 +38,8 @@ defineFeature(feature, (test) => {
   })
 
   beforeAll(async () => {
+    MockDate.set(new Date())
+
     app = await setupApp()
 
     await MongoAdapter.connect(global.__MONGO_URI__)
@@ -95,6 +100,43 @@ defineFeature(feature, (test) => {
 
     then(/^I should have my currency updated to "(.*)"$/, (currency) => {
       expect(result.body.data.updateUser.user.settings.currency).toBe(currency)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('requesting to update my email', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
+
+    when(/^I request to update my email with "(.*)"$/, async (email) => {
+      const query = updateUserMutation({ email })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should have my temporary email set to "(.*)"$/, async (email) => {
+      fakeUser = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
+
+      expect(fakeUser.temporary.tempEmail).toBe(email)
+    })
+
+    and('I should have my temporary email code set to a random code', () => {
+      expect(fakeUser.temporary.tempEmailCode).toBeDefined()
+    })
+
+    and(/^I should have my temporary email code expiration set to expire in (.*) minutes$/, (expiration) => {
+      expect(fakeUser.temporary.tempEmailCodeExpiration).toStrictEqual(new Date(Date.now() + expiration * 60 * 1000))
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {

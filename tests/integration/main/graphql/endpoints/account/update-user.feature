@@ -15,3 +15,11 @@ Feature: Update user
         When I request to update my currency settings with "BRL"
         Then I should have my currency updated to "BRL"
         And I must receive a status code of 200
+
+      Scenario: Requesting to update my email
+        Given I am logged in
+        When I request to update my email with "new_email@mail.com"
+        Then I should have my temporary email set to "new_email@mail.com"
+        And I should have my temporary email code set to a random code
+        And I should have my temporary email code expiration set to expire in 10 minutes
+        And I must receive a status code of 200
