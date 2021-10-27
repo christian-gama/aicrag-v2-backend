@@ -60,27 +60,7 @@ defineFeature(feature, (test) => {
     })
 
     given('I have the following tasks:', async (table) => {
-      tasks = await Promise.all(
-        table.map(async (row) => {
-          const date = new Date(Date.parse(row.date))
-
-          return await taskHelper.insertTask(taskCollection, fakeUser, {
-            commentary: row.commentary,
-            date: {
-              day: date.getUTCDate(),
-              full: date,
-              hours: date.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
-              month: date.getUTCMonth(),
-              year: date.getUTCFullYear()
-            },
-            duration: +row.duration,
-            status: row.status,
-            taskId: row.taskId,
-            type: row.type,
-            usd: Math.round((+row.duration / 60) * (row.type === 'TX' ? 65 : 112.5) * 100) / 100
-          })
-        })
-      )
+      tasks = await taskHelper.insertTasks(table, taskCollection, fakeUser)
     })
 
     when(
@@ -97,40 +77,7 @@ defineFeature(feature, (test) => {
     )
 
     then('I should get the following invoice:', (table) => {
-      const invoice = table.map((row, index) => {
-        const date = new Date(Date.parse(row.date))
-
-        return {
-          commentary: row.commentary,
-          date: {
-            day: date.getUTCDate(),
-            full: date.toISOString(),
-            hours: date.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
-            month: date.getUTCMonth(),
-            year: date.getUTCFullYear()
-          },
-          duration: +row.duration,
-          id: tasks[index].id,
-          logs: {
-            createdAt: tasks[index].logs.createdAt.toISOString(),
-            updatedAt: tasks[index].logs.updatedAt
-          },
-          status: row.status,
-          taskId: row.taskId,
-          type: row.type,
-          usd: Math.round((+row.duration / 60) * (row.type === 'TX' ? 65 : 112.5) * 100) / 100,
-          user: {
-            personal: {
-              email: fakeUser.personal.email,
-              id: fakeUser.personal.id,
-              name: fakeUser.personal.name
-            },
-            settings: {
-              currency: fakeUser.settings.currency
-            }
-          }
-        }
-      })
+      const invoice = taskHelper.getTasks(table, tasks, fakeUser)
 
       expect(result.body.data.getInvoiceByMonth).toStrictEqual({
         count: table.length,
@@ -184,27 +131,7 @@ defineFeature(feature, (test) => {
     })
 
     given('I have the following tasks:', async (table) => {
-      tasks = await Promise.all(
-        table.map(async (row) => {
-          const date = new Date(Date.parse(row.date))
-
-          return await taskHelper.insertTask(taskCollection, fakeUser, {
-            commentary: row.commentary,
-            date: {
-              day: date.getUTCDate(),
-              full: date,
-              hours: date.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
-              month: date.getUTCMonth(),
-              year: date.getUTCFullYear()
-            },
-            duration: +row.duration,
-            status: row.status,
-            taskId: row.taskId,
-            type: row.type,
-            usd: Math.round((+row.duration / 60) * (row.type === 'TX' ? 65 : 112.5) * 100) / 100
-          })
-        })
-      )
+      tasks = await taskHelper.insertTasks(table, taskCollection, fakeUser)
     })
 
     when(
@@ -221,40 +148,7 @@ defineFeature(feature, (test) => {
     )
 
     then('I should get the following invoice:', (table) => {
-      const invoice = table.map((row, index) => {
-        const date = new Date(Date.parse(row.date))
-
-        return {
-          commentary: row.commentary,
-          date: {
-            day: date.getUTCDate(),
-            full: date.toISOString(),
-            hours: date.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
-            month: date.getUTCMonth(),
-            year: date.getUTCFullYear()
-          },
-          duration: +row.duration,
-          id: tasks[index].id,
-          logs: {
-            createdAt: tasks[index].logs.createdAt.toISOString(),
-            updatedAt: tasks[index].logs.updatedAt
-          },
-          status: row.status,
-          taskId: row.taskId,
-          type: row.type,
-          usd: Math.round((+row.duration / 60) * (row.type === 'TX' ? 65 : 112.5) * 100) / 100,
-          user: {
-            personal: {
-              email: fakeUser.personal.email,
-              id: fakeUser.personal.id,
-              name: fakeUser.personal.name
-            },
-            settings: {
-              currency: fakeUser.settings.currency
-            }
-          }
-        }
-      })
+      const invoice = taskHelper.getTasks(table, tasks, fakeUser)
 
       expect(result.body.data.getInvoiceByMonth.documents).toStrictEqual([invoice[0]])
     })

@@ -59,27 +59,7 @@ defineFeature(feature, (test) => {
     })
 
     given('I have the following tasks:', async (table) => {
-      await Promise.all(
-        table.map(async (row) => {
-          const date = new Date(Date.parse(row.date))
-
-          return await taskHelper.insertTask(taskCollection, fakeUser, {
-            commentary: row.commentary,
-            date: {
-              day: date.getUTCDate(),
-              full: date,
-              hours: date.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
-              month: date.getUTCMonth(),
-              year: date.getUTCFullYear()
-            },
-            duration: +row.duration,
-            status: row.status,
-            taskId: row.taskId,
-            type: row.type,
-            usd: Math.round((+row.duration / 60) * (row.type === 'TX' ? 65 : 112.5) * 100) / 100
-          })
-        })
-      )
+      await taskHelper.insertTasks(table, taskCollection, fakeUser)
     })
 
     when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
