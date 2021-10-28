@@ -4,6 +4,10 @@ import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { makeFakeTask } from '../__mocks__'
 
+type TaskProperty = {
+  [Property in keyof Partial<ITask>]: Partial<ITask[Property]>
+}
+
 export const taskHelper = {
   getTasks: (table: any, tasks: ITask[], user: IUser): ITask[] => {
     return table.map((row, index) => {
@@ -43,11 +47,7 @@ export const taskHelper = {
       return result
     })
   },
-  insertTask: async (
-    collection: ICollectionMethods,
-    user: IUser,
-    taskProperty: Record<string, any>
-  ): Promise<ITask> => {
+  insertTask: async (collection: ICollectionMethods, user: IUser, taskProperty: TaskProperty): Promise<ITask> => {
     const result = makeFakeTask(user, taskProperty)
     await collection.insertOne(result)
 
