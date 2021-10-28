@@ -140,4 +140,37 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('using an invalid reset password token', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I have an invalid reset password token', () => {
+      fakeUser = makeFakeUser()
+      const token = makeGenerateAccessToken().generate(fakeUser)
+      fakeUser.temporary.resetPasswordToken = token
+      accessToken = 'invalid_token'
+    })
+
+    given('I am logged out', () => {
+      refreshToken = ''
+    })
+
+    when(/^I request to reset my password with my a valid new password "(.*)"$/, async (password) => {
+      const query = resetPasswordMutation({ password, passwordConfirmation: password })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })
