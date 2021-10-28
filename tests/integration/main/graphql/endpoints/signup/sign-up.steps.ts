@@ -10,6 +10,7 @@ import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { signUpMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
 
+import { randomUUID } from 'crypto'
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'
@@ -56,12 +57,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I request try to create my account using the following data:', async (table) => {
-      const query = signUpMutation({
-        email: table[0].email,
-        name: table[0].name,
-        password: table[0].password,
-        passwordConfirmation: table[0].passwordConfirmation
-      })
+      const query = signUpMutation({ ...table[0] })
 
       result = await request(app)
         .post('/graphql')
@@ -76,6 +72,44 @@ defineFeature(feature, (test) => {
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
       expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('using an existent email', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    given(/^There is a user with the email "(.*)"$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email: email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        }
+      })
+    })
+
+    when('I request try to create my account using the following data:', async (table) => {
+      const query = signUpMutation({ ...table[0] })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCoed) => {
+      expect(result.status).toBe(parseInt(statusCoed))
     })
   })
 })

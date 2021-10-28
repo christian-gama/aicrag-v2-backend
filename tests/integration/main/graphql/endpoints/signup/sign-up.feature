@@ -14,3 +14,12 @@ Feature: Sign Up
         | any_email@mail.com | Any Name | 12345678 | 12345678             |
       Then I should receive an error with message "You must logout first"
       And I must receive a status code of 403
+
+    Scenario: Using an existent email
+      Given I am logged out
+      Given There is a user with the email "any_email@mail.com"
+      When I request try to create my account using the following data:
+        | email              | name     | password | passwordConfirmation |
+        | any_email@mail.com | Any Name | 12345678 | 12345678             |
+      Then I should receive an error with message "Param already exists: email"
+      And I must receive a status code of 409
