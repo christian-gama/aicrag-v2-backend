@@ -45,7 +45,7 @@ defineFeature(feature, (test) => {
   test('having a valid email', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
-    given(/^I have an account with the an email "(.*)"$/, async (email) => {
+    given(/^I have an account with the email "(.*)"$/, async (email) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
           email,
@@ -77,7 +77,7 @@ defineFeature(feature, (test) => {
 
   test('having an invalid email', ({ given, when, then, and }) => {
     expect.hasAssertions()
-    given(/^I have an account with the an email "(.*)"$/, async (email) => {
+    given(/^I have an account with the email "(.*)"$/, async (email) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
           email,
@@ -90,6 +90,38 @@ defineFeature(feature, (test) => {
 
     when(/^I request to send an email using an invalid email "(.*)"$/, async (invalidEmail) => {
       const query = sendWelcomeEmailMutation({ email: invalidEmail })
+
+      result = await request(app).post('/graphql').send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('having an account already activated', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given(/^I have an account with the email "(.*)" and account is already activated$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        },
+        settings: {
+          accountActivated: true
+        }
+      })
+    })
+
+    when('I request to send an email using using my existent email', async () => {
+      const query = sendWelcomeEmailMutation({ email: fakeUser.personal.email })
 
       result = await request(app).post('/graphql').send({ query })
     })
