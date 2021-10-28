@@ -41,7 +41,7 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  test('having a valid emailPin', ({ given, when, then, and }) => {
+  test('having a valid tempEmail', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I have an account with the following credentials:', async (table) => {
@@ -65,6 +65,37 @@ defineFeature(feature, (test) => {
 
     then(/^I should receive a message "(.*)"$/, (message) => {
       expect(result.body.data.sendEmailPin.message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('having an invalid tempEmail', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I have an account with the following credentials:', async (table) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        temporary: {
+          tempEmail: null,
+          tempEmailPin: table[0].tempEmailPin
+        }
+      })
+    })
+
+    when('I request to send an email with my pin', async () => {
+      const query = sendEmailPinMutation({ email: fakeUser.personal.email })
+
+      if (process.env.TEST_SEND_EMAIL !== 'true') {
+        jest.spyOn(EmailPin.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+      }
+
+      result = await request(app).post('/graphql').send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
