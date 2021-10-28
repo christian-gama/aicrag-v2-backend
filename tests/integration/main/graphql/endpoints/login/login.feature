@@ -24,3 +24,14 @@ Feature: Login
     Then I should get a message "Account is not activated"
     And I must receive a status code of 200
 
+  Scenario: I should not login if I use invalid credentials
+    Given I have an account with the following credentials:
+      | email              | password | accountActivated |
+      | any_email@mail.com | 12345678 | true             |
+    Given I am logged out
+    When I request to login using the following credentials:
+      | email              | password |
+      | any_email@mail.com | 87654321 |
+    Then I should get an error with message "Credentials are invalid"
+    And I must receive a status code of 401
+

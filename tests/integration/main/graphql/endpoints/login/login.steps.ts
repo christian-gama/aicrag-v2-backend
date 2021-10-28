@@ -138,4 +138,47 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('i should not login if I use invalid credentials', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I have an account with the following credentials:', async (table) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email: table[0].email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: await hash(table[0].password, 2)
+        },
+        settings: {
+          accountActivated: table[0].accountActivated === 'true',
+          currency: 'BRL',
+          handicap: 1
+        }
+      })
+    })
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when('I request to login using the following credentials:', async (table) => {
+      const query = loginMutation({ email: table[0].email, password: table[0].password })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should get an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })
