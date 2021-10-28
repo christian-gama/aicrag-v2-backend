@@ -43,7 +43,49 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  test('i should be able to activate my account using a valid activation code', ({ given, when, then, and }) => {
+  test('being not partially logged in', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I have an account with the following credentials:', async (table) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email: table[0].email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        },
+        temporary: {
+          activationCode: table[0].activationCode,
+          activationCodeExpiration: new Date(Date.now() + 1000 * 60 * 10)
+        }
+      })
+    })
+
+    given('I am not partially logged in', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when('I request to activate my account using the following credentials:', async (table) => {
+      const query = activateAccountMutation({ activationCode: table[0].activationCode, email: table[0].email })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('using a valid activation code', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I have an account with the following credentials:', async (table) => {
@@ -87,7 +129,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('i should not be able to activate my account using an invalid activation code', ({ given, when, then, and }) => {
+  test('using an invalid activation code', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I have an account with the following credentials:', async (table) => {
@@ -107,48 +149,6 @@ defineFeature(feature, (test) => {
 
     given('I am partially logged in', async () => {
       ;[accessToken, refreshToken = ''] = await userHelper.generateToken(fakeUser)
-    })
-
-    when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationCode: table[0].activationCode, email: table[0].email })
-
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
-
-    then(/^I should receive an error message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
-
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
-
-  test('i should not be able to activate my account if I am not partially logged in', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I have an account with the following credentials:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        personal: {
-          email: table[0].email,
-          id: randomUUID(),
-          name: 'any_name',
-          password: 'any_password'
-        },
-        temporary: {
-          activationCode: table[0].activationCode,
-          activationCodeExpiration: new Date(Date.now() + 1000 * 60 * 10)
-        }
-      })
-    })
-
-    given('I am not partially logged in', () => {
-      accessToken = ''
-      refreshToken = ''
     })
 
     when('I request to activate my account using the following credentials:', async (table) => {

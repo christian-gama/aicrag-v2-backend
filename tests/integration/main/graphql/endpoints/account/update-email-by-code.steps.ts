@@ -42,7 +42,7 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  test('requesting to update my email being logged out', ({ given, when, then, and }) => {
+  test('being logged out', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('The following temporaries:', async (table) => {
@@ -79,7 +79,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to update my email using a temporary valid code', ({ given, when, then, and }) => {
+  test('using a temporary valid code', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('The following temporaries:', async (table) => {
@@ -121,7 +121,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to update my email using a temporary invalid code', ({ given, when, then, and }) => {
+  test('using a temporary invalid code', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('The following temporaries:', async (table) => {

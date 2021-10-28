@@ -44,7 +44,7 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  test('requesting to update my password being logged out', ({ given, when, then, and }) => {
+  test('being logged out', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given(/^My current password is "(.*)"$/, async (currentPassword) => {
@@ -88,7 +88,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to update my password with correct input', ({ given, when, then, and }) => {
+  test('using a valid input', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given(/^My current password is "(.*)"$/, async (currentPassword) => {
@@ -137,7 +137,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to update my password with correct invalid current password', ({ given, when, then, and }) => {
+  test('using an invalid current password', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given(/^My current password is "(.*)"$/, async (currentPassword) => {
@@ -180,7 +180,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to update my email using an invalid password', ({ given, when, then, and }) => {
+  test('using an invalid password', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given(/^My current password is "(.*)"$/, async (currentPassword) => {

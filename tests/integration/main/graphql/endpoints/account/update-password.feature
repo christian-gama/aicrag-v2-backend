@@ -4,7 +4,7 @@ Feature: Update password
 
   Rule: A password must have at least 8 characters and a maximum of 32 characters.
 
-    Scenario: Requesting to update my password being logged out
+    Scenario: Being logged out
       Given My current password is "12345678"
       Given I am logged out
       When I request to update my password with the following valid input:
@@ -13,7 +13,7 @@ Feature: Update password
       Then I should see an error that contains a message "Token is missing"
       And I must receive a status code of 401
 
-    Scenario: Requesting to update my password with correct input
+    Scenario: Using a valid input
       Given My current password is "12345678"
       Given I am logged in
       When I request to update my password with the following valid input:
@@ -23,7 +23,7 @@ Feature: Update password
       And I should have my temporary email removed
       And I must receive a status code of 200
 
-    Scenario: Requesting to update my password with correct invalid current password
+    Scenario: Using an invalid current password
       Given My current password is "12345678"
       Given I am logged in
       When I request to update my password with the following invalid current password:
@@ -33,7 +33,7 @@ Feature: Update password
       And I must receive a status code of 400
 
 
-    Scenario: Requesting to update my email using an invalid password
+    Scenario: Using an invalid password
       Given My current password is "12345678"
       Given I am logged in
       When I request to update my password with the following invalid passwords:

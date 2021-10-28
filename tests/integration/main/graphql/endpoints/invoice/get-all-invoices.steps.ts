@@ -50,7 +50,34 @@ defineFeature(feature, (test) => {
     taskCollection = client.collection('tasks')
   })
 
-  test('i have invoices from different months', ({ given, when, then, and }) => {
+  test('being logged out', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
+      const query = getAllInvoicesQuery({ type })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('having invoices from different months', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {
@@ -92,34 +119,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to get all invoices being logged out', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I am logged out', () => {
-      accessToken = ''
-      refreshToken = ''
-    })
-
-    when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
-      const query = getAllInvoicesQuery({ type })
-
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
-
-    then(/^I should receive an error with message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
-
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
-
-  test('i do not have any invoices yet', ({ given, when, then, and }) => {
+  test('not having any invoice', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {

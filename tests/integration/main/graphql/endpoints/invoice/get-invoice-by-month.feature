@@ -1,8 +1,14 @@
 Feature: Get invoice by month
 
-  I my invoices from a specific month from a year.
+  I should be able to get all my invoices from a specific month from a year.
 
-  Scenario: I want to get all invoices from a specific month from a year
+  Scenario: Being logged out
+    Given I am logged out
+    When I request to get my invoices from month "9" and year "2021" of type "both"
+    Then I should receive an error with message "Token is missing"
+    And I must receive a status code of 401
+
+  Scenario: Getting invoices from a specific month and year
     Given I am logged in
     Given I have the following tasks:
       | commentary     | date                     | duration | status    | taskId | type |
@@ -22,13 +28,7 @@ Feature: Get invoice by month
       | Any commentary | 2021-10-19T07:11:15.912Z | 30       | completed | 4      | TX   | 32.5 |
     And I must receive a status code of 200
 
-  Scenario: Requesting to get an invoice by month being logged out
-    Given I am logged out
-    When I request to get my invoices from month "9" and year "2021" of type "both"
-    Then I should receive an error with message "Token is missing"
-    And I must receive a status code of 401
-
-  Scenario: I want to get all invoices from a specific month and year using a filter
+  Scenario: Getting invoices from a specific month and year using filters
     Given I am logged in
     Given I have the following tasks:
       | commentary     | date                     | duration | status    | taskId | type |

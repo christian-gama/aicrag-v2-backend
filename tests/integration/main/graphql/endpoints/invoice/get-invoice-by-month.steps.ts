@@ -51,7 +51,37 @@ defineFeature(feature, (test) => {
     taskCollection = client.collection('tasks')
   })
 
-  test('i want to get all invoices from a specific month from a year', ({ given, when, then, and }) => {
+  test('being logged out', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when(
+      /^I request to get my invoices from month "(.*)" and year "(.*)" of type "(.*)"$/,
+      async (month, year, type) => {
+        const query = getInvoiceByMonthQuery({ month, type, year })
+
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      }
+    )
+
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('getting invoices from a specific month and year', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {
@@ -92,37 +122,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to get an invoice by month being logged out', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I am logged out', () => {
-      accessToken = ''
-      refreshToken = ''
-    })
-
-    when(
-      /^I request to get my invoices from month "(.*)" and year "(.*)" of type "(.*)"$/,
-      async (month, year, type) => {
-        const query = getInvoiceByMonthQuery({ month, type, year })
-
-        result = await request(app)
-          .post('/graphql')
-          .set('x-access-token', accessToken)
-          .set('x-refresh-token', refreshToken)
-          .send({ query })
-      }
-    )
-
-    then(/^I should receive an error with message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
-
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
-
-  test('i want to get all invoices from a specific month and year using a filter', ({ given, when, then, and }) => {
+  test('getting invoices from a specific month and year using filters', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {

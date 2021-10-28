@@ -42,7 +42,7 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  test('requesting to logout being logged in', ({ given, when, then, and }) => {
+  test('being logged in', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged in', async () => {
@@ -75,7 +75,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('requesting to logout being logged out', ({ given, when, then, and }) => {
+  test('being logged out', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I am logged out', async () => {
