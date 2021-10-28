@@ -1,6 +1,8 @@
 Feature: Logout
 
-  I should be able to logout of the application.
+  Makes the user logout, making his refresh token invalid.
+
+  Rule: The user must be logged in
 
   Scenario: Being logged in
     Given I am logged in

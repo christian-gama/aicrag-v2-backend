@@ -1,8 +1,11 @@
 Feature: Update password
 
-  I should be able to update my password.
+  The user can change his password passing his current password, to make sure it's him that it's requesting the
+  password change, and he must pass a new valid password.
 
-  Rule: A password must have at least 8 characters and a maximum of 32 characters.
+  Rule: The user must confirm his current password
+  Rule: The user must be logged in
+  Rule: The input must be valid
 
     Scenario: Being logged out
       Given My current password is "12345678"
