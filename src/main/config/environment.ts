@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /* Node modules */
 import dotenv from 'dotenv'
 import path from 'path'
@@ -5,9 +6,6 @@ import path from 'path'
 dotenv.config({ path: path.resolve(__dirname, '../../../config.env') })
 
 export const environment = {
-  API: {
-    ENDPOINT: process.env.API_ENDPOINT as string
-  },
   COOKIES: {
     EXPIRES: (process.env.COOKIE_EXPIRES as string) ?? '30s',
     SECRET: (process.env.COOKIE_SECRET as string) ?? 'Development_Secret_Key'
@@ -19,7 +17,7 @@ export const environment = {
         : (process.env.MONGO_LOCAL_URL as string)
   },
   GRAPHQL: {
-    ENDPOINT: `${process.env.API_URL as string}${process.env.GRAPHQL_ENDPOINT as string}`
+    ENDPOINT: (process.env.GRAPHQL_ENDPOINT as string) ?? '/graphql'
   },
   JWT: {
     ACCESS_EXPIRES: (process.env.JWT_EXPIRES as string) ?? '30s',
@@ -42,7 +40,11 @@ export const environment = {
     }
   },
   SERVER: {
-    NODE_ENV: ((process.env.NODE_ENV as string).toLowerCase() as 'development' | 'production' | 'test') ?? 'production',
-    PORT: process.env.PORT as string
+    API_URL: process.env.API_URL as string,
+    PORT: process.env.PORT as string,
+    NODE_ENV: (process.env.NODE_ENV as string as 'development' | 'production' | 'test') ?? 'development',
+    GRAPHQL_URL: `${process.env.API_URL as string}${process.env.PORT as string}${
+      process.env.GRAPHQL_ENDPOINT as string
+    }`
   }
 }
