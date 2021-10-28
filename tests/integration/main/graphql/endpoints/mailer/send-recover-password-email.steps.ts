@@ -4,6 +4,7 @@ import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
+import { RecoverPasswordEmail } from '@/main/mailer'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -60,6 +61,10 @@ defineFeature(feature, (test) => {
 
     when('I request to send an email using my existent email', async () => {
       const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
+
+      if (process.env.TEST_SEND_EMAIL !== 'true') {
+        jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+      }
 
       result = await request(app).post('/graphql').send({ query })
     })
