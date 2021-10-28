@@ -112,4 +112,31 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCoed))
     })
   })
+
+  test('using invalid data', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when('I request try to create my account using the following invalid data:', async (table) => {
+      const query = signUpMutation({ ...table[0] })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })
