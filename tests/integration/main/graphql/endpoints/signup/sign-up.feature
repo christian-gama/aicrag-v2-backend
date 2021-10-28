@@ -31,3 +31,11 @@ Feature: Sign Up
         | invalid@mail | Any Name | 12345678 | 12345678             |
       Then I should receive an error with message "Invalid param: email"
       And I must receive a status code of 400
+
+    Scenario: Using valid data
+      Given I am logged out
+      When I request try to create my account using the following data:
+        | email              | name     | password | passwordConfirmation |
+        | any_email@mail.com | Any Name | 12345678 | 12345678             |
+      Then I should have my account created
+      And I must receive a status code of 200

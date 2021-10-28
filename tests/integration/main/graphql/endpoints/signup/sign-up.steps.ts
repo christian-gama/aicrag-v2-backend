@@ -139,4 +139,31 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('using valid data', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when('I request try to create my account using the following data:', async (table) => {
+      const query = signUpMutation({ ...table[0] })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then('I should have my account created', () => {
+      expect(result.body.data.signUp).toBeTruthy()
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })
