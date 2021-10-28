@@ -8,9 +8,16 @@ Feature: Reset password
     Then I should receive an error message "You must logout first"
     And I must receive a status code of 403
 
-  Scenario: Using valid input
+  Scenario: Using a valid input
     Given I have a valid reset password token
     Given I am logged out
     When I request to reset my password with my new password "12345678"
     Then I should have my password changed
     And I must receive a status code of 200
+
+  Scenario: Using an invalid input
+    Given I have a valid reset password token
+    Given I am logged out
+    When I request to reset my password with my an invalid new password "123"
+    Then I should receive an error message "Invalid param: password"
+    And I must receive a status code of 400
