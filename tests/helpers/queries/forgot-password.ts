@@ -1,4 +1,4 @@
-export const forgetPasswordMutation = (input: { email: string }): string => `
+export const forgotPasswordMutation = (input: { email: string }): string => `
   mutation {
     forgotPassword(input: { email: "${input.email}" }) {
         user {
