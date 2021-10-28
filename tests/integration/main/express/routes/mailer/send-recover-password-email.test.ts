@@ -68,7 +68,10 @@ describe('post /send-recover-password-email', () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
-    jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+
+    if (process.env.TEST_SEND_EMAIL !== 'true') {
+      jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+    }
 
     await request(app)
       .post('/api/v1/mailer/send-forgot-password-email')

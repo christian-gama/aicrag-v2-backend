@@ -76,7 +76,9 @@ describe('post /send-email-pin', () => {
     fakeUser.temporary.tempEmail = 'any_email'
     await userCollection.insertOne(fakeUser)
 
-    jest.spyOn(EmailPin.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+    if (process.env.TEST_SEND_EMAIL !== 'true') {
+      jest.spyOn(EmailPin.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+    }
 
     await request(app).post('/api/v1/mailer/send-email-pin').send({ email: fakeUser.personal.email }).expect(200)
   })
