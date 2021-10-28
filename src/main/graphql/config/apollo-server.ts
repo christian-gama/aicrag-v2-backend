@@ -1,3 +1,4 @@
+import { environment } from '@/main/config/environment'
 import { createGraphqlSchema, handleError } from '@/main/graphql/utils'
 
 import { protectedDirectiveTransformer, partialProtectedDirectiveTransformer } from '../directives'
@@ -28,7 +29,7 @@ export default async (app: Express): Promise<ApolloServer> => {
   server.applyMiddleware({
     app,
     cors: { credentials: true, origin: 'https://studio.apollographql.com' },
-    path: '/graphql'
+    path: environment.GRAPHQL.ENDPOINT
   })
 
   return server
