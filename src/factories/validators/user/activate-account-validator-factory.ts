@@ -2,17 +2,17 @@ import { IValidator } from '@/domain/validators'
 
 import { ValidationComposite } from '@/application/validators/user'
 
-import { makeRequiredFields, makeValidateActivationCode } from '.'
+import { makeRequiredFields, makeValidateActivationPin } from '.'
 
 export const makeActivateAccountValidator = (): IValidator => {
   const validations: IValidator[] = []
 
-  const fields = ['email', 'activationCode']
+  const fields = ['email', 'activationPin']
   for (const field of fields) {
     validations.push(makeRequiredFields(field))
   }
 
-  validations.push(makeValidateActivationCode())
+  validations.push(makeValidateActivationPin())
 
   return new ValidationComposite(validations)
 }

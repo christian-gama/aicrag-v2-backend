@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { IValidationCode } from '@/domain/helpers'
+import { IPin } from '@/domain/helpers'
 import { IMailerService } from '@/domain/mailer'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
@@ -16,7 +16,7 @@ import {
   makeValidatorStub,
   makeUserRepositoryStub,
   makeMailerServiceStub,
-  makeValidationCodeStub
+  makePinStub
 } from '@/tests/__mocks__'
 
 import MockDate from 'mockdate'
@@ -28,7 +28,7 @@ interface SutTypes {
   sendWelcomeValidatorStub: IValidator
   sut: SendWelcomeEmailController
   userRepositoryStub: IUserRepository
-  validationCodeStub: IValidationCode
+  validationCodeStub: IPin
   welcomeEmailStub: IMailerService
 }
 
@@ -39,7 +39,7 @@ const makeSut = (): SutTypes => {
   const sendWelcomeValidatorStub = makeValidatorStub()
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const welcomeEmailStub = makeMailerServiceStub()
-  const validationCodeStub = makeValidationCodeStub()
+  const validationCodeStub = makePinStub()
 
   const sut = new SendWelcomeEmailController(
     httpHelper,
@@ -140,18 +140,18 @@ describe('sendWelcomeEmailController', () => {
     expect(result.data.error.name).toBe('MailerServiceError')
   })
 
-  it('should call updateById with correct values if activation code has expired', async () => {
+  it('should call updateById with correct values if activation pin has expired', async () => {
     expect.hasAssertions()
 
     const { fakeUser, request, sut, userRepositoryStub, validationCodeStub } = makeSut()
     const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
-    fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 10 * 60 * 1000)
+    fakeUser.temporary.activationPinExpiration = new Date(Date.now() - 10 * 60 * 1000)
 
     await sut.handle(request)
 
     expect(updatedUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
-      'temporary.activationCode': validationCodeStub.generate(),
-      'temporary.activationCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+      'temporary.activationPin': validationCodeStub.generate(),
+      'temporary.activationPinExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })
   })
 
@@ -164,7 +164,7 @@ describe('sendWelcomeEmailController', () => {
 
     expect(result).toStrictEqual(
       httpHelper.ok({
-        message: `A welcome email with activation code has been sent to ${fakeUser.personal.email}`
+        message: `A welcome email with activation pin has been sent to ${fakeUser.personal.email}`
       })
     )
   })

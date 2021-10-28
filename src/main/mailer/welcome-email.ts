@@ -12,7 +12,7 @@ export class WelcomeEmail extends MailerService implements IMailerService {
     const subject = 'Boas vindas ao Aicrag! Utilize o código abaixo para ativar a sua conta:'
 
     const html = pug.renderFile(path.resolve(__dirname, 'templates', 'welcome.pug'), {
-      attachment: user.temporary.activationCode as string,
+      attachment: user.temporary.activationPin as string,
       name: user.personal.name,
       subject
     })

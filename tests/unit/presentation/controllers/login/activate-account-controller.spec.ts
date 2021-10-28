@@ -4,7 +4,7 @@ import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 
-import { InvalidCodeError } from '@/application/errors'
+import { InvalidPinError } from '@/application/errors'
 
 import { ActivateAccountController } from '@/presentation/controllers/login'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
@@ -44,7 +44,7 @@ const makeSut = (): SutTypes => {
   const generateRefreshTokenStub = makeGenerateTokenStub()
   const httpHelper = makeHttpHelper()
   const request = {
-    body: { activationCode: fakeUser.temporary.activationCode, email: fakeUser.personal.email }
+    body: { activationPin: fakeUser.temporary.activationPin, email: fakeUser.personal.email }
   }
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
@@ -95,7 +95,7 @@ describe('activateAccountController', () => {
     expect.hasAssertions()
 
     const { activateAccountValidatorStub, httpHelper, request, sut } = makeSut()
-    const error = new InvalidCodeError()
+    const error = new InvalidPinError()
     jest.spyOn(activateAccountValidatorStub, 'validate').mockReturnValueOnce(error)
 
     const result = await sut.handle(request)
@@ -180,8 +180,8 @@ describe('activateAccountController', () => {
 
     await sut.handle(request)
 
-    expect(fakeUser.temporary.activationCode).toBeNull()
-    expect(fakeUser.temporary.activationCodeExpiration).toBeNull()
+    expect(fakeUser.temporary.activationPin).toBeNull()
+    expect(fakeUser.temporary.activationPinExpiration).toBeNull()
   })
 
   it('should call updateById with correct values', async () => {
@@ -195,8 +195,8 @@ describe('activateAccountController', () => {
     expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'settings.accountActivated': fakeUser.settings.accountActivated,
-      'temporary.activationCode': fakeUser.temporary.activationCode,
-      'temporary.activationCodeExpiration': fakeUser.temporary.activationCode
+      'temporary.activationPin': fakeUser.temporary.activationPin,
+      'temporary.activationPinExpiration': fakeUser.temporary.activationPin
     })
   })
 })

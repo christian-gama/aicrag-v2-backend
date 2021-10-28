@@ -149,12 +149,12 @@ describe('userRepository', () => {
       })
 
       expect(user.temporary).toStrictEqual({
-        activationCode: fakeUser.temporary.activationCode,
-        activationCodeExpiration: fakeUser.temporary.activationCodeExpiration,
+        activationPin: fakeUser.temporary.activationPin,
+        activationPinExpiration: fakeUser.temporary.activationPinExpiration,
         resetPasswordToken: fakeUser.temporary.resetPasswordToken,
         tempEmail: fakeUser.temporary.tempEmail,
-        tempEmailCode: fakeUser.temporary.tempEmailCode,
-        tempEmailCodeExpiration: fakeUser.temporary.tempEmailCodeExpiration
+        tempEmailPin: fakeUser.temporary.tempEmailPin,
+        tempEmailPinExpiration: fakeUser.temporary.tempEmailPinExpiration
       })
 
       expect(user.tokenVersion).toBe(0)

@@ -55,8 +55,8 @@ defineFeature(feature, (test) => {
           password: 'any_password'
         },
         temporary: {
-          activationCode: table[0].activationCode,
-          activationCodeExpiration: new Date(Date.now() + 1000 * 60 * 10)
+          activationPin: table[0].activationPin,
+          activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
         }
       })
     })
@@ -67,7 +67,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationCode: table[0].activationCode, email: table[0].email })
+      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
 
       result = await request(app)
         .post('/graphql')
@@ -85,7 +85,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('using a valid activation code', ({ given, when, then, and }) => {
+  test('using a valid activation pin', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I have an account with the following credentials:', async (table) => {
@@ -97,8 +97,8 @@ defineFeature(feature, (test) => {
           password: 'any_password'
         },
         temporary: {
-          activationCode: table[0].activationCode,
-          activationCodeExpiration: new Date(Date.now() + 1000 * 60 * 10)
+          activationPin: table[0].activationPin,
+          activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
         }
       })
     })
@@ -108,7 +108,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationCode: table[0].activationCode, email: table[0].email })
+      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
 
       result = await request(app)
         .post('/graphql')
@@ -120,8 +120,8 @@ defineFeature(feature, (test) => {
     then('I should have my account activated', async () => {
       const user = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
 
-      expect(user.temporary.activationCode).toBeNull()
-      expect(user.temporary.activationCodeExpiration).toBeNull()
+      expect(user.temporary.activationPin).toBeNull()
+      expect(user.temporary.activationPinExpiration).toBeNull()
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
@@ -129,7 +129,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('using an invalid activation code', ({ given, when, then, and }) => {
+  test('using an invalid activation pin', ({ given, when, then, and }) => {
     expect.hasAssertions()
 
     given('I have an account with the following credentials:', async (table) => {
@@ -141,8 +141,8 @@ defineFeature(feature, (test) => {
           password: 'any_password'
         },
         temporary: {
-          activationCode: table[0].activationCode,
-          activationCodeExpiration: new Date(Date.now() + 1000 * 60 * 10)
+          activationPin: table[0].activationPin,
+          activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
         }
       })
     })
@@ -152,7 +152,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationCode: table[0].activationCode, email: table[0].email })
+      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
 
       result = await request(app)
         .post('/graphql')

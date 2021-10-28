@@ -25,7 +25,7 @@ export type ActivateAccount = {
 };
 
 export type ActivateAccountInput = {
-  activationCode: Scalars['String'];
+  activationPin: Scalars['String'];
   email: Scalars['EmailAddress'];
 };
 
@@ -186,11 +186,11 @@ export type Mutation = {
   login?: Maybe<Login>;
   logout: Logout;
   resetPassword: ResetPassword;
-  sendEmailCode: SendEmailCode;
+  sendEmailPin: SendEmailPin;
   sendRecoverPasswordEmail: SendRecoverPasswordEmail;
   sendWelcomeEmail: SendWelcomeEmail;
   signUp: SignUp;
-  updateEmailByCode: UpdateEmailByCode;
+  updateEmailByPin: UpdateEmailByCode;
   updatePassword: UpdatePassword;
   updateTask: UpdateTask;
   updateUser: UpdateUser;
@@ -227,8 +227,8 @@ export type MutationResetPasswordArgs = {
 };
 
 
-export type MutationSendEmailCodeArgs = {
-  input: SendEmailCodeInput;
+export type MutationSendEmailPinArgs = {
+  input: SendEmailPinInput;
 };
 
 
@@ -247,7 +247,7 @@ export type MutationSignUpArgs = {
 };
 
 
-export type MutationUpdateEmailByCodeArgs = {
+export type MutationUpdateEmailByPinArgs = {
   input: UpdateEmailByCodeInput;
 };
 
@@ -331,12 +331,12 @@ export type ResetPasswordInput = {
   passwordConfirmation: Scalars['String'];
 };
 
-export type SendEmailCode = {
-  __typename?: 'SendEmailCode';
+export type SendEmailPin = {
+  __typename?: 'SendEmailPin';
   message: Scalars['String'];
 };
 
-export type SendEmailCodeInput = {
+export type SendEmailPinInput = {
   email: Scalars['EmailAddress'];
 };
 
@@ -415,7 +415,7 @@ export type UpdateEmailByCode = {
 };
 
 export type UpdateEmailByCodeInput = {
-  emailCode: Scalars['String'];
+  emailPin: Scalars['String'];
 };
 
 export type UpdatePassword = {
@@ -502,12 +502,12 @@ export type UserSettings = {
 
 export type UserTemporary = {
   __typename?: 'UserTemporary';
-  activationCode?: Maybe<Scalars['String']>;
-  activationCodeExpiration?: Maybe<Scalars['DateString']>;
+  activationPin?: Maybe<Scalars['String']>;
+  activationPinExpiration?: Maybe<Scalars['DateString']>;
   resetPasswordToken?: Maybe<Scalars['String']>;
   tempEmail?: Maybe<Scalars['String']>;
-  tempEmailCode?: Maybe<Scalars['String']>;
-  tempEmailCodeExpiration?: Maybe<Scalars['DateString']>;
+  tempEmailPin?: Maybe<Scalars['String']>;
+  tempEmailPinExpiration?: Maybe<Scalars['DateString']>;
 };
 
 export type VerifyResetPasswordToken = {
@@ -627,8 +627,8 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   ResetPassword: ResolverTypeWrapper<ResetPassword>;
   ResetPasswordInput: ResetPasswordInput;
-  SendEmailCode: ResolverTypeWrapper<SendEmailCode>;
-  SendEmailCodeInput: SendEmailCodeInput;
+  SendEmailPin: ResolverTypeWrapper<SendEmailPin>;
+  SendEmailPinInput: SendEmailPinInput;
   SendRecoverPasswordEmail: ResolverTypeWrapper<SendRecoverPasswordEmail>;
   SendRecoverPasswordEmailInput: SendRecoverPasswordEmailInput;
   SendWelcomeEmail: ResolverTypeWrapper<SendWelcomeEmail>;
@@ -703,8 +703,8 @@ export type ResolversParentTypes = {
   Query: {};
   ResetPassword: ResetPassword;
   ResetPasswordInput: ResetPasswordInput;
-  SendEmailCode: SendEmailCode;
-  SendEmailCodeInput: SendEmailCodeInput;
+  SendEmailPin: SendEmailPin;
+  SendEmailPinInput: SendEmailPinInput;
   SendRecoverPasswordEmail: SendRecoverPasswordEmail;
   SendRecoverPasswordEmailInput: SendRecoverPasswordEmailInput;
   SendWelcomeEmail: SendWelcomeEmail;
@@ -861,11 +861,11 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   logout?: Resolver<ResolversTypes['Logout'], ParentType, ContextType>;
   resetPassword?: Resolver<ResolversTypes['ResetPassword'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'input'>>;
-  sendEmailCode?: Resolver<ResolversTypes['SendEmailCode'], ParentType, ContextType, RequireFields<MutationSendEmailCodeArgs, 'input'>>;
+  sendEmailPin?: Resolver<ResolversTypes['SendEmailPin'], ParentType, ContextType, RequireFields<MutationSendEmailPinArgs, 'input'>>;
   sendRecoverPasswordEmail?: Resolver<ResolversTypes['SendRecoverPasswordEmail'], ParentType, ContextType, RequireFields<MutationSendRecoverPasswordEmailArgs, 'input'>>;
   sendWelcomeEmail?: Resolver<ResolversTypes['SendWelcomeEmail'], ParentType, ContextType, RequireFields<MutationSendWelcomeEmailArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['SignUp'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
-  updateEmailByCode?: Resolver<ResolversTypes['UpdateEmailByCode'], ParentType, ContextType, RequireFields<MutationUpdateEmailByCodeArgs, 'input'>>;
+  updateEmailByPin?: Resolver<ResolversTypes['UpdateEmailByCode'], ParentType, ContextType, RequireFields<MutationUpdateEmailByPinArgs, 'input'>>;
   updatePassword?: Resolver<ResolversTypes['UpdatePassword'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
   updateUser?: Resolver<ResolversTypes['UpdateUser'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
@@ -904,7 +904,7 @@ export type ResetPasswordResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SendEmailCodeResolvers<ContextType = any, ParentType extends ResolversParentTypes['SendEmailCode'] = ResolversParentTypes['SendEmailCode']> = {
+export type SendEmailPinResolvers<ContextType = any, ParentType extends ResolversParentTypes['SendEmailPin'] = ResolversParentTypes['SendEmailPin']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1019,12 +1019,12 @@ export type UserSettingsResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type UserTemporaryResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserTemporary'] = ResolversParentTypes['UserTemporary']> = {
-  activationCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  activationCodeExpiration?: Resolver<Maybe<ResolversTypes['DateString']>, ParentType, ContextType>;
+  activationPin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  activationPinExpiration?: Resolver<Maybe<ResolversTypes['DateString']>, ParentType, ContextType>;
   resetPasswordToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   tempEmail?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  tempEmailCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  tempEmailCodeExpiration?: Resolver<Maybe<ResolversTypes['DateString']>, ParentType, ContextType>;
+  tempEmailPin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  tempEmailPinExpiration?: Resolver<Maybe<ResolversTypes['DateString']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1058,7 +1058,7 @@ export type Resolvers<ContextType = any> = {
   PublicUserSettings?: PublicUserSettingsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   ResetPassword?: ResetPasswordResolvers<ContextType>;
-  SendEmailCode?: SendEmailCodeResolvers<ContextType>;
+  SendEmailPin?: SendEmailPinResolvers<ContextType>;
   SendRecoverPasswordEmail?: SendRecoverPasswordEmailResolvers<ContextType>;
   SendWelcomeEmail?: SendWelcomeEmailResolvers<ContextType>;
   SignUp?: SignUpResolvers<ContextType>;

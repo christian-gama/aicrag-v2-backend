@@ -9,7 +9,7 @@ type ActivateAccount {
 }
 
 input ActivateAccountInput {
-  activationCode: String!
+  activationPin: String!
   email: EmailAddress!
 }
 
@@ -162,11 +162,11 @@ type Mutation {
   login(input: LoginInput!): Login
   logout: Logout!
   resetPassword(input: ResetPasswordInput!): ResetPassword!
-  sendEmailCode(input: SendEmailCodeInput!): SendEmailCode!
+  sendEmailPin(input: SendEmailPinInput!): SendEmailPin!
   sendRecoverPasswordEmail(input: SendRecoverPasswordEmailInput!): SendRecoverPasswordEmail!
   sendWelcomeEmail(input: SendWelcomeEmailInput!): SendWelcomeEmail!
   signUp(input: SignUpInput!): SignUp!
-  updateEmailByCode(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
+  updateEmailByPin(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
   updatePassword(input: UpdatePasswordInput!): UpdatePassword!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
   updateUser(input: UpdateUserInput!): UpdateUser!
@@ -206,11 +206,11 @@ input ResetPasswordInput {
   passwordConfirmation: String!
 }
 
-type SendEmailCode {
+type SendEmailPin {
   message: String!
 }
 
-input SendEmailCodeInput {
+input SendEmailPinInput {
   email: EmailAddress!
 }
 
@@ -284,7 +284,7 @@ type UpdateEmailByCode {
 }
 
 input UpdateEmailByCodeInput {
-  emailCode: String!
+  emailPin: String!
 }
 
 type UpdatePassword {
@@ -362,12 +362,12 @@ type UserSettings {
 }
 
 type UserTemporary {
-  activationCode: String
-  activationCodeExpiration: DateString
+  activationPin: String
+  activationPinExpiration: DateString
   resetPasswordToken: String
   tempEmail: String
-  tempEmailCode: String
-  tempEmailCodeExpiration: DateString
+  tempEmailPin: String
+  tempEmailPinExpiration: DateString
 }
 
 type VerifyResetPasswordToken {

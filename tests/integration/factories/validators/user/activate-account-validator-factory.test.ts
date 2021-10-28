@@ -5,7 +5,7 @@ import { ValidationComposite } from '@/application/validators/user'
 import {
   makeActivateAccountValidator,
   makeRequiredFields,
-  makeValidateActivationCode
+  makeValidateActivationPin
 } from '@/factories/validators/user'
 
 jest.mock('../../../../../src/application/validators/validation-composite.ts')
@@ -18,12 +18,12 @@ describe('activateAccountValidator', () => {
 
     const validations: IValidator[] = []
 
-    const fields = ['email', 'activationCode']
+    const fields = ['email', 'activationPin']
     for (const field of fields) {
       validations.push(makeRequiredFields(field))
     }
 
-    validations.push(makeValidateActivationCode())
+    validations.push(makeValidateActivationPin())
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

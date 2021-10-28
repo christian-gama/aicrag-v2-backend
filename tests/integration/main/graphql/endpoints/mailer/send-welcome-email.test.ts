@@ -41,7 +41,7 @@ describe('mutation sendWelcomeEmail', () => {
 
   beforeEach(async () => {
     fakeUser = makeFakeUser()
-    fakeUser.temporary.activationCodeExpiration = new Date(Date.now() + 60 * 1000)
+    fakeUser.temporary.activationPinExpiration = new Date(Date.now() + 60 * 1000)
     query = `
       mutation {
         sendWelcomeEmail (input: { email: "${fakeUser.personal.email}" }) {

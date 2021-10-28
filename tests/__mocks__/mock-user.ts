@@ -37,12 +37,12 @@ export const makeFakeUser = (userProperty?: Record<any, any>): IUser => {
     },
     settings: { accountActivated: false, currency: 'BRL', handicap: 1 },
     temporary: {
-      activationCode: faker.lorem.word(5),
-      activationCodeExpiration: new Date(Date.now() + 10 * 60 * 1000),
+      activationPin: faker.lorem.word(5),
+      activationPinExpiration: new Date(Date.now() + 10 * 60 * 1000),
       resetPasswordToken: null,
       tempEmail: null,
-      tempEmailCode: null,
-      tempEmailCodeExpiration: null
+      tempEmailPin: null,
+      tempEmailPinExpiration: null
     },
     tokenVersion: 0,
     ...userProperty

@@ -22,12 +22,12 @@ export interface IUser {
     handicap: RangeNumbers
   }
   temporary: {
-    activationCode: string | null
-    activationCodeExpiration: Date | null
+    activationPin: string | null
+    activationPinExpiration: Date | null
     resetPasswordToken: string | null
     tempEmail: string | null
-    tempEmailCode: string | null
-    tempEmailCodeExpiration: Date | null
+    tempEmailPin: string | null
+    tempEmailPinExpiration: Date | null
   }
   tokenVersion: number
 }

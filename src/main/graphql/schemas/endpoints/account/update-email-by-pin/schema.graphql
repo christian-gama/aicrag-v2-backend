@@ -1,0 +1,11 @@
+type Mutation {
+  updateEmailByPin(input: UpdateEmailByCodeInput!): UpdateEmailByCode! @protected
+}
+
+input UpdateEmailByCodeInput {
+  emailPin: String!
+}
+
+type UpdateEmailByCode {
+  user: PublicUser!
+}

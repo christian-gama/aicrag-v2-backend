@@ -1,5 +1,5 @@
 import { IPublicUser, IUser } from '@/domain'
-import { IFilterUserData, IUuid, IValidationCode } from '@/domain/helpers'
+import { IFilterUserData, IUuid, IPin } from '@/domain/helpers'
 
 import { makeFakePublicUser } from './mock-user'
 
@@ -23,12 +23,12 @@ export const makeUuidStub = (): IUuid => {
   return new IUuidStub()
 }
 
-export const makeValidationCodeStub = (): IValidationCode => {
-  class ValidationCode implements IValidationCode {
+export const makePinStub = (): IPin => {
+  class Pin implements IPin {
     generate (): string {
-      return 'any_code'
+      return 'any_pin'
     }
   }
 
-  return new ValidationCode()
+  return new Pin()
 }

@@ -58,13 +58,13 @@ export class ActivateAccountController implements IController {
   }
 
   private clearTemporary (user: IUser): Record<string, any> {
-    user.temporary.activationCode = null
-    user.temporary.activationCodeExpiration = null
+    user.temporary.activationPin = null
+    user.temporary.activationPinExpiration = null
 
     const result = {
       'logs.updatedAt': new Date(Date.now()),
-      'temporary.activationCode': user.temporary.activationCode,
-      'temporary.activationCodeExpiration': user.temporary.activationCode
+      'temporary.activationPin': user.temporary.activationPin,
+      'temporary.activationPinExpiration': user.temporary.activationPin
     }
 
     return result

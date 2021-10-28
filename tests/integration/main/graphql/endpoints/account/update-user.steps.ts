@@ -132,11 +132,11 @@ defineFeature(feature, (test) => {
     })
 
     and('I should have my temporary email code set to a random code', () => {
-      expect(fakeUser.temporary.tempEmailCode).toBeDefined()
+      expect(fakeUser.temporary.tempEmailPin).toBeDefined()
     })
 
     and(/^I should have my temporary email code expiration set to expire in (.*) minutes$/, (expiration) => {
-      expect(fakeUser.temporary.tempEmailCodeExpiration).toStrictEqual(new Date(Date.now() + expiration * 60 * 1000))
+      expect(fakeUser.temporary.tempEmailPinExpiration).toStrictEqual(new Date(Date.now() + expiration * 60 * 1000))
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {

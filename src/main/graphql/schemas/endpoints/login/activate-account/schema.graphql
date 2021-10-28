@@ -4,7 +4,7 @@ type Mutation {
 
 input ActivateAccountInput {
   email: EmailAddress!
-  activationCode: String!
+  activationPin: String!
 }
 
 type ActivateAccount {

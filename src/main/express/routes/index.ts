@@ -1,6 +1,6 @@
 import {
   makeLogoutController,
-  makeUpdateEmailByCodeController,
+  makeUpdateEmailByPinController,
   makeUpdatePasswordController,
   makeUpdateUserController
 } from '@/factories/controllers/account'
@@ -12,7 +12,7 @@ import {
 } from '@/factories/controllers/login'
 import { makeResetPasswordController } from '@/factories/controllers/login/reset-password-controller-factory'
 import {
-  makeSendEmailCodeController,
+  makeSendEmailPinController,
   makeSendRecoverPasswordEmailController,
   makeSendWelcomeEmailController
 } from '@/factories/controllers/mailer'
@@ -37,7 +37,7 @@ import { middlewareAdapter } from '../adapters/middleware-adapter'
 /* ******* Controllers ******* */
 // Account Routes
 export const logoutController = controllerAdapter(makeLogoutController())
-export const updateEmailByCodeController = controllerAdapter(makeUpdateEmailByCodeController())
+export const updateEmailByPinController = controllerAdapter(makeUpdateEmailByPinController())
 export const updatePassword = controllerAdapter(makeUpdatePasswordController())
 export const updateUserController = controllerAdapter(makeUpdateUserController())
 
@@ -53,7 +53,7 @@ export const resetPasswordController = controllerAdapter(makeResetPasswordContro
 
 // Mailer Routes
 export const sendRecoverPasswordController = controllerAdapter(makeSendRecoverPasswordEmailController())
-export const sendEmailCodeController = controllerAdapter(makeSendEmailCodeController())
+export const sendEmailPinController = controllerAdapter(makeSendEmailPinController())
 export const sendWelcomeEmailController = controllerAdapter(makeSendWelcomeEmailController())
 
 // SignUp Routes

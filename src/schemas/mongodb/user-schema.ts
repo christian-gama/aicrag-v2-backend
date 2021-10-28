@@ -70,19 +70,19 @@ export const UserSchema = {
         temporary: {
           bsonType: 'object',
           required: [
-            'activationCode',
-            'activationCodeExpiration',
+            'activationPin',
+            'activationPinExpiration',
             'resetPasswordToken',
             'tempEmail',
-            'tempEmailCode',
-            'tempEmailCodeExpiration'
+            'tempEmailPin',
+            'tempEmailPinExpiration'
           ],
           properties: {
-            activationCode: {
+            activationPin: {
               bsonType: ['string', 'null'],
               description: 'must be a string or null and is required'
             },
-            activationCodeExpiration: {
+            activationPinExpiration: {
               bsonType: ['date', 'null'],
               description: 'must be a date or null and is required'
             },
@@ -94,11 +94,11 @@ export const UserSchema = {
               bsonType: ['string', 'null'],
               description: 'must be a string or null and is required'
             },
-            tempEmailCode: {
+            tempEmailPin: {
               bsonType: ['string', 'null'],
               description: 'must be a string or null and is required'
             },
-            tempEmailCodeExpiration: {
+            tempEmailPinExpiration: {
               bsonType: ['date', 'null'],
               description: 'must be a date or null and is required'
             }

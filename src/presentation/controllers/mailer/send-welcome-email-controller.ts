@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { IValidationCode } from '@/domain/helpers'
+import { IPin } from '@/domain/helpers'
 import { IMailerService } from '@/domain/mailer'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
@@ -15,7 +15,7 @@ export class SendWelcomeEmailController implements IController {
     private readonly httpHelper: HttpHelperProtocol,
     private readonly sendWelcomeValidator: IValidator,
     private readonly userRepository: IUserRepository,
-    private readonly validationCode: IValidationCode,
+    private readonly validationCode: IPin,
     private readonly welcomeEmail: IMailerService
   ) {}
 
@@ -31,7 +31,7 @@ export class SendWelcomeEmailController implements IController {
       return this.httpHelper.forbidden(new AccountAlreadyActivatedError())
     }
 
-    if (user?.temporary.activationCodeExpiration && user.temporary.activationCodeExpiration.getTime() < Date.now()) {
+    if (user?.temporary.activationPinExpiration && user.temporary.activationPinExpiration.getTime() < Date.now()) {
       user = await this.generateNewActivationCode(user)
     }
 
@@ -42,7 +42,7 @@ export class SendWelcomeEmailController implements IController {
     }
 
     const result = this.httpHelper.ok({
-      message: `A welcome email with activation code has been sent to ${user.personal.email}`
+      message: `A welcome email with activation pin has been sent to ${user.personal.email}`
     })
 
     return result
@@ -50,8 +50,8 @@ export class SendWelcomeEmailController implements IController {
 
   private async generateNewActivationCode (user: IUser): Promise<IUser> {
     const result = await this.userRepository.updateById(user.personal.id, {
-      'temporary.activationCode': this.validationCode.generate(),
-      'temporary.activationCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+      'temporary.activationPin': this.validationCode.generate(),
+      'temporary.activationPinExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })
 
     return result as IUser

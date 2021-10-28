@@ -1,7 +1,7 @@
 Feature: Update user
 
   The user can change his currency, email and/or name. After requesting an email patch, the user must confirm his new
-  email using the email code sent to his email through SendEmailCode endpoint, however the name and currency are
+  email using the email pin sent to his email through SendEmailPin endpoint, however the name and currency are
   updated instantly.
 
   Rule: The user must be logged in

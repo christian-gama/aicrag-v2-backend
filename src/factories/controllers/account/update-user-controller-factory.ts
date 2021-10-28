@@ -2,13 +2,13 @@ import { UpdateUserController } from '@/presentation/controllers/account/update-
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 
 import { makeTryCatchDecorator } from '../../decorators'
-import { makeFilterUserData, makeHttpHelper, makeValidationCode } from '../../helpers'
+import { makeFilterUserData, makeHttpHelper, makePin } from '../../helpers'
 import { makeUserRepository } from '../../repositories'
 import { makeValidateEmail, makeValidateName } from '../../validators/user'
 import { makeValidateCurrency } from '../../validators/user/validate-currency-factory'
 
 export const makeUpdateUserController = (): IController => {
-  const emailCode = makeValidationCode()
+  const emailPin = makePin()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
   const userRepository = makeUserRepository()
@@ -17,7 +17,7 @@ export const makeUpdateUserController = (): IController => {
   const validateName = makeValidateName()
 
   const updateUserController = new UpdateUserController(
-    emailCode,
+    emailPin,
     filterUserData,
     httpHelper,
     userRepository,

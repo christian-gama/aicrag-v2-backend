@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { IFilterUserData, IValidationCode } from '@/domain/helpers'
+import { IFilterUserData, IPin } from '@/domain/helpers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 
@@ -11,7 +11,7 @@ import { IController } from '../protocols/controller-protocol'
 
 export class UpdateUserController implements IController {
   constructor (
-    private readonly emailCode: IValidationCode,
+    private readonly emailPin: IPin,
     private readonly filterUserData: IFilterUserData,
     private readonly httpHelper: HttpHelperProtocol,
     private readonly userRepository: IUserRepository,
@@ -44,8 +44,8 @@ export class UpdateUserController implements IController {
       if (userExists) return this.httpHelper.conflict(new ConflictParamError('email'))
 
       update['temporary.tempEmail'] = data.email
-      update['temporary.tempEmailCode'] = this.emailCode.generate()
-      update['temporary.tempEmailCodeExpiration'] = new Date(Date.now() + 10 * 60 * 1000)
+      update['temporary.tempEmailPin'] = this.emailPin.generate()
+      update['temporary.tempEmailPinExpiration'] = new Date(Date.now() + 10 * 60 * 1000)
     }
 
     if (data.name) {

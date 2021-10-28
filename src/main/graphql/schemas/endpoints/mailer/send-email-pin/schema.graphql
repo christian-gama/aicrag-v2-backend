@@ -1,0 +1,11 @@
+type Mutation {
+  sendEmailPin(input: SendEmailPinInput!): SendEmailPin!
+}
+
+input SendEmailPinInput {
+  email: EmailAddress!
+}
+
+type SendEmailPin {
+  message: String!
+}

@@ -1,9 +1,9 @@
 import {
   AccountAlreadyActivatedError,
-  CodeIsExpiredError,
+  PinIsExpiredError,
   ConflictParamError,
   InactiveAccountError,
-  InvalidCodeError,
+  InvalidPinError,
   InvalidParamError,
   MissingParamError,
   UserCredentialError
@@ -14,10 +14,10 @@ import {
  */
 export type IValidatorError =
   | AccountAlreadyActivatedError
-  | CodeIsExpiredError
+  | PinIsExpiredError
   | ConflictParamError
   | InactiveAccountError
-  | InvalidCodeError
+  | InvalidPinError
   | InvalidParamError
   | MissingParamError
   | UserCredentialError

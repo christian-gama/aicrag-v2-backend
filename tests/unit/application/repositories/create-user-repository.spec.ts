@@ -2,27 +2,27 @@ import { IHasher } from '@/domain/cryptography'
 import { IUuid } from '@/domain/helpers'
 import { ICreateUserRepository } from '@/domain/repositories'
 
-import { ValidationCode } from '@/application/helpers'
+import { Pin } from '@/application/helpers'
 import { CreateUserRepository } from '@/application/repositories'
 
-import { makeHasherStub, makeValidationCodeStub, makeUuidStub, makeFakeSignUpUserCredentials } from '@/tests/__mocks__'
+import { makeHasherStub, makePinStub, makeUuidStub, makeFakeSignUpUserCredentials } from '@/tests/__mocks__'
 
 import MockDate from 'mockdate'
 interface SutTypes {
   sut: ICreateUserRepository
-  activationCodeStub: ValidationCode
+  activationPinStub: Pin
   hasherStub: IHasher
   uuidStub: IUuid
 }
 
 const makeSut = (): SutTypes => {
-  const activationCodeStub = makeValidationCodeStub()
+  const activationPinStub = makePinStub()
   const hasherStub = makeHasherStub()
   const uuidStub = makeUuidStub()
 
-  const sut = new CreateUserRepository(activationCodeStub, hasherStub, uuidStub)
+  const sut = new CreateUserRepository(activationPinStub, hasherStub, uuidStub)
 
-  return { activationCodeStub, hasherStub, sut, uuidStub }
+  return { activationPinStub, hasherStub, sut, uuidStub }
 }
 
 describe('createUserRepository', () => {
@@ -37,8 +37,8 @@ describe('createUserRepository', () => {
   it('should return a user with correct values', async () => {
     expect.hasAssertions()
 
-    const { activationCodeStub, hasherStub, sut, uuidStub } = makeSut()
-    const fakeActivationCode = activationCodeStub.generate()
+    const { activationPinStub, hasherStub, sut, uuidStub } = makeSut()
+    const fakeActivationCode = activationPinStub.generate()
     const fakeSignUpUserCredentials = makeFakeSignUpUserCredentials()
     const fakeHashedPassword = await hasherStub.hash(fakeSignUpUserCredentials.password)
     const fakeId = uuidStub.generate()
@@ -62,12 +62,12 @@ describe('createUserRepository', () => {
     expect(result.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1 })
 
     expect(result.temporary).toStrictEqual({
-      activationCode: fakeActivationCode,
-      activationCodeExpiration: new Date(Date.now() + 10 * 60 * 1000),
+      activationPin: fakeActivationCode,
+      activationPinExpiration: new Date(Date.now() + 10 * 60 * 1000),
       resetPasswordToken: null,
       tempEmail: null,
-      tempEmailCode: null,
-      tempEmailCodeExpiration: null
+      tempEmailPin: null,
+      tempEmailPinExpiration: null
     })
 
     expect(result.tokenVersion).toBe(0)

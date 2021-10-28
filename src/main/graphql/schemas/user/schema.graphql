@@ -27,12 +27,12 @@ type UserSettings {
 }
 
 type UserTemporary {
-  activationCode: String
-  activationCodeExpiration: DateString
+  activationPin: String
+  activationPinExpiration: DateString
   resetPasswordToken: String
   tempEmail: String
-  tempEmailCode: String
-  tempEmailCodeExpiration: DateString
+  tempEmailPin: String
+  tempEmailPinExpiration: DateString
 }
 
 enum UserCurrency {

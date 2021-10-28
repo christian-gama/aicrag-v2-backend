@@ -1,5 +1,5 @@
 import { IUser } from '@/domain'
-import { IFilterUserData, IValidationCode } from '@/domain/helpers'
+import { IFilterUserData, IPin } from '@/domain/helpers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 
@@ -15,14 +15,14 @@ import {
   makeFakeUser,
   makeFilterUserDataStub,
   makeUserRepositoryStub,
-  makeValidationCodeStub,
+  makePinStub,
   makeValidatorStub
 } from '@/tests/__mocks__'
 
 import MockDate from 'mockdate'
 
 interface SutTypes {
-  emailCodeStub: IValidationCode
+  emailPinStub: IPin
   fakeUser: IUser
   filterUserDataStub: IFilterUserData
   httpHelper: HttpHelperProtocol
@@ -35,7 +35,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const emailCodeStub = makeValidationCodeStub()
+  const emailPinStub = makePinStub()
   const fakeUser = makeFakeUser()
   const filterUserDataStub = makeFilterUserDataStub(fakeUser)
   const httpHelper = makeHttpHelper()
@@ -49,7 +49,7 @@ const makeSut = (): SutTypes => {
   const validateNameStub = makeValidatorStub()
 
   const sut = new UpdateUserController(
-    emailCodeStub,
+    emailPinStub,
     filterUserDataStub,
     httpHelper,
     userRepositoryStub,
@@ -59,7 +59,7 @@ const makeSut = (): SutTypes => {
   )
 
   return {
-    emailCodeStub,
+    emailPinStub,
     fakeUser,
     filterUserDataStub,
     httpHelper,
@@ -265,8 +265,8 @@ describe('updateUserController', () => {
     expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'temporary.tempEmail': request.body.email,
-      'temporary.tempEmailCode': 'any_code',
-      'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+      'temporary.tempEmailPin': 'any_pin',
+      'temporary.tempEmailPinExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })
   })
 
@@ -284,8 +284,8 @@ describe('updateUserController', () => {
       'personal.name': request.body.name,
       'settings.currency': request.body.currency,
       'temporary.tempEmail': request.body.email,
-      'temporary.tempEmailCode': 'any_code',
-      'temporary.tempEmailCodeExpiration': new Date(Date.now() + 10 * 60 * 1000)
+      'temporary.tempEmailPin': 'any_pin',
+      'temporary.tempEmailPinExpiration': new Date(Date.now() + 10 * 60 * 1000)
     })
   })
 

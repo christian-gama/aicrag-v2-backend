@@ -45,14 +45,14 @@ describe('patch /activate-account', () => {
   it('should return 200 if all validations succeeds', async () => {
     expect.assertions(0)
 
-    const activationCode = fakeUser.temporary.activationCode
+    const activationPin = fakeUser.temporary.activationPin
     fakeUser.settings.accountActivated = false
     await userCollection.insertOne(fakeUser)
 
     await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationCode: activationCode, email: fakeUser.personal.email })
+      .send({ activationPin: activationPin, email: fakeUser.personal.email })
       .expect(200)
   })
 
@@ -64,7 +64,7 @@ describe('patch /activate-account', () => {
     await request(app).patch('/api/v1/login/activate-account').send().expect(401)
   })
 
-  it('should return 400 if code is invalid', async () => {
+  it('should return 400 if pin is invalid', async () => {
     expect.assertions(0)
 
     await userCollection.insertOne(fakeUser)
@@ -72,21 +72,21 @@ describe('patch /activate-account', () => {
     await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationCode: 'invalid_code', email: fakeUser.personal.email })
+      .send({ activationPin: 'invalid_pin', email: fakeUser.personal.email })
       .expect(400)
   })
 
-  it('should return 400 if code is expired', async () => {
+  it('should return 400 if pin is expired', async () => {
     expect.assertions(0)
 
-    const activationCode = fakeUser.temporary.activationCode
-    fakeUser.temporary.activationCodeExpiration = new Date(Date.now() - 1000)
+    const activationPin = fakeUser.temporary.activationPin
+    fakeUser.temporary.activationPinExpiration = new Date(Date.now() - 1000)
     await userCollection.insertOne(fakeUser)
 
     await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationCode: activationCode, email: fakeUser.personal.email })
+      .send({ activationPin: activationPin, email: fakeUser.personal.email })
       .expect(400)
   })
 
@@ -101,14 +101,14 @@ describe('patch /activate-account', () => {
   it('should return 400 if account is already activated', async () => {
     expect.assertions(0)
 
-    const activationCode = fakeUser.temporary.activationCode
+    const activationPin = fakeUser.temporary.activationPin
     fakeUser.settings.accountActivated = true
     await userCollection.insertOne(fakeUser)
 
     await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationCode: activationCode, email: fakeUser.personal.email })
+      .send({ activationPin: activationPin, email: fakeUser.personal.email })
       .expect(400)
   })
 })
