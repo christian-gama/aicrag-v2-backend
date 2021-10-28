@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
@@ -19,139 +18,137 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'get-all-invoices.feature'))
 
-defineFeature(feature, (test) => {
-  const client = makeMongoDb()
-  let accessToken: string
-  let app: Express
-  let fakeUser: IUser
-  let refreshToken: string
-  let result: any
-  let taskCollection: ICollectionMethods
-  let userCollection: ICollectionMethods
+export const testGetAllInvoices = (): void => {
+  defineFeature(feature, (test) => {
+    const client = makeMongoDb()
+    let accessToken: string
+    let app: Express
+    let fakeUser: IUser
+    let refreshToken: string
+    let result: any
+    let taskCollection: ICollectionMethods
+    let userCollection: ICollectionMethods
 
-  afterAll(async () => {
-    MockDate.reset()
-
-    await client.disconnect()
-  })
-
-  afterEach(async () => {
-    await userCollection.deleteMany({})
-  })
-
-  beforeAll(async () => {
-    MockDate.set(new Date())
-
-    app = await setupApp()
-
-    await MongoAdapter.connect(global.__MONGO_URI__)
-
-    userCollection = client.collection('users')
-    taskCollection = client.collection('tasks')
-  })
-
-  test('being logged out', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I am logged out', () => {
-      accessToken = ''
-      refreshToken = ''
+    afterAll(async () => {
+      MockDate.reset()
     })
 
-    when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
-      const query = getAllInvoicesQuery({ type })
-
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
+    afterEach(async () => {
+      await userCollection.deleteMany({})
     })
 
-    then(/^I should receive an error with message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
+    beforeAll(async () => {
+      MockDate.set(new Date())
+
+      app = await setupApp()
+
+      userCollection = client.collection('users')
+      taskCollection = client.collection('tasks')
     })
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
+    test('being logged out', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-  test('having invoices from different months', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+      given('I am logged out', () => {
+        accessToken = ''
+        refreshToken = ''
+      })
 
-    given('I am logged in', async () => {
-      fakeUser = await userHelper.insertUser(userCollection)
-      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
-    })
+      when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
+        const query = getAllInvoicesQuery({ type })
 
-    given('I have the following tasks:', async (table) => {
-      await taskHelper.insertTasks(table, taskCollection, fakeUser)
-    })
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
 
-    when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
-      const query = getAllInvoicesQuery({ type })
+      then(/^I should receive an error with message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
-
-    then('I should get the following invoices:', (table) => {
-      const invoice = table.map((row) => ({
-        date: { month: +row.month, year: +row.year },
-        tasks: +row.tasks,
-        totalUsd: +row.totalUsd
-      }))
-
-      expect(result.body.data.getAllInvoices).toStrictEqual({
-        count: table.length,
-        displaying: table.length,
-        documents: invoice,
-        page: '1 of 1'
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
+    test('having invoices from different months', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-  test('not having any invoice', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+      given('I am logged in', async () => {
+        fakeUser = await userHelper.insertUser(userCollection)
+        ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+      })
 
-    given('I am logged in', async () => {
-      fakeUser = await userHelper.insertUser(userCollection)
-      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
-    })
+      given('I have the following tasks:', async (table) => {
+        await taskHelper.insertTasks(table, taskCollection, fakeUser)
+      })
 
-    given('I do not have any invoices', async () => {
-      await taskCollection.deleteMany({})
-    })
+      when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
+        const query = getAllInvoicesQuery({ type })
 
-    when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
-      const query = getAllInvoicesQuery({ type })
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+      then('I should get the following invoices:', (table) => {
+        const invoice = table.map((row) => ({
+          date: { month: +row.month, year: +row.year },
+          tasks: +row.tasks,
+          totalUsd: +row.totalUsd
+        }))
 
-    then('I should not get any invoices', () => {
-      expect(result.body.data.getAllInvoices).toStrictEqual({
-        count: 0,
-        displaying: 0,
-        documents: [],
-        page: '1 of 0'
+        expect(result.body.data.getAllInvoices).toStrictEqual({
+          count: table.length,
+          displaying: table.length,
+          documents: invoice,
+          page: '1 of 1'
+        })
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
+    test('not having any invoice', ({ given, when, then, and }) => {
+      expect.hasAssertions()
+
+      given('I am logged in', async () => {
+        fakeUser = await userHelper.insertUser(userCollection)
+        ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+      })
+
+      given('I do not have any invoices', async () => {
+        await taskCollection.deleteMany({})
+      })
+
+      when(/^I request to get all invoices of type "(.*)"$/, async (type) => {
+        const query = getAllInvoicesQuery({ type })
+
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
+
+      then('I should not get any invoices', () => {
+        expect(result.body.data.getAllInvoices).toStrictEqual({
+          count: 0,
+          displaying: 0,
+          documents: [],
+          page: '1 of 0'
+        })
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
+      })
     })
   })
-})
+}

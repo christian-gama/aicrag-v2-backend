@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
@@ -18,123 +17,119 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'forgot-password.feature'))
 
-defineFeature(feature, (test) => {
-  const client = makeMongoDb()
-  let accessToken: string
-  let app: Express
-  let fakeUser: IUser
-  let refreshToken: string
-  let result: any
-  let userCollection: ICollectionMethods
+export const testForgotPassword = (): void => {
+  defineFeature(feature, (test) => {
+    const client = makeMongoDb()
+    let accessToken: string
+    let app: Express
+    let fakeUser: IUser
+    let refreshToken: string
+    let result: any
+    let userCollection: ICollectionMethods
 
-  afterAll(async () => {
-    await client.disconnect()
-  })
-
-  afterEach(async () => {
-    await userCollection.deleteMany({})
-  })
-
-  beforeAll(async () => {
-    app = await setupApp()
-
-    await MongoAdapter.connect(global.__MONGO_URI__)
-
-    userCollection = client.collection('users')
-  })
-
-  test('being logged in', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I am logged in', async () => {
-      fakeUser = await userHelper.insertUser(userCollection)
-      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    afterEach(async () => {
+      await userCollection.deleteMany({})
     })
 
-    when(/^I request to reset my password using the email "(.*)"$/, async (email) => {
-      const query = forgotPasswordMutation({ email })
+    beforeAll(async () => {
+      app = await setupApp()
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
+      userCollection = client.collection('users')
     })
 
-    then(/^I should receive an error message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
+    test('being logged in', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
+      given('I am logged in', async () => {
+        fakeUser = await userHelper.insertUser(userCollection)
+        ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+      })
 
-  test('using a valid email', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+      when(/^I request to reset my password using the email "(.*)"$/, async (email) => {
+        const query = forgotPasswordMutation({ email })
 
-    given(/^I have an account with the email "(.*)"$/, async (email) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        personal: { email, id: randomUUID(), name: 'any_name', password: 'any_password' }
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
+
+      then(/^I should receive an error message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    given('I am logged out', () => {
-      accessToken = ''
-      refreshToken = ''
-    })
+    test('using a valid email', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    when(/^I request to reset my password using the email "(.*)"$/, async (email) => {
-      const query = forgotPasswordMutation({ email })
+      given(/^I have an account with the email "(.*)"$/, async (email) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          personal: { email, id: randomUUID(), name: 'any_name', password: 'any_password' }
+        })
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+      given('I am logged out', () => {
+        accessToken = ''
+        refreshToken = ''
+      })
 
-    then('I should have my resetPasswordToken updated to a new token', async () => {
-      const user = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
+      when(/^I request to reset my password using the email "(.*)"$/, async (email) => {
+        const query = forgotPasswordMutation({ email })
 
-      expect(user.temporary.resetPasswordToken).not.toBe(fakeUser.temporary.resetPasswordToken)
-    })
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
+      then('I should have my resetPasswordToken updated to a new token', async () => {
+        const user = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
 
-  test('using an invalid email', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+        expect(user.temporary.resetPasswordToken).not.toBe(fakeUser.temporary.resetPasswordToken)
+      })
 
-    given(/^I have an account with the email "(.*)"$/, async (email) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        personal: { email, id: randomUUID(), name: 'any_name', password: 'any_password' }
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    given('I am logged out', () => {
-      accessToken = ''
-      refreshToken = ''
-    })
+    test('using an invalid email', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    when(/^I request to reset my password using the email "(.*)"$/, async (email) => {
-      const query = forgotPasswordMutation({ email })
+      given(/^I have an account with the email "(.*)"$/, async (email) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          personal: { email, id: randomUUID(), name: 'any_name', password: 'any_password' }
+        })
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+      given('I am logged out', () => {
+        accessToken = ''
+        refreshToken = ''
+      })
 
-    then(/^I should receive an error message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
+      when(/^I request to reset my password using the email "(.*)"$/, async (email) => {
+        const query = forgotPasswordMutation({ email })
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
+
+      then(/^I should receive an error message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
+      })
     })
   })
-})
+}

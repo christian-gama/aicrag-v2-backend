@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
@@ -18,155 +17,151 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'activate-account.feature'))
 
-defineFeature(feature, (test) => {
-  const client = makeMongoDb()
-  let accessToken: string
-  let app: Express
-  let fakeUser: IUser
-  let refreshToken: string
-  let result: any
-  let userCollection: ICollectionMethods
+export const testActivateAccount = (): void => {
+  defineFeature(feature, (test) => {
+    const client = makeMongoDb()
+    let accessToken: string
+    let app: Express
+    let fakeUser: IUser
+    let refreshToken: string
+    let result: any
+    let userCollection: ICollectionMethods
 
-  afterAll(async () => {
-    await client.disconnect()
-  })
+    afterEach(async () => {
+      await userCollection.deleteMany({})
+    })
 
-  afterEach(async () => {
-    await userCollection.deleteMany({})
-  })
+    beforeAll(async () => {
+      app = await setupApp()
 
-  beforeAll(async () => {
-    app = await setupApp()
+      userCollection = client.collection('users')
+    })
 
-    await MongoAdapter.connect(global.__MONGO_URI__)
+    test('being not partially logged in', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    userCollection = client.collection('users')
-  })
+      given('I have an account with the following credentials:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          personal: {
+            email: table[0].email,
+            id: randomUUID(),
+            name: 'any_name',
+            password: 'any_password'
+          },
+          temporary: {
+            activationPin: table[0].activationPin,
+            activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
+          }
+        })
+      })
 
-  test('being not partially logged in', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+      given('I am not partially logged in', () => {
+        accessToken = ''
+        refreshToken = ''
+      })
 
-    given('I have an account with the following credentials:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        personal: {
-          email: table[0].email,
-          id: randomUUID(),
-          name: 'any_name',
-          password: 'any_password'
-        },
-        temporary: {
-          activationPin: table[0].activationPin,
-          activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
-        }
+      when('I request to activate my account using the following credentials:', async (table) => {
+        const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
+
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
+
+      then(/^I should receive an error message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    given('I am not partially logged in', () => {
-      accessToken = ''
-      refreshToken = ''
-    })
+    test('using a valid activation pin', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
+      given('I have an account with the following credentials:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          personal: {
+            email: table[0].email,
+            id: randomUUID(),
+            name: 'any_name',
+            password: 'any_password'
+          },
+          temporary: {
+            activationPin: table[0].activationPin,
+            activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
+          }
+        })
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+      given('I am partially logged in', async () => {
+        ;[accessToken, refreshToken = ''] = await userHelper.generateToken(fakeUser)
+      })
 
-    then(/^I should receive an error message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
+      when('I request to activate my account using the following credentials:', async (table) => {
+        const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
 
-  test('using a valid activation pin', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+      then('I should have my account activated', async () => {
+        const user = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
 
-    given('I have an account with the following credentials:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        personal: {
-          email: table[0].email,
-          id: randomUUID(),
-          name: 'any_name',
-          password: 'any_password'
-        },
-        temporary: {
-          activationPin: table[0].activationPin,
-          activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
-        }
+        expect(user.temporary.activationPin).toBeNull()
+        expect(user.temporary.activationPinExpiration).toBeNull()
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    given('I am partially logged in', async () => {
-      ;[accessToken, refreshToken = ''] = await userHelper.generateToken(fakeUser)
-    })
+    test('using an invalid activation pin', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
+      given('I have an account with the following credentials:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          personal: {
+            email: table[0].email,
+            id: randomUUID(),
+            name: 'any_name',
+            password: 'any_password'
+          },
+          temporary: {
+            activationPin: table[0].activationPin,
+            activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
+          }
+        })
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+      given('I am partially logged in', async () => {
+        ;[accessToken, refreshToken = ''] = await userHelper.generateToken(fakeUser)
+      })
 
-    then('I should have my account activated', async () => {
-      const user = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
+      when('I request to activate my account using the following credentials:', async (table) => {
+        const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
 
-      expect(user.temporary.activationPin).toBeNull()
-      expect(user.temporary.activationPinExpiration).toBeNull()
-    })
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
 
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
+      then(/^I should receive an error message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
 
-  test('using an invalid activation pin', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I have an account with the following credentials:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        personal: {
-          email: table[0].email,
-          id: randomUUID(),
-          name: 'any_name',
-          password: 'any_password'
-        },
-        temporary: {
-          activationPin: table[0].activationPin,
-          activationPinExpiration: new Date(Date.now() + 1000 * 60 * 10)
-        }
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
-
-    given('I am partially logged in', async () => {
-      ;[accessToken, refreshToken = ''] = await userHelper.generateToken(fakeUser)
-    })
-
-    when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
-
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
-
-    then(/^I should receive an error message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
-
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
   })
-})
+}

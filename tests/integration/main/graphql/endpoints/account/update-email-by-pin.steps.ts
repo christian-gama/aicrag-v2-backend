@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
@@ -17,143 +16,139 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'update-email-by-pin.feature'))
 
-defineFeature(feature, (test) => {
-  const client = makeMongoDb()
-  let accessToken: string
-  let app: Express
-  let fakeUser: IUser
-  let refreshToken: string
-  let userCollection: ICollectionMethods
-  let result: request.Response
+export const testUpdateEmailByPin = (): void => {
+  defineFeature(feature, (test) => {
+    const client = makeMongoDb()
+    let accessToken: string
+    let app: Express
+    let fakeUser: IUser
+    let refreshToken: string
+    let userCollection: ICollectionMethods
+    let result: request.Response
 
-  afterAll(async () => {
-    await client.disconnect()
-  })
+    afterEach(async () => {
+      await userCollection.deleteMany({})
+    })
 
-  afterEach(async () => {
-    await userCollection.deleteMany({})
-  })
+    beforeAll(async () => {
+      app = await setupApp()
 
-  beforeAll(async () => {
-    app = await setupApp()
+      userCollection = client.collection('users')
+    })
 
-    await MongoAdapter.connect(global.__MONGO_URI__)
+    test('being logged out', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    userCollection = client.collection('users')
-  })
+      given('The following temporaries:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          temporary: {
+            tempEmail: table[0].tempEmail,
+            tempEmailPin: table[0].tempEmailPin,
+            tempEmailPinExpiration: new Date(Date.now() + 1000 * 60 * 60)
+          }
+        })
+      })
 
-  test('being logged out', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+      given('I am logged out', () => {
+        accessToken = ''
+        refreshToken = ''
+      })
 
-    given('The following temporaries:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        temporary: {
-          tempEmail: table[0].tempEmail,
-          tempEmailPin: table[0].tempEmailPin,
-          tempEmailPinExpiration: new Date(Date.now() + 1000 * 60 * 60)
-        }
+      when(/^I request to update my email using "(.*)"$/, async (emailPin) => {
+        const query = updateEmailByPinMutation({ emailPin })
+
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
+
+      then(/^I should see an error that contains a message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
+
+      and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+        expect(result.statusCode).toBe(+statusCode)
       })
     })
 
-    given('I am logged out', () => {
-      accessToken = ''
-      refreshToken = ''
-    })
+    test('using a temporary valid pin', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    when(/^I request to update my email using "(.*)"$/, async (emailPin) => {
-      const query = updateEmailByPinMutation({ emailPin })
+      given('The following temporaries:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          temporary: {
+            tempEmail: table[0].tempEmail,
+            tempEmailPin: table[0].tempEmailPin,
+            tempEmailPinExpiration: new Date(Date.now() + 1000 * 60 * 60)
+          }
+        })
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+      given('I am logged in', async () => {
+        ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+      })
 
-    then(/^I should see an error that contains a message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
+      when(/^I request to update my email using "(.*)"$/, async (emailPin) => {
+        const query = updateEmailByPinMutation({ emailPin })
 
-    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
-      expect(result.statusCode).toBe(+statusCode)
-    })
-  })
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
 
-  test('using a temporary valid pin', ({ given, when, then, and }) => {
-    expect.hasAssertions()
+      then('I should have my email updated', () => {
+        expect(result.body.data.updateEmailByPin.user.personal.email).toBe('any_email@mail.com')
+      })
 
-    given('The following temporaries:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        temporary: {
-          tempEmail: table[0].tempEmail,
-          tempEmailPin: table[0].tempEmailPin,
-          tempEmailPinExpiration: new Date(Date.now() + 1000 * 60 * 60)
-        }
+      and('I should have my temporary email removed', async () => {
+        fakeUser = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
+
+        expect(fakeUser.temporary.tempEmail).toBeNull()
+      })
+
+      and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+        expect(result.statusCode).toBe(+statusCode)
       })
     })
 
-    given('I am logged in', async () => {
-      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
-    })
+    test('using a temporary invalid pin', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    when(/^I request to update my email using "(.*)"$/, async (emailPin) => {
-      const query = updateEmailByPinMutation({ emailPin })
+      given('The following temporaries:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          temporary: {
+            tempEmail: table[0].tempEmail,
+            tempEmailPin: table[0].tempEmailPin,
+            tempEmailPinExpiration: new Date(Date.now() + 1000 * 60 * 60)
+          }
+        })
+      })
 
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+      given('I am logged in', async () => {
+        ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+      })
 
-    then('I should have my email updated', () => {
-      expect(result.body.data.updateEmailByPin.user.personal.email).toBe('any_email@mail.com')
-    })
+      when(/^I request to update my email using "(.*)"$/, async (emailPin) => {
+        const query = updateEmailByPinMutation({ emailPin })
 
-    and('I should have my temporary email removed', async () => {
-      fakeUser = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
+        result = await request(app)
+          .post('/graphql')
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      })
 
-      expect(fakeUser.temporary.tempEmail).toBeNull()
-    })
+      then(/^I should have receive an error that contains a message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
 
-    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
-      expect(result.statusCode).toBe(+statusCode)
-    })
-  })
-
-  test('using a temporary invalid pin', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('The following temporaries:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        temporary: {
-          tempEmail: table[0].tempEmail,
-          tempEmailPin: table[0].tempEmailPin,
-          tempEmailPinExpiration: new Date(Date.now() + 1000 * 60 * 60)
-        }
+      and(/^I must receive a status code of (\d+)$/, (statusCode) => {
+        expect(result.statusCode).toBe(+statusCode)
       })
     })
-
-    given('I am logged in', async () => {
-      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
-    })
-
-    when(/^I request to update my email using "(.*)"$/, async (emailPin) => {
-      const query = updateEmailByPinMutation({ emailPin })
-
-      result = await request(app)
-        .post('/graphql')
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
-
-    then(/^I should have receive an error that contains a message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
-
-    and(/^I must receive a status code of (\d+)$/, (statusCode) => {
-      expect(result.statusCode).toBe(+statusCode)
-    })
   })
-})
+}

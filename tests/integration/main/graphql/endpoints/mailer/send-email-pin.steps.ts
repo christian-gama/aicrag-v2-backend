@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { setupApp } from '@/main/express/config/app'
@@ -18,88 +17,83 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'send-email-pin.feature'))
 
-defineFeature(feature, (test) => {
-  const client = makeMongoDb()
-  let app: Express
-  let fakeUser: IUser
-  let result: any
-  let userCollection: ICollectionMethods
+export const testSendEmailPin = (): void => {
+  defineFeature(feature, (test) => {
+    const client = makeMongoDb()
+    let app: Express
+    let fakeUser: IUser
+    let result: any
+    let userCollection: ICollectionMethods
+    afterEach(async () => {
+      await userCollection.deleteMany({})
+    })
 
-  afterAll(async () => {
-    await client.disconnect()
-  })
+    beforeAll(async () => {
+      app = await setupApp()
 
-  afterEach(async () => {
-    await userCollection.deleteMany({})
-  })
+      userCollection = client.collection('users')
+    })
 
-  beforeAll(async () => {
-    app = await setupApp()
+    test('having a valid tempEmail', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-    await MongoAdapter.connect(global.__MONGO_URI__)
+      given('I have an account with the following credentials:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          temporary: {
+            tempEmail: table[0].tempEmail,
+            tempEmailPin: table[0].tempEmailPin
+          }
+        })
+      })
 
-    userCollection = client.collection('users')
-  })
+      when('I request to send an email with my pin', async () => {
+        const query = sendEmailPinMutation({ email: fakeUser.personal.email })
 
-  test('having a valid tempEmail', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I have an account with the following credentials:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        temporary: {
-          tempEmail: table[0].tempEmail,
-          tempEmailPin: table[0].tempEmailPin
+        if (process.env.TEST_SEND_EMAIL !== 'true') {
+          jest.spyOn(EmailPin.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
         }
+
+        result = await request(app).post('/graphql').send({ query })
+      })
+
+      then(/^I should receive a message "(.*)"$/, (message) => {
+        expect(result.body.data.sendEmailPin.message).toBe(message)
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    when('I request to send an email with my pin', async () => {
-      const query = sendEmailPinMutation({ email: fakeUser.personal.email })
+    test('having an invalid tempEmail', ({ given, when, then, and }) => {
+      expect.hasAssertions()
 
-      if (process.env.TEST_SEND_EMAIL !== 'true') {
-        jest.spyOn(EmailPin.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
-      }
+      given('I have an account with the following credentials:', async (table) => {
+        fakeUser = await userHelper.insertUser(userCollection, {
+          temporary: {
+            tempEmail: null,
+            tempEmailPin: table[0].tempEmailPin
+          }
+        })
+      })
 
-      result = await request(app).post('/graphql').send({ query })
-    })
+      when('I request to send an email with my pin', async () => {
+        const query = sendEmailPinMutation({ email: fakeUser.personal.email })
 
-    then(/^I should receive a message "(.*)"$/, (message) => {
-      expect(result.body.data.sendEmailPin.message).toBe(message)
-    })
-
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
-
-  test('having an invalid tempEmail', ({ given, when, then, and }) => {
-    expect.hasAssertions()
-
-    given('I have an account with the following credentials:', async (table) => {
-      fakeUser = await userHelper.insertUser(userCollection, {
-        temporary: {
-          tempEmail: null,
-          tempEmailPin: table[0].tempEmailPin
+        if (process.env.TEST_SEND_EMAIL !== 'true') {
+          jest.spyOn(EmailPin.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
         }
+
+        result = await request(app).post('/graphql').send({ query })
+      })
+
+      then(/^I should receive an error message "(.*)"$/, (message) => {
+        expect(result.body.errors[0].message).toBe(message)
+      })
+
+      and(/^I must receive a status code of (.*)$/, (statusCode) => {
+        expect(result.status).toBe(parseInt(statusCode))
       })
     })
-
-    when('I request to send an email with my pin', async () => {
-      const query = sendEmailPinMutation({ email: fakeUser.personal.email })
-
-      if (process.env.TEST_SEND_EMAIL !== 'true') {
-        jest.spyOn(EmailPin.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
-      }
-
-      result = await request(app).post('/graphql').send({ query })
-    })
-
-    then(/^I should receive an error message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
-    })
-
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
   })
-})
+}
