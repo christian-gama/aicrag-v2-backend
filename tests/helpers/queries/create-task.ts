@@ -11,9 +11,9 @@ export const createTaskMutation = (input: {
       commentary: "${input.commentary ?? ''}",
       date: "${input.date.toISOString()}",
       duration: ${input.duration},
-      status: "${input.status}",
+      status: ${input.status},
       taskId: "${input.taskId ?? ''}",
-      type: "${input.type}"
+      type: ${input.type}
     }) {
         task {
             commentary
