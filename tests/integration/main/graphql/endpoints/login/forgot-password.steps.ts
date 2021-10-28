@@ -10,6 +10,7 @@ import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { forgotPasswordMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
 
+import { randomUUID } from 'crypto'
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import path from 'path'
@@ -62,6 +63,41 @@ defineFeature(feature, (test) => {
 
     then(/^I should receive an error message "(.*)"$/, (message) => {
       expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('using a valid email', ({ given, when, then, and }) => {
+    expect.hasAssertions()
+
+    given(/^I have an account with the email "(.*)"$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: { email, id: randomUUID(), name: 'any_name', password: 'any_password' }
+      })
+    })
+
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
+    })
+
+    when(/^I request to reset my password using the email "(.*)"$/, async (email) => {
+      const query = forgotPasswordMutation({ email })
+
+      result = await request(app)
+        .post('/graphql')
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then('I should have my resetPasswordToken updated to a new token', async () => {
+      const user = (await userCollection.findOne({ 'personal.id': fakeUser.personal.id })) as IUser
+
+      expect(user.temporary.resetPasswordToken).not.toBe(fakeUser.temporary.resetPasswordToken)
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
