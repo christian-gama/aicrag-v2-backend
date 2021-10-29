@@ -28,7 +28,6 @@ module.exports = {
           '@/factories': './src/factories',
           '@/infra': './src/infra',
           '@/main': './src/main',
-          '@/main/config': './src/main/config',
           '@/presentation': './src/presentation',
           '@/schemas': './src/schemas'
         }
