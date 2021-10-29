@@ -132,7 +132,7 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('Using an valid input', ({ given, when, then, and }) => {
+  test('Using a valid input', ({ given, when, then, and }) => {
     given('I am logged in', async () => {
       fakeUser = await userHelper.insertUser(userCollection)
       ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
