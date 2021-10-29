@@ -78,23 +78,25 @@ As this is my first personal project ever, you may find some stuffs that you dis
 Make sure you set the environment variables before running the following instructions.
 
 > ### Installing dependencies
-`$ yarn install`
+>
+> `$ yarn install`
 
--------
+---
 
 > ### Running locally
 >
-If you want to run this server locally, just run:
+> If you want to run this server locally, just run:
 
 `$ yarn dev:local`
 
 It will run on port 8000 as default.
 
--------
+---
+
 > ### Running in a Docker environment (Must have Docker installed)
-If you want to run this server in a Docker environment, just run:
+>
+> If you want to run this server in a Docker environment, just run:
 
 `$ yarn docker:start`
 
 It will run on port 3000 as default.
-
