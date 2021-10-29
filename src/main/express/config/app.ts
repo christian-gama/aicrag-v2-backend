@@ -7,14 +7,35 @@ import routes from './routes'
 
 import express, { Express } from 'express'
 
-export const setupApp = async (): Promise<Express> => {
-  const app = express()
+class SetupApp {
+  private static instance: SetupApp
+  private cache: any
 
-  middlewares(app)
-  await setupApolloServer(app)
-  engine(app)
-  routes(app)
-  schedulers()
+  private constructor () {}
 
-  return app
+  public static getInstance (): SetupApp {
+    if (!SetupApp.instance) {
+      SetupApp.instance = new SetupApp()
+    }
+
+    return SetupApp.instance
+  }
+
+  public async setup (): Promise<Express> {
+    if (this.cache) return this.cache
+
+    const app = express()
+
+    middlewares(app)
+    await setupApolloServer(app)
+    engine(app)
+    routes(app)
+    schedulers()
+
+    this.cache = app
+
+    return app
+  }
 }
+
+export const setupApp = SetupApp.getInstance().setup.bind(SetupApp)
