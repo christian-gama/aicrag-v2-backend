@@ -2,6 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
+import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 import { RecoverPasswordEmail } from '@/main/mailer'
 
@@ -58,7 +59,7 @@ export default (): void =>
           jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
         }
 
-        result = await request(app).post('/graphql').send({ query })
+        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
       })
 
       then(/^I should receive a message "(.*)"$/, (message) => {
@@ -88,7 +89,7 @@ export default (): void =>
       when(/^I request to send an email using an invalid email "(.*)"$/, async (invalidEmail) => {
         const query = sendRecoverPasswordEmailMutation({ email: invalidEmail })
 
-        result = await request(app).post('/graphql').send({ query })
+        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
       })
 
       then(/^I should receive an error message "(.*)"$/, (message) => {
@@ -118,7 +119,7 @@ export default (): void =>
       when('I request to send an email using my existent email', async () => {
         const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
 
-        result = await request(app).post('/graphql').send({ query })
+        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
       })
 
       then(/^I should receive an error message "(.*)"$/, (message) => {

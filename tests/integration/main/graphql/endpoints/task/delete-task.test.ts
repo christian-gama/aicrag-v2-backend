@@ -2,6 +2,7 @@ import { ITask, IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
+import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -53,7 +54,7 @@ export default (): void =>
     it('should return 401 if user is not logged in', async () => {
       await userCollection.insertOne(fakeUser)
 
-      await request(app).post('/graphql').send({ query }).expect(401)
+      await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query }).expect(401)
     })
 
     it('should return 400 if does not find a task', async () => {
@@ -61,7 +62,7 @@ export default (): void =>
       query = query.replace(fakeTask.id, '5e9f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f')
 
       await request(app)
-        .post('/graphql')
+        .post(environment.GRAPHQL.ENDPOINT)
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
@@ -73,7 +74,7 @@ export default (): void =>
       await taskCollection.insertOne(fakeTask)
 
       await request(app)
-        .post('/graphql')
+        .post(environment.GRAPHQL.ENDPOINT)
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })

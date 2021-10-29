@@ -1,3 +1,5 @@
+import { environment } from '@/main/config/environment'
+
 import {
   bodyParser,
   cookieParser,
@@ -21,7 +23,7 @@ export default (app: Express): void => {
   app.use(cors)
   app.use(helmet)
   app.use(urlEncoded)
-  app.use('/graphql', limiter)
+  app.use(environment.GRAPHQL.ENDPOINT, limiter)
   app.use('/api/v1', limiter)
   app.use('/api/v1/login', loginLimiter)
   app.use('/api/v1/mailer', emailLimiter)

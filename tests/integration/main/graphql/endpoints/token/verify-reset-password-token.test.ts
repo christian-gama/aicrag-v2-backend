@@ -2,6 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
+import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -49,11 +50,15 @@ export default (): void =>
     it('should return 403 if user is logged in', async () => {
       await userCollection.insertOne(fakeUser)
 
-      await request(app).post('/graphql').set('x-refresh-token', refreshToken).send({ query }).expect(403)
+      await request(app)
+        .post(environment.GRAPHQL.ENDPOINT)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+        .expect(403)
     })
 
     it('should return 401 if token is invalid', async () => {
-      await request(app).post('/graphql').send({ query }).expect(401)
+      await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query }).expect(401)
     })
 
     it("should return 401 if param's token does not match user's token", async () => {
@@ -62,12 +67,12 @@ export default (): void =>
       const differentResetPasswordToken = makeGenerateAccessToken().generate(makeFakeUser())
       query = query.replace(fakeUser.temporary.resetPasswordToken as string, differentResetPasswordToken)
 
-      await request(app).post('/graphql').send({ query }).expect(401)
+      await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query }).expect(401)
     })
 
     it('should return 200 if token is valid', async () => {
       await userCollection.insertOne(fakeUser)
 
-      await request(app).post('/graphql').send({ query }).expect(200)
+      await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query }).expect(200)
     })
   })

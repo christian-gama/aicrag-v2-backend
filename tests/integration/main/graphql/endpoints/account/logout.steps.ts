@@ -2,6 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
+import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -46,7 +47,7 @@ export default (): void =>
         const query = logoutMutation()
 
         result = await request(app)
-          .post('/graphql')
+          .post(environment.GRAPHQL.ENDPOINT)
           .set('x-access-token', accessToken)
           .set('x-refresh-token', refreshToken)
           .send({ query })
@@ -77,7 +78,7 @@ export default (): void =>
         const query = logoutMutation()
 
         result = await request(app)
-          .post('/graphql')
+          .post(environment.GRAPHQL.ENDPOINT)
           .set('x-access-token', accessToken)
           .set('x-refresh-token', refreshToken)
           .send({ query })
