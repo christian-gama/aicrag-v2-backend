@@ -23,3 +23,11 @@ Feature: Create task
       Then I should receive an error with message "Param already exists: taskId"
       And I must receive a status code of 409
 
+    Scenario: Using an invalid input
+      Given I am logged in
+      When I try to create a new task with the following invalid data:
+        | commentary     | date                     | duration | status    | taskId | type |
+        | Any commentary | 2021-10-27T14:32:33.465Z | 100      | completed | 1      | TX   |
+      Then I should receive an error with message "Invalid param: duration"
+      And I must receive a status code of 400
+

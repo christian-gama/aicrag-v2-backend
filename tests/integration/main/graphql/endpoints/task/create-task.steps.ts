@@ -37,14 +37,6 @@ defineFeature(feature, (test) => {
     MockDate.reset()
   })
 
-  beforeEach(() => {
-    jest.resetAllMocks()
-    jest.clearAllMocks()
-    jest.deepUnmock('../../../../../../src/application/validators/validation-composite.ts')
-    jest.restoreAllMocks()
-    jest.unmock('../../../../../../src/application/validators/validation-composite.ts')
-  })
-
   afterEach(async () => {
     await userCollection.deleteMany({})
   })
@@ -97,6 +89,31 @@ defineFeature(feature, (test) => {
     })
 
     when('I try to create a new task with the following data:', async (table) => {
+      const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
+
+      result = await request(app)
+        .post(environment.GRAPHQL.ENDPOINT)
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('using an invalid input', ({ given, when, then, and }) => {
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
+
+    when('I try to create a new task with the following invalid data:', async (table) => {
       const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
 
       result = await request(app)
