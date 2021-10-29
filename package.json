@@ -5,6 +5,7 @@
   "author": "Christian Gama <christiangama.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "babel:watch": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored --watch",
     "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "codegen:watch": "rimraf src/main/graphql/generated && graphql-codegen --watch",
     "codegen": "rimraf src/main/graphql/generated && graphql-codegen",
@@ -14,18 +15,18 @@
     "docker:down": "docker-compose down",
     "docker:restart": "yarn build && docker-compose restart api",
     "docker:up": "yarn build && docker-compose up -d",
+    "format": "prettier --write . && eslint . --fix",
+    "graphql:diff": "graphql diff",
+    "graphql:similar": "graphql similar",
     "start": "node dist/main/express/server.js",
-    "test:ci": "jest --clearCache && yarn test:silent --coverage",
+    "test:ci": "jest --clearCache && yarn test:silent -c jest-ci-config.js --coverage",
+    "test:commit": "yarn test:silent --bail --findRelatedTests",
     "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
     "test:integration": "yarn test:verbose -c jest-integration-config.js",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
     "test:unit": "yarn test:silent -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests --detectOpenHandles --verbose",
-    "test": "yarn test:unit && yarn test:integration",
-    "babel:watch": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored --watch",
-    "graphql:diff": "graphql diff",
-    "graphql:similar": "graphql similar",
-    "format": "prettier --write . && eslint . --fix"
+    "test": "yarn test:unit && yarn test:integration"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",

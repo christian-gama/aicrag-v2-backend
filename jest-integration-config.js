@@ -1,5 +1,5 @@
 const config = require('./jest.config')
-config.testMatch = ['**/integration.test.ts']
+config.testMatch = ['**/integration.test.ts', '!**/*.spec.ts', '!**/*.steps.ts']
 config.maxWorkers = 1
 config.verbose = true
 config.displayName = {
