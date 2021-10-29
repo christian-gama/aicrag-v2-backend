@@ -10,8 +10,6 @@ import path from 'path'
 export const createGraphqlSchema = (): GraphQLSchema => {
   const srcPath = path.join(__dirname, '../../../')
 
-  fs.writeFileSync('graphql-schema.txt', '', { encoding: 'utf8' })
-
   const graphqlTypes = glob
     .sync(`${srcPath}/**/*.graphql`)
     .map((content: any) => fs.readFileSync(content, { encoding: 'utf8' }))

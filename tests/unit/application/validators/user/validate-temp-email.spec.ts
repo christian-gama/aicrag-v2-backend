@@ -23,8 +23,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateTempEmail', () => {
   it('should return a UserCredentialError if email does not exists', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
@@ -35,8 +33,6 @@ describe('validateTempEmail', () => {
   })
 
   it('should return a UserCredentialError if temporary email does not exists', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut } = makeSut()
     const data = { email: 'invalid_email@email.com' }
     fakeUser.temporary.tempEmail = null
@@ -47,8 +43,6 @@ describe('validateTempEmail', () => {
   })
 
   it('should return a undefined if temporary email exist', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut } = makeSut()
     const data = { email: 'invalid_email@email.com' }
     fakeUser.temporary.tempEmail = 'any_email@mail.com'
@@ -59,8 +53,6 @@ describe('validateTempEmail', () => {
   })
 
   it('should call findByEmail with correct value', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')

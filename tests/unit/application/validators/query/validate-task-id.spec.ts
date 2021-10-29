@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateTaskId', () => {
   it('should return InvalidQueryError if taskId is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.taskId = ['a', 'b']
 
@@ -28,8 +26,6 @@ describe('validateTaskId', () => {
   })
 
   it('should return InvalidQueryError if taskId is longer than 120 characters', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.taskId =
       'this_is_a_really_really_really_really_really_really_really_really_really_really_really_really_really_really_really_long_string'
@@ -40,8 +36,6 @@ describe('validateTaskId', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)

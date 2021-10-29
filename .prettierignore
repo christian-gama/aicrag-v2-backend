@@ -1,7 +1,8 @@
-husky
-vscode
+.husky
+.vscode
 node_modules
 dist
 coverage
 ./data
 generated
+README.md

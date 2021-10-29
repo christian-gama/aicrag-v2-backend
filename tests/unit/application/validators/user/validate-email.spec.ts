@@ -28,8 +28,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateEmail', () => {
   it('should return InvalidTypeError if email is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.email = 123
 
@@ -39,8 +37,6 @@ describe('validateEmail', () => {
   })
 
   it('should return a new InvalidParamError if email is invalid', () => {
-    expect.hasAssertions()
-
     const { emailValidatorStub, request, sut } = makeSut()
     jest.spyOn(emailValidatorStub, 'isEmail').mockReturnValueOnce(false)
     request.body.email = 'invalid_email'
@@ -51,8 +47,6 @@ describe('validateEmail', () => {
   })
 
   it('should call emailValidator with correct value', async () => {
-    expect.hasAssertions()
-
     const { emailValidatorStub, request, sut } = makeSut()
     const isEmailSpy = jest.spyOn(emailValidatorStub, 'isEmail')
 
@@ -62,8 +56,6 @@ describe('validateEmail', () => {
   })
 
   it('should throw if emailValidator throws', () => {
-    expect.hasAssertions()
-
     const { emailValidatorStub, sut } = makeSut()
     jest.spyOn(emailValidatorStub, 'isEmail').mockImplementationOnce(() => {
       throw new Error()
@@ -73,8 +65,6 @@ describe('validateEmail', () => {
   })
 
   it('should return nothing if succeeds', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = sut.validate(request.body)

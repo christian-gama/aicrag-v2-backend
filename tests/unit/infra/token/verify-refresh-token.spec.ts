@@ -29,8 +29,6 @@ const makeSut = (): SutTypes => {
 
 describe('verifyRefreshToken', () => {
   it('should return TokenMissingError if there is no refresh token', async () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const refreshToken = undefined
 
@@ -40,8 +38,6 @@ describe('verifyRefreshToken', () => {
   })
 
   it('should call refreshTokenDecoder.decode with correct token', async () => {
-    expect.hasAssertions()
-
     const { refreshTokenDecoderStub, sut } = makeSut()
     const unauthorizedSpy = jest.spyOn(refreshTokenDecoderStub, 'decode')
 
@@ -51,8 +47,6 @@ describe('verifyRefreshToken', () => {
   })
 
   it('should call userRepository.findById with correct user id', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const findUserByIdSpy = jest.spyOn(userRepositoryStub, 'findById')
 
@@ -62,8 +56,6 @@ describe('verifyRefreshToken', () => {
   })
 
   it('should return InvalidTokenError if there is no user', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
 
@@ -73,8 +65,6 @@ describe('verifyRefreshToken', () => {
   })
 
   it('should return an error if decode returns an error', async () => {
-    expect.hasAssertions()
-
     const { sut, refreshTokenDecoderStub } = makeSut()
     jest.spyOn(refreshTokenDecoderStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -84,8 +74,6 @@ describe('verifyRefreshToken', () => {
   })
 
   it("should return InvalidTokenError if token version is different from user's token version", async () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const result = await sut.verify('any_token')
 
@@ -93,8 +81,6 @@ describe('verifyRefreshToken', () => {
   })
 
   it('should return a user if succeeds', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, refreshTokenDecoderStub, sut } = makeSut()
     jest
       .spyOn(refreshTokenDecoderStub, 'decode')

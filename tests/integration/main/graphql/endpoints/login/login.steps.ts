@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -33,14 +33,12 @@ export default (): void =>
     })
 
     beforeAll(async () => {
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('i should login using valid credentials and with my account activated', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -91,8 +89,6 @@ export default (): void =>
     })
 
     test('i should not login using valid credentials but with an inactive account', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -134,8 +130,6 @@ export default (): void =>
     })
 
     test('i should not login if I use invalid credentials', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {

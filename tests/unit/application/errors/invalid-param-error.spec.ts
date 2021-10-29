@@ -2,16 +2,12 @@ import { InvalidParamError } from '@/application/errors'
 
 describe('invalidParamError', () => {
   it('should be an instance of Error', () => {
-    expect.hasAssertions()
-
     const sut = new InvalidParamError('any_field')
 
     expect(sut).toBeInstanceOf(Error)
   })
 
   it('should return a message with the field name', () => {
-    expect.hasAssertions()
-
     const sut = new InvalidParamError('any_field')
 
     const result = sut.message

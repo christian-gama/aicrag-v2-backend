@@ -1,5 +1,3 @@
-import 'module-alias/register'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 
 import { environment } from '@/main/config/environment'
@@ -12,8 +10,7 @@ MongoAdapter.connect(environment.DB.MONGO_URL)
   .then(async () => {
     verifyEnvironment()
 
-    const { setupApp } = await import('./config/app')
-    const app = await setupApp()
+    const app = await (await import('./config/app')).default.setup()
 
     await createSchemas()
     await createIndexes()

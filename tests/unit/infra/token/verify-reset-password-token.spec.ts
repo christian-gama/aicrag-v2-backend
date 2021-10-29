@@ -27,8 +27,6 @@ const makeSut = (): SutTypes => {
 
 describe('verifyResetPasswordToken', () => {
   it('should return TokenMissingError if there is no token', async () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const refreshToken = undefined
 
@@ -38,8 +36,6 @@ describe('verifyResetPasswordToken', () => {
   })
 
   it('should call accessTokenDecoder.decode with correct token', async () => {
-    expect.hasAssertions()
-
     const { accessTokenDecoderStub, sut } = makeSut()
     const unauthorizedSpy = jest.spyOn(accessTokenDecoderStub, 'decode')
 
@@ -49,8 +45,6 @@ describe('verifyResetPasswordToken', () => {
   })
 
   it('should return error if decode fails', async () => {
-    expect.hasAssertions()
-
     const { sut, accessTokenDecoderStub } = makeSut()
     jest.spyOn(accessTokenDecoderStub, 'decode').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -60,8 +54,6 @@ describe('verifyResetPasswordToken', () => {
   })
 
   it('should call userRepository.findById with correct user id', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const findUserByIdSpy = jest.spyOn(userRepositoryStub, 'findById')
 
@@ -71,8 +63,6 @@ describe('verifyResetPasswordToken', () => {
   })
 
   it('should return InvalidTokenError if there is no user', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
 
@@ -82,8 +72,6 @@ describe('verifyResetPasswordToken', () => {
   })
 
   it("should return InvalidTokenError if user's token is different from param token", async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findById').mockImplementation(async () => {
       fakeUser.temporary.resetPasswordToken = 'different_token'
@@ -97,8 +85,6 @@ describe('verifyResetPasswordToken', () => {
   })
 
   it('should return a user if succeeds', async () => {
-    expect.hasAssertions()
-
     const { accessTokenDecoderStub, fakeUser, sut, userRepositoryStub } = makeSut()
     jest
       .spyOn(accessTokenDecoderStub, 'decode')

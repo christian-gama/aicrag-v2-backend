@@ -15,8 +15,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateCurrency', () => {
   it('should return InvalidParamError if currency is different from USD or BRL', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const data = { currency: 'invalid_currency' }
 
@@ -26,8 +24,6 @@ describe('validateCurrency', () => {
   })
 
   it('should return undefined if currency is equal to USD', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const data = { currency: 'USD' }
 
@@ -37,8 +33,6 @@ describe('validateCurrency', () => {
   })
 
   it('should return undefined if currency is equal to BRL', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const data = { currency: 'BRL' }
 

@@ -66,8 +66,6 @@ const makeSut = (): SutTypes => {
 
 describe('sendRecoverPasswordEmail', () => {
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { recoverPasswordValidatorStub, request, sut } = makeSut()
     const validateSpy = jest.spyOn(recoverPasswordValidatorStub, 'validate')
 
@@ -77,8 +75,6 @@ describe('sendRecoverPasswordEmail', () => {
   })
 
   it('should return badRequest if validation fails', async () => {
-    expect.hasAssertions()
-
     const { recoverPasswordValidatorStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(recoverPasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -88,8 +84,6 @@ describe('sendRecoverPasswordEmail', () => {
   })
 
   it('should call findByEmail with correct email', async () => {
-    expect.hasAssertions()
-
     const { request, sut, userRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
@@ -99,8 +93,6 @@ describe('sendRecoverPasswordEmail', () => {
   })
 
   it('should call send with correct user', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, forgotPasswordEmailStub, request, sut } = makeSut()
     const sendSpy = jest.spyOn(forgotPasswordEmailStub, 'send')
 
@@ -110,8 +102,6 @@ describe('sendRecoverPasswordEmail', () => {
   })
 
   it('should return serverError if mailer fails', async () => {
-    expect.hasAssertions()
-
     const { forgotPasswordEmailStub, request, sut } = makeSut()
     jest.spyOn(forgotPasswordEmailStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
@@ -121,8 +111,6 @@ describe('sendRecoverPasswordEmail', () => {
   })
 
   it('should call updateById with correct values if the reset token is no longer valid', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut, userRepositoryStub, verifyResetPasswordTokenStub } = makeSut()
     const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
     fakeUser.temporary.resetPasswordToken = null
@@ -136,8 +124,6 @@ describe('sendRecoverPasswordEmail', () => {
   })
 
   it('should return ok if send email', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

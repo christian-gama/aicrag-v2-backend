@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateDuration', () => {
   it('should return InvalidTypeError if duration is not a number', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.duration = '123'
 
@@ -28,8 +26,6 @@ describe('validateDuration', () => {
   })
 
   it('should return InvalidParamError if type is TX and duration is longer than 30', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.duration = 31
 
@@ -39,8 +35,6 @@ describe('validateDuration', () => {
   })
 
   it('should return InvalidParamError if type is TX and duration is lesser equal to 0', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.duration = 0
 
@@ -56,8 +50,6 @@ describe('validateDuration', () => {
   })
 
   it('should return undefined if type is TX and duration is equal to 30', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const response = sut.validate(request.body)
@@ -66,8 +58,6 @@ describe('validateDuration', () => {
   })
 
   it('should return InvalidParamError if type is QA and duration is longer than 2.5', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.duration = 2.6
     request.body.type = 'QA'
@@ -78,8 +68,6 @@ describe('validateDuration', () => {
   })
 
   it('should return InvalidParamError if type is QA and duration is lesser equal to 0', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.duration = 0
     request.body.type = 'QA'
@@ -96,8 +84,6 @@ describe('validateDuration', () => {
   })
 
   it('should return undefined if type is QA and duration is equal to 2.5', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.duration = 2.5
     request.body.type = 'QA'

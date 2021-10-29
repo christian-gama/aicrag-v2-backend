@@ -89,8 +89,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut, updatePasswordValidatorStub } = makeSut()
     const data = Object.assign({ user: fakeUser }, request.body)
     const validateSpy = jest.spyOn(updatePasswordValidatorStub, 'validate')
@@ -101,8 +99,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -112,8 +108,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should return badRequest if validation fails', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, updatePasswordValidatorStub } = makeSut()
     jest.spyOn(updatePasswordValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -123,8 +117,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should call hash with correct password', async () => {
-    expect.hasAssertions()
-
     const { hasherStub, request, sut } = makeSut()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
 
@@ -134,8 +126,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should call updateById with correct password', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
@@ -148,8 +138,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should call filter with correct user', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, filterUserDataStub, request, sut } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
@@ -159,8 +147,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should call generate from access token with correct user', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, generateAccessTokenStub, request, sut } = makeSut()
     const generateSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
@@ -170,8 +156,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should call generate with correct user', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, generateRefreshTokenStub, request, sut } = makeSut()
     const generateSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
 
@@ -181,8 +165,6 @@ describe('updatePasswordController', () => {
   })
 
   it('should return ok if succeeds', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

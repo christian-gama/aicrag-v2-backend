@@ -13,8 +13,6 @@ const makeSut = (): SutTypes => {
 describe('mongoQueries', () => {
   describe('fields', () => {
     it('should return an object that contains the fields with correct value', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = { fields: 'any_field,-other_field' }
@@ -25,8 +23,6 @@ describe('mongoQueries', () => {
     })
 
     it('should return an empty object if there is no fields', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = {}
@@ -39,8 +35,6 @@ describe('mongoQueries', () => {
 
   describe('limit', () => {
     it('should return the limit as number', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = { limit: '10' }
@@ -51,8 +45,6 @@ describe('mongoQueries', () => {
     })
 
     it('should return a default limit if there is no limit', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = {}
@@ -65,8 +57,6 @@ describe('mongoQueries', () => {
 
   describe('page', () => {
     it('should return the skip value as number', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = { page: '5' }
@@ -77,8 +67,6 @@ describe('mongoQueries', () => {
     })
 
     it('should return a default skip if there is no page', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = {}
@@ -91,8 +79,6 @@ describe('mongoQueries', () => {
 
   describe('sort', () => {
     it('should return an object with correct values', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = { sort: 'any_field,-other_field' }
@@ -103,8 +89,6 @@ describe('mongoQueries', () => {
     })
 
     it('should return an empty object if there is no sort', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const query = {}

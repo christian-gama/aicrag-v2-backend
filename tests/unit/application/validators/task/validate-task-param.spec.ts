@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateTaskParam', () => {
   it('should return InvalidTypeError if id is not a string', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.params.id = 123
 
@@ -28,8 +26,6 @@ describe('validateTaskParam', () => {
   })
 
   it('should return InvalidParamError if there is no id', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.params.id = undefined
 
@@ -39,8 +35,6 @@ describe('validateTaskParam', () => {
   })
 
   it('should return InvalidParamError if it is not a valid uuid', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.params.id = 'invalid_id'
 
@@ -50,8 +44,6 @@ describe('validateTaskParam', () => {
   })
 
   it('should return undefined if succeeds', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     let result = sut.validate(request.params)

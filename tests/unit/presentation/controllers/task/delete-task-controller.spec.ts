@@ -44,8 +44,6 @@ const makeSut = (): SutTypes => {
 
 describe('deleteTaskController', () => {
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -55,8 +53,6 @@ describe('deleteTaskController', () => {
   })
 
   it('should return badRequest if validation returns an error', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateTaskParamStub } = makeSut()
     jest.spyOn(validateTaskParamStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -66,8 +62,6 @@ describe('deleteTaskController', () => {
   })
 
   it('should return badRequest if does not delete a task', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest.spyOn(taskRepositoryStub, 'deleteById').mockReturnValueOnce(Promise.resolve(false))
 
@@ -77,8 +71,6 @@ describe('deleteTaskController', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sut, validateTaskParamStub } = makeSut()
     const validateSpy = jest.spyOn(validateTaskParamStub, 'validate')
 
@@ -88,8 +80,6 @@ describe('deleteTaskController', () => {
   })
 
   it('should call delete with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sut, taskRepositoryStub } = makeSut()
     const deleteTaskSpy = jest.spyOn(taskRepositoryStub, 'deleteById')
 
@@ -99,8 +89,6 @@ describe('deleteTaskController', () => {
   })
 
   it('should return deleted if succeeds', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

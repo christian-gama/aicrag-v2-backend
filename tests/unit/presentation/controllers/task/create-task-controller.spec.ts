@@ -56,8 +56,6 @@ const makeSut = (): SutTypes => {
 
 describe('createTaskController', () => {
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -67,8 +65,6 @@ describe('createTaskController', () => {
   })
 
   it('should return conflict if validation fails and is a ConflictParamError', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, createTaskValidatorStub } = makeSut()
     jest
       .spyOn(createTaskValidatorStub, 'validate')
@@ -80,8 +76,6 @@ describe('createTaskController', () => {
   })
 
   it('should return badRequest if validation returns a generic error', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, createTaskValidatorStub } = makeSut()
     jest.spyOn(createTaskValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -91,8 +85,6 @@ describe('createTaskController', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sut, createTaskValidatorStub } = makeSut()
     const data = Object.assign({ user: request.user }, request.body)
     const validateSpy = jest.spyOn(createTaskValidatorStub, 'validate')
@@ -103,8 +95,6 @@ describe('createTaskController', () => {
   })
 
   it('should call save with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sut, taskRepositoryStub } = makeSut()
     const data = Object.assign({ user: request.user }, request.body)
     const saveTaskSpy = jest.spyOn(taskRepositoryStub, 'save')
@@ -115,8 +105,6 @@ describe('createTaskController', () => {
   })
 
   it('should return created with correct task if succeeds', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

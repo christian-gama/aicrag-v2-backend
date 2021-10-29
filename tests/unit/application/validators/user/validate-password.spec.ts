@@ -22,8 +22,6 @@ const makeSut = (): SutTypes => {
 
 describe('validatePassword', () => {
   it('should return InvalidTypeError if password is not a string', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.password = 123
 
@@ -33,8 +31,6 @@ describe('validatePassword', () => {
   })
 
   it('should return InvalidParamError if password is lesser than 6 characters', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.password = faker.internet.password(5)
 
@@ -44,8 +40,6 @@ describe('validatePassword', () => {
   })
 
   it('should return InvalidParamError if password is greater than 32 characters', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.password = faker.internet.password(33)
 
@@ -55,8 +49,6 @@ describe('validatePassword', () => {
   })
 
   it('should return InvalidParamError if password is empty', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.password = ''
 
@@ -66,8 +58,6 @@ describe('validatePassword', () => {
   })
 
   it('should return nothing if succeeds', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.password = faker.internet.password(6)
     request.body.password = faker.internet.password(32)

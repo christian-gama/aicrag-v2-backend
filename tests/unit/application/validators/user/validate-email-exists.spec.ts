@@ -23,8 +23,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateEmailExists', () => {
   it('should return a UserCredentialError if email does not exists', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
@@ -35,8 +33,6 @@ describe('validateEmailExists', () => {
   })
 
   it('should call findByEmail with correct value', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')

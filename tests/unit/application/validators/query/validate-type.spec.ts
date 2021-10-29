@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateType', () => {
   it('should return InvalidQueryError if type is invalid', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.type = 'invalid_type'
 
@@ -28,8 +26,6 @@ describe('validateType', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)

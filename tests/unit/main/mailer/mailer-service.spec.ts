@@ -42,8 +42,6 @@ describe('mailerService', () => {
   })
 
   it('should return true if email is sent', async () => {
-    expect.hasAssertions()
-
     const { settings, sut } = makeSut()
 
     const result = await sut.send(settings)
@@ -52,8 +50,6 @@ describe('mailerService', () => {
   })
 
   it('should call sendMail with correct settings for production environment', async () => {
-    expect.hasAssertions()
-
     const { settings, sut } = makeSut()
     const createTransportSpy = jest.spyOn(nodemailer, 'createTransport')
     environment.SERVER.NODE_ENV = 'production'
@@ -70,8 +66,6 @@ describe('mailerService', () => {
   })
 
   it('should call sendMail with correct settings for development environment', async () => {
-    expect.hasAssertions()
-
     const { settings, sut } = makeSut()
     const createTransportSpy = jest.spyOn(nodemailer, 'createTransport')
     environment.SERVER.NODE_ENV = 'development'
@@ -89,8 +83,6 @@ describe('mailerService', () => {
   })
 
   it('should return an error if email is not sent', async () => {
-    expect.hasAssertions()
-
     const { settings, sut } = makeSut()
     sendMailMock.mockImplementationOnce(() => {
       throw new Error()

@@ -14,8 +14,6 @@ const makeSut = (): SutTypes => {
 
 describe('pin', () => {
   it('should return 5 digits', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const result = sut.generate()
@@ -24,8 +22,6 @@ describe('pin', () => {
   })
 
   it('should return random digits', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const values: Partial<string[]> = []
@@ -40,8 +36,6 @@ describe('pin', () => {
   })
 
   it('should return a string', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const result = typeof sut.generate()
@@ -50,8 +44,6 @@ describe('pin', () => {
   })
 
   it('should contain only alphanumerics', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const result = sut.generate().match(/[a-zA-Z0-9]{5}/g)

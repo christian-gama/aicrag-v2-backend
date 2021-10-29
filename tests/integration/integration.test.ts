@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-conditional-expect */
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -9,8 +8,9 @@ import { resolve } from 'path'
 const tests = glob
   .sync(`${resolve(__dirname)}/**/*.ts`)
   .map((content) => {
-    if (content.match(/\.steps\.ts$/)) return require(content)
-    else return null
+    if (content.match(/\.(test|steps)\.ts$/) && !content.match(/integration\.test\.ts$/)) {
+      return require(content)
+    } else return null
   })
   .filter((content: any) => content != null)
 
@@ -22,6 +22,8 @@ describe('integration tests', () => {
   })
 
   beforeAll(async () => {
+    jest.spyOn(console, 'log').mockImplementation(() => {})
+
     await MongoAdapter.connect(global.__MONGO_URI__)
   })
 

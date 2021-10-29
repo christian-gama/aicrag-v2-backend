@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -32,14 +32,12 @@ export default (): void =>
     })
 
     beforeAll(async () => {
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('being not partially logged in', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -80,8 +78,6 @@ export default (): void =>
     })
 
     test('using a valid activation pin', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -124,8 +120,6 @@ export default (): void =>
     })
 
     test('using an invalid activation pin', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {

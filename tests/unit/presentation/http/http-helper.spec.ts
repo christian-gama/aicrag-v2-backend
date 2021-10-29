@@ -15,8 +15,6 @@ const makeSut = (): SutTypes => {
 describe('httpHelper', () => {
   describe('statusCode: 200 ~ 204', () => {
     it('should return 200 and a data when calls ok', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }
 
@@ -26,8 +24,6 @@ describe('httpHelper', () => {
     })
 
     it('should return 201 and a data when calls created', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const fakeData = { [faker.random.word()]: faker.random.word() }
 
@@ -37,8 +33,6 @@ describe('httpHelper', () => {
     })
 
     it('should return 204 and a data when calls deleted', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const result = sut.deleted()
@@ -53,8 +47,6 @@ describe('httpHelper', () => {
 
   describe('statusCode: 400 ~ 409', () => {
     it('should return 400 and an error message when calls badRequest', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
@@ -68,8 +60,6 @@ describe('httpHelper', () => {
     })
 
     it('should return 401 and an error message when calls unauthorized', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
@@ -83,8 +73,6 @@ describe('httpHelper', () => {
     })
 
     it('should return 403 and an error message when calls forbidden', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
@@ -98,8 +86,6 @@ describe('httpHelper', () => {
     })
 
     it('should return 404 and an error message when calls notFound', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
@@ -113,8 +99,6 @@ describe('httpHelper', () => {
     })
 
     it('should return 409 and an error message when calls conflict', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const errorMessage = faker.lorem.words(3)
 
@@ -130,8 +114,6 @@ describe('httpHelper', () => {
 
   describe('statusCode: 500', () => {
     it('should return 500 when call serverError', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const error = new Error('any_message')
 

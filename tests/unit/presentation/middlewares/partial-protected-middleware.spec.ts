@@ -38,8 +38,6 @@ const makeSut = (): SutTypes => {
 
 describe('partialProtectedMiddleware', () => {
   it('should call verify with token', async () => {
-    expect.hasAssertions()
-
     const { sut, request, verifyAccessTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')
 
@@ -49,8 +47,6 @@ describe('partialProtectedMiddleware', () => {
   })
 
   it('should return unauthorized if response is instance of Error', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -60,8 +56,6 @@ describe('partialProtectedMiddleware', () => {
   })
 
   it('should return ok if succeeds', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

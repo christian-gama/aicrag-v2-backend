@@ -44,8 +44,6 @@ const makeSut = (): SutTypes => {
 
 describe('findAllTasksController', () => {
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -55,8 +53,6 @@ describe('findAllTasksController', () => {
   })
 
   it('should return badRequest if validation returns an error', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, queryValidatorStub } = makeSut()
     jest.spyOn(queryValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -66,8 +62,6 @@ describe('findAllTasksController', () => {
   })
 
   it('should return ok if does not find a task', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest
       .spyOn(taskRepositoryStub, 'findAll')
@@ -86,8 +80,6 @@ describe('findAllTasksController', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sut, queryValidatorStub } = makeSut()
     const validateSpy = jest.spyOn(queryValidatorStub, 'validate')
 
@@ -97,8 +89,6 @@ describe('findAllTasksController', () => {
   })
 
   it('should call findAll with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sut, taskRepositoryStub } = makeSut()
     const findTaskByIdSpy = jest.spyOn(taskRepositoryStub, 'findAll')
 
@@ -108,8 +98,6 @@ describe('findAllTasksController', () => {
   })
 
   it('should return ok with correct task if succeeds', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

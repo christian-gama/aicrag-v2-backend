@@ -37,8 +37,6 @@ const makeSut = (): SutTypes => {
 
 describe('verifyResetPasswordTokenController', () => {
   it('should return forbidden if user is logged in', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, httpHelper, request, sut } = makeSut()
     request.user = fakeUser
 
@@ -48,8 +46,6 @@ describe('verifyResetPasswordTokenController', () => {
   })
 
   it('should call verify with correct values', async () => {
-    expect.hasAssertions()
-
     const { request, sut, verifyResetPasswordTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyResetPasswordTokenStub, 'verify')
 
@@ -59,8 +55,6 @@ describe('verifyResetPasswordTokenController', () => {
   })
 
   it('should return unauthorized if return an error', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, verifyResetPasswordTokenStub } = makeSut()
     jest.spyOn(verifyResetPasswordTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
@@ -70,8 +64,6 @@ describe('verifyResetPasswordTokenController', () => {
   })
 
   it('should return ok if finds a user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

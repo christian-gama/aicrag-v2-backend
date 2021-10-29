@@ -22,8 +22,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateName', () => {
   it('should return InvalidTypeError if name is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.name = 123
 
@@ -33,8 +31,6 @@ describe('validateName', () => {
   })
 
   it('should return InvalidParamError if name is invalid with symbols', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.name = 'Ex@mple'
 
@@ -44,8 +40,6 @@ describe('validateName', () => {
   })
 
   it('should return InvalidParamError if name is invalid with numbers', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.name = 'Ex4mple n4me'
 
@@ -55,8 +49,6 @@ describe('validateName', () => {
   })
 
   it('should return InvalidParamError if name is invalid with both numbers and symbols', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.name = 'Ex@mple n4me'
 
@@ -66,8 +58,6 @@ describe('validateName', () => {
   })
 
   it('should return nothing if succeeds', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const data = { name: faker.name.findName() }
 

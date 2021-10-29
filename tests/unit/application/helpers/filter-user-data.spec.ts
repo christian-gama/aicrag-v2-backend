@@ -19,8 +19,6 @@ const makeSut = (): SutTypes => {
 
 describe('filterUserData', () => {
   it('should return a public user', () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut } = makeSut()
 
     const result = sut.filter(fakeUser)

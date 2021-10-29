@@ -29,8 +29,6 @@ const makeSut = (): SutTypes => {
 
 describe('logDecorator', () => {
   it('should call logErrorRepository with correct error', async () => {
-    expect.hasAssertions()
-
     const { controllerStub, error, httpHelper, logErrorRepositoryStub, sut } = makeSut()
     const errorData = {
       message: error.message,
@@ -46,8 +44,6 @@ describe('logDecorator', () => {
   })
 
   it('should return a serverError as http response if statusCode is 500', async () => {
-    expect.hasAssertions()
-
     const { controllerStub, error, httpHelper, sut } = makeSut()
     const errorData = {
       message: error.message,
@@ -62,8 +58,6 @@ describe('logDecorator', () => {
   })
 
   it('should return any http response', async () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const result = await sut.handle({})

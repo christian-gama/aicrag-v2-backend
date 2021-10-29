@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -32,14 +32,12 @@ export default (): void =>
     })
 
     beforeAll(async () => {
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('being logged in', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I am logged in', async () => {
         fakeUser = await userHelper.insertUser(userCollection)
         ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
@@ -65,8 +63,6 @@ export default (): void =>
     })
 
     test('using a valid email', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^I have an account with the email "(.*)"$/, async (email) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: { email, id: randomUUID(), name: 'any_name', password: 'any_password' }
@@ -100,8 +96,6 @@ export default (): void =>
     })
 
     test('using an invalid email', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^I have an account with the email "(.*)"$/, async (email) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: { email, id: randomUUID(), name: 'any_name', password: 'any_password' }

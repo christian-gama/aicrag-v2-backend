@@ -19,8 +19,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateCommentary', () => {
   it('should return InvalidTypeError if commentary is not a string', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.commentary = 123
 
@@ -30,8 +28,6 @@ describe('validateCommentary', () => {
   })
 
   it('should return InvalidParamError if commentary length is greater than 400', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.commentary = faker.random.alphaNumeric(401)
 
@@ -41,8 +37,6 @@ describe('validateCommentary', () => {
   })
 
   it('should return undefined if commentary is null', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.commentary = null
 
@@ -52,8 +46,6 @@ describe('validateCommentary', () => {
   })
 
   it('should return undefined if commentary is valid', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = sut.validate(request.body)

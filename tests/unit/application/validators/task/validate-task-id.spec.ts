@@ -22,8 +22,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateTaskId', () => {
   it('should return InvalidTypeError if taskId is not a string', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.taskId = 123
 
@@ -33,8 +31,6 @@ describe('validateTaskId', () => {
   })
 
   it('should return InvalidParamError if taskId length is greater than 120', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.taskId = faker.random.alphaNumeric(121)
 
@@ -44,8 +40,6 @@ describe('validateTaskId', () => {
   })
 
   it('should return undefined if succeeds', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = sut.validate(request.body)
@@ -54,8 +48,6 @@ describe('validateTaskId', () => {
   })
 
   it('should return undefined if taskId is null', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.taskId = null
 

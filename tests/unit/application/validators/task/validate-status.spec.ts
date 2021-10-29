@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateStatus', () => {
   it('should return InvalidParamError if is an invalid status', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.status = 'invalid_status'
 
@@ -28,8 +26,6 @@ describe('validateStatus', () => {
   })
 
   it('should return undefined if is a valid status', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = sut.validate(request.body)

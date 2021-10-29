@@ -5,7 +5,7 @@
   "author": "Christian Gama <christiangama.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist && yarn codegen && tsc -p tsconfig.build.json && yarn copy-assets",
+    "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "codegen:watch": "rimraf src/main/graphql/generated && graphql-codegen --watch",
     "codegen": "rimraf src/main/graphql/generated && graphql-codegen",
     "copy-assets": "copyfiles -u 1 src/**/*.pug dist/ && copyfiles -u 1 src/**/*.graphql dist/",
@@ -17,13 +17,12 @@
     "start": "node dist/main/express/server.js",
     "test:ci": "jest --clearCache && yarn test:silent --coverage",
     "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
-    "test:integration": "yarn test:silent -c jest-integration-config.js",
-    "test:cucumber": "yarn test:verbose -c jest-cucumber-config.js",
+    "test:integration": "yarn test:verbose -c jest-integration-config.js",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
     "test:unit": "yarn test:silent -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests --detectOpenHandles",
-    "test": "yarn test:unit && yarn test:cucumber && yarn test:integration",
-    "tsc:watch": "tsc -w -p tsconfig.build.json && yarn copy-assets",
+    "test": "yarn test:unit && yarn test:integration",
+    "babel:watch": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored --watch",
     "graphql:diff": "graphql diff",
     "graphql:similar": "graphql similar",
     "format": "prettier --write . && eslint . --fix"
@@ -69,7 +68,6 @@
     "eslint-config-standard-with-typescript": "^21.0.1",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-import-helpers": "^1.1.0",
-    "eslint-plugin-jest": "^24.6.0",
     "eslint-plugin-jest-formatting": "^3.0.0",
     "eslint-plugin-mongodb": "^1.0.0",
     "eslint-plugin-node": "^11.1.0",
@@ -91,11 +89,15 @@
     "node": "16.x"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-typescript": "^7.15.0",
     "@graphql-tools/merge": "^8.2.0",
     "@graphql-tools/schema": "^8.3.0",
     "@graphql-tools/utils": "^8.4.0",
     "apollo-server-core": "^3.4.0",
     "apollo-server-express": "^3.4.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-source-map-support": "^2.1.3",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -117,10 +119,7 @@
     "nodemailer-sendgrid": "^1.0.3",
     "nodemon": "^2.0.13",
     "pug": "^3.0.2",
+    "source-map-support": "^0.5.20",
     "validator": "^13.6.0"
-  },
-  "_moduleAliases": {
-    "@": "dist"
-  },
-  "packageManager": "yarn@3.0.2"
+  }
 }

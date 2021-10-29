@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateFields', () => {
   it('should return InvalidQueryError if fields is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.fields = 123
 
@@ -28,8 +26,6 @@ describe('validateFields', () => {
   })
 
   it('should return InvalidQueryError if fields has more than 10 properties', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.fields = 'a,b,c,d,e,f,g,h,i,j,k'
 
@@ -39,8 +35,6 @@ describe('validateFields', () => {
   })
 
   it('should return InvalidQueryError if field has more than 24 characters', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.fields = 'this_is_a_very_long_property'
 
@@ -50,8 +44,6 @@ describe('validateFields', () => {
   })
 
   it('should return InvalidQueryError if contain duplicated fields values', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.fields = 'a,-a'
 
@@ -61,8 +53,6 @@ describe('validateFields', () => {
   })
 
   it('should return InvalidQueryError if field is not an alphanumeric string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.fields = 'th!s_i$_@n_inv#lid_prop'
 
@@ -72,8 +62,6 @@ describe('validateFields', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)
@@ -82,8 +70,6 @@ describe('validateFields', () => {
   })
 
   it('should return undefined if there is multiple valid fields', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.fields = 'a,-b,c.b,-d'
 
@@ -93,8 +79,6 @@ describe('validateFields', () => {
   })
 
   it('should return undefined if there is no fields', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.fields = undefined
 

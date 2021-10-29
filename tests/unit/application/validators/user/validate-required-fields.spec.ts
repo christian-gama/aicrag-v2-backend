@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateRequiredFields', () => {
   it('should return MissingParamError if field is missing', () => {
-    expect.hasAssertions()
-
     const { fakeField, sut } = makeSut()
 
     const result = sut.validate({ invalidField: fakeField })
@@ -27,8 +25,6 @@ describe('validateRequiredFields', () => {
   })
 
   it('should return MissingParamError if field is empty', () => {
-    expect.hasAssertions()
-
     const { fakeField, sut } = makeSut()
 
     const result = sut.validate({ [fakeField]: '' })
@@ -37,8 +33,6 @@ describe('validateRequiredFields', () => {
   })
 
   it('should return nothing if succeeds', () => {
-    expect.hasAssertions()
-
     const { sut, fakeField } = makeSut()
 
     const result = sut.validate({ [fakeField]: 'any_text' })

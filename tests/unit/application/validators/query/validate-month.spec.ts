@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateMonth', () => {
   it('should return InvalidQueryError if month is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.month = ['a', 'b']
 
@@ -28,8 +26,6 @@ describe('validateMonth', () => {
   })
 
   it('should return InvalidQueryError if month contains more than 2 characters', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.month = '123'
 
@@ -39,8 +35,6 @@ describe('validateMonth', () => {
   })
 
   it('should return InvalidQueryError if month is not valid', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.month = '13'
 
@@ -50,8 +44,6 @@ describe('validateMonth', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)

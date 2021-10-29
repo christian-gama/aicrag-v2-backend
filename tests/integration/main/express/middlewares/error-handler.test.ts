@@ -4,13 +4,11 @@ import { IController } from '@/presentation/controllers/protocols/controller-pro
 
 import { environment } from '@/main/config/environment'
 import { controllerAdapter } from '@/main/express/adapters/controller-adapter'
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 import { errorRequestHandler } from '@/main/express/middlewares/error-request-handler'
 
 import { Express } from 'express'
 import request from 'supertest'
-
-let app: Express
 
 const error = new Error('any_message')
 const makeControllerStub = (): IController => {
@@ -23,51 +21,47 @@ const makeControllerStub = (): IController => {
   return new ControllerStub()
 }
 
-describe('errorRequestHandler', () => {
-  const env = process.env.NODE_ENV as 'production' | 'development'
+export default (): void =>
+  describe('errorRequestHandler', () => {
+    const env = process.env.NODE_ENV as 'production' | 'development'
+    let app: Express
 
-  afterAll(() => {
-    environment.SERVER.NODE_ENV = env
-  })
+    afterAll(() => {
+      environment.SERVER.NODE_ENV = env
+    })
 
-  beforeAll(async () => {
-    app = await setupApp()
+    beforeAll(async () => {
+      app = await App.setup()
 
-    app.post('/error_handler', controllerAdapter(makeControllerStub()))
-    app.use(errorRequestHandler)
-  })
+      app.post('/error_handler', controllerAdapter(makeControllerStub()))
+      app.use(errorRequestHandler)
+    })
 
-  it('should return statusCode 500', async () => {
-    expect.assertions(0)
+    it('should return statusCode 500', async () => {
+      const result = await request(app).post('/error_handler').send({})
 
-    await request(app).post('/error_handler').send({}).expect(500)
-  })
+      expect(result.status).toBe(500)
+    })
 
-  it('should return a full error if environment is on development', async () => {
-    expect.assertions(0)
+    it('should return a full error if environment is on development', async () => {
+      environment.SERVER.NODE_ENV = 'development'
 
-    environment.SERVER.NODE_ENV = 'development'
+      const result = await request(app).post('/error_handler').send({})
 
-    await request(app)
-      .post('/error_handler')
-      .send({})
-      .expect({
+      expect(result.body).toStrictEqual({
         data: { error: { message: error.message, name: error.name, stack: error.stack } },
         status: 'fail'
       })
-  })
+    })
 
-  it('should return a shorten error if environment is on production', async () => {
-    expect.assertions(0)
+    it('should return a shorten error if environment is on production', async () => {
+      environment.SERVER.NODE_ENV = 'production'
 
-    environment.SERVER.NODE_ENV = 'production'
+      const result = await request(app).post('/error_handler').send({})
 
-    await request(app)
-      .post('/error_handler')
-      .send({})
-      .expect({
+      expect(result.body).toStrictEqual({
         data: { message: new InternalError().message },
         status: 'fail'
       })
+    })
   })
-})

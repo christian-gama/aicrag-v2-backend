@@ -27,8 +27,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateCurrentPassword', () => {
   it('should return a UserCredentialError if there is no user', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.user = undefined
 
@@ -38,8 +36,6 @@ describe('validateCurrentPassword', () => {
   })
 
   it('should return a UserCredentialError if password does not match', async () => {
-    expect.hasAssertions()
-
     const { comparerStub, request, sut } = makeSut()
     jest.spyOn(comparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
 
@@ -49,8 +45,6 @@ describe('validateCurrentPassword', () => {
   })
 
   it('should call compare with correct value', async () => {
-    expect.hasAssertions()
-
     const { comparerStub, request, sut } = makeSut()
     const compareSpy = jest.spyOn(comparerStub, 'compare')
 
@@ -60,8 +54,6 @@ describe('validateCurrentPassword', () => {
   })
 
   it('should return a undefined if passwords matches', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.body)

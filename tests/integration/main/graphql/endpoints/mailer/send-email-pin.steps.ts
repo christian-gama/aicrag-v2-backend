@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 import { EmailPin } from '@/main/mailer'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -29,14 +29,12 @@ export default (): void =>
     })
 
     beforeAll(async () => {
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('having a valid tempEmail', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           temporary: {
@@ -66,8 +64,6 @@ export default (): void =>
     })
 
     test('having an invalid tempEmail', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an account with the following credentials:', async (table) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           temporary: {

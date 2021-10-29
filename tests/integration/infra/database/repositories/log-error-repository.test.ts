@@ -1,8 +1,6 @@
 import { ILogError } from '@/domain'
 import { ICreateLogErrorRepository } from '@/domain/repositories'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-import { ICollectionMethods } from '@/infra/database/protocols'
 import { LogErrorRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -27,51 +25,31 @@ const makeSut = (): SutTypes => {
   return { createLogErrorRepositoryStub, error, fakeLogError, sut }
 }
 
-describe('logErrorRepository', () => {
-  const client = makeMongoDb()
-  let logCollection: ICollectionMethods
+export default (): void =>
+  describe('logErrorRepository', () => {
+    describe('create', () => {
+      it('should call create with correct error', async () => {
+        const { sut, error, createLogErrorRepositoryStub } = makeSut()
+        const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'create')
 
-  afterAll(async () => {
-    await client.disconnect()
-  })
+        await sut.save(error)
 
-  beforeAll(async () => {
-    await MongoAdapter.connect(global.__MONGO_URI__)
+        expect(createLogSpy).toHaveBeenCalledWith(error)
+      })
 
-    logCollection = client.collection('logs')
-  })
+      it('should save a log error on database', async () => {
+        const { error, fakeLogError, sut } = makeSut()
 
-  beforeEach(async () => {
-    await logCollection.deleteMany({})
-  })
+        const log = await sut.save(error)
 
-  describe('create', () => {
-    it('should call create with correct error', async () => {
-      expect.hasAssertions()
+        const { _id, ...obj } = log as any
 
-      const { sut, error, createLogErrorRepositoryStub } = makeSut()
-      const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'create')
-
-      await sut.save(error)
-
-      expect(createLogSpy).toHaveBeenCalledWith(error)
-    })
-
-    it('should save a log error on database', async () => {
-      expect.hasAssertions()
-
-      const { error, fakeLogError, sut } = makeSut()
-
-      const log = await sut.save(error)
-
-      const { _id, ...obj } = log as any
-
-      expect(obj).toStrictEqual({
-        date: fakeLogError.date,
-        message: fakeLogError.message,
-        name: fakeLogError.name,
-        stack: fakeLogError.stack
+        expect(obj).toStrictEqual({
+          date: fakeLogError.date,
+          message: fakeLogError.message,
+          name: fakeLogError.name,
+          stack: fakeLogError.stack
+        })
       })
     })
   })
-})

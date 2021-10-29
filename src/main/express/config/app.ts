@@ -7,19 +7,11 @@ import routes from './routes'
 
 import express, { Express } from 'express'
 
-class SetupApp {
-  private static instance: SetupApp
+class App {
+  private static instance: App
   private cache: any
 
   private constructor () {}
-
-  public static getInstance (): SetupApp {
-    if (!SetupApp.instance) {
-      SetupApp.instance = new SetupApp()
-    }
-
-    return SetupApp.instance
-  }
 
   public async setup (): Promise<Express> {
     if (this.cache) return this.cache
@@ -36,6 +28,14 @@ class SetupApp {
 
     return app
   }
+
+  static getInstance (): App {
+    if (!App.instance) {
+      App.instance = new App()
+    }
+
+    return App.instance
+  }
 }
 
-export const setupApp = SetupApp.getInstance().setup.bind(SetupApp)
+export default App.getInstance()

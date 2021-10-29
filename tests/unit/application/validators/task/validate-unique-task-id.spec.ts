@@ -28,8 +28,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateUniqueTaskId', () => {
   it('should return ConflictParamError if taskId is not unique', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, request, sut } = makeSut()
     request.body.taskId = fakeTask.taskId
 
@@ -39,8 +37,6 @@ describe('validateUniqueTaskId', () => {
   })
 
   it('should return undefined if taskId is null', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.taskId = null
 
@@ -50,8 +46,6 @@ describe('validateUniqueTaskId', () => {
   })
 
   it('should return undefined if task does not exist', async () => {
-    expect.hasAssertions()
-
     const { request, sut, taskRepositoryStub } = makeSut()
     jest.spyOn(taskRepositoryStub, 'findByTaskId').mockReturnValueOnce(Promise.resolve(null))
 

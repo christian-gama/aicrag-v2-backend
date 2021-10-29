@@ -26,8 +26,6 @@ const makeSut = (): SutTypes => {
 
 describe('validatePasswordMatch', () => {
   it('should return a UserCredentialError if email does not exists', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
@@ -38,8 +36,6 @@ describe('validatePasswordMatch', () => {
   })
 
   it('should call findByEmail with correct value', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
@@ -50,8 +46,6 @@ describe('validatePasswordMatch', () => {
   })
 
   it('should return a UserCredentialError if password does not match', async () => {
-    expect.hasAssertions()
-
     const { sut, comparerStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     jest.spyOn(comparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
@@ -62,8 +56,6 @@ describe('validatePasswordMatch', () => {
   })
 
   it('should call compare with correct value', async () => {
-    expect.hasAssertions()
-
     const { sut, comparerStub, fakeUser } = makeSut()
     const compareSpy = jest.spyOn(comparerStub, 'compare')
     const data = { email: 'invalid_email@email.com', password: 'any_password' }

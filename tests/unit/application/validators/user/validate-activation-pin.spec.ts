@@ -39,8 +39,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateActivationCode', () => {
   it('should return InvalidTypeError if activationPin is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.activationPin = 123
 
@@ -50,8 +48,6 @@ describe('validateActivationCode', () => {
   })
 
   it('should call findByEmail with correct email', async () => {
-    expect.hasAssertions()
-
     const { request, sut, userRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
@@ -61,8 +57,6 @@ describe('validateActivationCode', () => {
   })
 
   it('should return an InvalidCode if activation pin is different from user activation pin', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.activationPin = null
 
@@ -72,8 +66,6 @@ describe('validateActivationCode', () => {
   })
 
   it('should return a PinIsExpiredError if activation pin is expired', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.activationPinExpiration = new Date(Date.now() - 1000)
 
@@ -83,8 +75,6 @@ describe('validateActivationCode', () => {
   })
 
   it('should return an InvalidPinError if there is no tempCodeExpiration', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut } = makeSut()
     fakeUser.temporary.activationPinExpiration = null
 
@@ -94,8 +84,6 @@ describe('validateActivationCode', () => {
   })
 
   it('should return an AccountAlreadyActivatedError if there is no tempCodeExpiration', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut } = makeSut()
     fakeUser.settings.accountActivated = true
 
@@ -105,8 +93,6 @@ describe('validateActivationCode', () => {
   })
 
   it('should return an InvalidPinError if there is no user', async () => {
-    expect.hasAssertions()
-
     const { request, sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 

@@ -44,8 +44,6 @@ const makeSut = (): SutTypes => {
 
 describe('getByMonth', () => {
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -55,8 +53,6 @@ describe('getByMonth', () => {
   })
 
   it('should return badRequest if validation returns an error', async () => {
-    expect.hasAssertions()
-
     const { getInvoiceByMonthValidator, httpHelper, request, sut } = makeSut()
     jest.spyOn(getInvoiceByMonthValidator, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -66,8 +62,6 @@ describe('getByMonth', () => {
   })
 
   it('should return ok if does not find a task', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, invoiceRepository, request, sut } = makeSut()
     jest
       .spyOn(invoiceRepository, 'getByMonth')
@@ -86,8 +80,6 @@ describe('getByMonth', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { getInvoiceByMonthValidator, request, sut } = makeSut()
     const validateSpy = jest.spyOn(getInvoiceByMonthValidator, 'validate')
 
@@ -97,8 +89,6 @@ describe('getByMonth', () => {
   })
 
   it('should call getByMonth with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sut, invoiceRepository } = makeSut()
     const getInvoiceByMonthSpy = jest.spyOn(invoiceRepository, 'getByMonth')
 
@@ -108,8 +98,6 @@ describe('getByMonth', () => {
   })
 
   it('should return ok with correct task if succeeds', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

@@ -75,8 +75,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should call validate with correct values', async () => {
-    expect.hasAssertions()
-
     const { updateEmailByPinValidatorStub, request, sut } = makeSut()
     const validateSpy = jest.spyOn(updateEmailByPinValidatorStub, 'validate')
     const data = Object.assign({ user: request.user }, request.body)
@@ -87,8 +85,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should return badRequest if validation fails', async () => {
-    expect.hasAssertions()
-
     const { updateEmailByPinValidatorStub, httpHelper, request, sut } = makeSut()
     const error = new InvalidPinError()
     jest.spyOn(updateEmailByPinValidatorStub, 'validate').mockReturnValueOnce(error)
@@ -99,8 +95,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -110,8 +104,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should call filter with correct user', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, filterUserDataStub, request, sut } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
@@ -121,8 +113,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should call ok with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, httpHelper, request, sut } = makeSut()
     const filteredUser = makeFakePublicUser(fakeUser)
     filteredUser.personal.email = fakeUser.temporary.tempEmail as string
@@ -137,8 +127,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should change email if validation succeeds', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, request } = makeSut()
     const newEmail = fakeUser.temporary.tempEmail
 
@@ -148,8 +136,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should clear temporaries if validation succeeds', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, request } = makeSut()
 
     await sut.handle(request)
@@ -160,8 +146,6 @@ describe('updateEmailByPinController', () => {
   })
 
   it('should call updateById with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut, request, userRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 

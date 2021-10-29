@@ -15,8 +15,6 @@ const makeSut = (): SutTypes => {
 describe('validatorAdapter', () => {
   describe('isEmail', () => {
     it('should return true if value is a valid email', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const value = sut.isEmail(faker.internet.email())
 
@@ -24,8 +22,6 @@ describe('validatorAdapter', () => {
     })
 
     it('should return false if value is an invalid email', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       const value = sut.isEmail(faker.random.word())
 

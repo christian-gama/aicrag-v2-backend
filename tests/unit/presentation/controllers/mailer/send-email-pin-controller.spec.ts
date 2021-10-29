@@ -71,8 +71,6 @@ describe('sendEmailPinController', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sendEmailPinValidatorStub, sut } = makeSut()
     const validateSpy = jest.spyOn(sendEmailPinValidatorStub, 'validate')
 
@@ -82,8 +80,6 @@ describe('sendEmailPinController', () => {
   })
 
   it('should return badRequest if validation fails', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sendEmailPinValidatorStub, sut } = makeSut()
     jest.spyOn(sendEmailPinValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -93,8 +89,6 @@ describe('sendEmailPinController', () => {
   })
 
   it('should call findByEmail with correct email', async () => {
-    expect.hasAssertions()
-
     const { request, sut, userRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
@@ -104,8 +98,6 @@ describe('sendEmailPinController', () => {
   })
 
   it('should call send with correct user', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, request, emailPinStub } = makeSut()
     const sendSpy = jest.spyOn(emailPinStub, 'send')
 
@@ -115,8 +107,6 @@ describe('sendEmailPinController', () => {
   })
 
   it('should call updateById with correct values if the email pin is expired', async () => {
-    expect.hasAssertions()
-
     const { validationCodeStub, fakeUser, request, sut, userRepositoryStub } = makeSut()
     const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
     fakeUser.temporary.tempEmailPinExpiration = new Date(Date.now() - 10 * 60 * 1000)
@@ -130,8 +120,6 @@ describe('sendEmailPinController', () => {
   })
 
   it('should return serverError if mailer fails', async () => {
-    expect.hasAssertions()
-
     const { sut, request, emailPinStub } = makeSut()
     jest.spyOn(emailPinStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
@@ -141,8 +129,6 @@ describe('sendEmailPinController', () => {
   })
 
   it('should return ok if send email', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, httpHelper, request } = makeSut()
     fakeUser.temporary.tempEmail = 'any_email@mail.com'
 

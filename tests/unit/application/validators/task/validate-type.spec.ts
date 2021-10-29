@@ -18,8 +18,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateType', () => {
   it('should return InvalidParamError if type is different from QA and TX', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.type = 'invalid_type'
 
@@ -29,8 +27,6 @@ describe('validateType', () => {
   })
 
   it('should return undefined if type is equal to QA or TX', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     let result = sut.validate(request.body)

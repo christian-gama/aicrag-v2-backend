@@ -71,8 +71,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { request, sendWelcomeValidatorStub, sut } = makeSut()
     const validateSpy = jest.spyOn(sendWelcomeValidatorStub, 'validate')
 
@@ -82,8 +80,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should return badRequest if validation fails', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sendWelcomeValidatorStub, sut } = makeSut()
     jest.spyOn(sendWelcomeValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -93,8 +89,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should return forbidden if account is already activated', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, httpHelper, request, sut, userRepositoryStub } = makeSut()
     jest.spyOn(userRepositoryStub, 'findByEmail').mockImplementationOnce(async () => {
       fakeUser.settings.accountActivated = true
@@ -108,8 +102,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should call findByEmail with correct email', async () => {
-    expect.hasAssertions()
-
     const { request, sut, userRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
@@ -119,8 +111,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should call send with correct user', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, request, welcomeEmailStub } = makeSut()
     const sendSpy = jest.spyOn(welcomeEmailStub, 'send')
 
@@ -130,8 +120,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should return serverError if mailer fails', async () => {
-    expect.hasAssertions()
-
     const { sut, request, welcomeEmailStub } = makeSut()
     jest.spyOn(welcomeEmailStub, 'send').mockReturnValueOnce(Promise.resolve(new MailerServiceError()))
 
@@ -141,8 +129,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should call updateById with correct values if activation pin has expired', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut, userRepositoryStub, validationCodeStub } = makeSut()
     const updatedUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
     fakeUser.temporary.activationPinExpiration = new Date(Date.now() - 10 * 60 * 1000)
@@ -156,8 +142,6 @@ describe('sendWelcomeEmailController', () => {
   })
 
   it('should return ok if send email', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, httpHelper, request } = makeSut()
 
     const result = await sut.handle(request)

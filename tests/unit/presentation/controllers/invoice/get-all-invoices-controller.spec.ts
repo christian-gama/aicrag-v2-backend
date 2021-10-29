@@ -44,8 +44,6 @@ const makeSut = (): SutTypes => {
 
 describe('getAll', () => {
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -55,8 +53,6 @@ describe('getAll', () => {
   })
 
   it('should return badRequest if validation returns an result', async () => {
-    expect.hasAssertions()
-
     const { getAllInvoicesValidatorStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(getAllInvoicesValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -66,8 +62,6 @@ describe('getAll', () => {
   })
 
   it('should return ok if does not find a task', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, invoiceRepositoryStub, request, sut } = makeSut()
     jest
       .spyOn(invoiceRepositoryStub, 'getAll')
@@ -86,8 +80,6 @@ describe('getAll', () => {
   })
 
   it('should call validate with correct data', async () => {
-    expect.hasAssertions()
-
     const { getAllInvoicesValidatorStub, request, sut } = makeSut()
     const validateSpy = jest.spyOn(getAllInvoicesValidatorStub, 'validate')
 
@@ -97,8 +89,6 @@ describe('getAll', () => {
   })
 
   it('should call getAll with correct data', async () => {
-    expect.hasAssertions()
-
     const { invoiceRepositoryStub, request, sut } = makeSut()
     const getAllInvoicesSpy = jest.spyOn(invoiceRepositoryStub, 'getAll')
 
@@ -108,8 +98,6 @@ describe('getAll', () => {
   })
 
   it('should return ok with correct task if succeeds', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, httpHelper, request, sut } = makeSut()
 
     const response = await sut.handle(request)

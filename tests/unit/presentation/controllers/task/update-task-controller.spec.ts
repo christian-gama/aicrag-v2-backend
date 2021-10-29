@@ -82,8 +82,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return unauthorized if there is no user', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
 
@@ -93,8 +91,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if param is invalid', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateTaskParamStub } = makeSut()
     jest.spyOn(validateTaskParamStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -104,8 +100,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if there is no task', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest.spyOn(taskRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
 
@@ -115,8 +109,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if there is a commentary and it is invalid', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateCommentaryStub } = makeSut()
     jest
       .spyOn(validateCommentaryStub, 'validate')
@@ -129,8 +121,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return task with new commentary if changes only commentary', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, request, sut } = makeSut()
     fakeTask.commentary = 'new_commentary'
     request.body.commentary = fakeTask.commentary
@@ -141,8 +131,6 @@ describe('updateTaskController', () => {
   })
 
   it('should call updateById with correct values if changes commentary', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.commentary = 'any_commentary'
@@ -156,8 +144,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if there is a date and it is invalid', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateDateStub } = makeSut()
     jest.spyOn(validateDateStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('date')))
     request.body.date = 'invalid_date'
@@ -168,8 +154,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return task with new date if changes only date', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, request, sut } = makeSut()
     const date = new Date()
     fakeTask.date.day = date.getUTCDate()
@@ -189,8 +173,6 @@ describe('updateTaskController', () => {
   })
 
   it('should call updateById with correct values if changes date', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     const date = new Date()
@@ -213,8 +195,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if there is a type and it is invalid', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateTypeStub } = makeSut()
     jest.spyOn(validateTypeStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('type')))
     request.body.type = 'invalid_type'
@@ -225,8 +205,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if there is a duration and it is invalid', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateDurationStub } = makeSut()
     jest.spyOn(validateDurationStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('duration')))
     request.body.duration = 'invalid_duration'
@@ -237,8 +215,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return task with new duration if changes only duration', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, request, sut } = makeSut()
     fakeTask.duration = 12.3
     request.body.duration = fakeTask.duration
@@ -249,8 +225,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return task with new type and duration if changes only type', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, request, sut } = makeSut()
     fakeTask.duration = 2.4
     fakeTask.type = 'QA'
@@ -264,8 +238,6 @@ describe('updateTaskController', () => {
   })
 
   it('should call updateById with correct values if changes duration', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.duration = 15
@@ -281,8 +253,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return a default message if there is no changes', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)
@@ -291,8 +261,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return update the updatedAt property if there is a change', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, request, sut } = makeSut()
     const date = new Date(Date.now())
     fakeTask.logs.updatedAt = date
@@ -304,8 +272,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if there is a status and it is invalid', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateStatusStub } = makeSut()
     jest.spyOn(validateStatusStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('status')))
     request.body.status = 'invalid_status'
@@ -316,8 +282,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return a task with new status if changes only status', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, request, sut } = makeSut()
     fakeTask.status = 'in_progress'
     request.body.status = fakeTask.status
@@ -328,8 +292,6 @@ describe('updateTaskController', () => {
   })
 
   it('should call updateById with correct values if changes status', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.status = 'in_progress'
@@ -343,8 +305,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if there is a taskId and it is invalid', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, validateTaskIdStub } = makeSut()
     jest.spyOn(validateTaskIdStub, 'validate').mockReturnValueOnce(Promise.resolve(new InvalidParamError('taskId')))
     request.body.taskId = 'invalid_taskId'
@@ -355,8 +315,6 @@ describe('updateTaskController', () => {
   })
 
   it('should return badRequest if is unable to update the task', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, taskRepositoryStub } = makeSut()
     jest.spyOn(taskRepositoryStub, 'updateById').mockReturnValueOnce(Promise.resolve(null))
     request.body.taskId = 'any_value'
@@ -367,8 +325,6 @@ describe('updateTaskController', () => {
   })
 
   it('should call updateById with correct values if changes taskId', async () => {
-    expect.hasAssertions()
-
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
     request.body.taskId = 'any_value'

@@ -1,7 +1,6 @@
 import { ITask, ITaskData, IUser } from '@/domain'
 import { ICreateTaskRepository } from '@/domain/repositories'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 import { TaskRepository } from '@/infra/database/repositories'
 
@@ -29,202 +28,171 @@ const makeSut = (): SutTypes => {
   return { createTaskRepository, fakeTask, fakeTaskData, fakeUser, sut }
 }
 
-describe('taskRepository', () => {
-  const client = makeMongoDb()
-  let task: ITask
-  let taskData: ITaskData
-  let taskCollection: ICollectionMethods
+export default (): void =>
+  describe('taskRepository', () => {
+    const client = makeMongoDb()
+    let task: ITask
+    let taskData: ITaskData
+    let taskCollection: ICollectionMethods
 
-  afterAll(async () => {
-    await client.disconnect()
-  })
-
-  afterEach(async () => {
-    await taskCollection.deleteMany({})
-  })
-
-  beforeAll(async () => {
-    await MongoAdapter.connect(global.__MONGO_URI__)
-
-    taskCollection = client.collection('tasks')
-  })
-
-  beforeEach(async () => {
-    const { fakeTask, fakeTaskData } = makeSut()
-
-    task = fakeTask
-    taskData = fakeTaskData
-
-    await taskCollection.insertOne(task)
-  })
-
-  describe('delete', () => {
-    it('should return true if delete a task', async () => {
-      expect.hasAssertions()
-
-      const { sut } = makeSut()
-
-      const deleted = await sut.deleteById(task.id, taskData.user.personal.id)
-
-      expect(deleted).toBeTruthy()
+    afterEach(async () => {
+      await taskCollection.deleteMany({})
     })
 
-    it('should return false if does not delete a task', async () => {
-      expect.hasAssertions()
-
-      const { fakeTaskData, sut } = makeSut()
-
-      const deleted = await sut.deleteById('invalid_id', fakeTaskData.user.personal.id)
-
-      expect(deleted).toBeFalsy()
+    beforeAll(async () => {
+      taskCollection = client.collection('tasks')
     })
-  })
 
-  describe('save', () => {
-    it('should return a task on success', async () => {
-      expect.hasAssertions()
+    beforeEach(async () => {
+      const { fakeTask, fakeTaskData } = makeSut()
 
-      const { fakeTask, fakeTaskData, fakeUser, sut } = makeSut()
+      task = fakeTask
+      taskData = fakeTaskData
 
-      const task = await sut.save(fakeTaskData)
+      await taskCollection.insertOne(task)
+    })
 
-      const { _id, ...obj } = task as any
+    describe('delete', () => {
+      it('should return true if delete a task', async () => {
+        const { sut } = makeSut()
 
-      expect(typeof _id).toBe('object')
-      expect(obj).toStrictEqual({
-        commentary: fakeTask.commentary,
-        date: {
-          day: fakeTask.date.day,
-          full: fakeTask.date.full,
-          hours: fakeTask.date.hours,
-          month: fakeTask.date.month,
-          year: fakeTask.date.year
-        },
-        duration: fakeTask.duration,
-        id: fakeTask.id,
-        logs: {
-          createdAt: fakeTask.logs.createdAt,
-          updatedAt: fakeTask.logs.updatedAt
-        },
-        status: 'completed',
-        taskId: fakeTask.taskId,
-        type: fakeTask.type,
-        usd: fakeTask.usd,
-        user: fakeUser.personal.id
+        const deleted = await sut.deleteById(task.id, taskData.user.personal.id)
+
+        expect(deleted).toBeTruthy()
+      })
+
+      it('should return false if does not delete a task', async () => {
+        const { fakeTaskData, sut } = makeSut()
+
+        const deleted = await sut.deleteById('invalid_id', fakeTaskData.user.personal.id)
+
+        expect(deleted).toBeFalsy()
       })
     })
 
-    it('should call create with correct value', async () => {
-      expect.hasAssertions()
+    describe('save', () => {
+      it('should return a task on success', async () => {
+        const { fakeTask, fakeTaskData, fakeUser, sut } = makeSut()
 
-      const { fakeTaskData, sut, createTaskRepository } = makeSut()
-      const createTaskSpy = jest.spyOn(createTaskRepository, 'create')
+        const task = await sut.save(fakeTaskData)
 
-      await sut.save(fakeTaskData)
+        const { _id, ...obj } = task as any
 
-      expect(createTaskSpy).toHaveBeenCalledWith(fakeTaskData)
-    })
-  })
-
-  describe('findAll', () => {
-    it('should return a result if finds one or more tasks', async () => {
-      expect.hasAssertions()
-
-      const { sut } = makeSut()
-
-      const result = await sut.findAll(taskData.user.personal.id, {})
-
-      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
-    })
-  })
-
-  describe('findById', () => {
-    it('should return a task if finds it', async () => {
-      expect.hasAssertions()
-
-      const { sut } = makeSut()
-
-      const found = await sut.findById(task.id, taskData.user.personal.id)
-
-      expect(found).toStrictEqual(task)
-    })
-
-    it('should return null if does not find a task', async () => {
-      expect.hasAssertions()
-
-      const { fakeTaskData, sut } = makeSut()
-
-      const found = await sut.findById('invalid_id', fakeTaskData.user.personal.id)
-
-      expect(found).toBeNull()
-    })
-  })
-
-  describe('findByTaskId', () => {
-    it('should return a task if finds a task by taskId', async () => {
-      expect.hasAssertions()
-
-      const { sut } = makeSut()
-
-      const found = await sut.findByTaskId(task.taskId, taskData.user.personal.id)
-
-      expect(found).toStrictEqual(task)
-    })
-
-    it('should return null if does not find a task by taskId', async () => {
-      expect.hasAssertions()
-
-      const { fakeTaskData, sut } = makeSut()
-
-      const found = await sut.findByTaskId('invalid_id', fakeTaskData.user.personal.id)
-
-      expect(found).toBeNull()
-    })
-  })
-
-  describe('updateById', () => {
-    it('should return a task if updateById finds a task', async () => {
-      expect.hasAssertions()
-
-      const { sut } = makeSut()
-
-      const updatedTask = await sut.updateById(task.id, task.user, { taskId: 'changed_task_id' })
-
-      expect(updatedTask).toHaveProperty('_id')
-    })
-
-    it('should return a task with updated values', async () => {
-      expect.hasAssertions()
-
-      const { sut } = makeSut()
-
-      const updatedTask = await sut.updateById(task.id, task.user, { taskId: 'changed_task_id' })
-
-      expect(updatedTask?.taskId).toBe('changed_task_id')
-    })
-
-    it('should return a task if pass multiple update properties', async () => {
-      expect.hasAssertions()
-
-      const { sut } = makeSut()
-
-      const updatedTask = await sut.updateById(task.id, task.user, {
-        commentary: 'changed_commentary',
-        taskId: 'changed_task_id'
+        expect(typeof _id).toBe('object')
+        expect(obj).toStrictEqual({
+          commentary: fakeTask.commentary,
+          date: {
+            day: fakeTask.date.day,
+            full: fakeTask.date.full,
+            hours: fakeTask.date.hours,
+            month: fakeTask.date.month,
+            year: fakeTask.date.year
+          },
+          duration: fakeTask.duration,
+          id: fakeTask.id,
+          logs: {
+            createdAt: fakeTask.logs.createdAt,
+            updatedAt: fakeTask.logs.updatedAt
+          },
+          status: 'completed',
+          taskId: fakeTask.taskId,
+          type: fakeTask.type,
+          usd: fakeTask.usd,
+          user: fakeUser.personal.id
+        })
       })
 
-      expect(updatedTask?.commentary).toBe('changed_commentary')
-      expect(updatedTask?.taskId).toBe('changed_task_id')
+      it('should call create with correct value', async () => {
+        const { fakeTaskData, sut, createTaskRepository } = makeSut()
+        const createTaskSpy = jest.spyOn(createTaskRepository, 'create')
+
+        await sut.save(fakeTaskData)
+
+        expect(createTaskSpy).toHaveBeenCalledWith(fakeTaskData)
+      })
     })
 
-    it('should return null if does not updateById finds a user', async () => {
-      expect.hasAssertions()
+    describe('findAll', () => {
+      it('should return a result if finds one or more tasks', async () => {
+        const { sut } = makeSut()
 
-      const { fakeTask, sut } = makeSut()
+        const result = await sut.findAll(taskData.user.personal.id, {})
 
-      const updatedTask = await sut.updateById(fakeTask.id, fakeTask.user, { commentary: 'changed_commentary' })
+        expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
+      })
+    })
 
-      expect(updatedTask).toBeNull()
+    describe('findById', () => {
+      it('should return a task if finds it', async () => {
+        const { sut } = makeSut()
+
+        const found = await sut.findById(task.id, taskData.user.personal.id)
+
+        expect(found).toStrictEqual(task)
+      })
+
+      it('should return null if does not find a task', async () => {
+        const { fakeTaskData, sut } = makeSut()
+
+        const found = await sut.findById('invalid_id', fakeTaskData.user.personal.id)
+
+        expect(found).toBeNull()
+      })
+    })
+
+    describe('findByTaskId', () => {
+      it('should return a task if finds a task by taskId', async () => {
+        const { sut } = makeSut()
+
+        const found = await sut.findByTaskId(task.taskId, taskData.user.personal.id)
+
+        expect(found).toStrictEqual(task)
+      })
+
+      it('should return null if does not find a task by taskId', async () => {
+        const { fakeTaskData, sut } = makeSut()
+
+        const found = await sut.findByTaskId('invalid_id', fakeTaskData.user.personal.id)
+
+        expect(found).toBeNull()
+      })
+    })
+
+    describe('updateById', () => {
+      it('should return a task if updateById finds a task', async () => {
+        const { sut } = makeSut()
+
+        const updatedTask = await sut.updateById(task.id, task.user, { taskId: 'changed_task_id' })
+
+        expect(updatedTask).toHaveProperty('_id')
+      })
+
+      it('should return a task with updated values', async () => {
+        const { sut } = makeSut()
+
+        const updatedTask = await sut.updateById(task.id, task.user, { taskId: 'changed_task_id' })
+
+        expect(updatedTask?.taskId).toBe('changed_task_id')
+      })
+
+      it('should return a task if pass multiple update properties', async () => {
+        const { sut } = makeSut()
+
+        const updatedTask = await sut.updateById(task.id, task.user, {
+          commentary: 'changed_commentary',
+          taskId: 'changed_task_id'
+        })
+
+        expect(updatedTask?.commentary).toBe('changed_commentary')
+        expect(updatedTask?.taskId).toBe('changed_task_id')
+      })
+
+      it('should return null if does not updateById finds a user', async () => {
+        const { fakeTask, sut } = makeSut()
+
+        const updatedTask = await sut.updateById(fakeTask.id, fakeTask.user, { commentary: 'changed_commentary' })
+
+        expect(updatedTask).toBeNull()
+      })
     })
   })
-})

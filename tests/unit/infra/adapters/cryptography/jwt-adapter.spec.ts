@@ -28,8 +28,6 @@ const makeSut = (): SutTypes => {
 describe('jwtAdapter', () => {
   describe('decode', () => {
     it('should return an id if signature is valid', async () => {
-      expect.hasAssertions()
-
       const { sut, token } = makeSut()
 
       const decodedToken = await sut.decode(token)
@@ -38,8 +36,6 @@ describe('jwtAdapter', () => {
     })
 
     it('should return ExpiredTokenError if verify throws', async () => {
-      expect.hasAssertions()
-
       const { sut, token } = makeSut()
       jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
         const error = new Error()
@@ -54,8 +50,6 @@ describe('jwtAdapter', () => {
     })
 
     it('should return InvalidToken if verify throws', async () => {
-      expect.hasAssertions()
-
       const { sut, token } = makeSut()
       jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
         throw new Error()
@@ -69,8 +63,6 @@ describe('jwtAdapter', () => {
 
   describe('encrypt', () => {
     it('should call sign with correct value', () => {
-      expect.hasAssertions()
-
       const { expires, secret, sut } = makeSut()
       const signSpy = jest.spyOn(jwt, 'sign')
 
@@ -80,8 +72,6 @@ describe('jwtAdapter', () => {
     })
 
     it('should return an encrypted value', () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
 
       const value = sut.encrypt({ name: 'value' })
@@ -90,8 +80,6 @@ describe('jwtAdapter', () => {
     })
 
     it('should throw if sign throws', async () => {
-      expect.hasAssertions()
-
       const { sut } = makeSut()
       jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
         throw new Error()

@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateSort', () => {
   it('should return InvalidQueryError if sort is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.sort = ['a', 'b']
 
@@ -28,8 +26,6 @@ describe('validateSort', () => {
   })
 
   it('should return InvalidQueryError if sort has more than 5 properties', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.sort = 'a,b,c,d,e,f'
 
@@ -39,8 +35,6 @@ describe('validateSort', () => {
   })
 
   it('should return InvalidQueryError if contain duplicated sort values', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.sort = 'a,-a'
 
@@ -50,8 +44,6 @@ describe('validateSort', () => {
   })
 
   it('should return InvalidQueryError if sort has more than 24 characters', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.sort = 'this_is_a_very_long_property'
 
@@ -61,8 +53,6 @@ describe('validateSort', () => {
   })
 
   it('should return InvalidQueryError if field is not a valid string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.sort = 'th!s_i$_@_inv#lid_prop&'
 
@@ -72,8 +62,6 @@ describe('validateSort', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)
@@ -82,8 +70,6 @@ describe('validateSort', () => {
   })
 
   it('should return undefined if there is no sort', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.sort = undefined
 

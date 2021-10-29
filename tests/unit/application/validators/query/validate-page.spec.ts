@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validatePage', () => {
   it('should return InvalidQueryError if page is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.page = ['a', 'b']
 
@@ -28,8 +26,6 @@ describe('validatePage', () => {
   })
 
   it('should return InvalidQueryError if page does not contain a number', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.page = 'abc'
 
@@ -39,8 +35,6 @@ describe('validatePage', () => {
   })
 
   it('should return InvalidQueryError if page is not an integer', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.page = '1.2'
 
@@ -50,8 +44,6 @@ describe('validatePage', () => {
   })
 
   it('should return InvalidQueryError if page is not a safe integer', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.page = '9007199254740992'
 
@@ -61,8 +53,6 @@ describe('validatePage', () => {
   })
 
   it('should return InvalidQueryError if page lesser or equal to 0', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.page = '0'
 
@@ -72,8 +62,6 @@ describe('validatePage', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)
@@ -82,8 +70,6 @@ describe('validatePage', () => {
   })
 
   it('should return undefined if there is no page', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.page = undefined
 

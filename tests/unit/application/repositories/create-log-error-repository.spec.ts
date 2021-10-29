@@ -22,8 +22,6 @@ describe('createLogErrorRepository', () => {
   })
 
   it('should return a ILogError', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const error = new Error('any_message')
 

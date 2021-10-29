@@ -1,6 +1,6 @@
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -34,14 +34,12 @@ export default (): void =>
     beforeAll(async () => {
       MockDate.set(new Date())
 
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('being logged out', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I am logged out', () => {
         accessToken = ''
         refreshToken = ''

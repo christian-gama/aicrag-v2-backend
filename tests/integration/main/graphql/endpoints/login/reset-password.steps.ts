@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { makeGenerateAccessToken } from '@/factories/providers/token'
@@ -33,14 +33,12 @@ export default (): void =>
     })
 
     beforeAll(async () => {
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('being logged in', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I am logged in', async () => {
         fakeUser = await userHelper.insertUser(userCollection)
         ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
@@ -66,8 +64,6 @@ export default (): void =>
     })
 
     test('using a valid input', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have a valid reset password token', async () => {
         fakeUser = makeFakeUser()
         const token = makeGenerateAccessToken().generate(fakeUser)
@@ -102,8 +98,6 @@ export default (): void =>
     })
 
     test('using an invalid input', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have a valid reset password token', async () => {
         fakeUser = makeFakeUser()
         const token = makeGenerateAccessToken().generate(fakeUser)
@@ -136,8 +130,6 @@ export default (): void =>
     })
 
     test('using an invalid reset password token', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I have an invalid reset password token', () => {
         fakeUser = makeFakeUser()
         const token = makeGenerateAccessToken().generate(fakeUser)

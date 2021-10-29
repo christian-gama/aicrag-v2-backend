@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateDate', () => {
   it('should return InvalidParamError if is an invalid date', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.date = 'invalid_date'
 
@@ -28,8 +26,6 @@ describe('validateDate', () => {
   })
 
   it('should return undefined if is a valid date', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = sut.validate(request.body)
@@ -38,8 +34,6 @@ describe('validateDate', () => {
   })
 
   it('should return undefined if is a valid date as string', () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.body.date = request.body.date.toString()
 

@@ -52,8 +52,6 @@ describe('isLoggedInMiddleware', () => {
   })
 
   it('should call verify with correct token', async () => {
-    expect.hasAssertions()
-
     const { request, sut, verifyRefreshTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyRefreshTokenStub, 'verify')
 
@@ -63,8 +61,6 @@ describe('isLoggedInMiddleware', () => {
   })
 
   it('should return ok with undefined user if fails', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, verifyRefreshTokenStub } = makeSut()
     jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new Error()))
 
@@ -74,8 +70,6 @@ describe('isLoggedInMiddleware', () => {
   })
 
   it('should call updateById with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
@@ -87,8 +81,6 @@ describe('isLoggedInMiddleware', () => {
   })
 
   it('should return ok if succeeds', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)

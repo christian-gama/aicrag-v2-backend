@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -33,14 +33,12 @@ export default (): void =>
     })
 
     beforeAll(async () => {
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('being logged out', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^My current password is "(.*)"$/, async (currentPassword) => {
         await userHelper.insertUser(userCollection, {
           personal: {
@@ -83,8 +81,6 @@ export default (): void =>
     })
 
     test('using a valid input', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^My current password is "(.*)"$/, async (currentPassword) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -132,8 +128,6 @@ export default (): void =>
     })
 
     test('using an invalid current password', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^My current password is "(.*)"$/, async (currentPassword) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -175,8 +169,6 @@ export default (): void =>
     })
 
     test('using an invalid password', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^My current password is "(.*)"$/, async (currentPassword) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {

@@ -1,9 +1,8 @@
 import { IUser } from '@/domain'
 
-import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 import { isLoggedInMiddleware } from '@/main/express/routes'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -14,51 +13,41 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Express } from 'express'
 import request from 'supertest'
 
-let app: Express
+export default (): void =>
+  describe('isLoggedInMiddleware', () => {
+    const client = makeMongoDb()
+    let app: Express
+    let fakeUser: IUser
+    let refreshToken: string
+    let userCollection: ICollectionMethods
 
-describe('isLoggedInMiddleware', () => {
-  const client = makeMongoDb()
-  let fakeUser: IUser
-  let refreshToken: string
-  let userCollection: ICollectionMethods
+    beforeAll(async () => {
+      app = await App.setup()
 
-  afterAll(async () => {
-    await client.disconnect()
-  })
+      userCollection = client.collection('users')
 
-  afterEach(async () => {
-    await userCollection.deleteMany({})
-  })
+      app.get('/is-logged-in', isLoggedInMiddleware, (req, res) => {
+        if ((req as any).user) res.send('user')
+        else res.send('no_user')
+      })
+    })
 
-  beforeAll(async () => {
-    app = await setupApp()
+    beforeEach(async () => {
+      fakeUser = makeFakeUser()
+      refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+    })
 
-    await MongoAdapter.connect(global.__MONGO_URI__)
+    it('should not return a user if fails', async () => {
+      const result = await request(app).get('/is-logged-in')
 
-    userCollection = client.collection('users')
+      expect(result.text).toBe('no_user')
+    })
 
-    app.get('/is-logged-in', isLoggedInMiddleware, (req, res) => {
-      if ((req as any).user) res.send('user')
-      else res.send('no_user')
+    it('should return a user if succeeds', async () => {
+      await userCollection.insertOne(fakeUser)
+
+      const result = await request(app).get('/is-logged-in').set('x-refresh-token', refreshToken)
+
+      expect(result.text).toBe('user')
     })
   })
-
-  beforeEach(async () => {
-    fakeUser = makeFakeUser()
-    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
-  })
-
-  it('should not return a user if fails', async () => {
-    expect.assertions(0)
-
-    await request(app).get('/is-logged-in').expect('no_user')
-  })
-
-  it('should return a user if succeeds', async () => {
-    expect.assertions(0)
-
-    await userCollection.insertOne(fakeUser)
-
-    await request(app).get('/is-logged-in').set('x-refresh-token', refreshToken).expect('user')
-  })
-})

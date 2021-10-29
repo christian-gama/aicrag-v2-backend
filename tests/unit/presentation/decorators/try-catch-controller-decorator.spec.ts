@@ -23,8 +23,6 @@ const makeSut = (): SutTypes => {
 
 describe('logDecorator', () => {
   it('should call handle with correct value', async () => {
-    expect.hasAssertions()
-
     const { sut, controllerStub } = makeSut()
     const handleSpy = jest.spyOn(controllerStub, 'handle')
     const request = {}
@@ -35,8 +33,6 @@ describe('logDecorator', () => {
   })
 
   it('should return a serverError as http response if statusCode is 500', async () => {
-    expect.hasAssertions()
-
     const { controllerStub, httpHelper, sut } = makeSut()
     const error = new Error('any_message')
     const errorData = {
@@ -52,8 +48,6 @@ describe('logDecorator', () => {
   })
 
   it('should return a http response if succeeds', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, sut } = makeSut()
 
     const result = await sut.handle({})

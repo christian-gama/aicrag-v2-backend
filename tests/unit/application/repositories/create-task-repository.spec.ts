@@ -35,8 +35,6 @@ describe('createTaskRepository', () => {
   })
 
   it('should return a task with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeTaskData, sut, uuidStub } = makeSut()
     const { commentary, date, duration, taskId, status, type, user } = fakeTaskData
     const d = new Date(Date.parse(date))
@@ -70,8 +68,6 @@ describe('createTaskRepository', () => {
   })
 
   it('should return a task with correct values if commentary and taskId are falsy', async () => {
-    expect.hasAssertions()
-
     const { fakeTaskData, sut, uuidStub } = makeSut()
     const { date, duration, status, type, user } = fakeTaskData
     const d = new Date(Date.parse(date))
@@ -107,8 +103,6 @@ describe('createTaskRepository', () => {
   })
 
   it('should return correct usd value if type is TX', async () => {
-    expect.hasAssertions()
-
     const { fakeTaskData, sut } = makeSut()
     fakeTaskData.type = 'TX'
 
@@ -118,8 +112,6 @@ describe('createTaskRepository', () => {
   })
 
   it('should return correct usd value if type is QA', async () => {
-    expect.hasAssertions()
-
     const { fakeTaskData, sut } = makeSut()
     fakeTaskData.duration = 2.4
     fakeTaskData.type = 'QA'

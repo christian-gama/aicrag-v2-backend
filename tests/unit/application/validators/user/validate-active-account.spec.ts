@@ -25,8 +25,6 @@ const makeSut = (): SutTypes => {
 
 describe('validatedata', () => {
   it('should return a InactiveAccountError if user account is inactive', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut } = makeSut()
     fakeUser.settings.accountActivated = false
 
@@ -36,8 +34,6 @@ describe('validatedata', () => {
   })
 
   it('should call findByEmail with correct value', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
@@ -48,8 +44,6 @@ describe('validatedata', () => {
   })
 
   it('should return nothing if succeeds', async () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }
 

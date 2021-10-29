@@ -35,8 +35,6 @@ describe('createUserRepository', () => {
   })
 
   it('should return a user with correct values', async () => {
-    expect.hasAssertions()
-
     const { activationPinStub, hasherStub, sut, uuidStub } = makeSut()
     const fakeActivationCode = activationPinStub.generate()
     const fakeSignUpUserCredentials = makeFakeSignUpUserCredentials()
@@ -74,8 +72,6 @@ describe('createUserRepository', () => {
   })
 
   it('should call hash with correct values', async () => {
-    expect.hasAssertions()
-
     const { hasherStub, sut } = makeSut()
     const fakeSignUpUserCredentials = makeFakeSignUpUserCredentials()
     const hashSpy = jest.spyOn(hasherStub, 'hash')

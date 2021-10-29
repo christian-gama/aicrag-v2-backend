@@ -47,8 +47,6 @@ const makeSut = (): SutTypes => {
 
 describe('protectedMiddleware', () => {
   it('should call refresh token verify with correct token', async () => {
-    expect.hasAssertions()
-
     const { request, sut, verifyRefreshTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyRefreshTokenStub, 'verify')
 
@@ -58,8 +56,6 @@ describe('protectedMiddleware', () => {
   })
 
   it('should return unauthorized if refresh token response is instance of InvalidTokenError', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, verifyRefreshTokenStub } = makeSut()
     jest.spyOn(verifyRefreshTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
@@ -69,8 +65,6 @@ describe('protectedMiddleware', () => {
   })
 
   it('should return unauthorized if access token response is instance of InvalidTokenError', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new InvalidTokenError()))
 
@@ -80,8 +74,6 @@ describe('protectedMiddleware', () => {
   })
 
   it('should return unauthorized if access token response is instance of TokenMissingError', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut, verifyAccessTokenStub } = makeSut()
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new TokenMissingError()))
 
@@ -91,8 +83,6 @@ describe('protectedMiddleware', () => {
   })
 
   it('should return ok if succeeds', async () => {
-    expect.hasAssertions()
-
     const { httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)
@@ -103,8 +93,6 @@ describe('protectedMiddleware', () => {
   })
 
   it('should call encrypt if response is instance of ExpiredTokenError', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, refreshTokenEncrypter, request, verifyAccessTokenStub } = makeSut()
     const encryptSpy = jest.spyOn(refreshTokenEncrypter, 'encrypt')
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new ExpiredTokenError()))
@@ -115,8 +103,6 @@ describe('protectedMiddleware', () => {
   })
 
   it('should call access token verify with correct token', async () => {
-    expect.hasAssertions()
-
     const { sut, request, verifyAccessTokenStub } = makeSut()
     const verifySpy = jest.spyOn(verifyAccessTokenStub, 'verify')
 

@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validatePasswordComparison', () => {
   it('should return InvalidParamError if passwords are not equal', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const data = {
       password: faker.internet.password(),
@@ -31,8 +29,6 @@ describe('validatePasswordComparison', () => {
   })
 
   it('should return nothing if succeeds', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
     const password = faker.internet.password()
     const data = { password: password, passwordConfirmation: password }

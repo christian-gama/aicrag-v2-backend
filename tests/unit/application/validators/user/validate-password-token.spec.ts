@@ -24,8 +24,6 @@ const makeSut = (): SutTypes => {
 
 describe('validatePasswordToken', () => {
   it('should return a MissingParamError if email does not exists', async () => {
-    expect.hasAssertions()
-
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com' }
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
@@ -36,8 +34,6 @@ describe('validatePasswordToken', () => {
   })
 
   it('should call findByEmail with correct value', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut, userRepositoryStub } = makeSut()
     const data = { email: fakeUser.personal.email }
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
@@ -48,8 +44,6 @@ describe('validatePasswordToken', () => {
   })
 
   it('should return a MissingParamError if resetPasswordToken does not exist', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut } = makeSut()
     const data = { email: fakeUser.personal.email }
     fakeUser.temporary.resetPasswordToken = null
@@ -60,8 +54,6 @@ describe('validatePasswordToken', () => {
   })
 
   it('should return undefined if succeds', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut } = makeSut()
     const data = { email: fakeUser.personal.email }
 

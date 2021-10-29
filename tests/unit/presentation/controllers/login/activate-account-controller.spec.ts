@@ -81,8 +81,6 @@ describe('activateAccountController', () => {
   })
 
   it('should call validate with correct values', async () => {
-    expect.hasAssertions()
-
     const { activateAccountValidatorStub, request, sut } = makeSut()
     const validateSpy = jest.spyOn(activateAccountValidatorStub, 'validate')
 
@@ -92,8 +90,6 @@ describe('activateAccountController', () => {
   })
 
   it('should return badRequest if validation fails', async () => {
-    expect.hasAssertions()
-
     const { activateAccountValidatorStub, httpHelper, request, sut } = makeSut()
     const error = new InvalidPinError()
     jest.spyOn(activateAccountValidatorStub, 'validate').mockReturnValueOnce(error)
@@ -104,8 +100,6 @@ describe('activateAccountController', () => {
   })
 
   it('should call findByEmail with correct email', async () => {
-    expect.hasAssertions()
-
     const { request, sut, userRepositoryStub } = makeSut()
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
@@ -115,8 +109,6 @@ describe('activateAccountController', () => {
   })
 
   it('should call filter with correct user', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, filterUserDataStub, request, sut } = makeSut()
     const filterSpy = jest.spyOn(filterUserDataStub, 'filter')
 
@@ -126,8 +118,6 @@ describe('activateAccountController', () => {
   })
 
   it('should call generateAccessToken.generate with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, generateAccessTokenStub, request, sut } = makeSut()
     const encryptSpy = jest.spyOn(generateAccessTokenStub, 'generate')
 
@@ -137,8 +127,6 @@ describe('activateAccountController', () => {
   })
 
   it('should call generateRefreshToken.generate with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, generateRefreshTokenStub, request, sut } = makeSut()
     const encryptSpy = jest.spyOn(generateRefreshTokenStub, 'generate')
 
@@ -148,8 +136,6 @@ describe('activateAccountController', () => {
   })
 
   it('should call ok with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, httpHelper, request, sut } = makeSut()
     const filteredUser = makeFakePublicUser(fakeUser)
     const okSpy = jest.spyOn(httpHelper, 'ok')
@@ -164,8 +150,6 @@ describe('activateAccountController', () => {
   })
 
   it('should activate account if validation succeeds', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, request } = makeSut()
 
     await sut.handle(request)
@@ -174,8 +158,6 @@ describe('activateAccountController', () => {
   })
 
   it('should clear temporaries if validation succeeds', async () => {
-    expect.hasAssertions()
-
     const { sut, fakeUser, request } = makeSut()
 
     await sut.handle(request)
@@ -185,8 +167,6 @@ describe('activateAccountController', () => {
   })
 
   it('should call updateById with correct values', async () => {
-    expect.hasAssertions()
-
     const { fakeUser, sut, request, userRepositoryStub } = makeSut()
     const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
 

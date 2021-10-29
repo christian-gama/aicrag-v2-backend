@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateLimit', () => {
   it('should return InvalidQueryError if limit is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.limit = ['a', 'b']
 
@@ -28,8 +26,6 @@ describe('validateLimit', () => {
   })
 
   it('should return InvalidQueryError if limit does not contain a number', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.limit = 'abc'
 
@@ -39,8 +35,6 @@ describe('validateLimit', () => {
   })
 
   it('should return InvalidQueryError if limit is not an integer', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.limit = '1.2'
 
@@ -50,8 +44,6 @@ describe('validateLimit', () => {
   })
 
   it('should return InvalidQueryError if limit is not a safe integer', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.limit = '9007199254740992'
 
@@ -61,8 +53,6 @@ describe('validateLimit', () => {
   })
 
   it('should return InvalidQueryError if limit greater than 1000', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.limit = '1001'
 
@@ -72,8 +62,6 @@ describe('validateLimit', () => {
   })
 
   it('should return InvalidQueryError if limit lesser or equal to 0', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.limit = '0'
 
@@ -83,8 +71,6 @@ describe('validateLimit', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)
@@ -93,8 +79,6 @@ describe('validateLimit', () => {
   })
 
   it('should return undefined if there is no limit', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.limit = undefined
 

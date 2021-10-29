@@ -2,7 +2,7 @@ import { ITask, IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
@@ -41,15 +41,13 @@ export default (): void =>
     beforeAll(async () => {
       MockDate.set(new Date())
 
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
       taskCollection = client.collection('tasks')
     })
 
     test('being logged out', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I am logged out', () => {
         accessToken = ''
         refreshToken = ''
@@ -78,8 +76,6 @@ export default (): void =>
     })
 
     test('getting invoices from a specific month and year', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I am logged in', async () => {
         fakeUser = await userHelper.insertUser(userCollection)
         ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
@@ -119,8 +115,6 @@ export default (): void =>
     })
 
     test('getting invoices from a specific month and year using filters', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given('I am logged in', async () => {
         fakeUser = await userHelper.insertUser(userCollection)
         ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)

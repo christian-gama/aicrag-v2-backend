@@ -14,8 +14,6 @@ const makeSut = (): SutTypes => {
 
 describe('uiid', () => {
   it('should return an uiid with 24 digits', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const result = sut.generate()
@@ -24,8 +22,6 @@ describe('uiid', () => {
   })
 
   it('should return a string', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const result = sut.generate()
@@ -34,8 +30,6 @@ describe('uiid', () => {
   })
 
   it('should return an unique id', () => {
-    expect.hasAssertions()
-
     const { sut } = makeSut()
 
     const values: Partial<string[]> = []

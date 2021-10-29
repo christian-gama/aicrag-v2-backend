@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 
 import { ICollectionMethods } from '@/infra/database/protocols'
 
-import { setupApp } from '@/main/express/config/app'
+import App from '@/main/express/config/app'
 import { WelcomeEmail } from '@/main/mailer'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -31,14 +31,12 @@ export default (): void =>
     })
 
     beforeAll(async () => {
-      app = await setupApp()
+      app = await App.setup()
 
       userCollection = client.collection('users')
     })
 
     test('having a valid email', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^I have an account with the email "(.*)"$/, async (email) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -70,7 +68,6 @@ export default (): void =>
     })
 
     test('having an invalid email', ({ given, when, then, and }) => {
-      expect.hasAssertions()
       given(/^I have an account with the email "(.*)"$/, async (email) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {
@@ -98,8 +95,6 @@ export default (): void =>
     })
 
     test('having an account already activated', ({ given, when, then, and }) => {
-      expect.hasAssertions()
-
       given(/^I have an account with the email "(.*)" and account is already activated$/, async (email) => {
         fakeUser = await userHelper.insertUser(userCollection, {
           personal: {

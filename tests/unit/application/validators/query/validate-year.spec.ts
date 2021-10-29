@@ -17,8 +17,6 @@ const makeSut = (): SutTypes => {
 
 describe('validateYear', () => {
   it('should return InvalidQueryError if year is not a string', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.year = ['a', 'b']
 
@@ -28,8 +26,6 @@ describe('validateYear', () => {
   })
 
   it('should return InvalidQueryError if year is not valid', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.year = '123'
 
@@ -39,8 +35,6 @@ describe('validateYear', () => {
   })
 
   it('should return undefined if succeeds', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
 
     const result = await sut.validate(request.query)
@@ -49,8 +43,6 @@ describe('validateYear', () => {
   })
 
   it('should return undefined if there is no taskId', async () => {
-    expect.hasAssertions()
-
     const { request, sut } = makeSut()
     request.query.taskId = undefined
 
