@@ -20,6 +20,8 @@ describe('integration tests', () => {
   })
 
   beforeAll(async () => {
+    jest.spyOn(console, 'log').mockImplementation(() => {})
+
     await MongoAdapter.connect(global.__MONGO_URI__)
   })
 
