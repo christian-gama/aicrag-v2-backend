@@ -17,7 +17,7 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'update-user.feature'))
 
-export default (): void => {
+export default (): void =>
   defineFeature(feature, (test) => {
     const client = makeMongoDb()
     let accessToken: string
@@ -221,4 +221,3 @@ export default (): void => {
       })
     })
   })
-}
