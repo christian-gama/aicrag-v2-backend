@@ -131,4 +131,29 @@ defineFeature(feature, (test) => {
       expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('Using an valid input', ({ given, when, then, and }) => {
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
+
+    when('I try to create a new task with the following valid data:', async (table) => {
+      const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
+
+      result = await request(app)
+        .post(environment.GRAPHQL.ENDPOINT)
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then('I should have created a new task', () => {
+      expect(result.body.data.createTask.task).toBeTruthy()
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
 })

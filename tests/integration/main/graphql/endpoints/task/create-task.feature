@@ -31,3 +31,11 @@ Feature: Create task
       Then I should receive an error with message "Invalid param: duration"
       And I must receive a status code of 400
 
+    Scenario: Using a valid input
+      Given I am logged in
+      When I try to create a new task with the following valid data:
+        | commentary     | date                     | duration | status    | taskId | type |
+        | Any commentary | 2021-10-27T14:32:33.465Z | 30       | completed | 1      | TX   |
+      Then I should have created a new task
+      And I must receive a status code of 200
+
