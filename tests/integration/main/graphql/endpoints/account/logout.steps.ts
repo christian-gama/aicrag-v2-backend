@@ -16,7 +16,7 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'logout.feature'))
 
-export const testLogout = (): void => {
+export default (): void => {
   defineFeature(feature, (test) => {
     const client = makeMongoDb()
     let accessToken: string

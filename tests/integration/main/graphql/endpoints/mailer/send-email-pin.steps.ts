@@ -17,7 +17,7 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'send-email-pin.feature'))
 
-export const testSendEmailPin = (): void => {
+export default (): void => {
   defineFeature(feature, (test) => {
     const client = makeMongoDb()
     let app: Express

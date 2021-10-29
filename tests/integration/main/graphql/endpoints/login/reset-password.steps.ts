@@ -18,7 +18,7 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'reset-password.feature'))
 
-export const testResetPassword = (): void => {
+export default (): void => {
   defineFeature(feature, (test) => {
     const client = makeMongoDb()
     let accessToken: string

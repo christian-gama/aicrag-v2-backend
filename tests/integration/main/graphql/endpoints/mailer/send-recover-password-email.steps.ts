@@ -18,7 +18,7 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'send-recover-password-email.feature'))
 
-export const testSendRecoverPasswordEmail = (): void => {
+export default (): void => {
   defineFeature(feature, (test) => {
     const client = makeMongoDb()
     let app: Express

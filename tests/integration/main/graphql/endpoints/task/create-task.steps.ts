@@ -14,7 +14,7 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'create-task.feature'))
 
-export const testCreateTask = (): void => {
+export default (): void =>
   defineFeature(feature, (test) => {
     const client = makeMongoDb()
     let accessToken: string
@@ -66,4 +66,3 @@ export const testCreateTask = (): void => {
       })
     })
   })
-}
