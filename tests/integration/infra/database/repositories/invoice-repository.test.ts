@@ -1,5 +1,6 @@
 import { ITask, ITaskData, IUser } from '@/domain'
 
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 import { InvoiceRepository } from '@/infra/database/repositories/invoice-repository'
 
@@ -25,150 +26,157 @@ const makeSut = (): SutTypes => {
   return { fakeTask, fakeTaskData, fakeUser, sut }
 }
 
-export default (context: any): void =>
-  describe('invoiceRepository', () => {
-    const client = makeMongoDb()
-    let task: ITask
-    let taskCollection: ICollectionMethods
+describe('invoiceRepository', () => {
+  const client = makeMongoDb()
+  let dbIsConnected = true
+  let task: ITask
+  let taskCollection: ICollectionMethods
 
-    beforeAll(async () => {
-      taskCollection = client.collection('tasks')
+  afterAll(async () => {
+    if (!dbIsConnected) await client.disconnect()
+  })
+
+  beforeAll(async () => {
+    dbIsConnected = MongoAdapter.client !== null
+    if (!dbIsConnected) await MongoAdapter.connect(global.__MONGO_URI__)
+
+    taskCollection = client.collection('tasks')
+  })
+
+  beforeEach(async () => {
+    const { fakeTask } = makeSut()
+
+    task = fakeTask
+  })
+
+  describe('getAll', () => {
+    it('should return a result if finds one or more tasks', async () => {
+      const { sut } = makeSut()
+
+      await taskCollection.insertOne(task)
+
+      const query = {
+        type: 'TX' as 'TX'
+      }
+
+      const result = await sut.getAll(query, task.user)
+
+      expect(result.count).toBe(1)
+      expect(result.displaying).toBe(1)
+      expect(result.documents[0].tasks).toBe(1)
+      expect(result.documents[0].date.month).toBe(task.date.month)
+      expect(result.documents[0].date.year).toBe(task.date.year)
+      expect(result.documents[0].totalUsd).toBeCloseTo(Math.round(task.usd * 100) / 100, 1)
+      expect(result.page).toBe('1 of 1')
     })
 
-    beforeEach(async () => {
-      const { fakeTask } = makeSut()
+    it('should return a result from TX if find one or more tasks with a query', async () => {
+      const { fakeUser, sut } = makeSut()
 
-      task = fakeTask
+      const fakeTask = makeFakeTask(fakeUser)
+      const fakeTask2 = makeFakeTask(fakeUser)
+      const fakeTask3 = makeFakeTask(fakeUser)
+      fakeTask2.date = fakeTask.date
+      fakeTask3.date = fakeTask.date
+
+      await taskCollection.insertOne(fakeTask)
+      await taskCollection.insertOne(fakeTask2)
+      await taskCollection.insertOne(fakeTask3)
+
+      const query = {
+        limit: '1',
+        page: '1',
+        type: 'TX' as 'TX'
+      }
+
+      const result = await sut.getAll(query, fakeUser.personal.id)
+
+      expect(result.count).toBe(1)
+      expect(result.displaying).toBe(1)
+      expect(result.documents[0].tasks).toBe(3)
+      expect(result.documents[0].date.month).toBe(fakeTask.date.month)
+      expect(result.documents[0].date.year).toBe(fakeTask.date.year)
+      expect(result.documents[0].totalUsd).toBeCloseTo(
+        Math.round((fakeTask.usd + fakeTask2.usd + fakeTask3.usd) * 100) / 100,
+        1
+      )
+      expect(result.page).toBe('1 of 1')
+    })
+  })
+
+  describe('getByMonth', () => {
+    it('should return a result if finds one or more tasks', async () => {
+      const { sut } = makeSut()
+
+      await taskCollection.insertOne(task)
+
+      const query = {
+        month: task.date.month.toString(),
+        taskId: task.taskId,
+        type: 'TX',
+        year: task.date.year.toString()
+      }
+
+      const result = await sut.getByMonth(query, task.user)
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
     })
 
-    describe('getAll', () => {
-      it('should return a result if finds one or more tasks', async () => {
-        const { sut } = makeSut()
+    it('should return a result if find one or more tasks with a query', async () => {
+      const { fakeUser, sut } = makeSut()
 
-        await taskCollection.insertOne(task)
+      const fakeTask = makeFakeTask(fakeUser)
+      const fakeTask2 = makeFakeTask(fakeUser)
+      const fakeTask3 = makeFakeTask(fakeUser)
+      fakeTask2.date = fakeTask.date
+      fakeTask3.date = fakeTask.date
 
-        const query = {
-          type: 'TX' as 'TX'
-        }
+      await taskCollection.insertOne(fakeTask)
+      await taskCollection.insertOne(fakeTask2)
+      await taskCollection.insertOne(fakeTask3)
 
-        const result = await sut.getAll(query, task.user)
+      const query = {
+        limit: '1',
+        month: fakeTask.date.month.toString(),
+        page: '1',
+        type: 'TX',
+        year: fakeTask.date.year.toString()
+      }
 
-        expect(result.count).toBe(1)
-        expect(result.displaying).toBe(1)
-        expect(result.documents[0].tasks).toBe(1)
-        expect(result.documents[0].date.month).toBe(task.date.month)
-        expect(result.documents[0].date.year).toBe(task.date.year)
-        expect(result.documents[0].totalUsd).toBeCloseTo(Math.round(task.usd * 100) / 100, 1)
-        expect(result.page).toBe('1 of 1')
-      })
+      const result = await sut.getByMonth(query, fakeUser.personal.id)
 
-      it('should return a result from TX if find one or more tasks with a query', async () => {
-        const { fakeUser, sut } = makeSut()
-
-        const fakeTask = makeFakeTask(fakeUser)
-        const fakeTask2 = makeFakeTask(fakeUser)
-        const fakeTask3 = makeFakeTask(fakeUser)
-        fakeTask2.date = fakeTask.date
-        fakeTask3.date = fakeTask.date
-
-        await taskCollection.insertOne(fakeTask)
-        await taskCollection.insertOne(fakeTask2)
-        await taskCollection.insertOne(fakeTask3)
-
-        const query = {
-          limit: '1',
-          page: '1',
-          type: 'TX' as 'TX'
-        }
-
-        const result = await sut.getAll(query, fakeUser.personal.id)
-
-        expect(result.count).toBe(1)
-        expect(result.displaying).toBe(1)
-        expect(result.documents[0].tasks).toBe(3)
-        expect(result.documents[0].date.month).toBe(fakeTask.date.month)
-        expect(result.documents[0].date.year).toBe(fakeTask.date.year)
-        expect(result.documents[0].totalUsd).toBeCloseTo(
-          Math.round((fakeTask.usd + fakeTask2.usd + fakeTask3.usd) * 100) / 100,
-          1
-        )
-        expect(result.page).toBe('1 of 1')
+      expect(result).toStrictEqual({
+        count: 3,
+        displaying: 1,
+        documents: [fakeTask],
+        page: '1 of 3'
       })
     })
 
-    describe('getByMonth', () => {
-      it('should return a result if finds one or more tasks', async () => {
-        const { sut } = makeSut()
+    it('should return a result if finds one or more tasks with a query and taskId', async () => {
+      const { fakeUser, sut } = makeSut()
 
-        await taskCollection.insertOne(task)
+      const fakeTask = makeFakeTask(fakeUser)
+      const fakeTask2 = makeFakeTask(fakeUser)
 
-        const query = {
-          month: task.date.month.toString(),
-          taskId: task.taskId,
-          type: 'TX',
-          year: task.date.year.toString()
-        }
+      await taskCollection.insertOne(fakeTask)
+      await taskCollection.insertOne(fakeTask2)
 
-        const result = await sut.getByMonth(query, task.user)
+      const query = {
+        month: fakeTask.date.month.toString(),
+        taskId: fakeTask.taskId,
+        type: 'TX',
+        year: fakeTask.date.year.toString()
+      }
 
-        expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [task], page: '1 of 1' })
-      })
+      const result = await sut.getByMonth(query, fakeTask.user)
 
-      it('should return a result if find one or more tasks with a query', async () => {
-        const { fakeUser, sut } = makeSut()
-
-        const fakeTask = makeFakeTask(fakeUser)
-        const fakeTask2 = makeFakeTask(fakeUser)
-        const fakeTask3 = makeFakeTask(fakeUser)
-        fakeTask2.date = fakeTask.date
-        fakeTask3.date = fakeTask.date
-
-        await taskCollection.insertOne(fakeTask)
-        await taskCollection.insertOne(fakeTask2)
-        await taskCollection.insertOne(fakeTask3)
-
-        const query = {
-          limit: '1',
-          month: fakeTask.date.month.toString(),
-          page: '1',
-          type: 'TX',
-          year: fakeTask.date.year.toString()
-        }
-
-        const result = await sut.getByMonth(query, fakeUser.personal.id)
-
-        expect(result).toStrictEqual({
-          count: 3,
-          displaying: 1,
-          documents: [fakeTask],
-          page: '1 of 3'
-        })
-      })
-
-      it('should return a result if finds one or more tasks with a query and taskId', async () => {
-        const { fakeUser, sut } = makeSut()
-
-        const fakeTask = makeFakeTask(fakeUser)
-        const fakeTask2 = makeFakeTask(fakeUser)
-
-        await taskCollection.insertOne(fakeTask)
-        await taskCollection.insertOne(fakeTask2)
-
-        const query = {
-          month: fakeTask.date.month.toString(),
-          taskId: fakeTask.taskId,
-          type: 'TX',
-          year: fakeTask.date.year.toString()
-        }
-
-        const result = await sut.getByMonth(query, fakeTask.user)
-
-        expect(result).toStrictEqual({
-          count: 1,
-          displaying: 1,
-          documents: [fakeTask],
-          page: '1 of 1'
-        })
+      expect(result).toStrictEqual({
+        count: 1,
+        displaying: 1,
+        documents: [fakeTask],
+        page: '1 of 1'
       })
     })
   })
+})

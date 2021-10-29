@@ -1,5 +1,6 @@
 import { ITask, IUser } from '@/domain'
 
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { environment } from '@/main/config/environment'
@@ -15,34 +16,41 @@ import request from 'supertest'
 
 let app: Express
 
-export default (): void =>
-  describe('query findAllTasks', () => {
-    const client = makeMongoDb()
-    let accessToken: string
-    let fakeTask: ITask
-    let fakeUser: IUser
-    let refreshToken: string
-    let taskCollection: ICollectionMethods
-    let query: string
-    let userCollection: ICollectionMethods
+describe('query findAllTasks', () => {
+  const client = makeMongoDb()
+  let accessToken: string
+  let dbIsConnected = true
+  let fakeTask: ITask
+  let fakeUser: IUser
+  let refreshToken: string
+  let taskCollection: ICollectionMethods
+  let query: string
+  let userCollection: ICollectionMethods
 
-    afterEach(async () => {
-      await taskCollection.deleteMany({})
-    })
+  afterAll(async () => {
+    if (!dbIsConnected) await client.disconnect()
+  })
 
-    beforeAll(async () => {
-      app = await App.setup()
+  afterEach(async () => {
+    await taskCollection.deleteMany({})
+  })
 
-      taskCollection = client.collection('tasks')
-      userCollection = client.collection('users')
-    })
+  beforeAll(async () => {
+    dbIsConnected = MongoAdapter.client !== null
+    if (!dbIsConnected) await MongoAdapter.connect(global.__MONGO_URI__)
 
-    beforeEach(async () => {
-      fakeUser = makeFakeUser()
-      fakeTask = makeFakeTask(fakeUser)
-      accessToken = makeGenerateAccessToken().generate(fakeUser)
-      refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
-      query = `
+    app = await App.setup()
+
+    taskCollection = client.collection('tasks')
+    userCollection = client.collection('users')
+  })
+
+  beforeEach(async () => {
+    fakeUser = makeFakeUser()
+    fakeTask = makeFakeTask(fakeUser)
+    accessToken = makeGenerateAccessToken().generate(fakeUser)
+    refreshToken = await makeGenerateRefreshToken().generate(fakeUser)
+    query = `
       query {
         findAllTasks(query: { sort: "-date.full", limit: "10", page: "1" }) {
           count
@@ -81,38 +89,38 @@ export default (): void =>
         }
       }
     `
-    })
-
-    it('should return 401 if user is not logged in', async () => {
-      await userCollection.insertOne(fakeUser)
-
-      await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query }).expect(401)
-    })
-
-    it('should return 200 with if does not find any tasks', async () => {
-      await userCollection.insertOne(fakeUser)
-
-      const response = await request(app)
-        .post(environment.GRAPHQL.ENDPOINT)
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-
-      expect(response.status).toBe(200)
-      expect(response.body.data.findAllTasks.count).toBe(0)
-    })
-
-    it('should return 200 if find a task', async () => {
-      await userCollection.insertOne(fakeUser)
-      await taskCollection.insertOne(fakeTask)
-
-      const response = await request(app)
-        .post(environment.GRAPHQL.ENDPOINT)
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-
-      expect(response.status).toBe(200)
-      expect(response.body.data.findAllTasks.count).toBe(1)
-    }, 12000)
   })
+
+  it('should return 401 if user is not logged in', async () => {
+    await userCollection.insertOne(fakeUser)
+
+    await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query }).expect(401)
+  })
+
+  it('should return 200 with if does not find any tasks', async () => {
+    await userCollection.insertOne(fakeUser)
+
+    const response = await request(app)
+      .post(environment.GRAPHQL.ENDPOINT)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
+      .send({ query })
+
+    expect(response.status).toBe(200)
+    expect(response.body.data.findAllTasks.count).toBe(0)
+  })
+
+  it('should return 200 if find a task', async () => {
+    await userCollection.insertOne(fakeUser)
+    await taskCollection.insertOne(fakeTask)
+
+    const response = await request(app)
+      .post(environment.GRAPHQL.ENDPOINT)
+      .set('x-access-token', accessToken)
+      .set('x-refresh-token', refreshToken)
+      .send({ query })
+
+    expect(response.status).toBe(200)
+    expect(response.body.data.findAllTasks.count).toBe(1)
+  }, 12000)
+})

@@ -20,7 +20,7 @@
     "test:integration": "yarn test:verbose -c jest-integration-config.js",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
     "test:unit": "yarn test:silent -c jest-unit-config.js",
-    "test:verbose": "jest --passWithNoTests --detectOpenHandles",
+    "test:verbose": "jest --passWithNoTests --detectOpenHandles --verbose",
     "test": "yarn test:unit && yarn test:integration",
     "babel:watch": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored --watch",
     "graphql:diff": "graphql diff",

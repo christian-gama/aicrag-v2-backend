@@ -1,6 +1,7 @@
 import { ILogError } from '@/domain'
 import { ICreateLogErrorRepository } from '@/domain/repositories'
 
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { LogErrorRepository } from '@/infra/database/repositories'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -25,31 +26,42 @@ const makeSut = (): SutTypes => {
   return { createLogErrorRepositoryStub, error, fakeLogError, sut }
 }
 
-export default (): void =>
-  describe('logErrorRepository', () => {
-    describe('create', () => {
-      it('should call create with correct error', async () => {
-        const { sut, error, createLogErrorRepositoryStub } = makeSut()
-        const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'create')
+describe('logErrorRepository', () => {
+  const client = makeMongoDb()
+  let dbIsConnected = true
 
-        await sut.save(error)
+  afterAll(async () => {
+    if (!dbIsConnected) await client.disconnect()
+  })
 
-        expect(createLogSpy).toHaveBeenCalledWith(error)
-      })
+  beforeAll(async () => {
+    dbIsConnected = MongoAdapter.client !== null
+    if (!dbIsConnected) await MongoAdapter.connect(global.__MONGO_URI__)
+  })
 
-      it('should save a log error on database', async () => {
-        const { error, fakeLogError, sut } = makeSut()
+  describe('create', () => {
+    it('should call create with correct error', async () => {
+      const { sut, error, createLogErrorRepositoryStub } = makeSut()
+      const createLogSpy = jest.spyOn(createLogErrorRepositoryStub, 'create')
 
-        const log = await sut.save(error)
+      await sut.save(error)
 
-        const { _id, ...obj } = log as any
+      expect(createLogSpy).toHaveBeenCalledWith(error)
+    })
 
-        expect(obj).toStrictEqual({
-          date: fakeLogError.date,
-          message: fakeLogError.message,
-          name: fakeLogError.name,
-          stack: fakeLogError.stack
-        })
+    it('should save a log error on database', async () => {
+      const { error, fakeLogError, sut } = makeSut()
+
+      const log = await sut.save(error)
+
+      const { _id, ...obj } = log as any
+
+      expect(obj).toStrictEqual({
+        date: fakeLogError.date,
+        message: fakeLogError.message,
+        name: fakeLogError.name,
+        stack: fakeLogError.stack
       })
     })
   })
+})

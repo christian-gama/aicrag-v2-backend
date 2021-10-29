@@ -1,3 +1,6 @@
+import { IUser } from '@/domain'
+
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { environment } from '@/main/config/environment'
@@ -6,6 +9,8 @@ import App from '@/main/express/config/app'
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 import { createTaskMutation } from '@/tests/helpers/queries'
+import { taskHelper } from '@/tests/helpers/task-helper.ts'
+import { userHelper } from '@/tests/helpers/user-helper'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
@@ -15,53 +20,98 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'create-task.feature'))
 
-export default (): void =>
-  defineFeature(feature, (test) => {
-    const client = makeMongoDb()
-    let accessToken: string
-    let app: Express
-    let refreshToken: string
-    let result: any
-    let userCollection: ICollectionMethods
+defineFeature(feature, (test) => {
+  const client = makeMongoDb()
+  let accessToken: string
+  let dbIsConnected = true
+  let app: Express
+  let fakeUser: IUser
+  let refreshToken: string
+  let result: any
+  let taskCollection: ICollectionMethods
+  let userCollection: ICollectionMethods
 
-    afterAll(async () => {
-      MockDate.reset()
+  afterAll(async () => {
+    if (!dbIsConnected) await client.disconnect()
+
+    MockDate.reset()
+  })
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+    jest.clearAllMocks()
+    jest.deepUnmock('../../../../../../src/application/validators/validation-composite.ts')
+    jest.restoreAllMocks()
+    jest.unmock('../../../../../../src/application/validators/validation-composite.ts')
+  })
+
+  afterEach(async () => {
+    await userCollection.deleteMany({})
+  })
+
+  beforeAll(async () => {
+    dbIsConnected = MongoAdapter.client !== null
+    if (!dbIsConnected) await MongoAdapter.connect(global.__MONGO_URI__)
+
+    MockDate.set(new Date())
+
+    app = await App.setup()
+
+    taskCollection = client.collection('tasks')
+    userCollection = client.collection('users')
+  })
+
+  test('being logged out', ({ given, when, then, and }) => {
+    given('I am logged out', () => {
+      accessToken = ''
+      refreshToken = ''
     })
 
-    afterEach(async () => {
-      await userCollection.deleteMany({})
+    when('I try to create a new task with the following data:', async (table) => {
+      const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
+
+      result = await request(app)
+        .post(environment.GRAPHQL.ENDPOINT)
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
     })
 
-    beforeAll(async () => {
-      MockDate.set(new Date())
-
-      app = await App.setup()
-
-      userCollection = client.collection('users')
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
     })
 
-    test('being logged out', ({ given, when, then, and }) => {
-      given('I am logged out', () => {
-        accessToken = ''
-        refreshToken = ''
-      })
-
-      when('I try to create a new task with the following data:', async (table) => {
-        const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
-
-        result = await request(app)
-          .post(environment.GRAPHQL.ENDPOINT)
-          .set('x-access-token', accessToken)
-          .set('x-refresh-token', refreshToken)
-          .send({ query })
-      })
-
-      then(/^I should receive an error with message "(.*)"$/, (message) => {
-        expect(result.body.errors[0].message).toBe(message)
-      })
-
-      and(/^I must receive a status code of (.*)$/, (statusCode) => {
-        expect(result.status).toBe(parseInt(statusCode))
-      })
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('using an existent task id', ({ given, when, then, and }) => {
+    given('I am logged in', async () => {
+      fakeUser = await userHelper.insertUser(userCollection)
+      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
+    })
+
+    given(/^I already have a task with taskId of (.*)$/, async (taskId) => {
+      await taskHelper.insertTask(taskCollection, fakeUser, { taskId })
+    })
+
+    when('I try to create a new task with the following data:', async (table) => {
+      const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
+
+      result = await request(app)
+        .post(environment.GRAPHQL.ENDPOINT)
+        .set('x-access-token', accessToken)
+        .set('x-refresh-token', refreshToken)
+        .send({ query })
+    })
+
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+})

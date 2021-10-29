@@ -1,5 +1,6 @@
 import { IUser } from '@/domain'
 
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { environment } from '@/main/config/environment'
@@ -19,109 +20,116 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'send-welcome-email.feature'))
 
-export default (): void =>
-  defineFeature(feature, (test) => {
-    const client = makeMongoDb()
-    let app: Express
-    let fakeUser: IUser
-    let result: any
-    let userCollection: ICollectionMethods
+defineFeature(feature, (test) => {
+  const client = makeMongoDb()
+  let app: Express
+  let dbIsConnected = true
+  let fakeUser: IUser
+  let result: any
+  let userCollection: ICollectionMethods
 
-    afterEach(async () => {
-      await userCollection.deleteMany({})
-    })
+  afterAll(async () => {
+    if (!dbIsConnected) await client.disconnect()
+  })
 
-    beforeAll(async () => {
-      app = await App.setup()
+  afterEach(async () => {
+    await userCollection.deleteMany({})
+  })
 
-      userCollection = client.collection('users')
-    })
+  beforeAll(async () => {
+    dbIsConnected = MongoAdapter.client !== null
+    if (!dbIsConnected) await MongoAdapter.connect(global.__MONGO_URI__)
 
-    test('having a valid email', ({ given, when, then, and }) => {
-      given(/^I have an account with the email "(.*)"$/, async (email) => {
-        fakeUser = await userHelper.insertUser(userCollection, {
-          personal: {
-            email,
-            id: randomUUID(),
-            name: 'any_name',
-            password: 'any_password'
-          }
-        })
-      })
+    app = await App.setup()
 
-      when('I request to send an email using my existent email', async () => {
-        const query = sendWelcomeEmailMutation({ email: fakeUser.personal.email })
+    userCollection = client.collection('users')
+  })
 
-        if (process.env.TEST_SEND_EMAIL !== 'true') {
-          jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+  test('having a valid email', ({ given, when, then, and }) => {
+    given(/^I have an account with the email "(.*)"$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
         }
-
-        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
-      })
-
-      then(/^I should receive a message "(.*)"$/, (message) => {
-        expect(result.body.data.sendWelcomeEmail.message).toBe(message)
-      })
-
-      and(/^I must receive a status code of (.*)$/, (statusCode) => {
-        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    test('having an invalid email', ({ given, when, then, and }) => {
-      given(/^I have an account with the email "(.*)"$/, async (email) => {
-        fakeUser = await userHelper.insertUser(userCollection, {
-          personal: {
-            email,
-            id: randomUUID(),
-            name: 'any_name',
-            password: 'any_password'
-          }
-        })
-      })
+    when('I request to send an email using my existent email', async () => {
+      const query = sendWelcomeEmailMutation({ email: fakeUser.personal.email })
 
-      when(/^I request to send an email using an invalid email "(.*)"$/, async (invalidEmail) => {
-        const query = sendWelcomeEmailMutation({ email: invalidEmail })
+      if (process.env.TEST_SEND_EMAIL !== 'true') {
+        jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+      }
 
-        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
-      })
-
-      then(/^I should receive an error message "(.*)"$/, (message) => {
-        expect(result.body.errors[0].message).toBe(message)
-      })
-
-      and(/^I must receive a status code of (.*)$/, (statusCode) => {
-        expect(result.status).toBe(parseInt(statusCode))
-      })
+      result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
     })
 
-    test('having an account already activated', ({ given, when, then, and }) => {
-      given(/^I have an account with the email "(.*)" and account is already activated$/, async (email) => {
-        fakeUser = await userHelper.insertUser(userCollection, {
-          personal: {
-            email,
-            id: randomUUID(),
-            name: 'any_name',
-            password: 'any_password'
-          },
-          settings: {
-            accountActivated: true
-          }
-        })
-      })
+    then(/^I should receive a message "(.*)"$/, (message) => {
+      expect(result.body.data.sendWelcomeEmail.message).toBe(message)
+    })
 
-      when('I request to send an email using using my existent email', async () => {
-        const query = sendWelcomeEmailMutation({ email: fakeUser.personal.email })
-
-        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
-      })
-
-      then(/^I should receive an error message "(.*)"$/, (message) => {
-        expect(result.body.errors[0].message).toBe(message)
-      })
-
-      and(/^I must receive a status code of (.*)$/, (statusCode) => {
-        expect(result.status).toBe(parseInt(statusCode))
-      })
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('having an invalid email', ({ given, when, then, and }) => {
+    given(/^I have an account with the email "(.*)"$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        }
+      })
+    })
+
+    when(/^I request to send an email using an invalid email "(.*)"$/, async (invalidEmail) => {
+      const query = sendWelcomeEmailMutation({ email: invalidEmail })
+
+      result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('having an account already activated', ({ given, when, then, and }) => {
+    given(/^I have an account with the email "(.*)" and account is already activated$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        },
+        settings: {
+          accountActivated: true
+        }
+      })
+    })
+
+    when('I request to send an email using using my existent email', async () => {
+      const query = sendWelcomeEmailMutation({ email: fakeUser.personal.email })
+
+      result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+})

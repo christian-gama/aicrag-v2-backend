@@ -47,7 +47,7 @@ export const taskHelper = {
       return result
     })
   },
-  insertTask: async (collection: ICollectionMethods, user: IUser, taskProperty: TaskProperty): Promise<ITask> => {
+  insertTask: async (collection: ICollectionMethods, user: IUser, taskProperty?: TaskProperty): Promise<ITask> => {
     const result = makeFakeTask(user, taskProperty)
     await collection.insertOne(result)
 

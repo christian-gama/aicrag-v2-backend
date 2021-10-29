@@ -4,58 +4,57 @@ import { Express } from 'express'
 import rateLimit from 'express-rate-limit'
 import request from 'supertest'
 
-export default (): void =>
-  describe('rateLimit', () => {
-    let app: Express
+describe('rateLimit', () => {
+  let app: Express
 
-    beforeAll(async () => {
-      app = await App.setup()
+  beforeAll(async () => {
+    app = await App.setup()
 
-      const block = rateLimit({
-        max: 3,
-        message: 'Any message',
-        windowMs: 60 * 1000
-      })
-
-      const limiter = rateLimit({
-        max: 123,
-        windowMs: 60 * 1000
-      })
-
-      app.use('/test_block', block)
-      app.use('/test_limiter', limiter)
-
-      app.post('/test_block', (req, res) => {
-        res.send()
-      })
-
-      app.post('/test_limiter', (req, res) => {
-        res.send()
-      })
+    const block = rateLimit({
+      max: 3,
+      message: 'Any message',
+      windowMs: 60 * 1000
     })
 
-    it('should enable rateLimit', async () => {
-      const result = await request(app).post('/test_limiter')
-
-      expect(result.headers['x-ratelimit-limit']).toBe('123')
+    const limiter = rateLimit({
+      max: 123,
+      windowMs: 60 * 1000
     })
 
-    it('should block after 3 attempts', async () => {
-      let result = await request(app).post('/test_block')
+    app.use('/test_block', block)
+    app.use('/test_limiter', limiter)
 
-      expect(result.status).toBe(200)
+    app.post('/test_block', (req, res) => {
+      res.send()
+    })
 
-      result = await request(app).post('/test_block')
-
-      expect(result.status).toBe(200)
-
-      result = await request(app).post('/test_block')
-
-      expect(result.status).toBe(200)
-
-      result = await request(app).post('/test_block')
-
-      expect(result.status).toBe(429)
-      expect(result.text).toBe('Any message')
+    app.post('/test_limiter', (req, res) => {
+      res.send()
     })
   })
+
+  it('should enable rateLimit', async () => {
+    const result = await request(app).post('/test_limiter')
+
+    expect(result.headers['x-ratelimit-limit']).toBe('123')
+  })
+
+  it('should block after 3 attempts', async () => {
+    let result = await request(app).post('/test_block')
+
+    expect(result.status).toBe(200)
+
+    result = await request(app).post('/test_block')
+
+    expect(result.status).toBe(200)
+
+    result = await request(app).post('/test_block')
+
+    expect(result.status).toBe(200)
+
+    result = await request(app).post('/test_block')
+
+    expect(result.status).toBe(429)
+    expect(result.text).toBe('Any message')
+  })
+})

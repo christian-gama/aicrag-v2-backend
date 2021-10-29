@@ -1,5 +1,6 @@
 import { IUser } from '@/domain'
 
+import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { environment } from '@/main/config/environment'
@@ -19,115 +20,122 @@ import request from 'supertest'
 
 const feature = loadFeature(path.resolve(__dirname, 'send-recover-password-email.feature'))
 
-export default (): void =>
-  defineFeature(feature, (test) => {
-    const client = makeMongoDb()
-    let app: Express
-    let fakeUser: IUser
-    let result: any
-    let userCollection: ICollectionMethods
+defineFeature(feature, (test) => {
+  const client = makeMongoDb()
+  let app: Express
+  let dbIsConnected = true
+  let fakeUser: IUser
+  let result: any
+  let userCollection: ICollectionMethods
 
-    afterEach(async () => {
-      await userCollection.deleteMany({})
-    })
+  afterAll(async () => {
+    if (!dbIsConnected) await client.disconnect()
+  })
 
-    beforeAll(async () => {
-      app = await App.setup()
+  afterEach(async () => {
+    await userCollection.deleteMany({})
+  })
 
-      userCollection = client.collection('users')
-    })
+  beforeAll(async () => {
+    dbIsConnected = MongoAdapter.client !== null
+    if (!dbIsConnected) await MongoAdapter.connect(global.__MONGO_URI__)
 
-    test('having a valid email', ({ given, when, then, and }) => {
-      given(/^I have an account with the an email "(.*)" and a valid resetPasswordToken$/, async (email) => {
-        fakeUser = await userHelper.insertUser(userCollection, {
-          personal: {
-            email,
-            id: randomUUID(),
-            name: 'any_name',
-            password: 'any_password'
-          },
-          temporary: {
-            resetPasswordToken: 'any_token'
-          }
-        })
-      })
+    app = await App.setup()
 
-      when('I request to send an email using my existent email', async () => {
-        const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
+    userCollection = client.collection('users')
+  })
 
-        if (process.env.TEST_SEND_EMAIL !== 'true') {
-          jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+  test('having a valid email', ({ given, when, then, and }) => {
+    given(/^I have an account with the an email "(.*)" and a valid resetPasswordToken$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        },
+        temporary: {
+          resetPasswordToken: 'any_token'
         }
-
-        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
-      })
-
-      then(/^I should receive a message "(.*)"$/, (message) => {
-        expect(result.body.data.sendRecoverPasswordEmail.message).toBe(message)
-      })
-
-      and(/^I must receive a status code of (.*)$/, (statusCode) => {
-        expect(result.status).toBe(parseInt(statusCode))
       })
     })
 
-    test('having an invalid email', ({ given, when, then, and }) => {
-      given(/^I have an account with the an email "(.*)" and a valid resetPasswordToken$/, async (email) => {
-        fakeUser = await userHelper.insertUser(userCollection, {
-          personal: {
-            email,
-            id: randomUUID(),
-            name: 'any_name',
-            password: 'any_password'
-          },
-          temporary: {
-            resetPasswordToken: 'any_token'
-          }
-        })
-      })
+    when('I request to send an email using my existent email', async () => {
+      const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
 
-      when(/^I request to send an email using an invalid email "(.*)"$/, async (invalidEmail) => {
-        const query = sendRecoverPasswordEmailMutation({ email: invalidEmail })
+      if (process.env.TEST_SEND_EMAIL !== 'true') {
+        jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+      }
 
-        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
-      })
-
-      then(/^I should receive an error message "(.*)"$/, (message) => {
-        expect(result.body.errors[0].message).toBe(message)
-      })
-
-      and(/^I must receive a status code of (.*)$/, (statusCode) => {
-        expect(result.status).toBe(parseInt(statusCode))
-      })
+      result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
     })
 
-    test('having an invalid resetPasswordToken', ({ given, when, then, and }) => {
-      given(/^I have an account with the an email "(.*)" and an invalid resetPasswordToken$/, async (email) => {
-        fakeUser = await userHelper.insertUser(userCollection, {
-          personal: {
-            email,
-            id: randomUUID(),
-            name: 'any_name',
-            password: 'any_password'
-          },
-          temporary: {
-            resetPasswordToken: null
-          }
-        })
-      })
+    then(/^I should receive a message "(.*)"$/, (message) => {
+      expect(result.body.data.sendRecoverPasswordEmail.message).toBe(message)
+    })
 
-      when('I request to send an email using my existent email', async () => {
-        const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
-
-        result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
-      })
-
-      then(/^I should receive an error message "(.*)"$/, (message) => {
-        expect(result.body.errors[0].message).toBe(message)
-      })
-
-      and(/^I must receive a status code of (.*)$/, (statusCode) => {
-        expect(result.status).toBe(parseInt(statusCode))
-      })
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
     })
   })
+
+  test('having an invalid email', ({ given, when, then, and }) => {
+    given(/^I have an account with the an email "(.*)" and a valid resetPasswordToken$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        },
+        temporary: {
+          resetPasswordToken: 'any_token'
+        }
+      })
+    })
+
+    when(/^I request to send an email using an invalid email "(.*)"$/, async (invalidEmail) => {
+      const query = sendRecoverPasswordEmailMutation({ email: invalidEmail })
+
+      result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+
+  test('having an invalid resetPasswordToken', ({ given, when, then, and }) => {
+    given(/^I have an account with the an email "(.*)" and an invalid resetPasswordToken$/, async (email) => {
+      fakeUser = await userHelper.insertUser(userCollection, {
+        personal: {
+          email,
+          id: randomUUID(),
+          name: 'any_name',
+          password: 'any_password'
+        },
+        temporary: {
+          resetPasswordToken: null
+        }
+      })
+    })
+
+    when('I request to send an email using my existent email', async () => {
+      const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
+
+      result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
+    })
+
+    then(/^I should receive an error message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toBe(message)
+    })
+
+    and(/^I must receive a status code of (.*)$/, (statusCode) => {
+      expect(result.status).toBe(parseInt(statusCode))
+    })
+  })
+})
