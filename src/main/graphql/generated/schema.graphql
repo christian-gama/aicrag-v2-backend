@@ -35,7 +35,7 @@ input CreateTaskInput {
 scalar DateString
 
 type DeleteTask {
-  status: Boolean
+  message: String!
 }
 
 input DeleteTaskParam {

@@ -3,7 +3,7 @@ type Mutation {
 }
 
 type DeleteTask {
-  status: Boolean
+  message: String!
 }
 
 input DeleteTaskParam {

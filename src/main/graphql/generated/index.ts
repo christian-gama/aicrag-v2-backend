@@ -52,7 +52,7 @@ export type CreateTaskInput = {
 
 export type DeleteTask = {
   __typename?: 'DeleteTask';
-  status?: Maybe<Scalars['Boolean']>;
+  message: Scalars['String'];
 };
 
 export type DeleteTaskParam = {
@@ -769,7 +769,7 @@ export interface DateStringScalarConfig extends GraphQLScalarTypeConfig<Resolver
 }
 
 export type DeleteTaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteTask'] = ResolversParentTypes['DeleteTask']> = {
-  status?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
