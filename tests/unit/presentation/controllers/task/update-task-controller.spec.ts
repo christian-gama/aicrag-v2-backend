@@ -121,9 +121,11 @@ describe('updateTaskController', () => {
   })
 
   it('should return task with new commentary if changes only commentary', async () => {
-    const { fakeTask, request, sut } = makeSut()
-    fakeTask.commentary = 'new_commentary'
-    request.body.commentary = fakeTask.commentary
+    const { fakeUser, request, sut, taskRepositoryStub } = makeSut()
+    const updatedTask = makeFakeTask(fakeUser)
+    request.body.commentary = 'new_commentary'
+    updatedTask.commentary = request.body.commentary
+    jest.spyOn(taskRepositoryStub, 'updateById').mockReturnValueOnce(Promise.resolve(updatedTask))
 
     const result = await sut.handle(request)
 
@@ -215,9 +217,11 @@ describe('updateTaskController', () => {
   })
 
   it('should return task with new duration if changes only duration', async () => {
-    const { fakeTask, request, sut } = makeSut()
-    fakeTask.duration = 12.3
-    request.body.duration = fakeTask.duration
+    const { fakeUser, request, sut, taskRepositoryStub } = makeSut()
+    const updatedTask = makeFakeTask(fakeUser)
+    request.body.duration = 12.3
+    updatedTask.duration = request.body.duration
+    jest.spyOn(taskRepositoryStub, 'updateById').mockReturnValueOnce(Promise.resolve(updatedTask))
 
     const result = (await sut.handle(request)).data.task
 
@@ -225,16 +229,18 @@ describe('updateTaskController', () => {
   })
 
   it('should return task with new type and duration if changes only type', async () => {
-    const { fakeTask, request, sut } = makeSut()
-    fakeTask.duration = 2.4
-    fakeTask.type = 'QA'
-    request.body.duration = fakeTask.duration
-    request.body.type = fakeTask.type
+    const { fakeUser, request, sut, taskRepositoryStub } = makeSut()
+    const updatedTask = makeFakeTask(fakeUser)
+    request.body.duration = 12.3
+    request.body.type = 'QA'
+    updatedTask.duration = request.body.duration
+    updatedTask.type = request.body.type
+    jest.spyOn(taskRepositoryStub, 'updateById').mockReturnValueOnce(Promise.resolve(updatedTask))
 
     const result = (await sut.handle(request)).data.task
 
-    expect(result.duration).toBe(2.4)
-    expect(result.type).toBe('QA')
+    expect(result.duration).toBe(request.body.duration)
+    expect(result.type).toBe(request.body.type)
   })
 
   it('should call updateById with correct values if changes duration', async () => {
@@ -260,11 +266,28 @@ describe('updateTaskController', () => {
     expect(result).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
   })
 
-  it('should return update the updatedAt property if there is a change', async () => {
-    const { fakeTask, request, sut } = makeSut()
-    const date = new Date(Date.now())
-    fakeTask.logs.updatedAt = date
+  it('should return a default message if there tries to update to the same value', async () => {
+    const { fakeTask, httpHelper, request, sut } = makeSut()
+
+    request.body.duration = fakeTask.duration
+    request.body.type = fakeTask.type
+    request.body.taskId = fakeTask.taskId
     request.body.commentary = fakeTask.commentary
+    request.body.date = fakeTask.date.full.toISOString()
+
+    const result = await sut.handle(request)
+
+    expect(result).toStrictEqual(httpHelper.ok({ message: 'No changes were made' }))
+  })
+
+  it('should return update the updatedAt property if there is a change', async () => {
+    const { fakeUser, request, sut, taskRepositoryStub } = makeSut()
+    const date = new Date(Date.now())
+    const updatedTask = makeFakeTask(fakeUser)
+    request.body.commentary = 'any_commentary'
+    updatedTask.logs.updatedAt = date
+    updatedTask.commentary = request.body.commentary
+    jest.spyOn(taskRepositoryStub, 'updateById').mockReturnValueOnce(Promise.resolve(updatedTask))
 
     const result = (await sut.handle(request)).data.task.logs
 
@@ -282,13 +305,15 @@ describe('updateTaskController', () => {
   })
 
   it('should return a task with new status if changes only status', async () => {
-    const { fakeTask, request, sut } = makeSut()
-    fakeTask.status = 'in_progress'
-    request.body.status = fakeTask.status
+    const { fakeUser, request, sut, taskRepositoryStub } = makeSut()
+    const updatedTask = makeFakeTask(fakeUser)
+    request.body.status = 'in_progress'
+    updatedTask.status = request.body.status
+    jest.spyOn(taskRepositoryStub, 'updateById').mockReturnValueOnce(Promise.resolve(updatedTask))
 
     const result = (await sut.handle(request)).data.task
 
-    expect(result.status).toBe('in_progress')
+    expect(result.status).toBe(request.body.status)
   })
 
   it('should call updateById with correct values if changes status', async () => {

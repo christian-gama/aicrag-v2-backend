@@ -1,7 +1,7 @@
 import { ITaskRepository } from '@/domain/repositories/task'
 import { IValidator } from '@/domain/validators'
 
-import { MustLoginError, TaskNotFoundError } from '@/application/errors'
+import { ConflictParamError, MustLoginError, TaskNotFoundError } from '@/application/errors'
 
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 
@@ -24,7 +24,6 @@ export class UpdateTaskController implements IController {
     const user = httpRequest.user
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
-    const data = httpRequest.body
     const params = httpRequest.params
 
     const error = await this.validateTaskParam.validate(params)
@@ -33,16 +32,18 @@ export class UpdateTaskController implements IController {
     const task = await this.taskRepository.findById(params.id, user.personal.id)
     if (!task) return this.httpHelper.badRequest(new TaskNotFoundError())
 
+    const data = { ...httpRequest.body, task, user }
+
     const update: Record<string, any> = {}
 
-    if (data.commentary) {
+    if (data.commentary && data.commentary !== task.commentary) {
       const error = await this.validateCommentary.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
       update.commentary = data.commentary
     }
 
-    if (data.date) {
+    if (data.date && data.date !== task.date.full.toISOString()) {
       const error = await this.validateDate.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
@@ -55,7 +56,7 @@ export class UpdateTaskController implements IController {
       update['date.year'] = date.getUTCFullYear()
     }
 
-    if (data.duration || data.type) {
+    if ((data.duration && data.duration !== task.duration) || (data.type && data.type !== task.type)) {
       if (!data.type) data.type = task?.type
       if (!data.duration) data.duration = task?.duration
 
@@ -73,16 +74,17 @@ export class UpdateTaskController implements IController {
           : (data.duration / 60) * 112.5 * user.settings.handicap
     }
 
-    if (data.status) {
+    if (data.status && data.status !== task.status) {
       const error = await this.validateStatus.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
       update.status = data.status
     }
 
-    if (data.taskId) {
+    if (data.taskId && data.taskId !== task.taskId) {
       const error = await this.validateTaskId.validate(data)
-      if (error) return this.httpHelper.badRequest(error)
+      if (error instanceof ConflictParamError) return this.httpHelper.conflict(error)
+      if (error instanceof Error) return this.httpHelper.badRequest(error)
 
       update.taskId = data.taskId
     }
