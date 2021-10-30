@@ -13,7 +13,7 @@ module.exports = {
   coverageProvider: 'babel',
   preset: '@shelf/jest-mongodb',
   maxWorkers: 1,
-  testMatch: ['**/*.steps.ts', '**/*.test.ts', '**/*.spec.ts', '!**/integration.test.ts'],
+  testMatch: ['**/*.steps.ts', '**/*.test.ts', '**/*.spec.ts', '!**/integration.test.ts', '!**/ci.test.ts'],
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
