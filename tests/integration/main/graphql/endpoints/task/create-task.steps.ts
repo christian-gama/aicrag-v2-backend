@@ -113,18 +113,28 @@ defineFeature(feature, (test) => {
       ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
     })
 
-    when('I try to create a new task with the following invalid data:', async (table) => {
-      const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
+    when(
+      /^I try to create a new task with the following invalid data (.*) (.*) (.*) (.*) (.*) (.*)$/,
+      async (commentary, date, duration, status, taskId, type) => {
+        const query = createTaskMutation({
+          commentary,
+          date: new Date(Date.parse(date)),
+          duration,
+          status,
+          taskId,
+          type
+        })
 
-      result = await request(app)
-        .post(environment.GRAPHQL.ENDPOINT)
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+        result = await request(app)
+          .post(environment.GRAPHQL.ENDPOINT)
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      }
+    )
 
-    then(/^I should receive an error with message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
+    then('I should receive an error with message of invalid param', () => {
+      expect(result.body.errors[0].message.startsWith('Invalid param:')).toBeTruthy()
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
@@ -138,15 +148,25 @@ defineFeature(feature, (test) => {
       ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
     })
 
-    when('I try to create a new task with the following valid data:', async (table) => {
-      const query = createTaskMutation({ ...table[0], date: new Date(Date.parse(table[0].date)) })
+    when(
+      /^I try to create a new task with the following valid data (.*) (.*) (.*) (.*) (.*) (.*)$/,
+      async (commentary, date, duration, status, taskId, type) => {
+        const query = createTaskMutation({
+          commentary,
+          date: new Date(Date.parse(date)),
+          duration,
+          status,
+          taskId,
+          type
+        })
 
-      result = await request(app)
-        .post(environment.GRAPHQL.ENDPOINT)
-        .set('x-access-token', accessToken)
-        .set('x-refresh-token', refreshToken)
-        .send({ query })
-    })
+        result = await request(app)
+          .post(environment.GRAPHQL.ENDPOINT)
+          .set('x-access-token', accessToken)
+          .set('x-refresh-token', refreshToken)
+          .send({ query })
+      }
+    )
 
     then('I should have created a new task', () => {
       expect(result.body.data.createTask.task).toBeTruthy()
