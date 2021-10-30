@@ -23,10 +23,10 @@ export const taskHelper = {
           year: date.getUTCFullYear()
         },
         duration: +row.duration,
-        id: tasks[index].id,
+        id: tasks.find((task) => task.taskId === row.taskId)?.id,
         logs: {
-          createdAt: tasks[index].logs.createdAt.toISOString(),
-          updatedAt: tasks[index].logs.updatedAt
+          createdAt: tasks.find((task) => task.taskId === row.taskId)?.logs.createdAt.toISOString(),
+          updatedAt: tasks.find((task) => task.taskId === row.taskId)?.logs.updatedAt
         },
         status: row.status,
         taskId: row.taskId,
