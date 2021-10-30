@@ -2,23 +2,23 @@ export const updateTaskMutation = (
   param: { id: string },
   input: {
     commentary?: string
-    date: Date
-    duration: number
-    status: 'completed' | 'in_progress'
+    date?: Date
+    duration?: number
+    status?: 'completed' | 'in_progress'
     taskId?: string
-    type: 'TX' | 'QA'
+    type?: 'TX' | 'QA'
   }
 ): string => `
   mutation {
     updateTask(
-      param: { id: ${param.id} },
+      param: { id: "${param.id}" },
       input: {
-        commentary: "${input.commentary ?? ''}",
-        date: "${input.date.toString()}",
-        duration: ${input.duration},
-        status: "${input.status}",
-        taskId: "${input.taskId ?? ''}",
-        type: "${input.type}"
+        ${input.commentary ? `commentary: "${input.commentary}",` : ''}
+        ${input.date ? `date: "${input.date.toString()}",` : ''}
+        ${input.duration ? `duration: ${input.duration},` : ''}
+        ${input.status ? `status: ${input.status},` : ''}
+        ${input.taskId ? `taskId: "${input.taskId}",` : ''}
+        ${input.type ? `type: ${input.type}` : ''}
       }) {
         ... on UpdateTaskHasChanges {
             task {
