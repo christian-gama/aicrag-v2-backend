@@ -20,6 +20,9 @@ export class TaskRepository implements ITaskRepository {
   async findAll<T extends ITask>(userId: string, query: IQuery): Promise<IQueryResult<T>> {
     const taskCollection = this.database.collection('tasks')
 
+    // Default sorting should be by date
+    if (!query.sort) query.sort = '-date.full'
+
     const result = await taskCollection.findAll<ITask>({ user: userId }, query)
 
     return result as IQueryResult<T>
