@@ -1,0 +1,45 @@
+import { InvalidQueryError } from '@/application/errors'
+import { ValidateType } from '@/application/validators/query'
+import { ValidatePeriod } from '@/application/validators/query/validate-period'
+
+import { HttpRequest } from '@/presentation/http/protocols'
+
+interface SutTypes {
+  request: HttpRequest
+  sut: ValidateType
+}
+const makeSut = (): SutTypes => {
+  const request: HttpRequest = { query: { period: 'today' } }
+
+  const sut = new ValidatePeriod()
+
+  return { request, sut }
+}
+
+describe('validatePeriod', () => {
+  it('should return InvalidQueryError if period is invalid', async () => {
+    const { request, sut } = makeSut()
+    request.query.period = 'invalid_period'
+
+    const result = await sut.validate(request.query)
+
+    expect(result).toStrictEqual(new InvalidQueryError('period'))
+  })
+
+  it('should return undefined if succeeds', async () => {
+    const { request, sut } = makeSut()
+
+    const result = await sut.validate(request.query)
+
+    expect(result).toBeUndefined()
+  })
+
+  it('should return undefined if there is no period', async () => {
+    const { request, sut } = makeSut()
+    request.query.period = undefined
+
+    const result = await sut.validate(request.query)
+
+    expect(result).toBeUndefined()
+  })
+})
