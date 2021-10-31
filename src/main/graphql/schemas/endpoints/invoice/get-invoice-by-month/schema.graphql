@@ -15,6 +15,7 @@ input GetInvoiceByMonthQuery {
   page: String
   sort: String
   taskId: String
+  period: GetInvoiceByMonthPeriod
   type: GetInvoiceByMonthType!
   year: String!
 }
@@ -23,4 +24,11 @@ enum GetInvoiceByMonthType {
   QA
   TX
   both
+}
+
+enum GetInvoiceByMonthPeriod {
+  today
+  past_3_days
+  past_7_days
+  past_15_days
 }

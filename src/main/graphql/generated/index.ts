@@ -142,10 +142,18 @@ export type GetInvoiceByMonth = {
   page: Scalars['String'];
 };
 
+export enum GetInvoiceByMonthPeriod {
+  Past_3Days = 'past_3_days',
+  Past_7Days = 'past_7_days',
+  Past_15Days = 'past_15_days',
+  Today = 'today'
+}
+
 export type GetInvoiceByMonthQuery = {
   limit?: Maybe<Scalars['String']>;
   month: Scalars['String'];
   page?: Maybe<Scalars['String']>;
+  period?: Maybe<GetInvoiceByMonthPeriod>;
   sort?: Maybe<Scalars['String']>;
   taskId?: Maybe<Scalars['String']>;
   type: GetInvoiceByMonthType;
@@ -612,6 +620,7 @@ export type ResolversTypes = {
   GetAllInvoicesQuery: GetAllInvoicesQuery;
   GetAllInvoicesType: GetAllInvoicesType;
   GetInvoiceByMonth: ResolverTypeWrapper<GetInvoiceByMonth>;
+  GetInvoiceByMonthPeriod: GetInvoiceByMonthPeriod;
   GetInvoiceByMonthQuery: GetInvoiceByMonthQuery;
   GetInvoiceByMonthType: GetInvoiceByMonthType;
   InactiveAccount: ResolverTypeWrapper<InactiveAccount>;

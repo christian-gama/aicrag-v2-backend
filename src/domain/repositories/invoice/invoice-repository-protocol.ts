@@ -8,6 +8,7 @@ export interface IQueryInvoice extends IQuery {
   month: string
   year: string
   taskId?: string
+  period?: string
   type: string
 }
 

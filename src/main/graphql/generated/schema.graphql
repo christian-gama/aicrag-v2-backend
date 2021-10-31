@@ -119,10 +119,18 @@ type GetInvoiceByMonth {
   page: String!
 }
 
+enum GetInvoiceByMonthPeriod {
+  past_3_days
+  past_7_days
+  past_15_days
+  today
+}
+
 input GetInvoiceByMonthQuery {
   limit: String
   month: String!
   page: String
+  period: GetInvoiceByMonthPeriod
   sort: String
   taskId: String
   type: GetInvoiceByMonthType!
