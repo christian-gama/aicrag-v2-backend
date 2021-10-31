@@ -3,6 +3,7 @@ import { ITask, IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 
+import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
@@ -63,7 +64,7 @@ defineFeature(feature, (test) => {
       const query = findAllTasksQuery({})
 
       result = await request(app)
-        .post('/graphql')
+        .post(environment.GRAPHQL.ENDPOINT)
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
@@ -92,7 +93,7 @@ defineFeature(feature, (test) => {
       const query = findAllTasksQuery({})
 
       result = await request(app)
-        .post('/graphql')
+        .post(environment.GRAPHQL.ENDPOINT)
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
@@ -128,7 +129,7 @@ defineFeature(feature, (test) => {
       const query = findAllTasksQuery({ limit })
 
       result = await request(app)
-        .post('/graphql')
+        .post(environment.GRAPHQL.ENDPOINT)
         .set('x-access-token', accessToken)
         .set('x-refresh-token', refreshToken)
         .send({ query })
