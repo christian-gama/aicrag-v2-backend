@@ -178,5 +178,104 @@ describe('invoiceRepository', () => {
         page: '1 of 1'
       })
     })
+
+    it('should return a result if finds one or more tasks with a query and period of today', async () => {
+      const { fakeUser, sut } = makeSut()
+
+      const fakeTasks: ITask[] = []
+
+      for (let i = 0; i < 2; i++) {
+        const fakeTask = makeFakeTask(fakeUser)
+        fakeTask.date.day = new Date().getDate() - i
+        fakeTasks.push(fakeTask)
+
+        await taskCollection.insertOne(fakeTask)
+      }
+
+      // Remove the last task to make the test pass
+      fakeTasks.pop()
+
+      const query = {
+        month: fakeTasks[0].date.month.toString(),
+        period: 'today',
+        type: 'TX',
+        year: fakeTasks[0].date.year.toString()
+      }
+
+      const result = await sut.getByMonth(query, fakeTasks[0].user)
+
+      expect(result).toStrictEqual({
+        count: 1,
+        displaying: 1,
+        documents: fakeTasks,
+        page: '1 of 1'
+      })
+    })
+
+    it('should return a result if finds one or more tasks with a query and period of past 3 days', async () => {
+      const { fakeUser, sut } = makeSut()
+
+      const fakeTasks: ITask[] = []
+
+      for (let i = 0; i < 4; i++) {
+        const fakeTask = makeFakeTask(fakeUser)
+        fakeTask.date.day = new Date().getDate() - i
+        fakeTasks.push(fakeTask)
+
+        await taskCollection.insertOne(fakeTask)
+      }
+
+      // Remove the last task to make the test pass
+      fakeTasks.pop()
+
+      const query = {
+        month: fakeTasks[0].date.month.toString(),
+        period: 'past_3_days',
+        type: 'TX',
+        year: fakeTasks[0].date.year.toString()
+      }
+
+      const result = await sut.getByMonth(query, fakeTasks[0].user)
+
+      expect(result).toStrictEqual({
+        count: 3,
+        displaying: 3,
+        documents: fakeTasks,
+        page: '1 of 1'
+      })
+    })
+
+    it('should return a result if finds one or more tasks with a query and period of past 7 days', async () => {
+      const { fakeUser, sut } = makeSut()
+
+      const fakeTasks: ITask[] = []
+
+      for (let i = 0; i < 8; i++) {
+        const fakeTask = makeFakeTask(fakeUser)
+        fakeTask.date.day = new Date().getDate() - i
+        fakeTasks.push(fakeTask)
+
+        await taskCollection.insertOne(fakeTask)
+      }
+
+      // Remove the last task to make the test pass
+      fakeTasks.pop()
+
+      const query = {
+        month: fakeTasks[0].date.month.toString(),
+        period: 'past_7_days',
+        type: 'TX',
+        year: fakeTasks[0].date.year.toString()
+      }
+
+      const result = await sut.getByMonth(query, fakeTasks[0].user)
+
+      expect(result).toStrictEqual({
+        count: 7,
+        displaying: 7,
+        documents: fakeTasks,
+        page: '1 of 1'
+      })
+    })
   })
 })
