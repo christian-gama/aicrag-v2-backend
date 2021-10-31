@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-import { IUser } from '@/domain'
-
 import { Resolvers } from '@/main/graphql/generated'
 
 export const resolver: Resolvers = {
@@ -36,17 +33,17 @@ export const resolver: Resolvers = {
       return usd
     },
     user: async ({ user }, _, { userDataLoader }) => {
-      const _user = (await userDataLoader.load(user as any)) as IUser
+      const loadedUser = await userDataLoader.load(user as any)
 
       return {
         __typename: 'PublicUser',
         personal: {
-          email: _user.personal.email,
-          id: _user.personal.id,
-          name: _user.personal.name
+          email: loadedUser.personal.email,
+          id: loadedUser.personal.id,
+          name: loadedUser.personal.name
         },
         settings: {
-          currency: _user.settings.currency as any
+          currency: loadedUser.settings.currency
         }
       }
     }

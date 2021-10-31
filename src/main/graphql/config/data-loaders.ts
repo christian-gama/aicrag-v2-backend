@@ -4,8 +4,15 @@ import { makeUserRepository } from '@/factories/repositories'
 
 import DataLoader from 'dataloader'
 
+const userBatch = async (ids): Promise<IUser[]> => {
+  console.log('entrei')
+  const users = (await makeUserRepository().findAllById(ids, {})).documents
+
+  const map = ids.map((id) => users.find((user) => user.personal.id === id))
+
+  return map
+}
+
 export const makeUserDataLoader = (): DataLoader<string, IUser | null, string> => {
-  return new DataLoader(async (ids: string[]) => {
-    return await Promise.all(ids.map(async (id) => await makeUserRepository().findById(id)))
-  })
+  return new DataLoader(userBatch)
 }
