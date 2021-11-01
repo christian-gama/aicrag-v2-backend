@@ -8,6 +8,8 @@ import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
 import { makeFakeTask, makeFakeTaskData, makeFakeUser } from '@/tests/__mocks__'
 
+import MockDate from 'mockdate'
+
 interface SutTypes {
   fakeTask: ITask
   fakeTaskData: ITaskData
@@ -34,6 +36,10 @@ describe('invoiceRepository', () => {
 
   afterAll(async () => {
     if (!dbIsConnected) await client.disconnect()
+  })
+
+  afterEach(() => {
+    MockDate.reset()
   })
 
   beforeAll(async () => {
@@ -113,7 +119,7 @@ describe('invoiceRepository', () => {
       const query = {
         month: task.date.month.toString(),
         taskId: task.taskId,
-        type: 'TX',
+        type: 'TX' as 'TX',
         year: task.date.year.toString()
       }
 
@@ -139,7 +145,7 @@ describe('invoiceRepository', () => {
         limit: '1',
         month: fakeTask.date.month.toString(),
         page: '1',
-        type: 'TX',
+        type: 'TX' as 'TX',
         year: fakeTask.date.year.toString()
       }
 
@@ -165,7 +171,7 @@ describe('invoiceRepository', () => {
       const query = {
         month: fakeTask.date.month.toString(),
         taskId: fakeTask.taskId,
-        type: 'TX',
+        type: 'TX' as 'TX',
         year: fakeTask.date.year.toString()
       }
 
@@ -180,13 +186,15 @@ describe('invoiceRepository', () => {
     })
 
     it('should return a result if finds one or more tasks with a query and period of today', async () => {
+      MockDate.set(new Date('2020-01-15T12:00:00.000Z'))
+
       const { fakeUser, sut } = makeSut()
 
       const fakeTasks: ITask[] = []
 
       for (let i = 0; i < 2; i++) {
         const fakeTask = makeFakeTask(fakeUser)
-        fakeTask.date.day = new Date().getDate() - i
+        fakeTask.date.day = new Date().getUTCDate() - i
         fakeTasks.push(fakeTask)
 
         await taskCollection.insertOne(fakeTask)
@@ -198,7 +206,7 @@ describe('invoiceRepository', () => {
       const query = {
         month: fakeTasks[0].date.month.toString(),
         period: 'today',
-        type: 'TX',
+        type: 'TX' as 'TX',
         year: fakeTasks[0].date.year.toString()
       }
 
@@ -213,13 +221,19 @@ describe('invoiceRepository', () => {
     })
 
     it('should return a result if finds one or more tasks with a query and period of past 3 days', async () => {
+      MockDate.set(new Date('2020-01-15T12:00:00.000Z'))
+
       const { fakeUser, sut } = makeSut()
 
       const fakeTasks: ITask[] = []
 
       for (let i = 0; i < 4; i++) {
         const fakeTask = makeFakeTask(fakeUser)
-        fakeTask.date.day = new Date().getDate() - i
+        fakeTask.date.full = new Date()
+        fakeTask.date.month = new Date().getUTCMonth()
+        fakeTask.date.year = new Date().getUTCFullYear()
+        fakeTask.date.day = new Date().getUTCDate() - i
+        fakeTask.date.hours = new Date().toLocaleTimeString('pt-br', { timeZone: 'UTC' })
         fakeTasks.push(fakeTask)
 
         await taskCollection.insertOne(fakeTask)
@@ -231,7 +245,7 @@ describe('invoiceRepository', () => {
       const query = {
         month: fakeTasks[0].date.month.toString(),
         period: 'past_3_days',
-        type: 'TX',
+        type: 'TX' as 'TX',
         year: fakeTasks[0].date.year.toString()
       }
 
@@ -246,13 +260,19 @@ describe('invoiceRepository', () => {
     })
 
     it('should return a result if finds one or more tasks with a query and period of past 7 days', async () => {
+      MockDate.set(new Date('2020-01-15T12:00:00.000Z'))
+
       const { fakeUser, sut } = makeSut()
 
       const fakeTasks: ITask[] = []
 
       for (let i = 0; i < 8; i++) {
         const fakeTask = makeFakeTask(fakeUser)
-        fakeTask.date.day = new Date().getDate() - i
+        fakeTask.date.full = new Date()
+        fakeTask.date.month = new Date().getUTCMonth()
+        fakeTask.date.year = new Date().getUTCFullYear()
+        fakeTask.date.day = new Date().getUTCDate() - i
+        fakeTask.date.hours = new Date().toLocaleTimeString('pt-br', { timeZone: 'UTC' })
         fakeTasks.push(fakeTask)
 
         await taskCollection.insertOne(fakeTask)
@@ -264,7 +284,7 @@ describe('invoiceRepository', () => {
       const query = {
         month: fakeTasks[0].date.month.toString(),
         period: 'past_7_days',
-        type: 'TX',
+        type: 'TX' as 'TX',
         year: fakeTasks[0].date.year.toString()
       }
 
@@ -273,6 +293,47 @@ describe('invoiceRepository', () => {
       expect(result).toStrictEqual({
         count: 7,
         displaying: 7,
+        documents: fakeTasks,
+        page: '1 of 1'
+      })
+    })
+
+    it('should return a result if finds one or more tasks with operator and duration', async () => {
+      MockDate.set(new Date('2020-01-15T12:00:00.000Z'))
+
+      const { fakeUser, sut } = makeSut()
+
+      const fakeTasks: ITask[] = []
+
+      for (let i = 1; i <= 10; i++) {
+        const fakeTask = makeFakeTask(fakeUser)
+        fakeTask.duration = i
+        fakeTask.date.full = new Date()
+        fakeTask.date.month = new Date().getUTCMonth()
+        fakeTask.date.year = new Date().getUTCFullYear()
+        fakeTask.date.day = new Date().getUTCDate() - i
+        fakeTask.date.hours = new Date().toLocaleTimeString('pt-br', { timeZone: 'UTC' })
+        fakeTasks.push(fakeTask)
+
+        await taskCollection.insertOne(fakeTask)
+      }
+
+      // Remove the last task to make the test pass
+      fakeTasks.pop()
+
+      const query = {
+        duration: 9,
+        month: fakeTasks[0].date.month.toString(),
+        operator: 'lte' as 'lte',
+        type: 'TX' as 'TX',
+        year: fakeTasks[0].date.year.toString()
+      }
+
+      const result = await sut.getByMonth(query, fakeTasks[0].user)
+
+      expect(result).toStrictEqual({
+        count: 9,
+        displaying: 9,
         documents: fakeTasks,
         page: '1 of 1'
       })
