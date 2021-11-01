@@ -6,6 +6,7 @@ import {
   IQueryInvoice
 } from '@/domain/repositories/invoice/invoice-repository-protocol'
 
+import { getDuration } from '../helpers/get-duration'
 import { getPeriod } from '../helpers/get-period'
 import { getRegexTaskId } from '../helpers/get-regex-task-id'
 import { getType } from '../helpers/get-type'
@@ -64,10 +65,11 @@ export class InvoiceRepository implements IGetInvoiceByMonth {
   }
 
   async getByMonth<T extends ITask>(query: IQueryInvoice, userId: string): Promise<IQueryResult<T>> {
-    const { month, taskId, period, type, year } = query
-    const _taskId = getRegexTaskId(taskId)
-    const _type = getType(type as 'QA' | 'TX' | 'both')
+    const { duration, month, period, taskId, type, year, operator } = query
+    const _duration = getDuration(duration, operator)
     const _period = getPeriod(month, year, period)
+    const _taskId = getRegexTaskId(taskId)
+    const _type = getType(type)
     const taskCollection = this.database.collection('tasks')
 
     const result = await taskCollection.aggregate<ITask>(
@@ -75,6 +77,7 @@ export class InvoiceRepository implements IGetInvoiceByMonth {
         {
           $match: {
             $and: _period,
+            duration: _duration,
             taskId: _taskId,
             type: _type,
             user: userId
