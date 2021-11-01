@@ -1,22 +1,9 @@
 export const getPeriod = (month, year, period): Record<string, any> | null => {
   const result: any = [{ 'date.month': { $eq: +month } }, { 'date.year': { $eq: +year } }]
-  const today = new Date().getDate()
-  let past3days = today - 2
-  let past7days = today - 6
-  let past15days = today - 14
-
-  // Make sure the period is not lesser than 1
-  while (past3days < 1) {
-    past3days += 1
-  }
-
-  while (past7days < 1) {
-    past7days += 1
-  }
-
-  while (past15days < 1) {
-    past15days += 1
-  }
+  const today = new Date().getUTCDate()
+  const past3days = today - 2 < 1 ? 1 : today - 2
+  const past7days = today - 6 < 1 ? 1 : today - 6
+  const past15days = today - 14 < 1 ? 1 : today - 14
 
   switch (period) {
     case 'today':
