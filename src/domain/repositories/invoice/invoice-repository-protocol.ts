@@ -5,11 +5,13 @@ import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protoco
 export interface IInvoiceRepository extends IGetAllInvoices, IGetInvoiceByMonth {}
 
 export interface IQueryInvoice extends IQuery {
+  duration?: number
   month: string
-  year: string
-  taskId?: string
+  operator?: 'gte' | 'lte' | 'eq'
   period?: string
-  type: string
+  taskId?: string
+  type: 'QA' | 'TX' | 'both'
+  year: string
 }
 
 export interface IQueryAllInvoices extends IQuery {
