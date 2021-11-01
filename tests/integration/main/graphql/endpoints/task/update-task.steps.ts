@@ -102,7 +102,6 @@ defineFeature(feature, (test) => {
     })
 
     then(/^I should receive an error with message "(.*)"$/, (message) => {
-      console.log(result.body)
       expect(result.body.errors[0].message).toBe(message)
     })
 
@@ -167,7 +166,6 @@ defineFeature(feature, (test) => {
     )
 
     then('I should have updated my task', () => {
-      console.log(result.body)
       expect(result.body.data.updateTask.task.id).toBe(fakeTask.id)
     })
 
