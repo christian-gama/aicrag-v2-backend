@@ -10,12 +10,14 @@ type GetInvoiceByMonth {
 }
 
 input GetInvoiceByMonthQuery {
+  duration: Int
   limit: String
   month: String!
+  operator: GetInvoiceByMonthOperator
   page: String
+  period: GetInvoiceByMonthPeriod
   sort: String
   taskId: String
-  period: GetInvoiceByMonthPeriod
   type: GetInvoiceByMonthType!
   year: String!
 }
@@ -31,4 +33,10 @@ enum GetInvoiceByMonthPeriod {
   past_3_days
   past_7_days
   past_15_days
+}
+
+enum GetInvoiceByMonthOperator {
+  lte
+  gte
+  eq
 }

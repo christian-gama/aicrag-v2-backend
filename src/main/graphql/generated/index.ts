@@ -142,6 +142,12 @@ export type GetInvoiceByMonth = {
   page: Scalars['String'];
 };
 
+export enum GetInvoiceByMonthOperator {
+  Eq = 'eq',
+  Gte = 'gte',
+  Lte = 'lte'
+}
+
 export enum GetInvoiceByMonthPeriod {
   Past_3Days = 'past_3_days',
   Past_7Days = 'past_7_days',
@@ -150,8 +156,10 @@ export enum GetInvoiceByMonthPeriod {
 }
 
 export type GetInvoiceByMonthQuery = {
+  duration?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['String']>;
   month: Scalars['String'];
+  operator?: Maybe<GetInvoiceByMonthOperator>;
   page?: Maybe<Scalars['String']>;
   period?: Maybe<GetInvoiceByMonthPeriod>;
   sort?: Maybe<Scalars['String']>;
@@ -620,6 +628,7 @@ export type ResolversTypes = {
   GetAllInvoicesQuery: GetAllInvoicesQuery;
   GetAllInvoicesType: GetAllInvoicesType;
   GetInvoiceByMonth: ResolverTypeWrapper<GetInvoiceByMonth>;
+  GetInvoiceByMonthOperator: GetInvoiceByMonthOperator;
   GetInvoiceByMonthPeriod: GetInvoiceByMonthPeriod;
   GetInvoiceByMonthQuery: GetInvoiceByMonthQuery;
   GetInvoiceByMonthType: GetInvoiceByMonthType;

@@ -119,6 +119,12 @@ type GetInvoiceByMonth {
   page: String!
 }
 
+enum GetInvoiceByMonthOperator {
+  eq
+  gte
+  lte
+}
+
 enum GetInvoiceByMonthPeriod {
   past_3_days
   past_7_days
@@ -127,8 +133,10 @@ enum GetInvoiceByMonthPeriod {
 }
 
 input GetInvoiceByMonthQuery {
+  duration: Int
   limit: String
   month: String!
+  operator: GetInvoiceByMonthOperator
   page: String
   period: GetInvoiceByMonthPeriod
   sort: String
