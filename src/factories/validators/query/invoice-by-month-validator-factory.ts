@@ -3,10 +3,12 @@ import { IValidator } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/validation-composite'
 
 import {
+  makeValidateDuration,
   makeValidateFields,
   makeValidateLimit,
   makeValidateMonth,
   makeValidatePage,
+  makeValidatePeriod,
   makeValidateSort,
   makeValidateTaskId,
   makeValidateType,
@@ -31,6 +33,8 @@ export const makeInvoiceByMonthValidator = (): IValidator => {
   validations.push(makeValidateTaskId())
   validations.push(makeValidateType())
   validations.push(makeValidateYear())
+  validations.push(makeValidateDuration())
+  validations.push(makeValidatePeriod())
 
   return new ValidationComposite(validations)
 }
