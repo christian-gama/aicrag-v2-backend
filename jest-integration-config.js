@@ -1,4 +1,5 @@
 const config = require('./jest.config')
+config.roots = ['<rootDir>/tests']
 config.testMatch = ['!**/*.spec.ts', '!**/*.steps.ts', '!**/ci.test.ts', '**/integration.test.ts']
 config.maxWorkers = 1
 config.verbose = true

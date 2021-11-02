@@ -9,7 +9,7 @@ Feature: Update email by pin
     Scenario: Being logged out
       Given The following temporaries:
         | tempEmail          | tempEmailPin |
-        | any_email@mail.com | 12345         |
+        | any_email@mail.com | 12345        |
       Given I am logged out
       When I request to update my email using "12345"
       Then I should see an error that contains a message "Token is missing"
@@ -18,7 +18,7 @@ Feature: Update email by pin
     Scenario: Using a temporary valid pin
       Given The following temporaries:
         | tempEmail          | tempEmailPin |
-        | any_email@mail.com | 12345         |
+        | any_email@mail.com | 12345        |
       Given I am logged in
       When I request to update my email using "12345"
       Then I should have my email updated
@@ -28,7 +28,7 @@ Feature: Update email by pin
     Scenario: Using a temporary invalid pin
       Given The following temporaries:
         | tempEmail          | tempEmailPin |
-        | any_email@mail.com | 12345         |
+        | any_email@mail.com | 12345        |
       Given I am logged in
       When I request to update my email using "54321"
       Then I should have receive an error that contains a message "Invalid pin"

@@ -1,10 +1,14 @@
 /* eslint-disable sort-keys */
 module.exports = {
-  roots: ['<rootDir>/tests'],
+  roots: ['<rootDir>/src'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/**/*.spec.ts',
+    '!<rootDir>/src/**/*.test.ts',
+    '!<rootDir>/src/**/*.steps.ts',
     '!<rootDir>/src/factories/**',
     '!<rootDir>/src/main/**',
+    '!<rootDir>/src/**/adapters/**',
     '!<rootDir>/src/schemas/**'
   ],
   modulePathIgnorePatterns: ['protocols'],

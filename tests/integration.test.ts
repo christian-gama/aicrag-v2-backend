@@ -5,16 +5,11 @@ import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import glob from 'glob'
 import { resolve } from 'path'
 
-const tests = (): any[] =>
-  glob.sync(`${resolve(__dirname)}/**/*.ts`).map((content) => {
-    if (
-      content.match(/\.(test|steps)\.ts$/) &&
-      !content.match(/integration\.test\.ts$/) &&
-      !content.match(/ci\.test\.ts$/)
-    ) {
-      return require(content)
-    } else return null
+const runTests = (): void => {
+  glob.sync(`${resolve(__dirname)}/../src/**/*.ts`).forEach((content) => {
+    if (content.match(/\.(test|steps)\.ts$/)) require(content)
   })
+}
 
 describe('integration tests', () => {
   afterAll(async () => {
@@ -29,5 +24,5 @@ describe('integration tests', () => {
     await MongoAdapter.connect(global.__MONGO_URI__)
   })
 
-  tests()
+  runTests()
 })
