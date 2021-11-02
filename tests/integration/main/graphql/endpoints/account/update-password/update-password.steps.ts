@@ -8,17 +8,18 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { updatePasswordMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { updatePasswordMutation } from './update-password-document'
 
 import { hash } from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { Express } from 'express'
 import { defineFeature, loadFeature } from 'jest-cucumber'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'update-password.feature'))
+const feature = loadFeature(resolve(__dirname, 'update-password.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

@@ -8,24 +8,25 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { findOneTaskQuery } from '@/tests/helpers/queries'
 import { taskHelper } from '@/tests/helpers/task-helper.ts'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { findAllTasksQuery } from './find-all-tasks-document'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'find-one-task.feature'))
+const feature = loadFeature(resolve(__dirname, 'find-all-tasks.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()
   let accessToken: string
   let dbIsConnected = true
   let app: Express
-  let fakeTask: ITask
+  let fakeTask: ITask | ITask[]
   let fakeUser: IUser
   let refreshToken: string
   let result: any
@@ -54,14 +55,14 @@ defineFeature(feature, (test) => {
     userCollection = client.collection('users')
   })
 
-  test('Being logged out', ({ given, when, then, and }) => {
+  test('being logged out', ({ given, when, then, and }) => {
     given('I am logged out', () => {
       accessToken = ''
       refreshToken = ''
     })
 
-    when('I try to find one task', async () => {
-      const query = findOneTaskQuery({ id: '70d40f38-55d5-43d9-acce-834e161c5c1c' })
+    when('I try to find all tasks:', async () => {
+      const query = findAllTasksQuery({})
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -70,27 +71,27 @@ defineFeature(feature, (test) => {
         .send({ query })
     })
 
-    then(/^I should receive an error with message "(.*)"$/, async (message) => {
-      expect(result.body.errors[0].message).toBe(message)
+    then(/^I should receive an error with message "(.*)"$/, (message) => {
+      expect(result.body.errors[0].message).toEqual(message)
     })
 
     and(/^I must receive a status code of (\d+)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
+      expect(result.status).toEqual(parseInt(statusCode))
     })
   })
 
-  test('Having an existent task', ({ given, when, then, and }) => {
-    given(/^I have a task of id "(.*)"$/, async (id) => {
+  test('having existent tasks', ({ given, when, then, and }) => {
+    given('I have the following tasks:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection)
-      fakeTask = await taskHelper.insertTask(taskCollection, fakeUser, { id })
+      fakeTask = await taskHelper.insertTasks(table, taskCollection, fakeUser)
     })
 
     given('I am logged in', async () => {
       ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
     })
 
-    when(/^I try to find one task using the id "(.*)"$/, async (id) => {
-      const query = findOneTaskQuery({ id })
+    when('I try to find all tasks', async () => {
+      const query = findAllTasksQuery({})
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -99,27 +100,34 @@ defineFeature(feature, (test) => {
         .send({ query })
     })
 
-    then('I should get the task', () => {
-      expect(result.body.data.findOneTask.task.id).toBe(fakeTask.id)
+    then('I should get the following tasks:', (table) => {
+      const allTasks = taskHelper.getTasks(table, fakeTask as ITask[], fakeUser)
+
+      expect(result.body.data.findAllTasks).toStrictEqual({
+        count: table.length,
+        displaying: table.length,
+        documents: allTasks,
+        page: '1 of 1'
+      })
     })
 
     and(/^I must receive a status code of (\d+)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
+      expect(result.status).toEqual(parseInt(statusCode))
     })
   })
 
-  test('Task does not exist', ({ given, when, then, and }) => {
-    given(/^I have a task of id "(.*)"$/, async (id) => {
+  test('getting all tasks using filters', ({ given, when, then, and }) => {
+    given('I have the following tasks:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection)
-      fakeTask = await taskHelper.insertTask(taskCollection, fakeUser)
+      fakeTask = await taskHelper.insertTasks(table, taskCollection, fakeUser)
     })
 
     given('I am logged in', async () => {
       ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
     })
 
-    when(/^I try to find one task using a non-existent id "(.*)"$/, async (id) => {
-      const query = findOneTaskQuery({ id })
+    when(/^I try to find all tasks limiting the results by "(.*)"$/, async (limit) => {
+      const query = findAllTasksQuery({ limit })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -128,8 +136,18 @@ defineFeature(feature, (test) => {
         .send({ query })
     })
 
-    then(/^I should receive an error message "(.*)"$/, (message) => {
-      expect(result.body.errors[0].message).toBe(message)
+    then('I should get the following tasks:', (table) => {
+      const allTasks = taskHelper.getTasks(table, fakeTask as ITask[], fakeUser)
+
+      expect(result.body.data.findAllTasks.documents).toStrictEqual([allTasks[0]])
+    })
+
+    and(/^The displaying count should be "(.*)"$/, (displaying) => {
+      expect(result.body.data.findAllTasks.displaying).toBe(+displaying)
+    })
+
+    and(/^The amount page should be "(.*)"$/, (page) => {
+      expect(result.body.data.findAllTasks.page).toBe(page)
     })
 
     and(/^I must receive a status code of (\d+)$/, (statusCode) => {

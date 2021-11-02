@@ -8,17 +8,18 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { deleteTaskMutation } from '@/tests/helpers/queries'
 import { taskHelper } from '@/tests/helpers/task-helper.ts'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { deleteTaskMutation } from './delete-task-document'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'delete-task.feature'))
+const feature = loadFeature(resolve(__dirname, 'delete-task.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

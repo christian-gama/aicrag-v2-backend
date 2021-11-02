@@ -10,16 +10,17 @@ import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 import { makeGenerateAccessToken } from '@/factories/providers/token'
 
 import { makeFakeUser } from '@/tests/__mocks__'
-import { verifyResetPasswordTokenQuery } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { verifyResetPasswordTokenQuery } from './verify-reset-password-token-document'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'verify-reset-password-token.feature'))
+const feature = loadFeature(resolve(__dirname, 'verify-reset-password-token.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

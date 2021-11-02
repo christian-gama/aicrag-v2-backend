@@ -8,16 +8,17 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { updateUserMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { updateUserMutation } from './update-user-document'
 
 import { Express } from 'express'
 import { defineFeature, loadFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'update-user.feature'))
+const feature = loadFeature(resolve(__dirname, 'update-user.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

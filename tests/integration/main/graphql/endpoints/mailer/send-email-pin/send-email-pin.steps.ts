@@ -9,15 +9,16 @@ import { EmailPin } from '@/main/mailer'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { sendEmailPinMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { sendEmailPinMutation } from './send-email-pin-document'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'send-email-pin.feature'))
+const feature = loadFeature(resolve(__dirname, 'send-email-pin.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

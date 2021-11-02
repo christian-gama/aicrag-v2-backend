@@ -8,17 +8,18 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { getAllInvoicesQuery } from '@/tests/helpers/queries'
 import { taskHelper } from '@/tests/helpers/task-helper.ts'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { getAllInvoicesQuery } from './get-all-invoices-document'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'get-all-invoices.feature'))
+const feature = loadFeature(resolve(__dirname, 'get-all-invoices.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

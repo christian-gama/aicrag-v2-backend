@@ -8,15 +8,16 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { logoutMutation } from '@/tests/helpers/queries/logout'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { logoutMutation } from './logout-document'
 
 import { Express } from 'express'
 import { defineFeature, loadFeature } from 'jest-cucumber'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'logout.feature'))
+const feature = loadFeature(resolve(__dirname, 'logout.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

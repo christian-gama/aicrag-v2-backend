@@ -8,15 +8,16 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { updateEmailByPinMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { updateEmailByPinMutation } from './update-email-by-pin-document'
 
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'update-email-by-pin.feature'))
+const feature = loadFeature(resolve(__dirname, 'update-email-by-pin.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

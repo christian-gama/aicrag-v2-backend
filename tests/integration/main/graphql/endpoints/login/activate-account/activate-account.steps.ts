@@ -8,16 +8,17 @@ import App from '@/main/express/config/app'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { activateAccountMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { activateAccountMutation } from './activate-account-document'
 
 import { randomUUID } from 'crypto'
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'activate-account.feature'))
+const feature = loadFeature(resolve(__dirname, 'activate-account.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()

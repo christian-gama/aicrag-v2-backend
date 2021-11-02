@@ -5,20 +5,21 @@ import { ICollectionMethods } from '@/infra/database/protocols'
 
 import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
-import { WelcomeEmail } from '@/main/mailer'
+import { RecoverPasswordEmail } from '@/main/mailer'
 
 import { makeMongoDb } from '@/factories/database/mongo-db-factory'
 
-import { sendWelcomeEmailMutation } from '@/tests/helpers/queries'
 import { userHelper } from '@/tests/helpers/user-helper'
+
+import { sendRecoverPasswordEmailMutation } from './send-recover-password-email-document'
 
 import { randomUUID } from 'crypto'
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
-import path from 'path'
+import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(path.resolve(__dirname, 'send-welcome-email.feature'))
+const feature = loadFeature(resolve(__dirname, 'send-recover-password-email.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()
@@ -46,29 +47,32 @@ defineFeature(feature, (test) => {
   })
 
   test('having a valid email', ({ given, when, then, and }) => {
-    given(/^I have an account with the email "(.*)"$/, async (email) => {
+    given(/^I have an account with the an email "(.*)" and a valid resetPasswordToken$/, async (email) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
           email,
           id: randomUUID(),
           name: 'any_name',
           password: 'any_password'
+        },
+        temporary: {
+          resetPasswordToken: 'any_token'
         }
       })
     })
 
     when('I request to send an email using my existent email', async () => {
-      const query = sendWelcomeEmailMutation({ email: fakeUser.personal.email })
+      const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
 
       if (process.env.TEST_SEND_EMAIL !== 'true') {
-        jest.spyOn(WelcomeEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
+        jest.spyOn(RecoverPasswordEmail.prototype, 'send').mockReturnValueOnce(Promise.resolve(true))
       }
 
       result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
     })
 
     then(/^I should receive a message "(.*)"$/, (message) => {
-      expect(result.body.data.sendWelcomeEmail.message).toBe(message)
+      expect(result.body.data.sendRecoverPasswordEmail.message).toBe(message)
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
@@ -77,19 +81,22 @@ defineFeature(feature, (test) => {
   })
 
   test('having an invalid email', ({ given, when, then, and }) => {
-    given(/^I have an account with the email "(.*)"$/, async (email) => {
+    given(/^I have an account with the an email "(.*)" and a valid resetPasswordToken$/, async (email) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
           email,
           id: randomUUID(),
           name: 'any_name',
           password: 'any_password'
+        },
+        temporary: {
+          resetPasswordToken: 'any_token'
         }
       })
     })
 
     when(/^I request to send an email using an invalid email "(.*)"$/, async (invalidEmail) => {
-      const query = sendWelcomeEmailMutation({ email: invalidEmail })
+      const query = sendRecoverPasswordEmailMutation({ email: invalidEmail })
 
       result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
     })
@@ -103,8 +110,8 @@ defineFeature(feature, (test) => {
     })
   })
 
-  test('having an account already activated', ({ given, when, then, and }) => {
-    given(/^I have an account with the email "(.*)" and account is already activated$/, async (email) => {
+  test('having an invalid resetPasswordToken', ({ given, when, then, and }) => {
+    given(/^I have an account with the an email "(.*)" and an invalid resetPasswordToken$/, async (email) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
           email,
@@ -112,14 +119,14 @@ defineFeature(feature, (test) => {
           name: 'any_name',
           password: 'any_password'
         },
-        settings: {
-          accountActivated: true
+        temporary: {
+          resetPasswordToken: null
         }
       })
     })
 
-    when('I request to send an email using using my existent email', async () => {
-      const query = sendWelcomeEmailMutation({ email: fakeUser.personal.email })
+    when('I request to send an email using my existent email', async () => {
+      const query = sendRecoverPasswordEmailMutation({ email: fakeUser.personal.email })
 
       result = await request(app).post(environment.GRAPHQL.ENDPOINT).send({ query })
     })

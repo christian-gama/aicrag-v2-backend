@@ -7,7 +7,11 @@ import { resolve } from 'path'
 
 const tests = (): any[] =>
   glob.sync(`${resolve(__dirname)}/**/*.ts`).map((content) => {
-    if (content.match(/\.(test|steps)\.ts$/) && !content.match(/integration\.test\.ts$/)) {
+    if (
+      content.match(/\.(test|steps)\.ts$/) &&
+      !content.match(/integration\.test\.ts$/) &&
+      !content.match(/ci\.test\.ts$/)
+    ) {
       return require(content)
     } else return null
   })
