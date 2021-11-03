@@ -1,6 +1,5 @@
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { InvalidPinError, AccountAlreadyActivatedError, PinIsExpiredError, InvalidTypeError } from '../../errors'
 
 export class ValidateActivationPin implements IValidator {

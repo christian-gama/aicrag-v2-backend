@@ -1,7 +1,6 @@
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
+import { makeHttpHelper } from '@/main/factories/helpers'
 
 export const makeControllerStub = (): IController => {
   class ControllerStub implements IController {

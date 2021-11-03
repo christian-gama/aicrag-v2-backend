@@ -1,6 +1,5 @@
 import { IComparer } from '@/domain/cryptography'
 import { IValidator } from '@/domain/validators'
-
 import { UserCredentialError } from '../../errors'
 
 export class ValidateCurrentPassword implements IValidator {

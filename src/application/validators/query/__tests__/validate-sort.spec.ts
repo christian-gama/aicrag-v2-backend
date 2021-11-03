@@ -1,6 +1,5 @@
 import { InvalidQueryError } from '@/application/errors'
 import { ValidateSort } from '@/application/validators/query'
-
 import { HttpRequest } from '@/presentation/http/protocols'
 
 interface SutTypes {

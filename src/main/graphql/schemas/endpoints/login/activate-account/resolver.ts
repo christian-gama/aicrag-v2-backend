@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+import { makeActivateAccountController } from '@/main/factories/controllers/login'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
-
-import { makeActivateAccountController } from '@/factories/controllers/login'
 
 export const resolver: Resolvers = {
   ActivateAccount: {

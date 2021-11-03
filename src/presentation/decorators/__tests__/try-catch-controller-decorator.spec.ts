@@ -1,9 +1,7 @@
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { TryCatchDecorator } from '@/presentation/decorators'
 import { HttpHelper } from '@/presentation/http/http-helper'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeControllerStub } from '@/tests/__mocks__'
 
 interface SutTypes {

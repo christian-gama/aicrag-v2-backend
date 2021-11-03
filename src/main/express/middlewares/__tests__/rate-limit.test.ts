@@ -1,5 +1,4 @@
 import App from '@/main/express/config/app'
-
 import { Express } from 'express'
 import rateLimit from 'express-rate-limit'
 import request from 'supertest'

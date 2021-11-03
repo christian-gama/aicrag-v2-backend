@@ -1,7 +1,6 @@
+import { makeSignUpController } from '@/main/factories/controllers/signup'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
-
-import { makeSignUpController } from '@/factories/controllers/signup'
 
 export const resolver: Resolvers = {
   Mutation: {

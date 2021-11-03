@@ -1,5 +1,4 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidParamError } from '@/application/errors'
 
 export class ValidateStatus implements IValidator {

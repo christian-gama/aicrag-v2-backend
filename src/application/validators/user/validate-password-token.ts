@@ -1,6 +1,5 @@
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MissingParamError, UserCredentialError } from '../../errors'
 
 export class ValidatePasswordToken implements IValidator {

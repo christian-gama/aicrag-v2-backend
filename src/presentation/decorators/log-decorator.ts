@@ -1,5 +1,4 @@
 import { ILogErrorRepository } from '@/domain/repositories'
-
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'

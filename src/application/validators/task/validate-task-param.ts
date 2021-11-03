@@ -1,5 +1,4 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
 export class ValidateTaskParam implements IValidator {

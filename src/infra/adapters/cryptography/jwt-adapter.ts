@@ -1,7 +1,5 @@
 import { IDecoded, IDecoder, IEncrypter } from '@/domain/cryptography'
-
 import { ExpiredTokenError, InvalidTokenError } from '@/application/errors'
-
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'
 

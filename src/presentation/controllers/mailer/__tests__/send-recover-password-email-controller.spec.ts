@@ -3,14 +3,10 @@ import { IMailerService } from '@/domain/mailer'
 import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { InvalidTokenError, MailerServiceError } from '@/application/errors'
-
 import { SendRecoverPasswordController } from '@/presentation/controllers/mailer'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakeUser,
   makeValidatorStub,

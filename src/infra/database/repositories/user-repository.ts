@@ -1,6 +1,5 @@
 import { ISignUpUserData, IUser } from '@/domain'
 import { IUserRepository, ICreateUserRepository } from '@/domain/repositories'
-
 import { IDatabase, IUserDbFilter } from '../protocols'
 import { IQuery, IQueryResult } from '../protocols/queries-protocol'
 

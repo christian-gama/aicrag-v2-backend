@@ -1,9 +1,7 @@
 import { ILogError } from '@/domain'
 import { ILogErrorRepository } from '@/domain/repositories'
-
 import { IDatabase } from '@/infra/database/protocols'
 import { IUserDbFilter } from '@/infra/database/protocols/update-user-options'
-
 import { FindOptions } from 'mongodb'
 
 export class ClearUserDatabase {

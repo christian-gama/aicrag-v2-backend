@@ -1,9 +1,6 @@
 import { IUser } from '@/domain'
-
 import { ICollectionMethods } from '@/infra/database/protocols'
-
-import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
-
+import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import { makeFakeUser } from '../__mocks__'
 
 type AccessToken = string

@@ -1,13 +1,9 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
-
 import { MustLoginError } from '@/application/errors'
-
 import { LogoutController } from '@/presentation/controllers/account'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

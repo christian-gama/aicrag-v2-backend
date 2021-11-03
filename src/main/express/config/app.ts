@@ -1,10 +1,8 @@
 import schedulers from '@/main/config/schedulers'
 import setupApolloServer from '@/main/graphql/config/apollo-server'
-
 import engine from './engine'
 import middlewares from './middlewares'
 import routes from './routes'
-
 import express, { Express } from 'express'
 
 class App {

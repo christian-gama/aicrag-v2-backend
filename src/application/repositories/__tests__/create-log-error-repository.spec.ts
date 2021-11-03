@@ -1,5 +1,4 @@
 import { CreateLogErrorRepository } from '@/application/repositories'
-
 import MockDate from 'mockdate'
 
 interface SutTypes {

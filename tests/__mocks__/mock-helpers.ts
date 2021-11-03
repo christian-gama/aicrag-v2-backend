@@ -1,6 +1,5 @@
 import { IPublicUser, IUser } from '@/domain'
 import { IFilterUserData, IUuid, IPin } from '@/domain/helpers'
-
 import { makeFakePublicUser } from './mock-user'
 
 export const makeFilterUserDataStub = (fakeUser: IUser): IFilterUserData => {

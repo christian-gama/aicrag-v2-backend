@@ -3,11 +3,8 @@ import { IMailerService } from '@/domain/mailer'
 import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MailerServiceError } from '@/application/errors'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IController } from '../protocols/controller-protocol'
 
 export class SendRecoverPasswordController implements IController {

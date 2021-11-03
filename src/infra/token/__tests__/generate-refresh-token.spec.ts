@@ -1,9 +1,7 @@
 import { IUser } from '@/domain'
 import { IEncrypter } from '@/domain/cryptography'
 import { IUserRepository } from '@/domain/repositories'
-
 import { GenerateRefreshToken } from '@/infra/token'
-
 import { makeEncrypterStub, makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

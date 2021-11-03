@@ -1,7 +1,6 @@
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
-
-import { makeHttpHelper } from '@/factories/helpers'
+import { makeHttpHelper } from '@/main/factories/helpers'
 
 const httpHelper = makeHttpHelper()
 export const makeMiddlewareStub = (): IMiddleware => {

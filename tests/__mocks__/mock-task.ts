@@ -1,5 +1,4 @@
 import { ITask, ITaskData, IUser } from '@/domain'
-
 import faker from 'faker'
 
 export const makeFakeTaskData = (fakeUser: IUser): ITaskData => {

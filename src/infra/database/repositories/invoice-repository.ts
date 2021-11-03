@@ -5,7 +5,6 @@ import {
   IQueryAllInvoices,
   IQueryInvoice
 } from '@/domain/repositories/invoice/invoice-repository-protocol'
-
 import { getDuration } from '../helpers/get-duration'
 import { getPeriod } from '../helpers/get-period'
 import { getRegexTaskId } from '../helpers/get-regex-task-id'

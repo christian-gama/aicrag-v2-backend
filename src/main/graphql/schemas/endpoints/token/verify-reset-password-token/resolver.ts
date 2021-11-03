@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/token'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
-
-import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/token'
 
 export const resolver: Resolvers = {
   Query: {

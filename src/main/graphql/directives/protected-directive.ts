@@ -1,9 +1,6 @@
 import { environment } from '@/main/config/environment'
-
-import { makeProtectedMiddleware } from '@/factories/middlewares'
-
+import { makeProtectedMiddleware } from '@/main/factories/middlewares'
 import { apolloErrorAdapter } from '../adapters'
-
 import { mapSchema, MapperKind, getDirective } from '@graphql-tools/utils'
 import { GraphQLSchema } from 'graphql'
 

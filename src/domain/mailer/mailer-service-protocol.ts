@@ -1,5 +1,4 @@
 import { IUser } from '@/domain'
-
 import { MailerServiceError } from '@/application/errors'
 
 export interface IMailerService {

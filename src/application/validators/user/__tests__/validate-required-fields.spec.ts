@@ -1,6 +1,5 @@
 import { MissingParamError } from '@/application/errors'
 import { ValidateRequiredFields } from '@/application/validators/user'
-
 import faker from 'faker'
 
 interface SutTypes {

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+import { makeSendWelcomeEmailController } from '@/main/factories/controllers/mailer'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
-
-import { makeSendWelcomeEmailController } from '@/factories/controllers/mailer'
 
 export const resolver: Resolvers = {
   Mutation: {

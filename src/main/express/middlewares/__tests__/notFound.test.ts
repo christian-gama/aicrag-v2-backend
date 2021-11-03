@@ -1,8 +1,6 @@
 import { controllerAdapter } from '@/main/express/adapters/controller-adapter'
 import { notFound } from '@/main/express/middlewares/not-found'
-
 import { makeControllerStub } from '@/tests/__mocks__/mock-controllers'
-
 import express, { Express } from 'express'
 import request from 'supertest'
 

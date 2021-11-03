@@ -1,8 +1,6 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidParamError } from '@/application/errors'
 import { ValidatePasswordComparison } from '@/application/validators/user'
-
 import faker from 'faker'
 
 interface SutTypes {

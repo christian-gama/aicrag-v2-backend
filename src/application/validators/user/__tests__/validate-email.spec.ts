@@ -1,12 +1,8 @@
 import { IValidator, IEmailValidator } from '@/domain/validators'
-
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateEmail } from '@/application/validators/user'
-
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import { makeEmailValidatorStub } from '@/tests/__mocks__'
-
 import faker from 'faker'
 
 interface SutTypes {

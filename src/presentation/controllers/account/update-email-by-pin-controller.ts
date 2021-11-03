@@ -2,11 +2,8 @@ import { IUser } from '@/domain'
 import { IFilterUserData } from '@/domain/helpers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MustLoginError } from '@/application/errors'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IController } from '../protocols/controller-protocol'
 
 export class UpdateEmailByPinController implements IController {

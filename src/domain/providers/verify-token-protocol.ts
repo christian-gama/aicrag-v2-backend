@@ -1,5 +1,4 @@
 import { IUser } from '@/domain'
-
 import { InvalidTokenError } from '@/application/errors'
 
 /**

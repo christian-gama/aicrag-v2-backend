@@ -1,5 +1,4 @@
 import { IValidator } from '@/domain/validators'
-
 import { MissingParamError } from '../../errors'
 
 export class ValidateRequiredFields implements IValidator {

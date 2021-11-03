@@ -1,7 +1,5 @@
 import { environment } from '@/main/config/environment'
-
 import { errorHandler } from '../handlers/error-handler'
-
 import { ErrorRequestHandler } from 'express'
 
 export const errorRequestHandler: ErrorRequestHandler = (err, req, res, next) => {

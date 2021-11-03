@@ -1,7 +1,5 @@
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import glob from 'glob'
 import { resolve } from 'path'
 
@@ -13,9 +11,7 @@ const runTests = (): void => {
 
 describe('integration tests', () => {
   afterAll(async () => {
-    const client = makeMongoDb()
-
-    await client.disconnect()
+    await makeMongoDb().disconnect()
   })
 
   beforeAll(async () => {

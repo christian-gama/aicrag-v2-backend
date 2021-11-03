@@ -1,9 +1,6 @@
 import { IMailerSettings } from '@/domain/mailer'
-
 import { MailerServiceError } from '@/application/errors'
-
 import { environment } from '../config/environment'
-
 import * as nodemailer from 'nodemailer'
 import { Transporter } from 'nodemailer'
 import sendgrid from 'nodemailer-sendgrid'

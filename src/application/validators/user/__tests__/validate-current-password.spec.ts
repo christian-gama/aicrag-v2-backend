@@ -1,11 +1,8 @@
 import { IUser } from '@/domain'
 import { IComparer } from '@/domain/cryptography'
-
 import { UserCredentialError } from '@/application/errors'
 import { ValidateCurrentPassword } from '@/application/validators/user'
-
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import { makeFakeUser, makeComparerStub } from '@/tests/__mocks__'
 
 interface SutTypes {

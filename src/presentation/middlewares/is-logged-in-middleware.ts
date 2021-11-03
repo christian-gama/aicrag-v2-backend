@@ -1,9 +1,7 @@
 import { IUser } from '@/domain'
 import { IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
-
 import { getToken } from '@/infra/token'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '../http/protocols'
 import { IMiddleware } from './protocols/middleware-protocol'
 

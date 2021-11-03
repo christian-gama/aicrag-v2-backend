@@ -1,5 +1,4 @@
 import { HttpResponse } from '@/presentation/http/protocols'
-
 import { apolloErrorAdapter } from '@/main/graphql/adapters'
 
 export const getHttpResponse = (httpResponse: HttpResponse): any => {

@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
 import { IMailerService } from '@/domain/mailer'
-
 import { MailerServiceError } from '@/application/errors'
 
 export const makeMailerServiceStub = (): IMailerService => {

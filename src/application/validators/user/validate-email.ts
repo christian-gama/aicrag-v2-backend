@@ -1,5 +1,4 @@
 import { IValidator, IEmailValidator } from '@/domain/validators'
-
 import { InvalidParamError, InvalidTypeError } from '../../errors'
 
 export class ValidateEmail implements IValidator {

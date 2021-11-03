@@ -1,5 +1,4 @@
 import { environment } from '@/main/config/environment'
-
 import {
   bodyParser,
   cookieParser,
@@ -12,7 +11,6 @@ import {
   urlEncoded
 } from '../middlewares'
 import { isLoggedInMiddleware } from '../routes'
-
 import { Express } from 'express'
 
 export default (app: Express): void => {

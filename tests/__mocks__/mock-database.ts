@@ -7,11 +7,9 @@ import {
   IQueryInvoice
 } from '@/domain/repositories/invoice'
 import { ITaskRepository } from '@/domain/repositories/task'
-
 import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
 import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options'
 import { IUserDbFilter } from '@/infra/database/protocols/update-user-options'
-
 import { makeFakeLogError } from './mock-log-error'
 
 export const makeLogErrorRepositoryStub = (error: Error): ILogErrorRepository => {

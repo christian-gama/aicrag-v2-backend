@@ -1,10 +1,7 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidatePassword } from '@/application/validators/user'
-
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import faker from 'faker'
 
 interface SutTypes {

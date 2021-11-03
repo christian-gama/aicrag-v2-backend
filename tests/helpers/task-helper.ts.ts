@@ -1,7 +1,5 @@
 import { ITask, IUser } from '@/domain'
-
 import { ICollectionMethods } from '@/infra/database/protocols'
-
 import { makeFakeTask } from '../__mocks__'
 
 type TaskProperty = {

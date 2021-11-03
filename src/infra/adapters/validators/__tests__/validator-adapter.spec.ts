@@ -1,5 +1,4 @@
 import { ValidatorAdapter } from '@/infra/adapters/validators'
-
 import faker from 'faker'
 
 interface SutTypes {

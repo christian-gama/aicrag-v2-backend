@@ -1,15 +1,12 @@
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import { environment } from '@/main/config/environment'
-
 import {
   refreshTokenResponse,
   accessTokenResponse,
   productionErrorResponse,
   defaultResponse
 } from '../handlers/express-responses'
-
 import { NextFunction, Request, Response } from 'express'
 
 type AdaptRequest = Request & Pick<HttpRequest, 'headers'>

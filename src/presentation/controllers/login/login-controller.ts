@@ -3,11 +3,8 @@ import { IFilterUserData } from '@/domain/helpers'
 import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MustLogoutError } from '@/application/errors'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IController } from '../protocols/controller-protocol'
 
 export class LoginController implements IController {

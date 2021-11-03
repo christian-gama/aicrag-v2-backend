@@ -1,7 +1,5 @@
 import { HttpResponse } from '@/presentation/http/protocols'
-
 import { environment } from '@/main/config/environment'
-
 import { Response } from 'express'
 
 type Cookie = Response<any, Record<any, string>>

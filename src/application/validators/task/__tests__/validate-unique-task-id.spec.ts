@@ -1,11 +1,8 @@
 import { ITask, IUser } from '@/domain'
 import { ITaskRepository } from '@/domain/repositories/task'
-
 import { ConflictParamError } from '@/application/errors'
 import { ValidateUniqueTaskId } from '@/application/validators/task'
-
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

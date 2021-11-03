@@ -1,5 +1,4 @@
 import { HttpHelper } from '@/presentation/http/http-helper'
-
 import faker from 'faker'
 
 interface SutTypes {

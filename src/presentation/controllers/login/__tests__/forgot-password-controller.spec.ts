@@ -3,14 +3,10 @@ import { IFilterUserData } from '@/domain/helpers'
 import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MustLogoutError } from '@/application/errors'
-
 import { ForgotPasswordController } from '@/presentation/controllers/login'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakeUser,
   makeValidatorStub,

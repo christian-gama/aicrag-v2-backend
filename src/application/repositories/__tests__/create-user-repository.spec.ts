@@ -1,12 +1,9 @@
 import { IHasher } from '@/domain/cryptography'
 import { IUuid } from '@/domain/helpers'
 import { ICreateUserRepository } from '@/domain/repositories'
-
 import { Pin } from '@/application/helpers'
 import { CreateUserRepository } from '@/application/repositories'
-
 import { makeHasherStub, makePinStub, makeUuidStub, makeFakeSignUpUserCredentials } from '@/tests/__mocks__'
-
 import MockDate from 'mockdate'
 interface SutTypes {
   sut: ICreateUserRepository

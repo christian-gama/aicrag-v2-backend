@@ -1,8 +1,6 @@
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { createAccessTokenCookie, createRefreshTokenCookie } from '@/main/express/handlers/create-token-cookie'
-
 import { getHttpResponse } from '../utils'
 
 export const resolverAdapter = async (controller: IController, args: any, context?: any): Promise<any> => {

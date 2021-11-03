@@ -1,5 +1,4 @@
 import { ErrorName } from '../adapters'
-
 import { GraphQLError } from 'graphql'
 
 export const handleError = (response: any, errors: readonly GraphQLError[] | undefined): void => {

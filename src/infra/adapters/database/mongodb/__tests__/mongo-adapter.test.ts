@@ -1,10 +1,7 @@
 import { ITask, IUser } from '@/domain'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
 
 describe('mongoAdapter', () => {

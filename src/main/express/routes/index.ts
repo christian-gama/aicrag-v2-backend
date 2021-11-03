@@ -3,34 +3,33 @@ import {
   makeUpdateEmailByPinController,
   makeUpdatePasswordController,
   makeUpdateUserController
-} from '@/factories/controllers/account'
-import { makeGetAllInvoicesController, makeGetInvoiceByMonthController } from '@/factories/controllers/invoice'
+} from '@/main/factories/controllers/account'
+import { makeGetAllInvoicesController, makeGetInvoiceByMonthController } from '@/main/factories/controllers/invoice'
 import {
   makeActivateAccountController,
   makeForgotPasswordController,
   makeLoginController
-} from '@/factories/controllers/login'
-import { makeResetPasswordController } from '@/factories/controllers/login/reset-password-controller-factory'
+} from '@/main/factories/controllers/login'
+import { makeResetPasswordController } from '@/main/factories/controllers/login/reset-password-controller-factory'
 import {
   makeSendEmailPinController,
   makeSendRecoverPasswordEmailController,
   makeSendWelcomeEmailController
-} from '@/factories/controllers/mailer'
-import { makeSignUpController } from '@/factories/controllers/signup'
+} from '@/main/factories/controllers/mailer'
+import { makeSignUpController } from '@/main/factories/controllers/signup'
 import {
   makeCreateTaskController,
   makeDeleteTaskController,
   makeFindAllTasksController,
   makeFindOneTaskController,
   makeUpdateTaskController
-} from '@/factories/controllers/task'
-import { makeVerifyResetPasswordTokenController } from '@/factories/controllers/token'
+} from '@/main/factories/controllers/task'
+import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/token'
 import {
   makePartialProtectedMiddleware,
   makeIsLoggedInMiddleware,
   makeProtectedMiddleware
-} from '@/factories/middlewares'
-
+} from '@/main/factories/middlewares'
 import { controllerAdapter } from '../adapters/controller-adapter'
 import { middlewareAdapter } from '../adapters/middleware-adapter'
 

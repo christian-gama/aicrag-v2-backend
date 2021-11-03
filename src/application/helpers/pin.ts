@@ -1,5 +1,4 @@
 import { IPin } from '@/domain/helpers'
-
 import { randomAlphanumeric } from '.'
 
 export class Pin implements IPin {

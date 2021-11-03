@@ -1,9 +1,7 @@
 import { environment } from '@/main/config/environment'
 import { createGraphqlSchema, handleError } from '@/main/graphql/utils'
-
 import { protectedDirectiveTransformer, partialProtectedDirectiveTransformer } from '../directives'
 import { context } from './context'
-
 import { ApolloServer } from 'apollo-server-express'
 import { Express } from 'express'
 

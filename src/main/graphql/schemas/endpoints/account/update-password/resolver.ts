@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+import { makeUpdatePasswordController } from '@/main/factories/controllers/account'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
-
-import { makeUpdatePasswordController } from '@/factories/controllers/account'
 
 export const resolver: Resolvers = {
   Mutation: {

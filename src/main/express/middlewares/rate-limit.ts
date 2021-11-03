@@ -1,5 +1,4 @@
 import { environment } from '@/main/config/environment'
-
 import rateLimit from 'express-rate-limit'
 
 const message = 'Too many requests from this IP, please try again in an hour'

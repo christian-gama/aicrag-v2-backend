@@ -6,7 +6,6 @@ import {
   protectedMiddleware,
   updateTaskController
 } from '.'
-
 import { Router } from 'express'
 
 const router = Router()

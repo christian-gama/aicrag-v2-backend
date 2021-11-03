@@ -3,14 +3,10 @@ import { IFilterUserData } from '@/domain/helpers'
 import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { InvalidPinError } from '@/application/errors'
-
 import { ActivateAccountController } from '@/presentation/controllers/login'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeValidatorStub,
   makeFakeUser,
@@ -19,7 +15,6 @@ import {
   makeGenerateTokenStub,
   makeUserRepositoryStub
 } from '@/tests/__mocks__'
-
 import MockDate from 'mockdate'
 
 interface SutTypes {

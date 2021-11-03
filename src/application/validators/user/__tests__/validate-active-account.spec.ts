@@ -1,10 +1,8 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { InactiveAccountError } from '@/application/errors'
 import { ValidateActiveAccount } from '@/application/validators/user'
-
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

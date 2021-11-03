@@ -3,14 +3,10 @@ import { IPin } from '@/domain/helpers'
 import { IMailerService } from '@/domain/mailer'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MailerServiceError } from '@/application/errors'
-
 import { SendEmailPinController } from '@/presentation/controllers/mailer'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakeUser,
   makeValidatorStub,
@@ -18,7 +14,6 @@ import {
   makeMailerServiceStub,
   makePinStub
 } from '@/tests/__mocks__'
-
 import MockDate from 'mockdate'
 
 interface SutTypes {

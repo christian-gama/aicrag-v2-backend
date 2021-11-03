@@ -1,18 +1,12 @@
 import { ITask, IUser } from '@/domain'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
-
 import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { taskHelper } from '@/tests/helpers/task-helper.ts'
 import { userHelper } from '@/tests/helpers/user-helper'
-
 import { findOneTaskQuery } from './find-one-task-document'
-
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'

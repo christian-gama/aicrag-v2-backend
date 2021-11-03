@@ -1,10 +1,7 @@
 import { IUser } from '@/domain'
-
 import { InvalidPinError, PinIsExpiredError, InvalidTypeError } from '@/application/errors'
 import { ValidateEmailPin } from '@/application/validators/user'
-
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import { makeFakeUser } from '@/tests/__mocks__'
 
 interface SutTypes {

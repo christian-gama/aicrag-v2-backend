@@ -1,10 +1,7 @@
 import { IInvoiceRepository, IQueryAllInvoices } from '@/domain/repositories/invoice'
 import { IValidator } from '@/domain/validators'
-
 import { MustLoginError } from '@/application/errors'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IController } from '../protocols/controller-protocol'
 
 export class GetAllInvoicesController implements IController {

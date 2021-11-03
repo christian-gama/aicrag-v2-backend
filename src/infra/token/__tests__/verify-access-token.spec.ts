@@ -1,11 +1,8 @@
 import { IUser } from '@/domain'
 import { IDecoder } from '@/domain/cryptography'
 import { IUserRepository } from '@/domain/repositories'
-
 import { TokenMissingError, InvalidTokenError } from '@/application/errors'
-
 import { VerifyAccessToken } from '@/infra/token/verify-access-token'
-
 import { makeFakeUser, makeDecoderStub, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

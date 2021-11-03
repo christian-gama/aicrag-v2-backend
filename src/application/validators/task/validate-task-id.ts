@@ -1,6 +1,5 @@
 import { ITaskRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { ConflictParamError, InvalidParamError, InvalidTypeError } from '@/application/errors'
 
 export class ValidateTaskId implements IValidator {

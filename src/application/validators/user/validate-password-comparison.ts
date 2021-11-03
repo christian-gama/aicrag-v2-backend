@@ -1,5 +1,4 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidParamError } from '../../errors'
 
 export class ValidatePasswordComparison implements IValidator {

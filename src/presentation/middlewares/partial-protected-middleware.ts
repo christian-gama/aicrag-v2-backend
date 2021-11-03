@@ -1,9 +1,6 @@
 import { IVerifyToken } from '@/domain/providers'
-
 import { getToken } from '@/infra/token'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IMiddleware } from './protocols/middleware-protocol'
 
 export class PartialProtectedMiddleware implements IMiddleware {

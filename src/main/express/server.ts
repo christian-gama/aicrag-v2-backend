@@ -1,9 +1,6 @@
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
-
 import { environment } from '@/main/config/environment'
-
 import { verifyEnvironment } from '../config/verify-environment'
-
 import { createSchemas, createIndexes } from '@/schemas/mongodb'
 
 MongoAdapter.connect(environment.DB.MONGO_URL)

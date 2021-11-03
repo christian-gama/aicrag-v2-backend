@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+import { makeSendEmailPinController } from '@/main/factories/controllers/mailer'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
-
-import { makeSendEmailPinController } from '@/factories/controllers/mailer'
 
 export const resolver: Resolvers = {
   Mutation: {

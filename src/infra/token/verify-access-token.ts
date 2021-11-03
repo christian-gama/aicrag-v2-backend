@@ -2,7 +2,6 @@ import { IUser } from '@/domain'
 import { IDecoder } from '@/domain/cryptography'
 import { IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
-
 import { TokenMissingError, InvalidTokenError } from '@/application/errors'
 
 export class VerifyAccessToken implements IVerifyToken {

@@ -1,5 +1,4 @@
 import { sendEmailPinController, sendRecoverPasswordController, sendWelcomeEmailController } from '.'
-
 import { Router } from 'express'
 
 const router = Router()

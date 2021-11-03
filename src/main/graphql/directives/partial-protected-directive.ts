@@ -1,7 +1,5 @@
-import { makePartialProtectedMiddleware } from '@/factories/middlewares'
-
+import { makePartialProtectedMiddleware } from '@/main/factories/middlewares'
 import { apolloErrorAdapter } from '../adapters'
-
 import { mapSchema, MapperKind, getDirective } from '@graphql-tools/utils'
 import { GraphQLSchema } from 'graphql'
 

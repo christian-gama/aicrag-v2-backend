@@ -1,6 +1,5 @@
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateTaskParam } from '@/application/validators/task'
-
 import { HttpRequest } from '@/presentation/http/protocols'
 
 interface SutTypes {

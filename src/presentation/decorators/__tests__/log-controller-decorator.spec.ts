@@ -1,11 +1,8 @@
 import { ILogErrorRepository } from '@/domain/repositories'
-
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
 import { LogDecorator } from '@/presentation/decorators'
 import { HttpHelper } from '@/presentation/http/http-helper'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeControllerStub, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

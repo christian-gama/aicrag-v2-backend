@@ -1,13 +1,9 @@
 import { IUser } from '@/domain'
 import { IVerifyToken } from '@/domain/providers'
-
 import { InvalidTokenError, MustLogoutError } from '@/application/errors'
-
 import { VerifyResetPasswordTokenController } from '@/presentation/controllers/token'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {

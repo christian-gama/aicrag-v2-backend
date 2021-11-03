@@ -1,13 +1,9 @@
 import { IUser } from '@/domain'
 import { ILogErrorRepository } from '@/domain/repositories'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { ClearUserDatabase } from '@/main/scheduler/clear-user-database'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
 import { makeFakeUser, makeLogErrorRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

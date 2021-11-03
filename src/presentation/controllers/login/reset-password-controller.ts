@@ -4,13 +4,9 @@ import { IFilterUserData } from '@/domain/helpers'
 import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MustLogoutError } from '@/application/errors'
-
 import { getToken } from '@/infra/token'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IController } from '../protocols/controller-protocol'
 
 export class ResetPasswordController implements IController {

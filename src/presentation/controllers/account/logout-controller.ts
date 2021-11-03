@@ -1,9 +1,6 @@
 import { IUserRepository } from '@/domain/repositories'
-
 import { MustLoginError } from '@/application/errors'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IController } from '../protocols/controller-protocol'
 
 export class LogoutController implements IController {

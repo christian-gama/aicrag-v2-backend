@@ -1,8 +1,6 @@
 import { IUser } from '@/domain'
 import { IFilterUserData } from '@/domain/helpers'
-
 import { FilterUserData } from '@/application/helpers'
-
 import { makeFakeUser } from '@/tests/__mocks__'
 
 interface SutTypes {

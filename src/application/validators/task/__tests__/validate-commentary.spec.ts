@@ -1,8 +1,6 @@
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateCommentary } from '@/application/validators/task'
-
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import faker from 'faker'
 
 interface SutTypes {

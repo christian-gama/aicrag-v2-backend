@@ -1,8 +1,6 @@
 import { IValidator } from '@/domain/validators'
-
 import { MissingParamError } from '@/application/errors'
 import { ValidationComposite } from '@/application/validators/user'
-
 import { makeValidatorStub } from '@/tests/__mocks__'
 
 interface SutTypes {

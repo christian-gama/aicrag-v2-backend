@@ -1,11 +1,7 @@
 import { IDecoded } from '@/domain/cryptography'
-
 import { ExpiredTokenError, InvalidTokenError } from '@/application/errors'
-
 import { JwtAdapter } from '@/infra/adapters/cryptography'
-
 import { environment } from '@/main/config/environment'
-
 import jwt from 'jsonwebtoken'
 
 interface SutTypes {

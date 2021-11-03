@@ -5,7 +5,6 @@ import {
   updatePassword,
   updateUserController
 } from '.'
-
 import { Router } from 'express'
 
 const router = Router()

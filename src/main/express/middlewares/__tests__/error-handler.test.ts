@@ -1,12 +1,9 @@
 import { InternalError } from '@/application/errors'
-
 import { IController } from '@/presentation/controllers/protocols/controller-protocol'
-
 import { environment } from '@/main/config/environment'
 import { controllerAdapter } from '@/main/express/adapters/controller-adapter'
 import App from '@/main/express/config/app'
 import { errorRequestHandler } from '@/main/express/middlewares/error-request-handler'
-
 import { Express } from 'express'
 import request from 'supertest'
 

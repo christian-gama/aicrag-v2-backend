@@ -1,8 +1,6 @@
 import { IUser } from '@/domain'
 import { IGenerateToken, IRefreshToken, IVerifyToken } from '@/domain/providers'
-
 import { InvalidTokenError } from '@/application/errors'
-
 import faker from 'faker'
 
 export const makeFakeRefreshToken = (): IRefreshToken => {

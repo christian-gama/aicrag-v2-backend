@@ -1,8 +1,6 @@
 import { IUser } from '@/domain'
 import { IMailerService, IMailerSettings } from '@/domain/mailer'
-
 import { MailerService } from './mailer-service'
-
 import { htmlToText } from 'html-to-text'
 import path from 'path'
 import pug from 'pug'

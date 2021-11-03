@@ -1,6 +1,5 @@
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { UserCredentialError } from '../../errors'
 
 export class ValidateEmailExists implements IValidator {

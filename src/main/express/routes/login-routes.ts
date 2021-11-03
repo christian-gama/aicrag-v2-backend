@@ -5,7 +5,6 @@ import {
   resetPasswordController,
   partialProtectedMiddleware
 } from '.'
-
 import { Router } from 'express'
 
 const router = Router()

@@ -4,14 +4,10 @@ import { IFilterUserData } from '@/domain/helpers'
 import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import { MustLogoutError, InvalidTokenError } from '@/application/errors'
-
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
-import { makeHttpHelper } from '@/factories/helpers'
-
+import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakeUser,
   makeFilterUserDataStub,
@@ -22,7 +18,6 @@ import {
   makeUserRepositoryStub,
   makeVerifyTokenStub
 } from '@/tests/__mocks__'
-
 import MockDate from 'mockdate'
 
 interface SutTypes {

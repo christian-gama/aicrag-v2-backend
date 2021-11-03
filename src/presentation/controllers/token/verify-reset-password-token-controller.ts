@@ -1,9 +1,6 @@
 import { IVerifyToken } from '@/domain/providers'
-
 import { MustLogoutError } from '@/application/errors'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IController } from '../protocols/controller-protocol'
 
 export class VerifyResetPasswordTokenController implements IController {

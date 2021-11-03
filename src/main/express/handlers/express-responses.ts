@@ -1,9 +1,6 @@
 import { InternalError } from '@/application/errors'
-
 import { HttpResponse } from '@/presentation/http/protocols'
-
 import { createAccessTokenCookie, createRefreshTokenCookie } from './create-token-cookie'
-
 import { Response } from 'express'
 
 export const accessTokenResponse = (res: Response, httpResponse: HttpResponse): void => {

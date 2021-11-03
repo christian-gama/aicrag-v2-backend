@@ -1,5 +1,4 @@
 import { IUuid } from '@/domain/helpers'
-
 import { Uuid } from '@/application/helpers'
 
 interface SutTypes {

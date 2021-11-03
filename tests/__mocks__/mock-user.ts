@@ -1,5 +1,4 @@
 import { IPublicUser, ISignUpUserData, IUser } from '@/domain'
-
 import faker from 'faker'
 
 export const makeFakePublicUser = (user: IUser): IPublicUser => {

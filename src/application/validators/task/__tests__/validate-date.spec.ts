@@ -1,6 +1,5 @@
 import { InvalidParamError } from '@/application/errors'
 import { ValidateDate } from '@/application/validators/task'
-
 import { HttpRequest } from '@/presentation/http/protocols'
 
 interface SutTypes {

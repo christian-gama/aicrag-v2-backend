@@ -1,5 +1,4 @@
 import { environment } from '@/main/config/environment'
-
 import { notFound, errorRequestHandler } from '../middlewares'
 import accountRoutes from '../routes/account-routes'
 import invoiceRoutes from '../routes/invoice-routes'
@@ -8,7 +7,6 @@ import mailerRoutes from '../routes/mailer-routes'
 import signupRoutes from '../routes/signup-routes'
 import taskRoutes from '../routes/task-routes'
 import tokenRoutes from '../routes/token-routes'
-
 import { Express } from 'express'
 
 export default (app: Express): void => {

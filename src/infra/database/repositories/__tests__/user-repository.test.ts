@@ -1,12 +1,9 @@
 import { IUser } from '@/domain'
 import { ICreateUserRepository } from '@/domain/repositories'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 import { UserRepository } from '@/infra/database/repositories'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { makeFakeUser, makeCreateUserRepositoryStub, makeFakeSignUpUserCredentials } from '@/tests/__mocks__'
 
 interface SutTypes {

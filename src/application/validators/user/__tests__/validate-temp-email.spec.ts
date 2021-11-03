@@ -1,9 +1,7 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
-
 import { UserCredentialError } from '@/application/errors'
 import { ValidateTempEmail } from '@/application/validators/user'
-
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

@@ -1,17 +1,11 @@
 import { IUser } from '@/domain'
-
 import { MailerServiceError } from '@/application/errors'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
-
 import App from '@/main/express/config/app'
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { WelcomeEmail } from '@/main/mailer/welcome-email'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
 import { makeFakeUser } from '@/tests/__mocks__'
-
 import { Express } from 'express'
 import request from 'supertest'
 

@@ -1,5 +1,4 @@
 import { InternalError } from '@/application/errors'
-
 import { environment } from '@/main/config/environment'
 
 export const errorHandler = (err: Error): any => {

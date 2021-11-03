@@ -3,7 +3,6 @@ import { IFilterUserData } from '@/domain/helpers'
 import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-
 import {
   UserCredentialError,
   InvalidParamError,
@@ -12,11 +11,9 @@ import {
   MustLogoutError,
   InvalidTypeError
 } from '@/application/errors'
-
 import { LoginController } from '@/presentation/controllers/login'
 import { HttpHelper } from '@/presentation/http/http-helper'
 import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
-
 import {
   makeValidatorStub,
   makeFakeUser,
@@ -25,7 +22,6 @@ import {
   makeGenerateTokenStub,
   makeUserRepositoryStub
 } from '@/tests/__mocks__'
-
 import MockDate from 'mockdate'
 
 interface SutTypes {

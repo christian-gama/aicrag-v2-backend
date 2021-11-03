@@ -1,5 +1,4 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidQueryError } from '@/application/errors'
 
 export class ValidateDuration implements IValidator {

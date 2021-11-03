@@ -1,5 +1,4 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidPinError, PinIsExpiredError, InvalidTypeError } from '../../errors'
 
 export class ValidateEmailPin implements IValidator {

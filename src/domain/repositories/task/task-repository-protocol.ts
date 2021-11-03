@@ -1,5 +1,4 @@
 import { ITask, ITaskData } from '@/domain'
-
 import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
 import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options'
 

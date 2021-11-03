@@ -1,7 +1,6 @@
 import { ITask, ITaskData } from '@/domain'
 import { ICreateTaskRepository } from '@/domain/repositories'
 import { ITaskRepository } from '@/domain/repositories/task'
-
 import { IDatabase } from '../protocols'
 import { IQuery, IQueryResult } from '../protocols/queries-protocol'
 import { ITaskDbFilter } from '../protocols/update-task-options'

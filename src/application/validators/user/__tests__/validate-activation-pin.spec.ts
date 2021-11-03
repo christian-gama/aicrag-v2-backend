@@ -1,6 +1,5 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
-
 import {
   InvalidPinError,
   PinIsExpiredError,
@@ -8,9 +7,7 @@ import {
   InvalidTypeError
 } from '@/application/errors'
 import { ValidateActivationPin } from '@/application/validators/user'
-
 import { HttpRequest } from '@/presentation/http/protocols'
-
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

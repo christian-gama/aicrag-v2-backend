@@ -1,12 +1,9 @@
 import { ITask, ITaskData, IUser } from '@/domain'
 import { ICreateTaskRepository } from '@/domain/repositories'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 import { TaskRepository } from '@/infra/database/repositories'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { makeFakeTask, makeFakeTaskData, makeFakeUser, makeCreateTaskRepositoryStub } from '@/tests/__mocks__'
 
 interface SutTypes {

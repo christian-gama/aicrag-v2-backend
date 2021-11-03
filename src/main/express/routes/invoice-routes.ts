@@ -1,5 +1,4 @@
 import { getAllInvoicesController, getInvoiceByMonthController } from '.'
-
 import { Router } from 'express'
 
 const router = Router()

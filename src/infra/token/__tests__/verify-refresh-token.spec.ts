@@ -2,11 +2,8 @@ import { IUser } from '@/domain'
 import { IDecoder } from '@/domain/cryptography'
 import { IRefreshToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
-
 import { InvalidTokenError, TokenMissingError } from '@/application/errors'
-
 import { VerifyRefreshToken } from '@/infra/token/verify-refresh-token'
-
 import { makeFakeRefreshToken, makeFakeUser, makeDecoderStub, makeUserRepositoryStub } from '@/tests/__mocks__'
 interface SutTypes {
   fakeRefreshToken: IRefreshToken

@@ -1,5 +1,4 @@
 import { getPeriod } from '@/infra/database/helpers'
-
 import MockDate from 'mockdate'
 
 describe('getPeriod', () => {

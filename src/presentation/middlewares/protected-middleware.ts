@@ -1,12 +1,8 @@
 import { IEncrypter } from '@/domain/cryptography'
 import { IVerifyToken } from '@/domain/providers'
-
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
-
 import { getToken } from '@/infra/token'
-
 import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-
 import { IMiddleware } from './protocols/middleware-protocol'
 
 export class ProtectedMiddleware implements IMiddleware {

@@ -1,15 +1,10 @@
 import { ITask, IUser } from '@/domain'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
-
 import App from '@/main/express/config/app'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/factories/providers/token'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
+import { makeGenerateAccessToken, makeGenerateRefreshToken } from '@/main/factories/providers/token'
 import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
-
 import { Express } from 'express'
 import request from 'supertest'
 

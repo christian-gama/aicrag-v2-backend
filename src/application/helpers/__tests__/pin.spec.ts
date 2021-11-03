@@ -1,5 +1,4 @@
 import { IPin } from '@/domain/helpers'
-
 import { Pin } from '@/application/helpers'
 
 interface SutTypes {

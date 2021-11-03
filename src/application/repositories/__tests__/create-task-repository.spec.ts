@@ -1,11 +1,8 @@
 import { ITaskData, IUser } from '@/domain'
 import { IUuid } from '@/domain/helpers'
-
 import { CreateTaskRepository } from '@/application/repositories'
-
 import { makeFakeUser, makeUuidStub } from '@/tests/__mocks__'
 import { makeFakeTaskData } from '@/tests/__mocks__/mock-task'
-
 import MockDate from 'mockdate'
 
 interface SutTypes {

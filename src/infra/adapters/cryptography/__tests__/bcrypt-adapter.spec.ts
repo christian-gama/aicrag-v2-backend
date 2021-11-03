@@ -1,5 +1,4 @@
 import { BcryptAdapter } from '@/infra/adapters/cryptography'
-
 import bcrypt from 'bcrypt'
 
 interface SutTypes {

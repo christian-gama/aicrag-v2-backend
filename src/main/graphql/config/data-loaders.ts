@@ -1,7 +1,5 @@
 import { IUser } from '@/domain'
-
-import { makeUserRepository } from '@/factories/repositories'
-
+import { makeUserRepository } from '@/main/factories/repositories'
 import DataLoader from 'dataloader'
 
 const userBatch = async (ids): Promise<IUser[]> => {

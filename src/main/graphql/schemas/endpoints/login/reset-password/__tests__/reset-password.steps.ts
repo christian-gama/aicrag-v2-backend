@@ -1,19 +1,13 @@
 import { IUser } from '@/domain'
-
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
-
 import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
-
-import { makeMongoDb } from '@/factories/database/mongo-db-factory'
-import { makeGenerateAccessToken } from '@/factories/providers/token'
-
+import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
+import { makeGenerateAccessToken } from '@/main/factories/providers/token'
 import { makeFakeUser } from '@/tests/__mocks__'
 import { userHelper } from '@/tests/helpers/user-helper'
-
 import { resetPasswordMutation } from './reset-password-document'
-
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import { resolve } from 'path'

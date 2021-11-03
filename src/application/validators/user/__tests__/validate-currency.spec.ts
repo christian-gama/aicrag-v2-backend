@@ -1,5 +1,4 @@
 import { IValidator } from '@/domain/validators'
-
 import { InvalidParamError } from '@/application/errors'
 import { ValidateCurrency } from '@/application/validators/user'
 

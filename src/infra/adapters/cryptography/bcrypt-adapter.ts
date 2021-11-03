@@ -1,5 +1,4 @@
 import { IComparer, IHasher } from '@/domain/cryptography'
-
 import bcrypt from 'bcrypt'
 
 export class BcryptAdapter implements IComparer, IHasher {

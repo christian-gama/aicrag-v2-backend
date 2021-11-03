@@ -1,5 +1,4 @@
 import App from '@/main/express/config/app'
-
 import assert from 'assert'
 import { Express } from 'express'
 import request from 'supertest'
