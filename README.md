@@ -12,65 +12,66 @@ As this is my first personal project ever, you may find some stuffs that you dis
 
 > ### Principles I've used
 
-- Single Responsibility Principle (SRP)
-- Open Closed Principle (OCP)
-- Liskov Substitution Principle (LSP)
-- Interface Segregation Principle (ISP)
-- Dependency Inversion Principle (DIP)
-- Separation of Concerns (SOC)
-- Don't Repeat Yourself (DRY)
-- You Aren't Gonna Need It (YAGNI)
-- Keep It Simple, Silly (KISS)
 - Composition Over Inheritance
+- Dependency Inversion Principle (DIP)
+- Don't Repeat Yourself (DRY)
+- Interface Segregation Principle (ISP)
+- Keep It Simple, Silly (KISS)
+- Liskov Substitution Principle (LSP)
+- Open Closed Principle (OCP)
+- Separation of Concerns (SOC)
+- Single Responsibility Principle (SRP)
 - Small Commits
+- You Aren't Gonna Need It (YAGNI)
 
 > ### Methodologies I've used
 
-- TDD
+- Behavior Driven Development (BDD)
 - Clean Architecture
-- DDD
+- Continuous Integration
 - Conventional Commits
+- Domain-Driven Design (DDD)
 - GitFlow
 - Modular Design
+- Test-driven development (TDD)
 - Use Cases
-- Continuous Integration
 
 > ### Design patterns I've used
 
-- Factory
 - Adapter
 - Composite
 - Decorator
 - Dependency Injection
+- Factory
 
 > ### Libraries and tools I've used
 
-- Docker
-- Express
-- GraphQL
 - Apollo Server Express
 - Bcrypt
 - Cookie Parser
 - CORS
+- Docker
 - dotenv
+- Eslint
+- Express
 - Express Rate Limit
+- Faker
+- GraphQL
 - Helmet
 - HTML to Text
-- JsonWebToken
-- MongoDb
-- Nodemailer
-- PUG
-- Validator
-- Eslint
-- Faker
 - Husky
 - Jest
+- JsonWebToken
 - Lint Staged
 - MockDate
+- MongoDb
+- Nodemailer
 - Prettier
+- PUG
 - Rimraf
 - Supertest
 - Typescript
+- Validator
 - YARN
 
 # Getting started
