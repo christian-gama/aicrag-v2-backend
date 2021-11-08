@@ -4,10 +4,7 @@ import { IHttpHelper, HttpRequest, HttpResponse } from '../http/protocols'
 import { IMiddleware } from './protocols/middleware-protocol'
 
 export class PermissionMiddleware implements IMiddleware {
-  constructor (
-    private readonly httpHelper: IHttpHelper,
-    private readonly permission: 'administrator' | 'moderator' | 'user' | 'guest'
-  ) {}
+  constructor (private readonly httpHelper: IHttpHelper, private readonly permission: IUser['settings']['role']) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const user = (httpRequest.user as IUser) || undefined
