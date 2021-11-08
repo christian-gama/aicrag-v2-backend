@@ -24,6 +24,7 @@ type UserSettings {
   accountActivated: Boolean!
   currency: UserCurrency!
   handicap: Int!
+  role: UserRole!
 }
 
 type UserTemporary {
@@ -38,6 +39,13 @@ type UserTemporary {
 enum UserCurrency {
   BRL
   USD
+}
+
+enum UserRole {
+  administrator
+  moderator
+  user
+  guest
 }
 
 type PublicUser {

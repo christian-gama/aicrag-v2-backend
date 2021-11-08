@@ -20,6 +20,7 @@ export interface IUser {
     accountActivated: boolean
     currency: 'USD' | 'BRL'
     handicap: RangeNumbers
+    role: 'administrator' | 'moderator' | 'user' | 'guest'
   }
   temporary: {
     activationPin: string | null

@@ -130,7 +130,8 @@ describe('userRepository', () => {
       expect(user.settings).toStrictEqual({
         accountActivated: fakeUser.settings.accountActivated,
         currency: fakeUser.settings.currency,
-        handicap: fakeUser.settings.handicap
+        handicap: fakeUser.settings.handicap,
+        role: fakeUser.settings.role
       })
 
       expect(user.temporary).toStrictEqual({

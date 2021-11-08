@@ -26,7 +26,7 @@ export class CreateUserRepository implements ICreateUserRepository {
         name: signUpUserCredentials.name,
         password: hashedPassword
       },
-      settings: { accountActivated: false, currency: 'BRL', handicap: 1 },
+      settings: { accountActivated: false, currency: 'BRL', handicap: 1, role: 'user' },
       temporary: {
         activationPin: activationPin,
         activationPinExpiration: new Date(Date.now() + activationPinExpirationMinutes),

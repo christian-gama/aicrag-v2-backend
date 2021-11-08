@@ -54,7 +54,7 @@ describe('createUserRepository', () => {
       password: fakeHashedPassword
     })
 
-    expect(result.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1 })
+    expect(result.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1, role: 'user' })
 
     expect(result.temporary).toStrictEqual({
       activationPin: fakeActivationCode,
