@@ -3,13 +3,13 @@ import { IUser } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { HttpRequest, IHttpHelper } from '@/presentation/http/protocols'
 import { makeFakeUser } from '@/tests/__mocks__'
-import { AdministratorMiddleware } from '..'
+import { PermissionMiddleware } from '..'
 
 interface SutTypes {
   fakeUser: IUser
   httpHelper: IHttpHelper
   request: HttpRequest
-  sut: AdministratorMiddleware
+  sut: PermissionMiddleware
 }
 
 const makeSut = (): SutTypes => {
@@ -17,7 +17,7 @@ const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const request = { user: fakeUser }
 
-  const sut = new AdministratorMiddleware(httpHelper)
+  const sut = new PermissionMiddleware(httpHelper, 'administrator')
 
   return { fakeUser, httpHelper, request, sut }
 }
