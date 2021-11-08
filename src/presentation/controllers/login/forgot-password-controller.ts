@@ -4,7 +4,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MustLogoutError } from '@/application/errors'
 import { FilterUserData } from '@/application/helpers'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class ForgotPasswordController implements IController {
@@ -12,7 +12,7 @@ export class ForgotPasswordController implements IController {
     private readonly filterUserData: FilterUserData,
     private readonly forgotPasswordValidator: IValidator,
     private readonly generateAccessToken: IGenerateToken,
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly userRepository: IUserRepository
   ) {}
 

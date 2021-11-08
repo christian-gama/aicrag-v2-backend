@@ -3,14 +3,14 @@ import { ITaskRepository } from '@/domain/repositories/task'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError } from '@/application/errors'
 import { FindAllTasksController } from '@/presentation/controllers/task'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeTask: ITask
   fakeUser: IUser
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   queryValidatorStub: IValidator
   request: HttpRequest
   sut: FindAllTasksController

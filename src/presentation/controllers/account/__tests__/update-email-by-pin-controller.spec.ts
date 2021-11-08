@@ -4,7 +4,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { InvalidPinError, MustLoginError } from '@/application/errors'
 import { UpdateEmailByPinController } from '@/presentation/controllers/account'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeValidatorStub,
@@ -19,7 +19,7 @@ interface SutTypes {
   fakePublicUser: IPublicUser
   fakeUser: IUser
   filterUserDataStub: IFilterUserData
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: UpdateEmailByPinController
   updateEmailByPinValidatorStub: IValidator

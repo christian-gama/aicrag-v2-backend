@@ -1,6 +1,6 @@
-import { HttpHelperProtocol, HttpResponse } from './protocols'
+import { IHttpHelper, HttpResponse } from './protocols'
 
-export class HttpHelper implements HttpHelperProtocol {
+export class HttpHelper implements IHttpHelper {
   // ****************
   // Range: 200 ~ 204
   ok (data: { [key: string]: any }): HttpResponse {

@@ -5,7 +5,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { InvalidTokenError, MailerServiceError } from '@/application/errors'
 import { SendRecoverPasswordController } from '@/presentation/controllers/mailer'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakeUser,
@@ -20,7 +20,7 @@ interface SutTypes {
   fakeUser: IUser
   forgotPasswordEmailStub: IMailerService
   generateAccessTokenStub: IGenerateToken
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   recoverPasswordValidatorStub: IValidator
   request: HttpRequest
   sut: SendRecoverPasswordController

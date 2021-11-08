@@ -4,12 +4,12 @@ import { IMailerService } from '@/domain/mailer'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class SendWelcomeEmailController implements IController {
   constructor (
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly sendWelcomeValidator: IValidator,
     private readonly userRepository: IUserRepository,
     private readonly validationCode: IPin,

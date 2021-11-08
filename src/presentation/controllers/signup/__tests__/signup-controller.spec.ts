@@ -5,7 +5,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { ConflictParamError, InvalidParamError, MustLogoutError } from '@/application/errors'
 import { SignUpController } from '@/presentation/controllers/signup'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakeUser,
@@ -21,7 +21,7 @@ interface SutTypes {
   fakeUser: IUser
   filterUserDataStub: IFilterUserData
   generateAccessTokenStub: IGenerateToken
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: SignUpController
   userRepositoryStub: IUserRepository

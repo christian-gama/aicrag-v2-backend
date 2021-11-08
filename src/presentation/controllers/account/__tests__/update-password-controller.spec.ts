@@ -6,7 +6,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError } from '@/application/errors'
 import { UpdatePasswordController } from '@/presentation/controllers/account'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakePublicUser,
@@ -25,7 +25,7 @@ interface SutTypes {
   generateAccessTokenStub: IGenerateToken
   generateRefreshTokenStub: IGenerateToken
   hasherStub: IHasher
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: UpdatePasswordController
   updatePasswordValidatorStub: IValidator

@@ -4,7 +4,7 @@ import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MailerServiceError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class SendRecoverPasswordController implements IController {
@@ -12,7 +12,7 @@ export class SendRecoverPasswordController implements IController {
     private readonly forgotPasswordEmail: IMailerService,
     private readonly sendRecoverPasswordValidator: IValidator,
     private readonly generateAccessToken: IGenerateToken,
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly userRepository: IUserRepository,
     private readonly verifyResetPasswordToken: IVerifyToken
   ) {}

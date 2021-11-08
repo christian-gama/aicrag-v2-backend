@@ -4,13 +4,13 @@ import { IMailerService } from '@/domain/mailer'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MailerServiceError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class SendEmailPinController implements IController {
   constructor (
     private readonly emailPin: IMailerService,
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly sendEmailPinValidator: IValidator,
     private readonly userRepository: IUserRepository,
     private readonly validationCode: IPin

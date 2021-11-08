@@ -1,12 +1,12 @@
 import { ITaskRepository } from '@/domain/repositories/task'
 import { IValidator } from '@/domain/validators'
 import { ConflictParamError, MustLoginError, TaskNotFoundError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class UpdateTaskController implements IController {
   constructor (
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly taskRepository: ITaskRepository,
     private readonly validateCommentary: IValidator,
     private readonly validateDate: IValidator,

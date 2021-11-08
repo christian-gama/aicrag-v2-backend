@@ -3,14 +3,14 @@ import { IFilterUserData, IPin } from '@/domain/helpers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { ConflictParamError, MustLoginError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class UpdateUserController implements IController {
   constructor (
     private readonly emailPin: IPin,
     private readonly filterUserData: IFilterUserData,
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly userRepository: IUserRepository,
     private readonly validateCurrency: IValidator,
     private readonly validateEmail: IValidator,

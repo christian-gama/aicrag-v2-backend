@@ -3,7 +3,7 @@ import { ITaskRepository } from '@/domain/repositories/task'
 import { IValidator } from '@/domain/validators'
 import { InvalidParamError, MustLoginError, TaskNotFoundError } from '@/application/errors'
 import { UpdateTaskController } from '@/presentation/controllers/task'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 import MockDate from 'mockdate'
@@ -11,7 +11,7 @@ import MockDate from 'mockdate'
 interface SutTypes {
   fakeTask: ITask
   fakeUser: IUser
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: UpdateTaskController
   taskRepositoryStub: ITaskRepository

@@ -13,7 +13,7 @@ import {
 } from '@/application/errors'
 import { LoginController } from '@/presentation/controllers/login'
 import { HttpHelper } from '@/presentation/http/http-helper'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import {
   makeValidatorStub,
   makeFakeUser,
@@ -30,7 +30,7 @@ interface SutTypes {
   filterUserDataStub: IFilterUserData
   generateAccessTokenStub: IGenerateToken
   generateRefreshTokenStub: IGenerateToken
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   loginValidatorStub: IValidator
   request: HttpRequest
   sut: LoginController

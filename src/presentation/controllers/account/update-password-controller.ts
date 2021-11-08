@@ -5,7 +5,7 @@ import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class UpdatePasswordController implements IController {
@@ -14,7 +14,7 @@ export class UpdatePasswordController implements IController {
     private readonly generateAccessToken: IGenerateToken,
     private readonly generateRefreshToken: IGenerateToken,
     private readonly hasher: IHasher,
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly updatePasswordValidator: IValidator,
     private readonly userRepository: IUserRepository
   ) {}

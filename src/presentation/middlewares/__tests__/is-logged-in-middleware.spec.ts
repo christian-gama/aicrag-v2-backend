@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 import { IRefreshToken, IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { IsLoggedInMiddleware } from '@/presentation/middlewares'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeRefreshToken, makeFakeUser, makeUserRepositoryStub, makeVerifyTokenStub } from '@/tests/__mocks__'
@@ -10,7 +10,7 @@ import MockDate from 'mockdate'
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: IsLoggedInMiddleware
   verifyRefreshTokenStub: IVerifyToken

@@ -3,14 +3,14 @@ import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MustLogoutError, ConflictParamError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class SignUpController implements IController {
   constructor (
     private readonly filterUserData: IFilterUserData,
     private readonly generateAccessToken: IGenerateToken,
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly userRepository: IUserRepository,
     private readonly userValidator: IValidator
   ) {}

@@ -2,12 +2,12 @@ import { IEncrypter } from '@/domain/cryptography'
 import { IVerifyToken } from '@/domain/providers'
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 import { getToken } from '@/infra/token'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IMiddleware } from './protocols/middleware-protocol'
 
 export class ProtectedMiddleware implements IMiddleware {
   constructor (
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly accessTokenEncrypter: IEncrypter,
     private readonly verifyAccessToken: IVerifyToken,
     private readonly verifyRefreshToken: IVerifyToken

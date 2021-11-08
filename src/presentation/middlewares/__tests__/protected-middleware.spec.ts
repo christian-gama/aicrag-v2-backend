@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 import { IEncrypter } from '@/domain/cryptography'
 import { IRefreshToken, IVerifyToken } from '@/domain/providers'
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { ProtectedMiddleware } from '@/presentation/middlewares'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeEncrypterStub, makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
@@ -10,7 +10,7 @@ import { makeEncrypterStub, makeFakeRefreshToken, makeFakeUser, makeVerifyTokenS
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   refreshTokenEncrypter: IEncrypter
   request: HttpRequest
   sut: ProtectedMiddleware

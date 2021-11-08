@@ -2,12 +2,12 @@ import { IUser } from '@/domain'
 import { IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { getToken } from '@/infra/token'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '../http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '../http/protocols'
 import { IMiddleware } from './protocols/middleware-protocol'
 
 export class IsLoggedInMiddleware implements IMiddleware {
   constructor (
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly userRepository: IUserRepository,
     private readonly verifyRefreshToken: IVerifyToken
   ) {}

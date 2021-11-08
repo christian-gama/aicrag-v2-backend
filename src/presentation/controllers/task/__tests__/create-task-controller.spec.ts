@@ -3,7 +3,7 @@ import { ITaskRepository } from '@/domain/repositories/task'
 import { IValidator } from '@/domain/validators'
 import { ConflictParamError, MustLoginError } from '@/application/errors'
 import { CreateTaskController } from '@/presentation/controllers/task'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 
@@ -12,7 +12,7 @@ interface SutTypes {
   fakeTask: ITask
   fakeTaskData: ITaskData
   fakeUser: IUser
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: CreateTaskController
   taskRepositoryStub: ITaskRepository

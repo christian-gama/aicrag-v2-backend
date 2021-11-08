@@ -1,19 +1,19 @@
 import { HttpResponse } from './http-response-protocol'
 
-export interface HttpHelperProtocol
-  extends HttpBadRequestProtocol,
-  HttpUnauthorizedProtocol,
-  HttpForbiddenProtocol,
-  HttpNotFoundProtocol,
-  HttpConflictProtocol,
-  HttpOkProtocol,
-  HttpCreatedProtocol,
-  HttpDeletedProtocol,
-  HttpServerErrorProtocol {}
+export interface IHttpHelper
+  extends IHttpBadRequest,
+  IHttpUnauthorized,
+  IHttpForbidden,
+  IHttpNotFound,
+  IHttpConflict,
+  IHttpOk,
+  IHttpCreated,
+  IHttpDeleted,
+  IHttpServerError {}
 
 // ****************
 // Range: 400 ~ 409
-export interface HttpBadRequestProtocol {
+export interface IHttpBadRequest {
   /**
    * @description A helper method used when status code is 400.
    * @param error Any error that extends Error.
@@ -22,7 +22,7 @@ export interface HttpBadRequestProtocol {
   badRequest: (error: Error) => HttpResponse
 }
 
-export interface HttpUnauthorizedProtocol {
+export interface IHttpUnauthorized {
   /**
    * @description A helper method used when status code is 401.
    * @param error Any error that extends Error.
@@ -31,7 +31,7 @@ export interface HttpUnauthorizedProtocol {
   unauthorized: (error: Error) => HttpResponse
 }
 
-export interface HttpForbiddenProtocol {
+export interface IHttpForbidden {
   /**
    * @description A helper method used when status code is 403.
    * @param error Any error that extends Error.
@@ -40,7 +40,7 @@ export interface HttpForbiddenProtocol {
   forbidden: (error: Error) => HttpResponse
 }
 
-export interface HttpNotFoundProtocol {
+export interface IHttpNotFound {
   /**
    * @description A helper method used when status code is 404.
    * @param error Any error that extends Error.
@@ -49,7 +49,7 @@ export interface HttpNotFoundProtocol {
   notFound: (error: Error) => HttpResponse
 }
 
-export interface HttpConflictProtocol {
+export interface IHttpConflict {
   /**
    * @description A helper method used when status code is 409.
    * @param error Any error that extends Error.
@@ -60,7 +60,7 @@ export interface HttpConflictProtocol {
 
 // ****************
 // Range: 200 ~ 204
-export interface HttpOkProtocol {
+export interface IHttpOk {
   /**
    * @description A helper method used when status code is 200.
    * @param data Any data that will be used on the http response.
@@ -70,7 +70,7 @@ export interface HttpOkProtocol {
   ok: (data: { [key: string]: any, accessToken?: string }) => HttpResponse
 }
 
-export interface HttpCreatedProtocol {
+export interface IHttpCreated {
   /**
    * @description A helper method used when status code is 201.
    * @param data Any data that will be used on the http response.
@@ -79,7 +79,7 @@ export interface HttpCreatedProtocol {
   created: (data: any) => HttpResponse
 }
 
-export interface HttpDeletedProtocol {
+export interface IHttpDeleted {
   /**
    * @description A helper method used when status code is 204.
    * @param data Any data that will be used on the http response.
@@ -90,7 +90,7 @@ export interface HttpDeletedProtocol {
 
 // ****************
 // Range: 500
-export interface HttpServerErrorProtocol {
+export interface IHttpServerError {
   /**
    * @description A helper method used when status code is 500.
    * @param error Any error that extends Error.

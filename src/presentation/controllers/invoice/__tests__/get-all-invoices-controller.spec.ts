@@ -3,7 +3,7 @@ import { IInvoiceRepository } from '@/domain/repositories/invoice'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError } from '@/application/errors'
 import { GetAllInvoicesController } from '@/presentation/controllers/invoice'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeTask, makeFakeUser, makeInvoiceRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 
@@ -11,7 +11,7 @@ interface SutTypes {
   fakeTask: ITask
   fakeUser: IUser
   getAllInvoicesValidatorStub: IValidator
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   invoiceRepositoryStub: IInvoiceRepository
   request: HttpRequest
   sut: GetAllInvoicesController

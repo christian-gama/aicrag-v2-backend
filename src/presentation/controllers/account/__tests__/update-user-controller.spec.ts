@@ -4,7 +4,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { ConflictParamError, MustLoginError } from '@/application/errors'
 import { UpdateUserController } from '@/presentation/controllers/account'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakePublicUser,
@@ -20,7 +20,7 @@ interface SutTypes {
   emailPinStub: IPin
   fakeUser: IUser
   filterUserDataStub: IFilterUserData
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: UpdateUserController
   userRepositoryStub: IUserRepository

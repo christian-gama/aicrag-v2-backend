@@ -5,7 +5,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { InvalidPinError } from '@/application/errors'
 import { ActivateAccountController } from '@/presentation/controllers/login'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeValidatorStub,
@@ -24,7 +24,7 @@ interface SutTypes {
   filterUserDataStub: IFilterUserData
   generateAccessTokenStub: IGenerateToken
   generateRefreshTokenStub: IGenerateToken
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sut: ActivateAccountController
   userRepositoryStub: IUserRepository

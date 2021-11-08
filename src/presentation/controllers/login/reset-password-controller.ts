@@ -6,7 +6,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MustLogoutError } from '@/application/errors'
 import { getToken } from '@/infra/token'
-import { HttpHelperProtocol, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller-protocol'
 
 export class ResetPasswordController implements IController {
@@ -14,7 +14,7 @@ export class ResetPasswordController implements IController {
     private readonly filterUserData: IFilterUserData,
     private readonly generateRefreshToken: IGenerateToken,
     private readonly hasher: IHasher,
-    private readonly httpHelper: HttpHelperProtocol,
+    private readonly httpHelper: IHttpHelper,
     private readonly resetPasswordValidator: IValidator,
     private readonly userRepository: IUserRepository,
     private readonly verifyResetPasswordToken: IVerifyToken

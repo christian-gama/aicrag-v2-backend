@@ -5,7 +5,7 @@ import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { AccountAlreadyActivatedError, MailerServiceError } from '@/application/errors'
 import { SendWelcomeEmailController } from '@/presentation/controllers/mailer/send-welcome-email-controller'
-import { HttpHelperProtocol, HttpRequest } from '@/presentation/http/protocols'
+import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
   makeFakeUser,
@@ -18,7 +18,7 @@ import MockDate from 'mockdate'
 
 interface SutTypes {
   fakeUser: IUser
-  httpHelper: HttpHelperProtocol
+  httpHelper: IHttpHelper
   request: HttpRequest
   sendWelcomeValidatorStub: IValidator
   sut: SendWelcomeEmailController
