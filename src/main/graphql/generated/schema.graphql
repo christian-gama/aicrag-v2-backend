@@ -1,6 +1,14 @@
+directive @administrator on FIELD_DEFINITION
+
+directive @guest on FIELD_DEFINITION
+
+directive @moderator on FIELD_DEFINITION
+
 directive @partialProtected on FIELD_DEFINITION
 
 directive @protected on FIELD_DEFINITION
+
+directive @user on FIELD_DEFINITION
 
 type ActivateAccount {
   accessToken: JWT!
@@ -371,10 +379,18 @@ type UserPersonal {
   password: String!
 }
 
+enum UserRole {
+  administrator
+  guest
+  moderator
+  user
+}
+
 type UserSettings {
   accountActivated: Boolean!
   currency: UserCurrency!
   handicap: Int!
+  role: UserRole!
 }
 
 type UserTemporary {

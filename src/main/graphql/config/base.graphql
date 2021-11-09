@@ -1,5 +1,9 @@
 directive @protected on FIELD_DEFINITION
 directive @partialProtected on FIELD_DEFINITION
+directive @administrator on FIELD_DEFINITION
+directive @moderator on FIELD_DEFINITION
+directive @guest on FIELD_DEFINITION
+directive @user on FIELD_DEFINITION
 
 scalar EmailAddress
 scalar DateString

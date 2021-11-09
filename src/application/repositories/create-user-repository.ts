@@ -1,4 +1,4 @@
-import { ISignUpUserData, IUser } from '@/domain'
+import { ISignUpUserData, IUser, IUserRole } from '@/domain'
 import { IHasher } from '@/domain/cryptography'
 import { IPin, IUuid } from '@/domain/helpers'
 import { ICreateUserRepository } from '@/domain/repositories'
@@ -26,7 +26,7 @@ export class CreateUserRepository implements ICreateUserRepository {
         name: signUpUserCredentials.name,
         password: hashedPassword
       },
-      settings: { accountActivated: false, currency: 'BRL', handicap: 1, role: 'user' },
+      settings: { accountActivated: false, currency: 'BRL', handicap: 1, role: IUserRole.user },
       temporary: {
         activationPin: activationPin,
         activationPinExpiration: new Date(Date.now() + activationPinExpirationMinutes),

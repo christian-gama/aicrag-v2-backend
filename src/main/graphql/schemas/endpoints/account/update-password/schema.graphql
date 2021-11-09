@@ -1,5 +1,5 @@
 type Mutation {
-  updatePassword(input: UpdatePasswordInput!): UpdatePassword! @protected
+  updatePassword(input: UpdatePasswordInput!): UpdatePassword! @user @protected
 }
 
 input UpdatePasswordInput {

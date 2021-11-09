@@ -1,3 +1,4 @@
+import { IUserRole } from '@/domain'
 import { IHasher } from '@/domain/cryptography'
 import { IUuid } from '@/domain/helpers'
 import { ICreateUserRepository } from '@/domain/repositories'
@@ -54,7 +55,12 @@ describe('createUserRepository', () => {
       password: fakeHashedPassword
     })
 
-    expect(result.settings).toStrictEqual({ accountActivated: false, currency: 'BRL', handicap: 1, role: 'user' })
+    expect(result.settings).toStrictEqual({
+      accountActivated: false,
+      currency: 'BRL',
+      handicap: 1,
+      role: IUserRole.user
+    })
 
     expect(result.temporary).toStrictEqual({
       activationPin: fakeActivationCode,

@@ -1,19 +1,20 @@
-import { IUser } from '@/domain'
+import { IUserRole } from '@/domain'
 import { PermissionMiddleware } from '@/presentation/middlewares'
 import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { makeTryCatchDecorator } from '../decorators'
 import { makeHttpHelper } from '../helpers'
 
-export const makePermissionMiddleware = (permission: IUser['settings']['role']): IMiddleware => {
+export const makePermissionMiddleware = (permission: IUserRole): IMiddleware => {
   const httpHelper = makeHttpHelper()
 
   switch (permission) {
-    case 'administrator':
-      return new PermissionMiddleware(httpHelper, 'administrator')
-    case 'moderator':
-      return new PermissionMiddleware(httpHelper, 'moderator')
-    case 'user':
-      return new PermissionMiddleware(httpHelper, 'user')
-    case 'guest':
-      return new PermissionMiddleware(httpHelper, 'guest')
+    case IUserRole.administrator:
+      return makeTryCatchDecorator(new PermissionMiddleware(httpHelper, IUserRole.administrator))
+    case IUserRole.moderator:
+      return makeTryCatchDecorator(new PermissionMiddleware(httpHelper, IUserRole.moderator))
+    case IUserRole.user:
+      return makeTryCatchDecorator(new PermissionMiddleware(httpHelper, IUserRole.user))
+    case IUserRole.guest:
+      return makeTryCatchDecorator(new PermissionMiddleware(httpHelper, IUserRole.guest))
   }
 }

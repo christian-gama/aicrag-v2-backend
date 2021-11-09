@@ -1,4 +1,4 @@
-import { IPublicUser, ISignUpUserData, IUser } from '@/domain'
+import { IPublicUser, ISignUpUserData, IUser, IUserRole } from '@/domain'
 import faker from 'faker'
 
 export const makeFakePublicUser = (user: IUser): IPublicUser => {
@@ -34,7 +34,7 @@ export const makeFakeUser = (userProperty?: Record<any, any>): IUser => {
       name: faker.name.findName(),
       password: '12345678'
     },
-    settings: { accountActivated: false, currency: 'BRL', handicap: 1, role: 'user' },
+    settings: { accountActivated: false, currency: 'BRL', handicap: 1, role: IUserRole.user },
     temporary: {
       activationPin: faker.lorem.word(5),
       activationPinExpiration: new Date(Date.now() + 10 * 60 * 1000),

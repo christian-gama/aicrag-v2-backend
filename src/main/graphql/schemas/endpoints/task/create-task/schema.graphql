@@ -1,5 +1,5 @@
 type Mutation {
-  createTask(input: CreateTaskInput!): CreateTask! @protected
+  createTask(input: CreateTaskInput!): CreateTask! @user @protected
 }
 
 type CreateTask {

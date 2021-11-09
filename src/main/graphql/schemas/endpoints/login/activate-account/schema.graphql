@@ -1,5 +1,5 @@
 type Mutation {
-  activateAccount(input: ActivateAccountInput!): ActivateAccount @partialProtected
+  activateAccount(input: ActivateAccountInput!): ActivateAccount @user @partialProtected
 }
 
 input ActivateAccountInput {

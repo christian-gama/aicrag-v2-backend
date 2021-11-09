@@ -64,6 +64,10 @@ export const UserSchema = {
             handicap: {
               bsonType: ['int', 'double'],
               description: 'must be an int or double and is required'
+            },
+            role: {
+              enum: [4, 3, 2, 1],
+              description: 'must be an int and is required'
             }
           }
         },

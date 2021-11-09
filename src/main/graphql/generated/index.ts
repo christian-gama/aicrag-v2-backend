@@ -509,11 +509,19 @@ export type UserPersonal = {
   password: Scalars['String'];
 };
 
+export enum UserRole {
+  Administrator = 'administrator',
+  Guest = 'guest',
+  Moderator = 'moderator',
+  User = 'user'
+}
+
 export type UserSettings = {
   __typename?: 'UserSettings';
   accountActivated: Scalars['Boolean'];
   currency: UserCurrency;
   handicap: Scalars['Int'];
+  role: UserRole;
 };
 
 export type UserTemporary = {
@@ -676,6 +684,7 @@ export type ResolversTypes = {
   UserCurrency: UserCurrency;
   UserLogs: ResolverTypeWrapper<UserLogs>;
   UserPersonal: ResolverTypeWrapper<UserPersonal>;
+  UserRole: UserRole;
   UserSettings: ResolverTypeWrapper<UserSettings>;
   UserTemporary: ResolverTypeWrapper<UserTemporary>;
   VerifyResetPasswordToken: ResolverTypeWrapper<VerifyResetPasswordToken>;
@@ -755,6 +764,18 @@ export type ResolversParentTypes = {
   VerifyResetPasswordTokenInput: VerifyResetPasswordTokenInput;
 };
 
+export type AdministratorDirectiveArgs = { };
+
+export type AdministratorDirectiveResolver<Result, Parent, ContextType = any, Args = AdministratorDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type GuestDirectiveArgs = { };
+
+export type GuestDirectiveResolver<Result, Parent, ContextType = any, Args = GuestDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type ModeratorDirectiveArgs = { };
+
+export type ModeratorDirectiveResolver<Result, Parent, ContextType = any, Args = ModeratorDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type PartialProtectedDirectiveArgs = { };
 
 export type PartialProtectedDirectiveResolver<Result, Parent, ContextType = any, Args = PartialProtectedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
@@ -762,6 +783,10 @@ export type PartialProtectedDirectiveResolver<Result, Parent, ContextType = any,
 export type ProtectedDirectiveArgs = { };
 
 export type ProtectedDirectiveResolver<Result, Parent, ContextType = any, Args = ProtectedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type UserDirectiveArgs = { };
+
+export type UserDirectiveResolver<Result, Parent, ContextType = any, Args = UserDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type ActivateAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivateAccount'] = ResolversParentTypes['ActivateAccount']> = {
   accessToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
@@ -1033,6 +1058,7 @@ export type UserSettingsResolvers<ContextType = any, ParentType extends Resolver
   accountActivated?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   currency?: Resolver<ResolversTypes['UserCurrency'], ParentType, ContextType>;
   handicap?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['UserRole'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1100,6 +1126,10 @@ export type Resolvers<ContextType = any> = {
 };
 
 export type DirectiveResolvers<ContextType = any> = {
+  administrator?: AdministratorDirectiveResolver<any, any, ContextType>;
+  guest?: GuestDirectiveResolver<any, any, ContextType>;
+  moderator?: ModeratorDirectiveResolver<any, any, ContextType>;
   partialProtected?: PartialProtectedDirectiveResolver<any, any, ContextType>;
   protected?: ProtectedDirectiveResolver<any, any, ContextType>;
+  user?: UserDirectiveResolver<any, any, ContextType>;
 };

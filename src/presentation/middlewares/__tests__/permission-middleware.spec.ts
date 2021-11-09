@@ -1,5 +1,5 @@
-import { MustLoginError, PermissionError } from '@/application/errors'
-import { IUser } from '@/domain'
+import { PermissionError } from '@/application/errors'
+import { IUser, IUserRole } from '@/domain'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { HttpRequest, IHttpHelper } from '@/presentation/http/protocols'
 import { makeFakeUser } from '@/tests/__mocks__'
@@ -9,45 +9,88 @@ interface SutTypes {
   fakeUser: IUser
   httpHelper: IHttpHelper
   request: HttpRequest
-  sut: PermissionMiddleware
 }
 
 const makeSut = (): SutTypes => {
-  const fakeUser = makeFakeUser({ settings: { role: 'administrator' } })
+  const fakeUser = makeFakeUser({ settings: { role: IUserRole.administrator } })
   const httpHelper = makeHttpHelper()
   const request = { user: fakeUser }
 
-  const sut = new PermissionMiddleware(httpHelper, 'administrator')
-
-  return { fakeUser, httpHelper, request, sut }
+  return { fakeUser, httpHelper, request }
 }
 
-describe('administratorMiddleware', () => {
-  it('should return ok if user is an administrator', async () => {
-    const { sut, httpHelper, request } = makeSut()
+describe('permissionMiddleware', () => {
+  describe('administratorMiddleware', () => {
+    const { httpHelper, request } = makeSut()
+    const sut = new PermissionMiddleware(httpHelper, IUserRole.administrator)
 
-    const httpResponse = await sut.handle(request)
+    it('should return ok if user is an administrator and permission requires administrator', async () => {
+      const httpResponse = await sut.handle(request)
 
-    expect(httpResponse).toStrictEqual(httpHelper.ok({}))
+      expect(httpResponse).toStrictEqual(httpHelper.ok({}))
+    })
+
+    it('should return forbidden with PermissionError if permission requests an administrator but user has lower permission', async () => {
+      const { httpHelper, request } = makeSut()
+
+      ;(request.user as IUser).settings.role = IUserRole.guest
+
+      const httpResponse = await sut.handle(request)
+
+      expect(httpResponse).toStrictEqual(httpHelper.forbidden(new PermissionError()))
+    })
   })
 
-  it('should return unauthorized with MustLoginError if the user is not logged in', async () => {
-    const { sut, httpHelper, request } = makeSut()
+  describe('moderatorMiddleware', () => {
+    const { httpHelper, request } = makeSut()
+    const sut = new PermissionMiddleware(httpHelper, IUserRole.moderator)
 
-    delete request.user
+    it('should return ok if user is a moderator and permission requires moderator', async () => {
+      const httpResponse = await sut.handle(request)
 
-    const httpResponse = await sut.handle(request)
+      expect(httpResponse).toStrictEqual(httpHelper.ok({}))
+    })
 
-    expect(httpResponse).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
+    it('should return forbidden with PermissionError if permission requests an moderator but user has lower permission', async () => {
+      const { httpHelper, request } = makeSut()
+
+      ;(request.user as IUser).settings.role = IUserRole.guest
+
+      const httpResponse = await sut.handle(request)
+
+      expect(httpResponse).toStrictEqual(httpHelper.forbidden(new PermissionError()))
+    })
   })
 
-  it('should return forbidden with PermissionError if the user is not an administrator', async () => {
-    const { sut, httpHelper, request } = makeSut()
+  describe('userMiddleware', () => {
+    const { httpHelper, request } = makeSut()
+    const sut = new PermissionMiddleware(httpHelper, IUserRole.user)
 
-    ;(request.user as IUser).settings.role = 'user'
+    it('should return ok if user is a user and permission requires user', async () => {
+      const httpResponse = await sut.handle(request)
 
-    const httpResponse = await sut.handle(request)
+      expect(httpResponse).toStrictEqual(httpHelper.ok({}))
+    })
 
-    expect(httpResponse).toStrictEqual(httpHelper.forbidden(new PermissionError()))
+    it('should return forbidden with PermissionError if permission requests an user but user has lower permission', async () => {
+      const { httpHelper, request } = makeSut()
+
+      ;(request.user as IUser).settings.role = IUserRole.guest
+
+      const httpResponse = await sut.handle(request)
+
+      expect(httpResponse).toStrictEqual(httpHelper.forbidden(new PermissionError()))
+    })
+  })
+
+  describe('guestMiddleware', () => {
+    const { httpHelper, request } = makeSut()
+    const sut = new PermissionMiddleware(httpHelper, IUserRole.guest)
+
+    it('should return ok if user is a guest and permission requires guest', async () => {
+      const httpResponse = await sut.handle(request)
+
+      expect(httpResponse).toStrictEqual(httpHelper.ok({}))
+    })
   })
 })
