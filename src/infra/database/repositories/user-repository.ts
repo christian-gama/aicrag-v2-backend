@@ -6,6 +6,14 @@ import { IQuery, IQueryResult } from '../protocols/queries-protocol'
 export class UserRepository implements IUserRepository {
   constructor (private readonly createUserRepository: ICreateUserRepository, private readonly database: IDatabase) {}
 
+  async findAll<T extends IUser>(query: IQuery): Promise<IQueryResult<T>> {
+    const userCollection = this.database.collection('users')
+
+    const result = await userCollection.findAll<IUser>({}, query)
+
+    return result as IQueryResult<T>
+  }
+
   async findAllById<T extends IUser>(ids: string[], query: IQuery): Promise<IQueryResult<T>> {
     const userCollection = this.database.collection('users')
 

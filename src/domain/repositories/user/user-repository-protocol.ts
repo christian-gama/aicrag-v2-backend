@@ -5,13 +5,30 @@ import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protoco
 /**
  * @description Generic user database repository.
  */
-export interface IUserRepository extends IFindAllByID, IFindUserByEmail, IFindUserById, ISaveUser, IUpdateUser {}
+export interface IUserRepository
+  extends IFindAll,
+  IFindAllByID,
+  IFindUserByEmail,
+  IFindUserById,
+  ISaveUser,
+  IUpdateUser {}
+
+export interface IFindAll {
+  /**
+   * @async Asynchronous method.
+   * @description Receive an user id and tries to find it on database, used by administrator or moderator.
+   * @param query Query that will refine the final result of the search.
+   * @returns Return an array of user if finds it or an empty array if does not.
+   */
+  findAll: <T extends IUser>(query: IQuery) => Promise<IQueryResult<T>>
+}
 
 export interface IFindAllByID {
   /**
    * @async Asynchronous method.
    * @description Receive an user id and tries to find it on database.
    * @param ids Array of user id that will be searched for.
+   * @param query Query that will refine the final result of the search.
    * @returns Return an array of user if finds it or an empty array if does not.
    */
   findAllById: <T extends IUser>(ids: string[], query: IQuery) => Promise<IQueryResult<T>>
