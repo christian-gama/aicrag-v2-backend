@@ -55,6 +55,94 @@ describe('userRepository', () => {
       expect(result).toStrictEqual({ count: 3, displaying: 3, documents: [user1, user2, user3], page: '1 of 1' })
     })
 
+    it('should return a result if finds one or more users by email', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser())
+      await userCollection.insertOne(makeFakeUser({ personal: { email: 'any_email' } }))
+
+      const result = await sut.findAll({ email: user1.personal.email })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
+    it('should return a result if finds one or more users by administrator role', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'administrator' } }))
+      await userCollection.insertOne(makeFakeUser())
+
+      const result = await sut.findAll({ role: 'administrator' })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
+    it('should return a result if finds one or more users by moderator role', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'moderator' } }))
+      await userCollection.insertOne(makeFakeUser())
+
+      const result = await sut.findAll({ role: 'moderator' })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
+    it('should return a result if finds one or more users by user role', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'user' } }))
+      await userCollection.insertOne(makeFakeUser({ settings: { role: 'any_role' } }))
+
+      const result = await sut.findAll({ role: 'user' })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
+    it('should return a result if finds one or more users by guest role', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'guest' } }))
+      await userCollection.insertOne(makeFakeUser())
+
+      const result = await sut.findAll({ role: 'guest' })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
+    it('should return a result if finds one or more users by name', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser())
+      await userCollection.insertOne(makeFakeUser({ personal: { name: 'any_name' } }))
+
+      const result = await sut.findAll({ name: user1.personal.name })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
+    it('should return a result if finds one or more users by id', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser())
+      await userCollection.insertOne(makeFakeUser({ personal: { id: 'any_id' } }))
+
+      const result = await sut.findAll({ id: user1.personal.id })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
+    it('should return a result if finds one or more users by id and using filters', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser())
+      await userCollection.insertOne(makeFakeUser({ personal: { id: 'any_id' } }))
+
+      const result = await sut.findAll({ id: user1.personal.id, limit: '1', page: '1', sort: 'logs.createdAt' })
+
+      expect(result).toStrictEqual({ count: 1, displaying: 1, documents: [user1], page: '1 of 1' })
+    })
+
     it('should return a result with empty documents if does not finds a user', async () => {
       const { sut } = makeSut()
 

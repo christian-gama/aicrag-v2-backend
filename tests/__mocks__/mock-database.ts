@@ -89,6 +89,15 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
 
 export const makeUserRepositoryStub = (fakeUser: IUser): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
+    async findAll<T extends IUser>(query: IQuery): Promise<IQueryResult<T>> {
+      return (await Promise.resolve({
+        count: 1,
+        displaying: 1,
+        documents: [fakeUser],
+        page: '1 of 1'
+      })) as IQueryResult<T>
+    }
+
     async findAllById<T extends IUser>(ids: string[], query: IQuery): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,

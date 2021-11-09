@@ -13,6 +13,12 @@ export interface IUserRepository
   ISaveUser,
   IUpdateUser {}
 
+export interface IFindAllQuery extends IQuery {
+  email?: string
+  id?: string
+  name?: string
+  role?: string
+}
 export interface IFindAll {
   /**
    * @async Asynchronous method.
@@ -20,7 +26,7 @@ export interface IFindAll {
    * @param query Query that will refine the final result of the search.
    * @returns Return an array of user if finds it or an empty array if does not.
    */
-  findAll: <T extends IUser>(query: IQuery) => Promise<IQueryResult<T>>
+  findAll: <T extends IUser>(query: IFindAllQuery) => Promise<IQueryResult<T>>
 }
 
 export interface IFindAllByID {
