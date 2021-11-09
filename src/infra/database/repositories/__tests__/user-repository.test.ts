@@ -42,6 +42,28 @@ describe('userRepository', () => {
     userCollection = client.collection('users')
   })
 
+  describe('findAll', () => {
+    it('should return a result if finds one or more users', async () => {
+      const { sut } = makeSut()
+
+      const user1 = await userCollection.insertOne(makeFakeUser())
+      const user2 = await userCollection.insertOne(makeFakeUser())
+      const user3 = await userCollection.insertOne(makeFakeUser())
+
+      const result = await sut.findAll({})
+
+      expect(result).toStrictEqual({ count: 3, displaying: 3, documents: [user1, user2, user3], page: '1 of 1' })
+    })
+
+    it('should return a result with empty documents if does not finds a user', async () => {
+      const { sut } = makeSut()
+
+      const result = await sut.findAll({})
+
+      expect(result).toStrictEqual({ count: 0, displaying: 0, documents: [], page: '1 of 0' })
+    })
+  })
+
   describe('findAllById', () => {
     it('should return a result if finds one or more users', async () => {
       const { sut } = makeSut()
