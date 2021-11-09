@@ -18,7 +18,7 @@ export const middlewareAdapter = (middleware: IMiddleware) => {
         return defaultResponse(res, httpResponse)
       }
 
-      if (httpResponse.statusCode === 500) {
+      if (httpResponse.statusCode === 500 || httpResponse.statusCode === 403) {
         return defaultResponse(res, httpResponse)
       }
 

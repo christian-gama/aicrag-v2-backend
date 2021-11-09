@@ -4,16 +4,17 @@ import {
   findAllTasksController,
   findOneTaskController,
   protectedMiddleware,
-  updateTaskController
+  updateTaskController,
+  userMiddleware
 } from '.'
 import { Router } from 'express'
 
 const router = Router()
 
-router.delete('/:id', protectedMiddleware, deleteTaskController)
+router.delete('/:id', protectedMiddleware, userMiddleware, deleteTaskController)
 router.get('/:id', protectedMiddleware, findOneTaskController)
 router.get('/', protectedMiddleware, findAllTasksController)
-router.patch('/:id', protectedMiddleware, updateTaskController)
-router.post('/', protectedMiddleware, createTaskController)
+router.patch('/:id', protectedMiddleware, userMiddleware, updateTaskController)
+router.post('/', protectedMiddleware, userMiddleware, createTaskController)
 
 export default router

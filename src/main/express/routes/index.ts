@@ -1,3 +1,4 @@
+import { IUserRole } from '@/domain'
 import {
   makeLogoutController,
   makeUpdateEmailByPinController,
@@ -30,6 +31,7 @@ import {
   makeIsLoggedInMiddleware,
   makeProtectedMiddleware
 } from '@/main/factories/middlewares'
+import { makePermissionMiddleware } from '@/main/factories/middlewares/permission-middleware-factory'
 import { controllerAdapter } from '../adapters/controller-adapter'
 import { middlewareAdapter } from '../adapters/middleware-adapter'
 
@@ -68,8 +70,13 @@ export const updateTaskController = controllerAdapter(makeUpdateTaskController()
 
 // Token Routes
 export const verifyResetPasswordTokenController = controllerAdapter(makeVerifyResetPasswordTokenController())
+
 /* ********** Middlewares *********** */
 export const isLoggedInMiddleware = middlewareAdapter(makeIsLoggedInMiddleware())
 export const partialProtectedMiddleware = middlewareAdapter(makePartialProtectedMiddleware())
 export const protectedMiddleware = middlewareAdapter(makeProtectedMiddleware())
+export const administratorMiddleware = middlewareAdapter(makePermissionMiddleware(IUserRole.administrator))
+export const moderatorMiddleware = middlewareAdapter(makePermissionMiddleware(IUserRole.moderator))
+export const userMiddleware = middlewareAdapter(makePermissionMiddleware(IUserRole.user))
+export const guestMiddleware = middlewareAdapter(makePermissionMiddleware(IUserRole.guest))
 /* ******* End of Middlewares ******* */
