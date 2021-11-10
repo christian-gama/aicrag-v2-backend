@@ -37,7 +37,7 @@ export interface IFindAllByID {
    * @param query Query that will refine the final result of the search.
    * @returns Return an array of user if finds it or an empty array if does not.
    */
-  findAllById: <T extends IUser>(ids: string[], query: IQuery) => Promise<IQueryResult<T>>
+  findAllById: (ids: string[], query: IQuery) => Promise<IQueryResult<IUser>>
 }
 
 export interface IFindUserByEmail {

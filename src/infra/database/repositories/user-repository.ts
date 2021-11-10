@@ -1,5 +1,6 @@
 import { ISignUpUserData, IUser } from '@/domain'
-import { IUserRepository, ICreateUserRepository, IFindAllQuery } from '@/domain/repositories'
+import { ICreateUserRepository, IFindAllQuery, IUserRepository } from '@/domain/repositories'
+import { getEmail, getName, getId, getRole } from '../helpers'
 import { IDatabase, IUserDbFilter } from '../protocols'
 import { IQuery, IQueryResult } from '../protocols/queries-protocol'
 
@@ -9,23 +10,10 @@ export class UserRepository implements IUserRepository {
   async findAll<T extends IUser>(query: IFindAllQuery): Promise<IQueryResult<T>> {
     const userCollection = this.database.collection('users')
     const { email, name, id, role } = query
-    const {
-      _email,
-      _id,
-      _name,
-      _role
-    }: {
-      _email:
-      | { $options: string, $regex: string, $ne?: undefined }
-      | { $ne: null, $options?: undefined, $regex?: undefined }
-      _id:
-      | { $options: string, $regex: string, $ne?: undefined }
-      | { $ne: null, $options?: undefined, $regex?: undefined }
-      _name:
-      | { $options: string, $regex: string, $ne?: undefined }
-      | { $ne: null, $options?: undefined, $regex?: undefined }
-      _role: Record<string, any>
-    } = a()
+    const _email = getEmail(email)
+    const _name = getName(name)
+    const _id = getId(id)
+    const _role: Record<string, any> = getRole(role)
 
     const result = await userCollection.aggregate<IUser>(
       [
@@ -42,41 +30,15 @@ export class UserRepository implements IUserRepository {
     )
 
     return result as IQueryResult<T>
-
-    function a () {
-      const _email = email ? { $options: 'i', $regex: email } : { $ne: null }
-      const _name = name ? { $options: 'i', $regex: name } : { $ne: null }
-      const _id = id ? { $options: 'i', $regex: id } : { $ne: null }
-      let _role: Record<string, any>
-
-      switch (role) {
-        case 'administrator':
-          _role = { $eq: 'administrator' }
-          break
-        case 'moderator':
-          _role = { $eq: 'moderator' }
-          break
-        case 'user':
-          _role = { $eq: 'user' }
-          break
-        case 'guest':
-          _role = { $eq: 'guest' }
-          break
-        default:
-          _role = { $ne: null }
-          break
-      }
-      return { _email, _id, _name, _role }
-    }
   }
 
-  async findAllById<T extends IUser>(ids: string[], query: IQuery): Promise<IQueryResult<T>> {
+  async findAllById (ids: string[], query: IQuery): Promise<IQueryResult<IUser>> {
     const userCollection = this.database.collection('users')
 
     const filter = { 'personal.id': { $in: ids } }
     const result = await userCollection.findAll<IUser>(filter, query)
 
-    return result as IQueryResult<T>
+    return result
   }
 
   async findByEmail (email: string): Promise<IUser | null> {
