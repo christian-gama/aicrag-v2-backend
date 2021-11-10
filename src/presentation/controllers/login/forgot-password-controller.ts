@@ -5,7 +5,7 @@ import { IValidator } from '@/domain/validators'
 import { MustLogoutError } from '@/application/errors'
 import { FilterUserData } from '@/application/helpers'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IController } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller.model'
 
 export class ForgotPasswordController implements IController {
   constructor (

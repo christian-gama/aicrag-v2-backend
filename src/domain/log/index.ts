@@ -1,1 +1,1 @@
-export * from './log-error-protocol'
+export * from './log-error.model'

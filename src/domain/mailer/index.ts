@@ -1,2 +1,2 @@
-export * from './mailer-service-protocol'
-export * from './mailer-settings-protocol'
+export * from './mailer-service.model'
+export * from './mailer-settings.model'

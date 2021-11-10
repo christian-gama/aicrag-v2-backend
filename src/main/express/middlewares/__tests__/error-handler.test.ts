@@ -1,5 +1,5 @@
 import { InternalError } from '@/application/errors'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { environment } from '@/main/config/environment'
 import { controllerAdapter } from '@/main/express/adapters/controller-adapter'
 import App from '@/main/express/config/app'

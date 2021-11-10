@@ -46,6 +46,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser())
       const user2 = await userCollection.insertOne(makeFakeUser())
       const user3 = await userCollection.insertOne(makeFakeUser())
@@ -58,6 +59,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by email', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser())
       await userCollection.insertOne(makeFakeUser({ personal: { email: 'any_email' } }))
 
@@ -69,6 +71,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by administrator role', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'administrator' } }))
       await userCollection.insertOne(makeFakeUser())
 
@@ -80,6 +83,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by moderator role', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'moderator' } }))
       await userCollection.insertOne(makeFakeUser())
 
@@ -91,6 +95,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by user role', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'user' } }))
       await userCollection.insertOne(makeFakeUser({ settings: { role: 'any_role' } }))
 
@@ -102,6 +107,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by guest role', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'guest' } }))
       await userCollection.insertOne(makeFakeUser())
 
@@ -113,6 +119,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by name', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser())
       await userCollection.insertOne(makeFakeUser({ personal: { name: 'any_name' } }))
 
@@ -124,6 +131,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by id', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser())
       await userCollection.insertOne(makeFakeUser({ personal: { id: 'any_id' } }))
 
@@ -135,6 +143,7 @@ describe('userRepository', () => {
     it('should return a result if finds one or more users by id and using filters', async () => {
       const { sut } = makeSut()
 
+      await userCollection.deleteMany({})
       const user1 = await userCollection.insertOne(makeFakeUser())
       await userCollection.insertOne(makeFakeUser({ personal: { id: 'any_id' } }))
 

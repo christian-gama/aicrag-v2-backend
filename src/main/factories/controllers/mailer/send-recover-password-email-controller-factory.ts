@@ -1,5 +1,5 @@
 import { SendRecoverPasswordController } from '@/presentation/controllers/mailer'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeGenerateAccessToken, makeVerifyResetPasswordToken } from '@/main/factories/providers/token'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper } from '../../helpers'

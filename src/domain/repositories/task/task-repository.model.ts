@@ -1,6 +1,6 @@
 import { ITask, ITaskData } from '@/domain'
-import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
-import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options'
+import { IQuery, IQueryResult } from '@/infra/database/protocols/queries.model'
+import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options.model'
 
 export interface ITaskRepository
   extends IDeleteTask,

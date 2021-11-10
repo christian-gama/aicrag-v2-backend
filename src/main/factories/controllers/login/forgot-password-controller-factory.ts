@@ -1,5 +1,5 @@
 import { ForgotPasswordController } from '@/presentation/controllers/login'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeGenerateAccessToken } from '../../providers/token'

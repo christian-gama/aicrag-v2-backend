@@ -1,3 +1,3 @@
-export * from './generate-token-protocol'
-export * from './refresh-token-protocol'
-export * from './verify-token-protocol'
+export * from './generate-token.model'
+export * from './refresh-token.model'
+export * from './verify-token.model'

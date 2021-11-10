@@ -1,4 +1,4 @@
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { HttpRequest } from '@/presentation/http/protocols'
 import { environment } from '@/main/config/environment'
 import {

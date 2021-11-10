@@ -1,4 +1,4 @@
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 

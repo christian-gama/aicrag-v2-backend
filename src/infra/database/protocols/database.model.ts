@@ -1,4 +1,4 @@
-import { IQuery, IQueryResult } from './queries-protocol'
+import { IQuery, IQueryResult } from './queries.model'
 
 export interface Document {
   [key: string]: any

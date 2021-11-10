@@ -1,6 +1,6 @@
 import { ISignUpUserData, IUser } from '@/domain'
 import { IUserDbFilter } from '@/infra/database/protocols'
-import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
+import { IQuery, IQueryResult } from '@/infra/database/protocols/queries.model'
 
 /**
  * @description Generic user database repository.

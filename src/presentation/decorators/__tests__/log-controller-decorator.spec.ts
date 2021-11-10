@@ -1,5 +1,5 @@
 import { ILogErrorRepository } from '@/domain/repositories'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { LogDecorator } from '@/presentation/decorators'
 import { HttpHelper } from '@/presentation/http/http-helper'
 import { makeHttpHelper } from '@/main/factories/helpers'

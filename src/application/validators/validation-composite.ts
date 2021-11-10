@@ -1,5 +1,5 @@
 import { IValidator } from '@/domain/validators'
-import { IValidatorError } from '@/domain/validators/validation-error-protocol'
+import { IValidatorError } from '@/domain/validators/validation-error.model'
 export class ValidationComposite implements IValidator {
   constructor (private readonly validations: IValidator[]) {}
 

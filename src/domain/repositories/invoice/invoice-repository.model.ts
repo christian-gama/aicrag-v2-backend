@@ -1,5 +1,5 @@
 import { ITask } from '@/domain'
-import { IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
+import { IQuery, IQueryResult } from '@/infra/database/protocols/queries.model'
 
 export interface IInvoiceRepository extends IGetAllInvoices, IGetInvoiceByMonth {}
 

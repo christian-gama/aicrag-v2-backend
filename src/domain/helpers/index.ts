@@ -1,3 +1,3 @@
-export * from './filter-user-data-protocol'
-export * from './uuid-protocol'
-export * from './pin-protocol'
+export * from './filter-user-data.model'
+export * from './uuid.model'
+export * from './pin.model'

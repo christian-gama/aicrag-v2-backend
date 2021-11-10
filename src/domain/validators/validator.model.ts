@@ -1,4 +1,4 @@
-import { IValidatorError } from './validation-error-protocol'
+import { IValidatorError } from './validation-error.model'
 
 type IValidatorReturn = Promise<IValidatorError | undefined> | IValidatorError | undefined
 

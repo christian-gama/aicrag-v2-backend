@@ -1,2 +1,2 @@
-export * from './create-user-repository-protocol'
-export * from './user-repository-protocol'
+export * from './create-user-repository.model'
+export * from './user-repository.model'

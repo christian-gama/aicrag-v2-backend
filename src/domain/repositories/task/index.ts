@@ -1,2 +1,2 @@
-export * from './create-task-repository-protocol'
-export * from './task-repository-protocol'
+export * from './create-task-repository.model'
+export * from './task-repository.model'

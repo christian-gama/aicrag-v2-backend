@@ -3,7 +3,7 @@ import { IVerifyToken } from '@/domain/providers'
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 import { getToken } from '@/infra/token'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IMiddleware } from './protocols/middleware-protocol'
+import { IMiddleware } from './protocols/middleware.model'
 
 export class ProtectedMiddleware implements IMiddleware {
   constructor (

@@ -1,3 +1,3 @@
-export * from './collections-protocol'
-export * from './database-protocol'
-export * from './update-user-options'
+export * from './collections.model'
+export * from './database.model'
+export * from './update-user-options.model'

@@ -7,7 +7,7 @@ import { IValidator } from '@/domain/validators'
 import { MustLogoutError } from '@/application/errors'
 import { getToken } from '@/infra/token'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IController } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller.model'
 
 export class ResetPasswordController implements IController {
   constructor (

@@ -1,7 +1,7 @@
 import { IUserRepository } from '@/domain/repositories'
 import { MustLoginError } from '@/application/errors'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IController } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller.model'
 
 export class LogoutController implements IController {
   constructor (private readonly httpHelper: IHttpHelper, private readonly userRepository: IUserRepository) {}

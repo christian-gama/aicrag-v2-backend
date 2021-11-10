@@ -1,5 +1,5 @@
 import { UpdateUserController } from '@/presentation/controllers/account/update-user-controller'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper, makePin } from '../../helpers'
 import { makeUserRepository } from '../../repositories'

@@ -1,4 +1,4 @@
-import { IUser } from './user-protocol'
+import { IUser } from './user.model'
 
 /**
  * @description Interface used to create a public user, which has hidden sensitive data.

@@ -1,5 +1,5 @@
 import { InvalidQueryError } from '@/application/errors'
-import { QueryMethodsProtocol } from '@/infra/database/protocols/queries-protocol'
+import { QueryMethodsProtocol } from '@/infra/database/protocols/queries.model'
 
 export class MongoQueries implements QueryMethodsProtocol {
   fields (query: Record<string, string>): Record<string, 0 | 1> | InvalidQueryError {

@@ -1,6 +1,6 @@
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { IMiddleware } from '@/presentation/middlewares/protocols/middleware.model'
 import { makeHttpHelper } from '../../main/factories/helpers'
 
 export class TryCatchDecorator<T extends IController | IMiddleware> {

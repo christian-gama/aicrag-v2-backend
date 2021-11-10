@@ -1,4 +1,4 @@
-import { QueryMethodsProtocol, IQuery, IQueryResult } from '@/infra/database/protocols/queries-protocol'
+import { QueryMethodsProtocol, IQuery, IQueryResult } from '@/infra/database/protocols/queries.model'
 import { CollectionsName, Document, ICollection, ICollectionMethods, IDatabase } from '../../../database/protocols'
 import { MongoClient } from 'mongodb'
 

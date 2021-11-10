@@ -3,7 +3,7 @@ import { IVerifyToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { getToken } from '@/infra/token'
 import { IHttpHelper, HttpRequest, HttpResponse } from '../http/protocols'
-import { IMiddleware } from './protocols/middleware-protocol'
+import { IMiddleware } from './protocols/middleware.model'
 
 export class IsLoggedInMiddleware implements IMiddleware {
   constructor (

@@ -1,5 +1,5 @@
 import { ResetPasswordController } from '@/presentation/controllers/login/reset-password-controller'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeBcryptAdapter } from '../../cryptography'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'

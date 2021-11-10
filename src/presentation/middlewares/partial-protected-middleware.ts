@@ -1,7 +1,7 @@
 import { IVerifyToken } from '@/domain/providers'
 import { getToken } from '@/infra/token'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IMiddleware } from './protocols/middleware-protocol'
+import { IMiddleware } from './protocols/middleware.model'
 
 export class PartialProtectedMiddleware implements IMiddleware {
   constructor (private readonly httpHelper: IHttpHelper, private readonly verifyAccessToken: IVerifyToken) {}

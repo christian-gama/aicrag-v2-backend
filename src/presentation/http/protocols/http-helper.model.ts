@@ -1,4 +1,4 @@
-import { HttpResponse } from './http-response-protocol'
+import { HttpResponse } from './http-response.model'
 
 export interface IHttpHelper
   extends IHttpBadRequest,

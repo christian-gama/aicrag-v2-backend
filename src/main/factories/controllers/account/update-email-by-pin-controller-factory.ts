@@ -1,5 +1,5 @@
 import { UpdateEmailByPinController } from '@/presentation/controllers/account'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper } from '../../helpers'
 import { makeUserRepository } from '../../repositories'

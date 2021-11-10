@@ -1,7 +1,7 @@
 import { IVerifyToken } from '@/domain/providers'
 import { MustLogoutError } from '@/application/errors'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IController } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller.model'
 
 export class VerifyResetPasswordTokenController implements IController {
   constructor (private readonly httpHelper: IHttpHelper, private readonly verifyResetPasswordToken: IVerifyToken) {}

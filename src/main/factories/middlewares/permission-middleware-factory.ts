@@ -1,6 +1,6 @@
 import { IUserRole } from '@/domain'
 import { PermissionMiddleware } from '@/presentation/middlewares'
-import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { IMiddleware } from '@/presentation/middlewares/protocols/middleware.model'
 import { makeTryCatchDecorator } from '../decorators'
 import { makeHttpHelper } from '../helpers'
 

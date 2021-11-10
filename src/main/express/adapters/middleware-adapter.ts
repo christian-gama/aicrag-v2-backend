@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { IMiddleware } from '@/presentation/middlewares/protocols/middleware.model'
 import { environment } from '@/main/config/environment'
 import { defaultResponse } from '../handlers/express-responses'
 import { Request, Response, NextFunction } from 'express'

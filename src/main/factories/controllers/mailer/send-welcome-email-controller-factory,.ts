@@ -1,5 +1,5 @@
 import { SendWelcomeEmailController } from '@/presentation/controllers/mailer'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeHttpHelper, makePin } from '../../helpers'
 import { makeWelcomeEmail } from '../../mailer'

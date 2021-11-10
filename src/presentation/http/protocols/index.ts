@@ -1,3 +1,3 @@
-export * from './http-helper-protocol'
-export * from './http-request-protocol'
-export * from './http-response-protocol'
+export * from './http-helper.model'
+export * from './http-request.model'
+export * from './http-response.model'

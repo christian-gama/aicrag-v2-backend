@@ -2,7 +2,7 @@ import { ISignUpUserData, IUser } from '@/domain'
 import { ICreateUserRepository, IFindAllQuery, IUserRepository } from '@/domain/repositories'
 import { getEmail, getName, getId, getRole } from '../helpers'
 import { IDatabase, IUserDbFilter } from '../protocols'
-import { IQuery, IQueryResult } from '../protocols/queries-protocol'
+import { IQuery, IQueryResult } from '../protocols/queries.model'
 
 export class UserRepository implements IUserRepository {
   constructor (private readonly createUserRepository: ICreateUserRepository, private readonly database: IDatabase) {}

@@ -1,3 +1,3 @@
-export * from './public-user-protocol'
-export * from './signup-user-data'
-export * from './user-protocol'
+export * from './public-user.model'
+export * from './signup-user-data.model'
+export * from './user.model'

@@ -4,13 +4,13 @@ import {
   IGetInvoiceByMonth,
   IQueryAllInvoices,
   IQueryInvoice
-} from '@/domain/repositories/invoice/invoice-repository-protocol'
+} from '@/domain/repositories/invoice/invoice-repository.model'
 import { getDuration } from '../helpers/get-duration'
 import { getPeriod } from '../helpers/get-period'
 import { getRegexTaskId } from '../helpers/get-regex-task-id'
 import { getType } from '../helpers/get-type'
 import { IDatabase } from '../protocols'
-import { IQueryResult } from '../protocols/queries-protocol'
+import { IQueryResult } from '../protocols/queries.model'
 
 export class InvoiceRepository implements IGetInvoiceByMonth {
   constructor (private readonly database: IDatabase) {}

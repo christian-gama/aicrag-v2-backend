@@ -4,7 +4,7 @@ import { IGenerateToken } from '@/domain/providers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
-import { IController } from '../protocols/controller-protocol'
+import { IController } from '../protocols/controller.model'
 
 export class ActivateAccountController implements IController {
   constructor (

@@ -1,2 +1,2 @@
-export * from './task-data-protocol'
-export * from './task-protocol'
+export * from './task-data.model'
+export * from './task.model'

@@ -1,5 +1,5 @@
 import { GetAllInvoicesController } from '@/presentation/controllers/invoice'
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeTryCatchDecorator } from '@/main/factories/decorators'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeInvoiceRepository } from '@/main/factories/repositories'

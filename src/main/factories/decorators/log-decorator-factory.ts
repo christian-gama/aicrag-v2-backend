@@ -1,6 +1,6 @@
-import { IController } from '@/presentation/controllers/protocols/controller-protocol'
+import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { LogDecorator } from '@/presentation/decorators/log-decorator'
-import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { IMiddleware } from '@/presentation/middlewares/protocols/middleware.model'
 import { makeLogErrorRepository } from '../repositories'
 
 type TryCatchProtocol = IController | IMiddleware

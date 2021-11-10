@@ -2,8 +2,8 @@ import { ITask, ITaskData } from '@/domain'
 import { ICreateTaskRepository } from '@/domain/repositories'
 import { ITaskRepository } from '@/domain/repositories/task'
 import { IDatabase } from '../protocols'
-import { IQuery, IQueryResult } from '../protocols/queries-protocol'
-import { ITaskDbFilter } from '../protocols/update-task-options'
+import { IQuery, IQueryResult } from '../protocols/queries.model'
+import { ITaskDbFilter } from '../protocols/update-task-options.model'
 
 export class TaskRepository implements ITaskRepository {
   constructor (private readonly createTaskRepository: ICreateTaskRepository, private readonly database: IDatabase) {}

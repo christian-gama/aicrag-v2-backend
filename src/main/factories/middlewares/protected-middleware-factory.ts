@@ -1,5 +1,5 @@
 import { ProtectedMiddleware } from '@/presentation/middlewares'
-import { IMiddleware } from '@/presentation/middlewares/protocols/middleware-protocol'
+import { IMiddleware } from '@/presentation/middlewares/protocols/middleware.model'
 import { makeAccessTokenEncrypter } from '../cryptography'
 import { makeTryCatchDecorator } from '../decorators'
 import { makeHttpHelper } from '../helpers'

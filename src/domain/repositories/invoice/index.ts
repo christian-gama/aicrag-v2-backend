@@ -1,1 +1,1 @@
-export * from './invoice-repository-protocol'
+export * from './invoice-repository.model'
