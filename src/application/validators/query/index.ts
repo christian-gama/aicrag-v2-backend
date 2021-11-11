@@ -1,4 +1,5 @@
 export * from './validate-duration'
+export * from './validate-email'
 export * from './validate-fields'
 export * from './validate-limit'
 export * from './validate-month'
