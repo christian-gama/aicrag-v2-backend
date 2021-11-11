@@ -72,7 +72,7 @@ describe('userRepository', () => {
       const { sut } = makeSut()
 
       await userCollection.deleteMany({})
-      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'administrator' } }))
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 4 } }))
       await userCollection.insertOne(makeFakeUser())
 
       const result = await sut.findAll({ role: 'administrator' })
@@ -84,7 +84,7 @@ describe('userRepository', () => {
       const { sut } = makeSut()
 
       await userCollection.deleteMany({})
-      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'moderator' } }))
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 3 } }))
       await userCollection.insertOne(makeFakeUser())
 
       const result = await sut.findAll({ role: 'moderator' })
@@ -96,7 +96,7 @@ describe('userRepository', () => {
       const { sut } = makeSut()
 
       await userCollection.deleteMany({})
-      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'user' } }))
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 2 } }))
       await userCollection.insertOne(makeFakeUser({ settings: { role: 'any_role' } }))
 
       const result = await sut.findAll({ role: 'user' })
@@ -108,7 +108,7 @@ describe('userRepository', () => {
       const { sut } = makeSut()
 
       await userCollection.deleteMany({})
-      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 'guest' } }))
+      const user1 = await userCollection.insertOne(makeFakeUser({ settings: { role: 1 } }))
       await userCollection.insertOne(makeFakeUser())
 
       const result = await sut.findAll({ role: 'guest' })
