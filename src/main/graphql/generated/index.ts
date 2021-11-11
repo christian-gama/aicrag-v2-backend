@@ -80,6 +80,31 @@ export type FindAllTasksQuery = {
   sort?: Maybe<Scalars['String']>;
 };
 
+export type FindAllUsers = {
+  __typename?: 'FindAllUsers';
+  count: Scalars['Int'];
+  displaying: Scalars['Int'];
+  documents: Array<FullUser>;
+  page: Scalars['String'];
+};
+
+export type FindAllUsersQuery = {
+  email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  page?: Maybe<Scalars['String']>;
+  role?: Maybe<FindAllUsersRole>;
+  sort?: Maybe<Scalars['String']>;
+};
+
+export enum FindAllUsersRole {
+  Administrator = 'administrator',
+  Guest = 'guest',
+  Moderator = 'moderator',
+  User = 'user'
+}
+
 export type FindOneTask = {
   __typename?: 'FindOneTask';
   task: Task;
@@ -305,6 +330,7 @@ export type Query = {
   __typename?: 'Query';
   empty?: Maybe<Scalars['String']>;
   findAllTasks: FindAllTasks;
+  findAllUsers: FindAllUsers;
   findOneTask: FindOneTask;
   getAllInvoices: GetAllInvoices;
   getInvoiceByMonth: GetInvoiceByMonth;
@@ -314,6 +340,11 @@ export type Query = {
 
 export type QueryFindAllTasksArgs = {
   query: FindAllTasksQuery;
+};
+
+
+export type QueryFindAllUsersArgs = {
+  query: FindAllUsersQuery;
 };
 
 
@@ -625,6 +656,9 @@ export type ResolversTypes = {
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   FindAllTasks: ResolverTypeWrapper<FindAllTasks>;
   FindAllTasksQuery: FindAllTasksQuery;
+  FindAllUsers: ResolverTypeWrapper<FindAllUsers>;
+  FindAllUsersQuery: FindAllUsersQuery;
+  FindAllUsersRole: FindAllUsersRole;
   FindOneTask: ResolverTypeWrapper<FindOneTask>;
   FindOneTaskParam: FindOneTaskParam;
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -706,6 +740,8 @@ export type ResolversParentTypes = {
   EmailAddress: Scalars['EmailAddress'];
   FindAllTasks: FindAllTasks;
   FindAllTasksQuery: FindAllTasksQuery;
+  FindAllUsers: FindAllUsers;
+  FindAllUsersQuery: FindAllUsersQuery;
   FindOneTask: FindOneTask;
   FindOneTaskParam: FindOneTaskParam;
   Float: Scalars['Float'];
@@ -835,6 +871,14 @@ export type FindAllTasksResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type FindAllUsersResolvers<ContextType = any, ParentType extends ResolversParentTypes['FindAllUsers'] = ResolversParentTypes['FindAllUsers']> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  displaying?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  documents?: Resolver<Array<ResolversTypes['FullUser']>, ParentType, ContextType>;
+  page?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type FindOneTaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['FindOneTask'] = ResolversParentTypes['FindOneTask']> = {
   task?: Resolver<ResolversTypes['Task'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -935,6 +979,7 @@ export type PublicUserSettingsResolvers<ContextType = any, ParentType extends Re
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   findAllTasks?: Resolver<ResolversTypes['FindAllTasks'], ParentType, ContextType, RequireFields<QueryFindAllTasksArgs, 'query'>>;
+  findAllUsers?: Resolver<ResolversTypes['FindAllUsers'], ParentType, ContextType, RequireFields<QueryFindAllUsersArgs, 'query'>>;
   findOneTask?: Resolver<ResolversTypes['FindOneTask'], ParentType, ContextType, RequireFields<QueryFindOneTaskArgs, 'param'>>;
   getAllInvoices?: Resolver<ResolversTypes['GetAllInvoices'], ParentType, ContextType, RequireFields<QueryGetAllInvoicesArgs, 'query'>>;
   getInvoiceByMonth?: Resolver<ResolversTypes['GetInvoiceByMonth'], ParentType, ContextType, RequireFields<QueryGetInvoiceByMonthArgs, 'query'>>;
@@ -1086,6 +1131,7 @@ export type Resolvers<ContextType = any> = {
   DetailedInvoice?: DetailedInvoiceResolvers<ContextType>;
   EmailAddress?: GraphQLScalarType;
   FindAllTasks?: FindAllTasksResolvers<ContextType>;
+  FindAllUsers?: FindAllUsersResolvers<ContextType>;
   FindOneTask?: FindOneTaskResolvers<ContextType>;
   ForgotPassword?: ForgotPasswordResolvers<ContextType>;
   FullUser?: FullUserResolvers<ContextType>;

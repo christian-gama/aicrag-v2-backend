@@ -1,0 +1,27 @@
+type Query {
+  findAllUsers(query: FindAllUsersQuery!): FindAllUsers! @protected @administrator
+}
+
+input FindAllUsersQuery {
+  email: String
+  id: String
+  limit: String
+  name: String
+  page: String
+  sort: String
+  role: FindAllUsersRole
+}
+
+type FindAllUsers {
+  count: Int!
+  displaying: Int!
+  documents: [FullUser!]!
+  page: String!
+}
+
+enum FindAllUsersRole {
+  administrator
+  moderator
+  user
+  guest
+}

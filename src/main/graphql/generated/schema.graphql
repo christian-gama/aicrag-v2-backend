@@ -71,6 +71,30 @@ input FindAllTasksQuery {
   sort: String
 }
 
+type FindAllUsers {
+  count: Int!
+  displaying: Int!
+  documents: [FullUser!]!
+  page: String!
+}
+
+input FindAllUsersQuery {
+  email: String
+  id: String
+  limit: String
+  name: String
+  page: String
+  role: FindAllUsersRole
+  sort: String
+}
+
+enum FindAllUsersRole {
+  administrator
+  guest
+  moderator
+  user
+}
+
 type FindOneTask {
   task: Task!
 }
@@ -214,6 +238,7 @@ type PublicUserSettings {
 type Query {
   empty: String
   findAllTasks(query: FindAllTasksQuery!): FindAllTasks!
+  findAllUsers(query: FindAllUsersQuery!): FindAllUsers!
   findOneTask(param: FindOneTaskParam!): FindOneTask!
   getAllInvoices(query: GetAllInvoicesQuery!): GetAllInvoices!
   getInvoiceByMonth(query: GetInvoiceByMonthQuery!): GetInvoiceByMonth!
