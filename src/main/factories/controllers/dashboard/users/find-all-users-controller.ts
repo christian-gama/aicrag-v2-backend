@@ -1,4 +1,4 @@
-import { FindAllUsersController } from '@/presentation/controllers/dashboard/users/find-all-users-controller'
+import { FindAllUsersController } from '@/presentation/controllers/dashboard/users'
 import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { makeTryCatchDecorator } from '@/main/factories/decorators'
 import { makeHttpHelper } from '@/main/factories/helpers'
