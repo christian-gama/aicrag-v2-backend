@@ -1,7 +1,7 @@
 import { IValidator } from '@/domain/validators'
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
-export class ValidateTaskParam implements IValidator {
+export class ValidateUUID implements IValidator {
   validate (input: any): InvalidParamError | InvalidTypeError | undefined {
     const { id } = input
 

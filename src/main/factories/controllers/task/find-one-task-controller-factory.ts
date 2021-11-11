@@ -3,10 +3,10 @@ import { FindOneTaskController } from '@/presentation/controllers/task'
 import { makeTryCatchDecorator } from '@/main/factories/decorators'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeTaskRepository } from '@/main/factories/repositories'
-import { makeValidateTaskParam } from '@/main/factories/validators/task'
+import { makeValidateUUID } from '../../validators/common'
 
 export const makeFindOneTaskController = (): IController => {
-  const validateTaskParam = makeValidateTaskParam()
+  const validateTaskParam = makeValidateUUID()
   const httpHelper = makeHttpHelper()
   const taskRepository = makeTaskRepository()
 

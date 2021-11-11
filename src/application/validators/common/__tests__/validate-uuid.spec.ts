@@ -1,15 +1,15 @@
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
-import { ValidateTaskParam } from '@/application/validators/task'
+import { ValidateUUID } from '@/application/validators/task'
 import { HttpRequest } from '@/presentation/http/protocols'
 
 interface SutTypes {
   request: HttpRequest
-  sut: ValidateTaskParam
+  sut: ValidateUUID
 }
 const makeSut = (): SutTypes => {
   const request: HttpRequest = { params: { id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx' } }
 
-  const sut = new ValidateTaskParam()
+  const sut = new ValidateUUID()
 
   return { request, sut }
 }

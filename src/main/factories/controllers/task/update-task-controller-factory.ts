@@ -9,9 +9,9 @@ import {
   makeValidateDuration,
   makeValidateStatus,
   makeValidateTaskId,
-  makeValidateTaskParam,
   makeValidateType
 } from '@/main/factories/validators/task'
+import { makeValidateUUID } from '../../validators/common'
 
 export const makeUpdateTaskController = (): IController => {
   const httpHelper = makeHttpHelper()
@@ -21,7 +21,7 @@ export const makeUpdateTaskController = (): IController => {
   const validateDuration = makeValidateDuration()
   const validateStatus = makeValidateStatus()
   const validateTaskId = makeValidateTaskId()
-  const validateTaskParam = makeValidateTaskParam()
+  const validateUUID = makeValidateUUID()
   const validateType = makeValidateType()
 
   const updateTaskController = new UpdateTaskController(
@@ -32,7 +32,7 @@ export const makeUpdateTaskController = (): IController => {
     validateDuration,
     validateStatus,
     validateTaskId,
-    validateTaskParam,
+    validateUUID,
     validateType
   )
 
