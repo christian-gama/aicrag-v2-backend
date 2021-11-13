@@ -6,7 +6,8 @@ export class UpdateUserController implements IController {
   constructor (
     private readonly httpHelper: IHttpHelper,
     private readonly validateEmail: IValidator,
-    private readonly validateName: IValidator
+    private readonly validateName: IValidator,
+    private readonly validateRole: IValidator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -21,6 +22,13 @@ export class UpdateUserController implements IController {
 
     if (data.email) {
       const error = await this.validateEmail.validate(data.email)
+      if (error) {
+        return this.httpHelper.badRequest(error)
+      }
+    }
+
+    if (data.role) {
+      const error = await this.validateRole.validate(data.role)
       if (error) {
         return this.httpHelper.badRequest(error)
       }
