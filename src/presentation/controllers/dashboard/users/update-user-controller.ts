@@ -6,6 +6,7 @@ export class UpdateUserController implements IController {
   constructor (
     private readonly httpHelper: IHttpHelper,
     private readonly validateEmail: IValidator,
+    private readonly validateHandicap: IValidator,
     private readonly validateName: IValidator,
     private readonly validateRole: IValidator
   ) {}
@@ -29,6 +30,13 @@ export class UpdateUserController implements IController {
 
     if (data.role) {
       const error = await this.validateRole.validate(data.role)
+      if (error) {
+        return this.httpHelper.badRequest(error)
+      }
+    }
+
+    if (data.handicap) {
+      const error = await this.validateHandicap.validate(data.handicap)
       if (error) {
         return this.httpHelper.badRequest(error)
       }
