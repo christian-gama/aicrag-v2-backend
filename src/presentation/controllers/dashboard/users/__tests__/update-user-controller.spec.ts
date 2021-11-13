@@ -8,18 +8,26 @@ interface SutTypes {
   httpHelper: IHttpHelper
   sut: UpdateUserController
   validateEmailStub: IValidator
+  validateHandicapStub: IValidator
   validateNameStub: IValidator
   validateRoleStub: IValidator
 }
 const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const validateEmailStub = makeValidatorStub()
+  const validateHandicapStub = makeValidatorStub()
   const validateNameStub = makeValidatorStub()
   const validateRoleStub = makeValidatorStub()
 
-  const sut = new UpdateUserController(httpHelper, validateEmailStub, validateNameStub, validateRoleStub)
+  const sut = new UpdateUserController(
+    httpHelper,
+    validateEmailStub,
+    validateHandicapStub,
+    validateNameStub,
+    validateRoleStub
+  )
 
-  return { httpHelper, sut, validateEmailStub, validateNameStub, validateRoleStub }
+  return { httpHelper, sut, validateEmailStub, validateHandicapStub, validateNameStub, validateRoleStub }
 }
 
 describe('updateUserController', () => {
@@ -46,6 +54,15 @@ describe('updateUserController', () => {
     jest.spyOn(validateRoleStub, 'validate').mockReturnValueOnce(new Error())
 
     const result = await sut.handle({ body: { role: 'invalid_role' } })
+
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('should return an error if tries to update handicap and handicap is invalid', async () => {
+    const { httpHelper, sut, validateHandicapStub } = makeSut()
+    jest.spyOn(validateHandicapStub, 'validate').mockReturnValueOnce(new Error())
+
+    const result = await sut.handle({ body: { handicap: 'invalid_handicap' } })
 
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
