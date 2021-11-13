@@ -5,6 +5,7 @@ import { IController } from '../../protocols/controller.model'
 export class UpdateUserController implements IController {
   constructor (
     private readonly httpHelper: IHttpHelper,
+    private readonly validateAccountActivated: IValidator,
     private readonly validateEmail: IValidator,
     private readonly validateHandicap: IValidator,
     private readonly validateName: IValidator,
@@ -42,6 +43,12 @@ export class UpdateUserController implements IController {
       }
     }
 
+    if (data.accountActivated) {
+      const error = await this.validateAccountActivated.validate(data.accountActivated)
+      if (error) {
+        return this.httpHelper.badRequest(error)
+      }
+    }
     return this.httpHelper.ok({})
   }
 }
