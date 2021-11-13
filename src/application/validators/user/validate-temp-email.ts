@@ -8,6 +8,8 @@ export class ValidateTempEmail implements IValidator {
   async validate (input: Record<string, any>): Promise<UserCredentialError | undefined> {
     const { email } = input
 
+    if (!email) return
+
     const user = await this.userRepository.findByEmail(email)
     if (!user) return new UserCredentialError()
 

@@ -5,6 +5,8 @@ export class ValidateDuration implements IValidator {
   validate (input: Record<string, any>): InvalidParamError | InvalidTypeError | undefined {
     const { duration, type } = input
 
+    if (!duration) return
+
     if (typeof duration !== 'number') return new InvalidTypeError('duration', 'number', typeof duration)
 
     switch (type) {

@@ -8,6 +8,8 @@ export class ValidateCurrentPassword implements IValidator {
   async validate (input: Record<string, any>): Promise<UserCredentialError | undefined> {
     const { currentPassword, user } = input
 
+    if (!currentPassword) return
+
     if (!user) return new UserCredentialError()
 
     const isSamePassword = await this.hasher.compare(currentPassword, user.personal.password)

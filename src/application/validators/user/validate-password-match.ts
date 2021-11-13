@@ -10,6 +10,8 @@ export class ValidatePasswordMatch implements IValidator {
   async validate (input: Record<string, any>): Promise<UserCredentialError | undefined> {
     const { email, password } = input
 
+    if (!email || !password) return
+
     const user = (await this.userRepository.findByEmail(email)) as IUser
     if (!user) return new UserCredentialError()
 

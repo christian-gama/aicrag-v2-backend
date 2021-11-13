@@ -2,10 +2,10 @@ import { IValidator } from '@/domain/validators'
 import { InvalidPinError, PinIsExpiredError, InvalidTypeError } from '../../errors'
 
 export class ValidateEmailPin implements IValidator {
-  async validate (
-    input: Record<string, any>
-  ): Promise<PinIsExpiredError | InvalidPinError | InvalidTypeError | undefined> {
+  validate (input: Record<string, any>): PinIsExpiredError | InvalidPinError | InvalidTypeError | undefined {
     const { emailPin, user } = input
+
+    if (!emailPin) return
 
     if (!user) return new InvalidPinError()
     if (typeof emailPin !== 'string') return new InvalidTypeError('tempEmailPin', 'string', typeof emailPin)

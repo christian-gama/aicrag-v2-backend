@@ -5,6 +5,8 @@ export class ValidatePassword implements IValidator {
   validate (input: Record<string, any>): InvalidParamError | InvalidTypeError | undefined {
     const { password } = input
 
+    if (!password) return
+
     if (typeof password !== 'string') return new InvalidTypeError('password', 'string', typeof password)
 
     if (password.length < 6 || password.length > 32) {

@@ -40,4 +40,13 @@ describe('validateDate', () => {
 
     expect(result).toBeUndefined()
   })
+
+  it('should return undefined if param is undefined', () => {
+    const { sut } = makeSut()
+    const data = {}
+
+    const result = sut.validate(data)
+
+    expect(result).toBeUndefined()
+  })
 })

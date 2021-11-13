@@ -7,6 +7,8 @@ export class ValidateEmail implements IValidator {
   validate (input: Record<string, any>): InvalidParamError | InvalidTypeError | undefined {
     const { email } = input
 
+    if (!email) return
+
     if (typeof email !== 'string') return new InvalidTypeError('email', 'string', typeof email)
 
     if (!this.emailValidator.isEmail(input.email)) return new InvalidParamError('email')

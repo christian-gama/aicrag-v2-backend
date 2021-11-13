@@ -45,15 +45,6 @@ describe('validatePassword', () => {
     expect(value).toStrictEqual(new InvalidParamError('password'))
   })
 
-  it('should return InvalidParamError if password is empty', () => {
-    const { request, sut } = makeSut()
-    request.body.password = ''
-
-    const value = sut.validate(request.body)
-
-    expect(value).toStrictEqual(new InvalidParamError('password'))
-  })
-
   it('should return nothing if succeeds', () => {
     const { request, sut } = makeSut()
     request.body.password = faker.internet.password(6)
@@ -64,5 +55,14 @@ describe('validatePassword', () => {
 
     expect(value1).toBeFalsy()
     expect(value2).toBeFalsy()
+  })
+
+  it('should return undefined if param is undefined', () => {
+    const { sut } = makeSut()
+    const data = {}
+
+    const result = sut.validate(data)
+
+    expect(result).toBeUndefined()
   })
 })

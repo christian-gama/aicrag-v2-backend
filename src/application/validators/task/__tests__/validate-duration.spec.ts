@@ -35,15 +35,9 @@ describe('validateDuration', () => {
 
   it('should return InvalidParamError if type is TX and duration is lesser equal to 0', () => {
     const { request, sut } = makeSut()
-    request.body.duration = 0
-
-    let result = sut.validate(request.body)
-
-    expect(result).toStrictEqual(new InvalidParamError('duration'))
-
     request.body.duration = -1
 
-    result = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
     expect(result).toStrictEqual(new InvalidParamError('duration'))
   })
@@ -68,16 +62,10 @@ describe('validateDuration', () => {
 
   it('should return InvalidParamError if type is QA and duration is lesser equal to 0', () => {
     const { request, sut } = makeSut()
-    request.body.duration = 0
+    request.body.duration = -1
     request.body.type = 'QA'
 
-    let result = sut.validate(request.body)
-
-    expect(result).toStrictEqual(new InvalidParamError('duration'))
-
-    request.body.duration = -1
-
-    result = sut.validate(request.body)
+    const result = sut.validate(request.body)
 
     expect(result).toStrictEqual(new InvalidParamError('duration'))
   })
@@ -90,5 +78,14 @@ describe('validateDuration', () => {
     const response = sut.validate(request.body)
 
     expect(response).toBeUndefined()
+  })
+
+  it('should return undefined if param is undefined', () => {
+    const { sut } = makeSut()
+    const data = {}
+
+    const result = sut.validate(data)
+
+    expect(result).toBeUndefined()
   })
 })

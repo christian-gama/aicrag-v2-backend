@@ -59,4 +59,13 @@ describe('validateTempEmail', () => {
 
     expect(findUserByEmailSpy).toHaveBeenCalledWith(data.email)
   })
+
+  it('should return undefined if param is undefined', async () => {
+    const { sut } = makeSut()
+    const data = {}
+
+    const result = await sut.validate(data)
+
+    expect(result).toBeUndefined()
+  })
 })

@@ -21,19 +21,20 @@ const makeSut = (): SutTypes => {
   return { fakeUser, sut, userRepositoryStub }
 }
 
-describe('validatedata', () => {
+describe('validateActiveAccount', () => {
   it('should return a InactiveAccountError if user account is inactive', async () => {
     const { fakeUser, sut } = makeSut()
+    const data = { email: 'invalid_email@email.com' }
     fakeUser.settings.accountActivated = false
 
-    const result = await sut.validate(fakeUser)
+    const result = await sut.validate(data)
 
     expect(result).toStrictEqual(new InactiveAccountError())
   })
 
   it('should call findByEmail with correct value', async () => {
     const { sut, userRepositoryStub } = makeSut()
-    const data = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com' }
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.validate(data)
@@ -43,7 +44,16 @@ describe('validatedata', () => {
 
   it('should return nothing if succeeds', async () => {
     const { sut } = makeSut()
-    const data = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com' }
+
+    const result = await sut.validate(data)
+
+    expect(result).toBeUndefined()
+  })
+
+  it('should return undefined if param is undefined', async () => {
+    const { sut } = makeSut()
+    const data = {}
 
     const result = await sut.validate(data)
 

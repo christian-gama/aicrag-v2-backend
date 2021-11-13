@@ -5,6 +5,8 @@ export class ValidateDate implements IValidator {
   validate (input: Record<string, any>): InvalidParamError | undefined {
     const { date } = input
 
+    if (!date) return
+
     if (isNaN(Date.parse(date))) return new InvalidParamError('date')
   }
 }
