@@ -30,7 +30,7 @@ describe('validateFields', () => {
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('Only 10 fields are allowed'))
+    expect(result).toStrictEqual(new InvalidParamError('fields'))
   })
 
   it('should return InvalidParamError if field has more than 24 characters', async () => {

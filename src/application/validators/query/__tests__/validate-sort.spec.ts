@@ -30,7 +30,7 @@ describe('validateSort', () => {
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('Only 5 sort values are allowed'))
+    expect(result).toStrictEqual(new InvalidParamError('sort'))
   })
 
   it('should return InvalidParamError if contain duplicated sort values', async () => {
