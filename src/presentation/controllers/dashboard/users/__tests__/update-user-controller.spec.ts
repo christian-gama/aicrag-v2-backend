@@ -12,6 +12,7 @@ interface SutTypes {
   validateHandicapStub: IValidator
   validateNameStub: IValidator
   validateRoleStub: IValidator
+  validateTokenVersionStub: IValidator
 }
 const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
@@ -20,6 +21,7 @@ const makeSut = (): SutTypes => {
   const validateHandicapStub = makeValidatorStub()
   const validateNameStub = makeValidatorStub()
   const validateRoleStub = makeValidatorStub()
+  const validateTokenVersionStub = makeValidatorStub()
 
   const sut = new UpdateUserController(
     httpHelper,
@@ -27,7 +29,8 @@ const makeSut = (): SutTypes => {
     validateEmailStub,
     validateHandicapStub,
     validateNameStub,
-    validateRoleStub
+    validateRoleStub,
+    validateTokenVersionStub
   )
 
   return {
@@ -37,7 +40,8 @@ const makeSut = (): SutTypes => {
     validateEmailStub,
     validateHandicapStub,
     validateNameStub,
-    validateRoleStub
+    validateRoleStub,
+    validateTokenVersionStub
   }
 }
 
@@ -83,6 +87,15 @@ describe('updateUserController', () => {
     jest.spyOn(validateAccountActivatedStub, 'validate').mockReturnValueOnce(new Error())
 
     const result = await sut.handle({ body: { accountActivated: 'invalid_accountActivated' } })
+
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('should return an error if tries to update tokenVersion and tokenVersion is invalid', async () => {
+    const { httpHelper, sut, validateTokenVersionStub } = makeSut()
+    jest.spyOn(validateTokenVersionStub, 'validate').mockReturnValueOnce(new Error())
+
+    const result = await sut.handle({ body: { tokenVersion: 'invalid_tokenVersion' } })
 
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
