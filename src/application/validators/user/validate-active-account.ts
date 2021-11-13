@@ -6,7 +6,7 @@ import { InactiveAccountError } from '../../errors'
 export class ValidateActiveAccount implements IValidator {
   constructor (private readonly userRepository: IUserRepository) {}
 
-  async validate (input: any): Promise<InactiveAccountError | undefined> {
+  async validate (input: Record<string, any>): Promise<InactiveAccountError | undefined> {
     const { email } = input
 
     const user = (await this.userRepository.findByEmail(email)) as IUser

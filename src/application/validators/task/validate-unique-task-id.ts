@@ -5,7 +5,7 @@ import { ConflictParamError } from '@/application/errors'
 export class ValidateUniqueTaskId implements IValidator {
   constructor (private readonly taskRepository: ITaskRepository) {}
 
-  async validate (input: any): Promise<ConflictParamError | undefined> {
+  async validate (input: Record<string, any>): Promise<ConflictParamError | undefined> {
     if (!input.taskId) return
 
     const task = await this.taskRepository.findByTaskId(input.taskId, input.user.personal.id)

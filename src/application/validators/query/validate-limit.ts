@@ -2,7 +2,7 @@ import { IValidator } from '@/domain/validators'
 import { InvalidQueryError } from '@/application/errors'
 
 export class ValidateLimit implements IValidator {
-  async validate (input: any): Promise<InvalidQueryError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
     if (!input.limit) return
 
     if (typeof input.limit !== 'string') return new InvalidQueryError('limit')

@@ -5,7 +5,7 @@ import { ConflictParamError, InvalidParamError, InvalidTypeError } from '@/appli
 export class ValidateTaskId implements IValidator {
   constructor (private readonly taskRepository: ITaskRepository) {}
 
-  async validate (input: any): Promise<InvalidParamError | InvalidTypeError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidParamError | InvalidTypeError | undefined> {
     const { taskId, task, user } = input
 
     if (!taskId) return

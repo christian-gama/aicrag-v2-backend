@@ -2,7 +2,7 @@ import { IValidator } from '@/domain/validators'
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
 export class ValidateUUID implements IValidator {
-  validate (input: any): InvalidParamError | InvalidTypeError | undefined {
+  validate (input: Record<string, any>): InvalidParamError | InvalidTypeError | undefined {
     const { id } = input
 
     if (!id) return new InvalidParamError('id')

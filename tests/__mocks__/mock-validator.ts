@@ -2,7 +2,7 @@ import { IValidator } from '@/domain/validators'
 
 export const makeValidatorStub = (): IValidator => {
   class ValidatorStub implements IValidator {
-    validate (input: any): Error | undefined {
+    validate (input: Record<string, any>): Error | undefined {
       return undefined
     }
   }

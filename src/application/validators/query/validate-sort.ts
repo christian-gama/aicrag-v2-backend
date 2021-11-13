@@ -2,12 +2,12 @@ import { IValidator } from '@/domain/validators'
 import { InvalidQueryError } from '@/application/errors'
 
 export class ValidateSort implements IValidator {
-  async validate (input: any): Promise<InvalidQueryError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
     if (!input.sort) return
 
     if (typeof input.sort !== 'string') return new InvalidQueryError('sort')
 
-    const sortArr = input.sort.split(',') as string[]
+    const sortArr = input.sort.split(',')
 
     if (sortArr.length > 5) return new InvalidQueryError('Only 5 sort values are allowed')
 

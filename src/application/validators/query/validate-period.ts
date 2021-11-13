@@ -2,7 +2,7 @@ import { IValidator } from '@/domain/validators'
 import { InvalidQueryError } from '@/application/errors'
 
 export class ValidatePeriod implements IValidator {
-  async validate (input: any): Promise<InvalidQueryError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
     if (!input.period) return
 
     if (typeof input.period !== 'string') return new InvalidQueryError('period')

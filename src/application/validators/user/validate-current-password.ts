@@ -5,7 +5,7 @@ import { UserCredentialError } from '../../errors'
 export class ValidateCurrentPassword implements IValidator {
   constructor (private readonly hasher: IComparer) {}
 
-  async validate (input: any): Promise<UserCredentialError | undefined> {
+  async validate (input: Record<string, any>): Promise<UserCredentialError | undefined> {
     const { currentPassword, user } = input
 
     if (!user) return new UserCredentialError()

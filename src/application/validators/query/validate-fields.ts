@@ -2,7 +2,7 @@ import { IValidator } from '@/domain/validators'
 import { InvalidQueryError } from '@/application/errors'
 
 export class ValidateFields implements IValidator {
-  async validate (input: any): Promise<InvalidQueryError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
     if (!input.fields) return
 
     if (typeof input.fields !== 'string') return new InvalidQueryError('fields')

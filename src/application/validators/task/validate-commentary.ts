@@ -3,7 +3,7 @@ import { InvalidParamError } from '@/application/errors'
 import { InvalidTypeError } from '@/application/errors/invalid-type-error'
 
 export class ValidateCommentary implements IValidator {
-  validate (input: any): InvalidParamError | InvalidTypeError | undefined {
+  validate (input: Record<string, any>): InvalidParamError | InvalidTypeError | undefined {
     const { commentary } = input
 
     if (!commentary) return

@@ -5,7 +5,7 @@ import { MissingParamError, UserCredentialError } from '../../errors'
 export class ValidatePasswordToken implements IValidator {
   constructor (private readonly userRepository: IUserRepository) {}
 
-  async validate (input: any): Promise<UserCredentialError | undefined> {
+  async validate (input: Record<string, any>): Promise<UserCredentialError | undefined> {
     const { email } = input
 
     const user = await this.userRepository.findByEmail(email)

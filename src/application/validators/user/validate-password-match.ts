@@ -7,7 +7,7 @@ import { UserCredentialError } from '../../errors'
 export class ValidatePasswordMatch implements IValidator {
   constructor (private readonly hasher: IComparer, private readonly userRepository: IUserRepository) {}
 
-  async validate (input: any): Promise<UserCredentialError | undefined> {
+  async validate (input: Record<string, any>): Promise<UserCredentialError | undefined> {
     const { email, password } = input
 
     const user = (await this.userRepository.findByEmail(email)) as IUser
