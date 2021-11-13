@@ -1,13 +1,13 @@
 import { IValidator } from '@/domain/validators'
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
 export class ValidateFields implements IValidator {
-  async validate (input: Record<string, any>): Promise<InvalidParamError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidTypeError | InvalidParamError | undefined> {
     const { fields } = input
 
     if (!fields) return
 
-    if (typeof fields !== 'string') return new InvalidParamError('fields')
+    if (typeof fields !== 'string') return new InvalidTypeError('fields', 'string', typeof fields)
 
     const fieldsArr = fields.split(',')
 

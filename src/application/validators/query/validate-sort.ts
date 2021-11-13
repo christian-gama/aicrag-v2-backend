@@ -1,13 +1,13 @@
 import { IValidator } from '@/domain/validators'
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 
 export class ValidateSort implements IValidator {
-  async validate (input: Record<string, any>): Promise<InvalidParamError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidTypeError | InvalidParamError | undefined> {
     const { sort } = input
 
     if (!sort) return
 
-    if (typeof sort !== 'string') return new InvalidParamError('sort')
+    if (typeof sort !== 'string') return new InvalidTypeError('sort', 'string', typeof sort)
 
     const sortArr = sort.split(',')
 

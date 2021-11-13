@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidatePage } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,13 +15,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validatePage', () => {
-  it('should return InvalidParamError if page is not a string', async () => {
+  it('should return InvalidTypeError if page is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.page = ['a', 'b']
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('page'))
+    expect(result).toStrictEqual(new InvalidTypeError('page', 'string', typeof request.query.page))
   })
 
   it('should return InvalidParamError if page does not contain a number', async () => {

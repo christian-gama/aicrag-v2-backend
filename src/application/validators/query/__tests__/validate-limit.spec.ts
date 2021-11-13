@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateLimit } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,13 +15,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateLimit', () => {
-  it('should return InvalidParamError if limit is not a string', async () => {
+  it('should return InvalidTypeError if limit is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.limit = ['a', 'b']
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('limit'))
+    expect(result).toStrictEqual(new InvalidTypeError('limit', 'string', typeof request.query.limit))
   })
 
   it('should return InvalidParamError if limit does not contain a number', async () => {

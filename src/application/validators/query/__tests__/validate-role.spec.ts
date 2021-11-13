@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateRole } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,13 +15,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateRole', () => {
-  it('should return InvalidParamError if role is not a string', async () => {
+  it('should return InvalidTypeError if role is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.role = 123
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('role'))
+    expect(result).toStrictEqual(new InvalidTypeError('role', 'string', typeof request.query.role))
   })
 
   it('should return InvalidParamError if role is invalid', async () => {

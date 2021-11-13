@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateTaskId } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,13 +15,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateTaskId', () => {
-  it('should return InvalidParamError if taskId is not a string', async () => {
+  it('should return InvalidTypeError if taskId is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.taskId = ['a', 'b']
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('taskId'))
+    expect(result).toStrictEqual(new InvalidTypeError('taskId', 'string', typeof request.query.taskId))
   })
 
   it('should return InvalidParamError if taskId is longer than 120 characters', async () => {

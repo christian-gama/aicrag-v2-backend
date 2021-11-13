@@ -1,5 +1,5 @@
 import { IValidator } from '@/domain/validators'
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateQuery } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -19,13 +19,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateQuery', () => {
-  it('should return InvalidParamError if query is not a string', async () => {
+  it('should return InvalidTypeError if query is not a string', async () => {
     const { request, sut } = makeSut()
     request.body.any_field = 123
 
     const result = await sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidParamError('any_field'))
+    expect(result).toStrictEqual(new InvalidTypeError('any_field', 'string', typeof request.body.any_field))
   })
 
   it('should return a new InvalidParamError if query is invalid', () => {

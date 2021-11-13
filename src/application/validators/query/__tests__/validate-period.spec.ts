@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidatePeriod } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -24,13 +24,13 @@ describe('validatePeriod', () => {
     expect(result).toStrictEqual(new InvalidParamError('period'))
   })
 
-  it('should return InvalidParamError if period is not a string', async () => {
+  it('should return InvalidTypeError if period is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.period = 123
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('period'))
+    expect(result).toStrictEqual(new InvalidTypeError('period', 'string', typeof request.query.period))
   })
 
   it('should return undefined if succeeds', async () => {

@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateSort } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,13 +15,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateSort', () => {
-  it('should return InvalidParamError if sort is not a string', async () => {
+  it('should return InvalidTypeError if sort is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.sort = ['a', 'b']
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidParamError('sort'))
+    expect(result).toStrictEqual(new InvalidTypeError('sort', 'string', typeof request.query.sort))
   })
 
   it('should return InvalidParamError if sort has more than 5 properties', async () => {
