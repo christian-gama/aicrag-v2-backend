@@ -10,10 +10,12 @@ export class ValidateEmailPin implements IValidator {
     if (!user) return new InvalidPinError()
     if (typeof emailPin !== 'string') return new InvalidTypeError('tempEmailPin', 'string', typeof emailPin)
 
-    if (user.temporary.tempEmailPinExpiration == null) return new InvalidPinError()
-    if (emailPin !== user.temporary.tempEmailPin) return new InvalidPinError()
-    if (!user.temporary.tempEmail) return new InvalidPinError()
-    if (user.temporary.tempEmailPinExpiration.getTime() < Date.now()) {
+    const { tempEmail, tempEmailPin, tempEmailPinExpiration } = user.temporary
+
+    if (!tempEmailPinExpiration) return new InvalidPinError()
+    if (emailPin !== tempEmailPin) return new InvalidPinError()
+    if (!tempEmail) return new InvalidPinError()
+    if (tempEmailPinExpiration.getTime() < Date.now()) {
       return new PinIsExpiredError()
     }
   }

@@ -15,10 +15,13 @@ export class ValidateActivationPin implements IValidator {
     const user = await this.userRepository.findByEmail(email)
     if (!user) return new InvalidPinError()
 
-    if (user.temporary.activationPinExpiration == null) return new InvalidPinError()
-    if (activationPin !== user.temporary.activationPin) return new InvalidPinError()
-    if (user.settings.accountActivated) return new AccountAlreadyActivatedError()
-    if (user.temporary.activationPinExpiration.getTime() < Date.now()) {
+    const { accountActivated } = user.settings
+    const { activationPinExpiration, activationPin: tempActivationPin } = user.temporary
+
+    if (!activationPinExpiration) return new InvalidPinError()
+    if (activationPin !== tempActivationPin) return new InvalidPinError()
+    if (accountActivated) return new AccountAlreadyActivatedError()
+    if (activationPinExpiration.getTime() < Date.now()) {
       return new PinIsExpiredError()
     }
   }
