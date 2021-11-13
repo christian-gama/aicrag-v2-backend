@@ -3,26 +3,21 @@ import { IController } from '@/presentation/controllers/protocols/controller.mod
 import { makeTryCatchDecorator } from '../../decorators'
 import { makeFilterUserData, makeHttpHelper, makePin } from '../../helpers'
 import { makeUserRepository } from '../../repositories'
-import { makeValidateEmail, makeValidateName } from '../../validators/user'
-import { makeValidateCurrency } from '../../validators/user/validate-currency-factory'
+import { makeUpdateMeValidator } from '../../validators/user'
 
 export const makeUpdateMeController = (): IController => {
   const emailPin = makePin()
   const filterUserData = makeFilterUserData()
   const httpHelper = makeHttpHelper()
   const userRepository = makeUserRepository()
-  const validateCurrency = makeValidateCurrency()
-  const validateEmail = makeValidateEmail()
-  const validateName = makeValidateName()
+  const updateMeValidator = makeUpdateMeValidator()
 
   const updateMeController = new UpdateMeController(
     emailPin,
     filterUserData,
     httpHelper,
     userRepository,
-    validateCurrency,
-    validateEmail,
-    validateName
+    updateMeValidator
   )
 
   return makeTryCatchDecorator(updateMeController)

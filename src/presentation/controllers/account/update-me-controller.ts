@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 import { IFilterUserData, IPin } from '@/domain/helpers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-import { ConflictParamError, MustLoginError } from '@/application/errors'
+import { MustLoginError } from '@/application/errors'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller.model'
 
@@ -12,9 +12,7 @@ export class UpdateMeController implements IController {
     private readonly filterUserData: IFilterUserData,
     private readonly httpHelper: IHttpHelper,
     private readonly userRepository: IUserRepository,
-    private readonly validateCurrency: IValidator,
-    private readonly validateEmail: IValidator,
-    private readonly validateName: IValidator
+    private readonly updateMeValidator: IValidator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -23,32 +21,29 @@ export class UpdateMeController implements IController {
 
     const data = httpRequest.body
 
+    const error = await this.updateMeValidator.validate(data)
+    if (error) {
+      switch (error.name) {
+        case 'ConflictParamError':
+          return this.httpHelper.conflict(error)
+        default:
+          return this.httpHelper.badRequest(error)
+      }
+    }
+
     const update = {}
 
     if (data.currency) {
-      const error = await this.validateCurrency.validate(data)
-      if (error) return this.httpHelper.badRequest(error)
-
       update['settings.currency'] = data.currency
     }
 
     if (data.email) {
-      const error = await this.validateEmail.validate(data)
-      if (error) return this.httpHelper.badRequest(error)
-
-      const userExists = await this.userRepository.findByEmail(data.email)
-
-      if (userExists) return this.httpHelper.conflict(new ConflictParamError('email'))
-
       update['temporary.tempEmail'] = data.email
       update['temporary.tempEmailPin'] = this.emailPin.generate()
       update['temporary.tempEmailPinExpiration'] = new Date(Date.now() + 10 * 60 * 1000)
     }
 
     if (data.name) {
-      const error = await this.validateName.validate(data)
-      if (error) return this.httpHelper.badRequest(error)
-
       update['personal.name'] = data.name
     }
 

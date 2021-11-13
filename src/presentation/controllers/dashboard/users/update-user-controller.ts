@@ -3,59 +3,14 @@ import { HttpRequest, HttpResponse, IHttpHelper } from '@/presentation/http/prot
 import { IController } from '../../protocols/controller.model'
 
 export class UpdateUserController implements IController {
-  constructor (
-    private readonly httpHelper: IHttpHelper,
-    private readonly validateAccountActivated: IValidator,
-    private readonly validateEmail: IValidator,
-    private readonly validateHandicap: IValidator,
-    private readonly validateName: IValidator,
-    private readonly validateRole: IValidator,
-    private readonly validateTokenVersion: IValidator
-  ) {}
+  constructor (private readonly httpHelper: IHttpHelper, private readonly updateUserValidator: IValidator) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const data = httpRequest.body
 
-    if (data.name) {
-      const error = await this.validateName.validate(data.name)
-      if (error) {
-        return this.httpHelper.badRequest(error)
-      }
-    }
-
-    if (data.email) {
-      const error = await this.validateEmail.validate(data.email)
-      if (error) {
-        return this.httpHelper.badRequest(error)
-      }
-    }
-
-    if (data.role) {
-      const error = await this.validateRole.validate(data.role)
-      if (error) {
-        return this.httpHelper.badRequest(error)
-      }
-    }
-
-    if (data.handicap) {
-      const error = await this.validateHandicap.validate(data.handicap)
-      if (error) {
-        return this.httpHelper.badRequest(error)
-      }
-    }
-
-    if (data.accountActivated) {
-      const error = await this.validateAccountActivated.validate(data.accountActivated)
-      if (error) {
-        return this.httpHelper.badRequest(error)
-      }
-    }
-
-    if (data.tokenVersion) {
-      const error = await this.validateTokenVersion.validate(data.tokenVersion)
-      if (error) {
-        return this.httpHelper.badRequest(error)
-      }
+    const error = await this.updateUserValidator.validate(data.name)
+    if (error) {
+      return this.httpHelper.badRequest(error)
     }
 
     return this.httpHelper.ok({})

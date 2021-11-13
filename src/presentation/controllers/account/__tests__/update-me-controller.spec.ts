@@ -2,7 +2,7 @@ import { IUser } from '@/domain'
 import { IFilterUserData, IPin } from '@/domain/helpers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-import { ConflictParamError, MustLoginError } from '@/application/errors'
+import { MustLoginError } from '@/application/errors'
 import { UpdateMeController } from '@/presentation/controllers/account'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
@@ -23,10 +23,8 @@ interface SutTypes {
   httpHelper: IHttpHelper
   request: HttpRequest
   sut: UpdateMeController
+  updateMeValidatorStub: IValidator
   userRepositoryStub: IUserRepository
-  validateCurrencyStub: IValidator
-  validateEmailStub: IValidator
-  validateNameStub: IValidator
 }
 
 const makeSut = (): SutTypes => {
@@ -39,18 +37,14 @@ const makeSut = (): SutTypes => {
     user: fakeUser
   }
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
-  const validateCurrencyStub = makeValidatorStub()
-  const validateEmailStub = makeValidatorStub()
-  const validateNameStub = makeValidatorStub()
+  const updateMeValidatorStub = makeValidatorStub()
 
   const sut = new UpdateMeController(
     emailPinStub,
     filterUserDataStub,
     httpHelper,
     userRepositoryStub,
-    validateCurrencyStub,
-    validateEmailStub,
-    validateNameStub
+    updateMeValidatorStub
   )
 
   return {
@@ -60,10 +54,8 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
-    userRepositoryStub,
-    validateCurrencyStub,
-    validateEmailStub,
-    validateNameStub
+    updateMeValidatorStub,
+    userRepositoryStub
   }
 }
 
@@ -78,122 +70,47 @@ describe('updateMeController', () => {
 
   it('should return unauthorized if user is not logged in', async () => {
     const { httpHelper, request, sut } = makeSut()
-    request.user = undefined
+    delete request.user
 
     const result = await sut.handle(request)
 
     expect(result).toStrictEqual(httpHelper.unauthorized(new MustLoginError()))
   })
 
-  it('should call validate currency with correct data', async () => {
-    const { request, sut, validateCurrencyStub } = makeSut()
-    const validateSpy = jest.spyOn(validateCurrencyStub, 'validate')
+  it('should call updateMeValidator with correct data', async () => {
+    const { request, sut, updateMeValidatorStub } = makeSut()
+    const validateSpy = jest.spyOn(updateMeValidatorStub, 'validate')
 
     await sut.handle(request)
 
     expect(validateSpy).toHaveBeenCalledWith(request.body)
   })
 
-  it('should return badRequest if currency validation fails', async () => {
-    const { httpHelper, request, sut, validateCurrencyStub } = makeSut()
-    jest.spyOn(validateCurrencyStub, 'validate').mockReturnValueOnce(new Error())
+  it('should return badRequest if updateMeValidator fails', async () => {
+    const { httpHelper, request, sut, updateMeValidatorStub } = makeSut()
+    jest.spyOn(updateMeValidatorStub, 'validate').mockReturnValueOnce(new Error())
 
     const result = await sut.handle(request)
 
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
-  })
-
-  it('should call validate name with correct data', async () => {
-    const { request, sut, validateNameStub } = makeSut()
-    const validateSpy = jest.spyOn(validateNameStub, 'validate')
-    request.body.email = undefined
-
-    await sut.handle(request)
-
-    expect(validateSpy).toHaveBeenCalledWith(request.body)
-  })
-
-  it('should return badRequest if name validation fails', async () => {
-    const { httpHelper, request, sut, validateNameStub } = makeSut()
-    jest.spyOn(validateNameStub, 'validate').mockReturnValueOnce(new Error())
-    request.body.email = undefined
-
-    const result = await sut.handle(request)
-
-    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
-  })
-
-  it('should not call validate name if there is no name', async () => {
-    const { request, sut, validateNameStub } = makeSut()
-    const validateSpy = jest.spyOn(validateNameStub, 'validate')
-    request.body.name = undefined
-
-    await sut.handle(request)
-
-    expect(validateSpy).toHaveBeenCalledTimes(0)
-  })
-
-  it('should return badRequest if email validation fails', async () => {
-    const { httpHelper, request, sut, validateEmailStub } = makeSut()
-    jest.spyOn(validateEmailStub, 'validate').mockReturnValueOnce(new Error())
-
-    const result = await sut.handle(request)
-
-    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
-  })
-
-  it('should not call validate email if there is no email', async () => {
-    const { request, sut, validateEmailStub } = makeSut()
-    const validateSpy = jest.spyOn(validateEmailStub, 'validate')
-    request.body.email = undefined
-
-    await sut.handle(request)
-
-    expect(validateSpy).toHaveBeenCalledTimes(0)
   })
 
   it('should not call findByEmail if there is no email', async () => {
     const { request, sut, userRepositoryStub } = makeSut()
-    const validateSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
-    request.body.email = undefined
+    const findByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
+    delete request.body.email
 
     await sut.handle(request)
 
-    expect(validateSpy).toHaveBeenCalledTimes(0)
-  })
-
-  it('should call validate email with correct data', async () => {
-    const { request, sut, validateEmailStub } = makeSut()
-    const validateSpy = jest.spyOn(validateEmailStub, 'validate')
-
-    await sut.handle(request)
-
-    expect(validateSpy).toHaveBeenCalledWith(request.body)
-  })
-
-  it('should call findByEmail with correct email', async () => {
-    const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
-
-    await sut.handle(request)
-
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
-  })
-
-  it('should return conflict if email already exists', async () => {
-    const { httpHelper, request, sut } = makeSut()
-
-    const result = await sut.handle(request)
-
-    expect(result).toStrictEqual(httpHelper.conflict(new ConflictParamError('email')))
+    expect(findByEmailSpy).toHaveBeenCalledTimes(0)
   })
 
   it('should call updateById with correct values if only currency is changed', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
     const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    delete request.body.email
+    delete request.body.name
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
-    request.body.email = undefined
-    request.body.name = undefined
 
     await sut.handle(request)
 
@@ -206,9 +123,9 @@ describe('updateMeController', () => {
   it('should call updateById with correct values if only name is changed', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
     const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    delete request.body.currency
+    delete request.body.email
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
-    request.body.currency = undefined
-    request.body.email = undefined
 
     await sut.handle(request)
 
@@ -221,9 +138,9 @@ describe('updateMeController', () => {
   it('should call updateById with correct values if only email is changed', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
     const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    delete request.body.currency
+    delete request.body.name
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
-    request.body.currency = undefined
-    request.body.name = undefined
 
     await sut.handle(request)
 
@@ -264,10 +181,10 @@ describe('updateMeController', () => {
 
   it('should return ok if succeeds with no changes', async () => {
     const { httpHelper, request, sut, userRepositoryStub } = makeSut()
+    delete request.body.email
+    delete request.body.name
+    delete request.body.currency
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
-    request.body.email = undefined
-    request.body.name = undefined
-    request.body.currency = undefined
 
     const result = await sut.handle(request)
 
