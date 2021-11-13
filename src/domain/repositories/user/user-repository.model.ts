@@ -5,13 +5,7 @@ import { IQuery, IQueryResult } from '@/infra/database/protocols/queries.model'
 /**
  * @description Generic user database repository.
  */
-export interface IUserRepository
-  extends IFindAll,
-  IFindAllByID,
-  IFindUserByEmail,
-  IFindUserById,
-  ISaveUser,
-  IUpdateUser {}
+export interface IUserRepository extends IFindAll, IFindAllByID, IFindUserByEmail, IFindUserById, ISave, IUpdateById {}
 
 export interface IFindAllQuery extends IQuery {
   email?: string
@@ -60,7 +54,7 @@ export interface IFindUserById {
   findById: (id: string) => Promise<IUser | null>
 }
 
-export interface ISaveUser {
+export interface ISave {
   /**
    * @async Asynchronous method.
    * @description Receive an user and then save a user on database.
@@ -70,7 +64,7 @@ export interface ISaveUser {
   save: (userData: ISignUpUserData) => Promise<IUser>
 }
 
-export interface IUpdateUser {
+export interface IUpdateById {
   /**
    * @async Asynchronous method.
    * @description Receive a user and tries to update it.

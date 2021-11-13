@@ -215,9 +215,9 @@ type Mutation {
   sendWelcomeEmail(input: SendWelcomeEmailInput!): SendWelcomeEmail!
   signUp(input: SignUpInput!): SignUp!
   updateEmailByPin(input: UpdateEmailByCodeInput!): UpdateEmailByCode!
+  updateMe(input: UpdateMeInput!): UpdateMe!
   updatePassword(input: UpdatePasswordInput!): UpdatePassword!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
-  updateUser(input: UpdateUserInput!): UpdateUser!
 }
 
 type PublicUser {
@@ -336,6 +336,22 @@ input UpdateEmailByCodeInput {
   emailPin: String!
 }
 
+union UpdateMe = UpdateMeHasChanges | UpdateMeNoChanges
+
+type UpdateMeHasChanges {
+  user: PublicUser!
+}
+
+input UpdateMeInput {
+  currency: UserCurrency
+  email: EmailAddress
+  name: String
+}
+
+type UpdateMeNoChanges {
+  message: String!
+}
+
 type UpdatePassword {
   user: PublicUser!
 }
@@ -367,22 +383,6 @@ type UpdateTaskNoChanges {
 
 input UpdateTaskParam {
   id: UUID!
-}
-
-union UpdateUser = UpdateUserHasChanges | UpdateUserNoChanges
-
-type UpdateUserHasChanges {
-  user: PublicUser!
-}
-
-input UpdateUserInput {
-  currency: UserCurrency
-  email: EmailAddress
-  name: String
-}
-
-type UpdateUserNoChanges {
-  message: String!
 }
 
 enum UserCurrency {

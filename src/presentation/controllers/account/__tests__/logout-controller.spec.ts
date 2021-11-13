@@ -37,11 +37,11 @@ describe('logoutController', () => {
 
   it('should call updateById with correct values', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       tokenVersion: fakeUser.tokenVersion
     })
   })

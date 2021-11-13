@@ -1,11 +1,11 @@
-export const updateUserMutation = (input: { currency?: 'BRL' | 'USD', email?: string, name?: string }): string => `
+export const updateMeMutation = (input: { currency?: 'BRL' | 'USD', email?: string, name?: string }): string => `
   mutation {
-    updateUser(input: {
+    updateMe(input: {
       ${input.currency ? `currency: ${input.currency},` : ''}
       ${input.email ? `email: "${input.email}",` : ''}
       ${input.name ? `name: "${input.name}"` : ''}
     }) {
-        ... on UpdateUserHasChanges {
+        ... on UpdateMeHasChanges {
             user {
                 personal {
                     email
@@ -17,7 +17,7 @@ export const updateUserMutation = (input: { currency?: 'BRL' | 'USD', email?: st
                 }
             }
         }
-        ... on UpdateUserNoChanges {
+        ... on UpdateMeNoChanges {
             message
         }
     }

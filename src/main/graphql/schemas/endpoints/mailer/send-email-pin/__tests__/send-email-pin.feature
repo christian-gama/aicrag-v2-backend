@@ -2,7 +2,7 @@ Feature: Send email pin
 
   TAfter the user request an email update, this endpoint should be used to send the email code to the user email.
 
-  Rule: The user must request UpdateUser endpoint first
+  Rule: The user must request UpdateMe endpoint first
   Rule: The input must be valid
 
     Scenario: Having a valid tempEmail

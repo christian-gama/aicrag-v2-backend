@@ -5,14 +5,14 @@ import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { userHelper } from '@/tests/helpers/user-helper'
-import { updateUserMutation } from './update-user-document'
+import { updateMeMutation } from './update-me-document'
 import { Express } from 'express'
 import { defineFeature, loadFeature } from 'jest-cucumber'
 import MockDate from 'mockdate'
 import { resolve } from 'path'
 import request from 'supertest'
 
-const feature = loadFeature(resolve(__dirname, 'update-user.feature'))
+const feature = loadFeature(resolve(__dirname, 'update-me.feature'))
 
 defineFeature(feature, (test) => {
   const client = makeMongoDb()
@@ -58,7 +58,7 @@ defineFeature(feature, (test) => {
         name: table[0].name
       }
 
-      const query = updateUserMutation(input)
+      const query = updateMeMutation(input)
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -83,7 +83,7 @@ defineFeature(feature, (test) => {
     })
 
     when(/^I request to update my currency settings with "(.*)"$/, async (currency) => {
-      const query = updateUserMutation({ currency })
+      const query = updateMeMutation({ currency })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -93,7 +93,7 @@ defineFeature(feature, (test) => {
     })
 
     then(/^I should have my currency updated to "(.*)"$/, (currency) => {
-      expect(result.body.data.updateUser.user.settings.currency).toBe(currency)
+      expect(result.body.data.updateMe.user.settings.currency).toBe(currency)
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
@@ -108,7 +108,7 @@ defineFeature(feature, (test) => {
     })
 
     when(/^I request to update my email with "(.*)"$/, async (email) => {
-      const query = updateUserMutation({ email })
+      const query = updateMeMutation({ email })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -143,7 +143,7 @@ defineFeature(feature, (test) => {
     })
 
     when(/^I request to update my email with "(.*)"$/, async (email) => {
-      const query = updateUserMutation({ email })
+      const query = updateMeMutation({ email })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -168,7 +168,7 @@ defineFeature(feature, (test) => {
     })
 
     when(/^I request to update my name with "(.*)"$/, async (name) => {
-      const query = updateUserMutation({ name })
+      const query = updateMeMutation({ name })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -178,7 +178,7 @@ defineFeature(feature, (test) => {
     })
 
     then(/^I should have my name set to "(.*)"$/, (name) => {
-      expect(result.body.data.updateUser.user.personal.name).toBe(name)
+      expect(result.body.data.updateMe.user.personal.name).toBe(name)
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {
@@ -193,7 +193,7 @@ defineFeature(feature, (test) => {
     })
 
     when(/^I request to update my name with "(.*)"$/, async (name) => {
-      const query = updateUserMutation({ name })
+      const query = updateMeMutation({ name })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)

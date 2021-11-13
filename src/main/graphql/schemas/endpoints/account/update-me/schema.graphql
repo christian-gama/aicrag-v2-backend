@@ -1,0 +1,19 @@
+type Mutation {
+  updateMe(input: UpdateMeInput!): UpdateMe! @user @protected
+}
+
+input UpdateMeInput {
+  currency: UserCurrency
+  email: EmailAddress
+  name: String
+}
+
+type UpdateMeHasChanges {
+  user: PublicUser!
+}
+
+type UpdateMeNoChanges {
+  message: String!
+}
+
+union UpdateMe = UpdateMeNoChanges | UpdateMeHasChanges

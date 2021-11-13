@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-import { makeUpdateUserController } from '@/main/factories/controllers/account'
+import { makeUpdateMeController } from '@/main/factories/controllers/account'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
 
 export const resolver: Resolvers = {
   Mutation: {
-    updateUser: async (_, args, context) => await resolverAdapter(makeUpdateUserController(), args, context)
+    updateMe: async (_, args, context) => await resolverAdapter(makeUpdateMeController(), args, context)
   },
-  UpdateUserHasChanges: {
+  UpdateMeHasChanges: {
     __isTypeOf: (obj) => {
       return obj.user !== undefined
     }
   },
-  UpdateUserNoChanges: {
+  UpdateMeNoChanges: {
     __isTypeOf: (obj) => {
       return obj.message !== undefined
     }

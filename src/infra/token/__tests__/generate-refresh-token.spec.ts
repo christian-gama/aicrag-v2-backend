@@ -24,11 +24,11 @@ const makeSut = (): SutTypes => {
 describe('generateAccessToken', () => {
   it('should call updateById with correct value', async () => {
     const { fakeUser, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateByIdSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.generate(fakeUser)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateByIdSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       tokenVersion: fakeUser.tokenVersion
     })
   })

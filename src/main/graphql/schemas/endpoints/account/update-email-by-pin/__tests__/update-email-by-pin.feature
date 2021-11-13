@@ -1,6 +1,6 @@
 Feature: Update email by pin
 
-  After the user request a patch in his email through UpdateUser endpoint, he can use the email pin sent to his new
+  After the user request a patch in his email through UpdateMe endpoint, he can use the email pin sent to his new
   email to finally update his email.
 
   Rule: The user must be logged in

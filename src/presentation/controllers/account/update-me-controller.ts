@@ -6,7 +6,7 @@ import { ConflictParamError, MustLoginError } from '@/application/errors'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller.model'
 
-export class UpdateUserController implements IController {
+export class UpdateMeController implements IController {
   constructor (
     private readonly emailPin: IPin,
     private readonly filterUserData: IFilterUserData,

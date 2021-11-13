@@ -3,7 +3,7 @@ import { IFilterUserData, IPin } from '@/domain/helpers'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { ConflictParamError, MustLoginError } from '@/application/errors'
-import { UpdateUserController } from '@/presentation/controllers/account'
+import { UpdateMeController } from '@/presentation/controllers/account'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import {
@@ -22,7 +22,7 @@ interface SutTypes {
   filterUserDataStub: IFilterUserData
   httpHelper: IHttpHelper
   request: HttpRequest
-  sut: UpdateUserController
+  sut: UpdateMeController
   userRepositoryStub: IUserRepository
   validateCurrencyStub: IValidator
   validateEmailStub: IValidator
@@ -43,7 +43,7 @@ const makeSut = (): SutTypes => {
   const validateEmailStub = makeValidatorStub()
   const validateNameStub = makeValidatorStub()
 
-  const sut = new UpdateUserController(
+  const sut = new UpdateMeController(
     emailPinStub,
     filterUserDataStub,
     httpHelper,
@@ -67,7 +67,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('updateUserController', () => {
+describe('updateMeController', () => {
   afterAll(() => {
     MockDate.reset()
   })
@@ -190,14 +190,14 @@ describe('updateUserController', () => {
 
   it('should call updateById with correct values if only currency is changed', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.email = undefined
     request.body.name = undefined
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'settings.currency': request.body.currency
     })
@@ -205,14 +205,14 @@ describe('updateUserController', () => {
 
   it('should call updateById with correct values if only name is changed', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.currency = undefined
     request.body.email = undefined
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.name': request.body.name
     })
@@ -220,14 +220,14 @@ describe('updateUserController', () => {
 
   it('should call updateById with correct values if only email is changed', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
     request.body.currency = undefined
     request.body.name = undefined
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'temporary.tempEmail': request.body.email,
       'temporary.tempEmailPin': 'any_pin',
@@ -237,12 +237,12 @@ describe('updateUserController', () => {
 
   it('should call updateById with correct values if currency, email and name are changed', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.name': request.body.name,
       'settings.currency': request.body.currency,

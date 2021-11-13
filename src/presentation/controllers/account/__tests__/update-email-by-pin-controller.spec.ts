@@ -142,11 +142,11 @@ describe('updateEmailByPinController', () => {
 
   it('should call updateById with correct values', async () => {
     const { fakeUser, sut, request, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.email': fakeUser.personal.email,
       'temporary.tempEmail': fakeUser.temporary.tempEmail,

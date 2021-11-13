@@ -8,7 +8,7 @@ import { makeFakeUser } from '@/tests/__mocks__'
 import { Express } from 'express'
 import request from 'supertest'
 
-describe('patch /update-user', () => {
+describe('patch /update-me', () => {
   const client = makeMongoDb()
   let app: Express
   let accessToken: string
@@ -43,7 +43,7 @@ describe('patch /update-user', () => {
   it('should return 401 if user is not logged in', async () => {
     await userCollection.insertOne(fakeUser)
 
-    const result = await request(app).patch('/api/v1/account/update-user').send()
+    const result = await request(app).patch('/api/v1/account/update-me').send()
 
     expect(result.status).toBe(401)
   })
@@ -52,7 +52,7 @@ describe('patch /update-user', () => {
     await userCollection.insertOne(fakeUser)
 
     const result = await request(app)
-      .patch('/api/v1/account/update-user')
+      .patch('/api/v1/account/update-me')
       .set('x-access-token', accessToken)
       .set('x-refresh-token', refreshToken)
       .send({ name: '1nv@lid_name' })
@@ -64,7 +64,7 @@ describe('patch /update-user', () => {
     await userCollection.insertOne(fakeUser)
 
     const result = await request(app)
-      .patch('/api/v1/account/update-user')
+      .patch('/api/v1/account/update-me')
       .set('x-access-token', accessToken)
       .set('x-refresh-token', refreshToken)
       .send({ currency: 'invalid_currency' })
@@ -76,7 +76,7 @@ describe('patch /update-user', () => {
     await userCollection.insertOne(fakeUser)
 
     const result = await request(app)
-      .patch('/api/v1/account/update-user')
+      .patch('/api/v1/account/update-me')
       .set('x-access-token', accessToken)
       .set('x-refresh-token', refreshToken)
       .send({ email: 'invalid_email' })
@@ -88,7 +88,7 @@ describe('patch /update-user', () => {
     await userCollection.insertOne(fakeUser)
 
     const result = await request(app)
-      .patch('/api/v1/account/update-user')
+      .patch('/api/v1/account/update-me')
       .set('x-access-token', accessToken)
       .set('x-refresh-token', refreshToken)
       .send({ email: fakeUser.personal.email })
@@ -100,7 +100,7 @@ describe('patch /update-user', () => {
     await userCollection.insertOne(fakeUser)
 
     const result = await request(app)
-      .patch('/api/v1/account/update-user')
+      .patch('/api/v1/account/update-me')
       .set('x-access-token', accessToken)
       .set('x-refresh-token', refreshToken)
       .send()
@@ -112,7 +112,7 @@ describe('patch /update-user', () => {
     await userCollection.insertOne(fakeUser)
 
     const result = await request(app)
-      .patch('/api/v1/account/update-user')
+      .patch('/api/v1/account/update-me')
       .set('x-access-token', accessToken)
       .set('x-refresh-token', refreshToken)
       .send({ currency: 'BRL', email: 'example@mail.com', name: 'Example' })

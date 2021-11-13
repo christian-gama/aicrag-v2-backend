@@ -3,7 +3,7 @@ import {
   makeLogoutController,
   makeUpdateEmailByPinController,
   makeUpdatePasswordController,
-  makeUpdateUserController
+  makeUpdateMeController
 } from '@/main/factories/controllers/account'
 import { makeGetAllInvoicesController, makeGetInvoiceByMonthController } from '@/main/factories/controllers/invoice'
 import {
@@ -40,7 +40,7 @@ import { middlewareAdapter } from '../adapters/middleware-adapter'
 export const logoutController = controllerAdapter(makeLogoutController())
 export const updateEmailByPinController = controllerAdapter(makeUpdateEmailByPinController())
 export const updatePassword = controllerAdapter(makeUpdatePasswordController())
-export const updateUserController = controllerAdapter(makeUpdateUserController())
+export const updateMeController = controllerAdapter(makeUpdateMeController())
 
 // Invoice Routes
 export const getAllInvoicesController = controllerAdapter(makeGetAllInvoicesController())

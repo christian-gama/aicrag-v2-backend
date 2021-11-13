@@ -122,11 +122,11 @@ describe('updatePasswordController', () => {
 
   it('should call updateById with correct password', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
       'personal.password': 'hashed_value'
     })

@@ -104,11 +104,11 @@ describe('forgot Password', () => {
 
   it('should call updateById with correct email', async () => {
     const { fakeUser, request, sut, userRepositoryStub } = makeSut()
-    const updateUserSpy = jest.spyOn(userRepositoryStub, 'updateById')
+    const updateMeSpy = jest.spyOn(userRepositoryStub, 'updateById')
 
     await sut.handle(request)
 
-    expect(updateUserSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
+    expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'temporary.resetPasswordToken': 'any_token'
     })
   })
