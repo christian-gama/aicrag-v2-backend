@@ -3,11 +3,13 @@ import { InvalidQueryError } from '@/application/errors'
 
 export class ValidateFields implements IValidator {
   async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
-    if (!input.fields) return
+    const { fields } = input
 
-    if (typeof input.fields !== 'string') return new InvalidQueryError('fields')
+    if (!fields) return
 
-    const fieldsArr = input.fields.split(',')
+    if (typeof fields !== 'string') return new InvalidQueryError('fields')
+
+    const fieldsArr = fields.split(',')
 
     if (fieldsArr.length > 10) return new InvalidQueryError('Only 10 fields are allowed')
 

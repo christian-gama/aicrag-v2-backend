@@ -3,8 +3,11 @@ import { InvalidQueryError } from '@/application/errors'
 
 export class ValidateYear implements IValidator {
   async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
-    if (typeof input.year !== 'string') return new InvalidQueryError('year')
+    const { year } = input
 
-    if (!input.year.match(/^[0-9]{4}$/)) return new InvalidQueryError('year')
+    if (typeof year !== 'string') return new InvalidQueryError('year')
+
+    // Match format xxxx being x a number
+    if (!year.match(/^[0-9]{4}$/)) return new InvalidQueryError('year')
   }
 }

@@ -3,6 +3,8 @@ import { InvalidParamError } from '@/application/errors'
 
 export class ValidateType implements IValidator {
   validate (input: Record<string, any>): InvalidParamError | undefined {
-    if (input.type !== 'QA' && input.type !== 'TX') return new InvalidParamError('type')
+    const { type } = input
+
+    if (type !== 'QA' && type !== 'TX') return new InvalidParamError('type')
   }
 }

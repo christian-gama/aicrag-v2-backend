@@ -3,14 +3,16 @@ import { InvalidQueryError } from '@/application/errors'
 
 export class ValidatePage implements IValidator {
   async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
-    if (!input.page) return
+    const { page } = input
 
-    if (typeof input.page !== 'string') return new InvalidQueryError('page')
+    if (!page) return
 
-    if (!input.page.match(/^[0-9]*$/)) return new InvalidQueryError('page')
+    if (typeof page !== 'string') return new InvalidQueryError('page')
 
-    if (!Number.isSafeInteger(+input.page)) return new InvalidQueryError('page')
+    if (!page.match(/^[0-9]*$/)) return new InvalidQueryError('page')
 
-    if (+input.page <= 0) return new InvalidQueryError('page')
+    if (!Number.isSafeInteger(+page)) return new InvalidQueryError('page')
+
+    if (+page <= 0) return new InvalidQueryError('page')
   }
 }

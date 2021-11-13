@@ -3,7 +3,10 @@ import { InvalidParamError } from '../../errors'
 
 export class ValidateCurrency implements IValidator {
   validate (input: Record<string, any>): InvalidParamError | undefined {
-    if (input.currency !== 'BRL' && input.currency !== 'USD') {
+    const { currency } = input
+
+    const currencies = ['BRL', 'USD']
+    if (!currencies.includes(currency)) {
       return new InvalidParamError('currency')
     }
   }
