@@ -8,10 +8,10 @@ import {
   makeValidatePage,
   makeValidatePeriod,
   makeValidateSort,
-  makeValidateTaskId,
-  makeValidateType,
+  makeValidateTypeFilter,
   makeValidateYear
 } from '.'
+import { makeValidateTaskId } from '../task'
 import { makeRequiredFields } from '../validate-required-fields-factory'
 
 export const makeInvoiceByMonthValidator = (): IValidator => {
@@ -29,7 +29,7 @@ export const makeInvoiceByMonthValidator = (): IValidator => {
   validations.push(makeValidatePage())
   validations.push(makeValidateSort())
   validations.push(makeValidateTaskId())
-  validations.push(makeValidateType())
+  validations.push(makeValidateTypeFilter())
   validations.push(makeValidateYear())
   validations.push(makeValidateDurationRange())
   validations.push(makeValidatePeriod())

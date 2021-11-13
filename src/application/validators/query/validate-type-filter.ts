@@ -1,7 +1,7 @@
 import { IValidator } from '@/domain/validators'
 import { InvalidParamError } from '@/application/errors'
 
-export class ValidateType implements IValidator {
+export class ValidateTypeFilter implements IValidator {
   async validate (input: Record<string, any>): Promise<InvalidParamError | undefined> {
     const { type } = input
 

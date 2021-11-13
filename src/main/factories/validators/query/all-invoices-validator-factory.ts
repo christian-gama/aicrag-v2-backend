@@ -1,6 +1,6 @@
 import { IValidator } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/validation-composite'
-import { makeValidateFields, makeValidateLimit, makeValidatePage, makeValidateSort, makeValidateType } from '.'
+import { makeValidateFields, makeValidateLimit, makeValidatePage, makeValidateSort, makeValidateTypeFilter } from '.'
 import { makeRequiredFields } from '../validate-required-fields-factory'
 
 export const makeAllInvoicesValidator = (): IValidator => {
@@ -14,7 +14,7 @@ export const makeAllInvoicesValidator = (): IValidator => {
   // Must have this exact validation order
   validations.push(makeValidateFields())
   validations.push(makeValidateLimit())
-  validations.push(makeValidateType())
+  validations.push(makeValidateTypeFilter())
   validations.push(makeValidatePage())
   validations.push(makeValidateSort())
 

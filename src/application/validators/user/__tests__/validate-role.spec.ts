@@ -1,5 +1,5 @@
 import { InvalidParamError, InvalidTypeError } from '@/application/errors'
-import { ValidateRole } from '@/application/validators/query'
+import { ValidateRole } from '@/application/validators/user'
 import { HttpRequest } from '@/presentation/http/protocols'
 
 interface SutTypes {

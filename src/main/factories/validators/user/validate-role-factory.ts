@@ -1,4 +1,4 @@
-import { ValidateRole } from '@/application/validators/query'
+import { ValidateRole } from '@/application/validators/user'
 
 export const makeValidateRole = (): ValidateRole => {
   return new ValidateRole()

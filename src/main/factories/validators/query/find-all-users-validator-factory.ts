@@ -1,13 +1,7 @@
 import { IValidator } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/validation-composite'
-import {
-  makeValidateFields,
-  makeValidateLimit,
-  makeValidatePage,
-  makeValidateSort,
-  makeValidateQuery,
-  makeValidateRole
-} from '.'
+import { makeValidateFields, makeValidateLimit, makeValidatePage, makeValidateSort, makeValidateQuery } from '.'
+import { makeValidateRole } from '../user'
 
 export const makeFindAllUsersValidator = (): IValidator => {
   const validations: IValidator[] = []
