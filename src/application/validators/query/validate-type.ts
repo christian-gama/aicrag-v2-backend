@@ -5,7 +5,8 @@ export class ValidateType implements IValidator {
   async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
     const { type } = input
 
-    if (type !== 'QA' && type !== 'TX' && type !== 'both') {
+    const types = ['TX', 'QA', 'both']
+    if (!types.includes(type)) {
       return new InvalidQueryError('type')
     }
   }

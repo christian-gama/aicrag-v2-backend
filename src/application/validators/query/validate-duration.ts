@@ -5,7 +5,8 @@ export class ValidateDuration implements IValidator {
   async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
     const { duration, operator } = input
 
-    if (operator && operator !== 'gte' && operator !== 'lte' && operator !== 'eq') {
+    const operators = ['gte', 'lte', 'eq']
+    if (operator && !operators.includes(operator)) {
       return new InvalidQueryError('operator')
     }
 

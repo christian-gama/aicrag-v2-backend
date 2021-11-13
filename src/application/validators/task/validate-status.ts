@@ -5,7 +5,8 @@ export class ValidateStatus implements IValidator {
   validate (input: Record<string, any>): InvalidParamError | undefined {
     const { status } = input
 
-    if (status !== 'in_progress' && status !== 'completed') {
+    const statuses = ['completed', 'in_progress']
+    if (!statuses.includes(status)) {
       return new InvalidParamError('status')
     }
   }

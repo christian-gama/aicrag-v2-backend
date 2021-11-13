@@ -9,7 +9,8 @@ export class ValidateRole implements IValidator {
 
     if (typeof role !== 'string') return new InvalidQueryError('role')
 
-    if (role !== 'administrator' && role !== 'moderator' && role !== 'user' && role !== 'guest') {
+    const roles = ['administrator', 'moderator', 'user', 'guest']
+    if (!roles.includes(role)) {
       return new InvalidQueryError('role')
     }
   }
