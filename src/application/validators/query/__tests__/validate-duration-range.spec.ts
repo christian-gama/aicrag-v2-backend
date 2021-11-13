@@ -1,20 +1,20 @@
 import { InvalidQueryError } from '@/application/errors'
-import { ValidateDuration } from '@/application/validators/query'
+import { ValidateDurationRange } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
 interface SutTypes {
   request: HttpRequest
-  sut: ValidateDuration
+  sut: ValidateDurationRange
 }
 const makeSut = (): SutTypes => {
   const request: HttpRequest = { query: { duration: 30, operator: 'lte' } }
 
-  const sut = new ValidateDuration()
+  const sut = new ValidateDurationRange()
 
   return { request, sut }
 }
 
-describe('validateDuration', () => {
+describe('validateDurationRange', () => {
   it('should return InvalidQueryError if duration is invalid', async () => {
     const { request, sut } = makeSut()
     request.query.duration = 31

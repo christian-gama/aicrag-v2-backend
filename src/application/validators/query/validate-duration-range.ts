@@ -1,7 +1,7 @@
 import { IValidator } from '@/domain/validators'
 import { InvalidQueryError } from '@/application/errors'
 
-export class ValidateDuration implements IValidator {
+export class ValidateDurationRange implements IValidator {
   async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
     const { duration, operator } = input
 
