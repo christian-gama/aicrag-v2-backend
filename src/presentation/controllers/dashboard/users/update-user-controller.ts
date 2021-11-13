@@ -9,7 +9,8 @@ export class UpdateUserController implements IController {
     private readonly validateEmail: IValidator,
     private readonly validateHandicap: IValidator,
     private readonly validateName: IValidator,
-    private readonly validateRole: IValidator
+    private readonly validateRole: IValidator,
+    private readonly validateTokenVersion: IValidator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -49,6 +50,14 @@ export class UpdateUserController implements IController {
         return this.httpHelper.badRequest(error)
       }
     }
+
+    if (data.tokenVersion) {
+      const error = await this.validateTokenVersion.validate(data.tokenVersion)
+      if (error) {
+        return this.httpHelper.badRequest(error)
+      }
+    }
+
     return this.httpHelper.ok({})
   }
 }
