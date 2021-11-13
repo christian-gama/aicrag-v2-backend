@@ -9,15 +9,17 @@ interface SutTypes {
   sut: UpdateUserController
   validateEmailStub: IValidator
   validateNameStub: IValidator
+  validateRoleStub: IValidator
 }
 const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
   const validateEmailStub = makeValidatorStub()
   const validateNameStub = makeValidatorStub()
+  const validateRoleStub = makeValidatorStub()
 
-  const sut = new UpdateUserController(httpHelper, validateEmailStub, validateNameStub)
+  const sut = new UpdateUserController(httpHelper, validateEmailStub, validateNameStub, validateRoleStub)
 
-  return { httpHelper, sut, validateEmailStub, validateNameStub }
+  return { httpHelper, sut, validateEmailStub, validateNameStub, validateRoleStub }
 }
 
 describe('updateUserController', () => {
@@ -35,6 +37,15 @@ describe('updateUserController', () => {
     jest.spyOn(validateEmailStub, 'validate').mockReturnValueOnce(new Error())
 
     const result = await sut.handle({ body: { email: 'invalid_email' } })
+
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('should return an error if tries to update role and role is invalid', async () => {
+    const { httpHelper, sut, validateRoleStub } = makeSut()
+    jest.spyOn(validateRoleStub, 'validate').mockReturnValueOnce(new Error())
+
+    const result = await sut.handle({ body: { role: 'invalid_role' } })
 
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
