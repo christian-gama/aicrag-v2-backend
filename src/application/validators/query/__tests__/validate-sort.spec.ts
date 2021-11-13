@@ -1,4 +1,4 @@
-import { InvalidQueryError } from '@/application/errors'
+import { InvalidParamError } from '@/application/errors'
 import { ValidateSort } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,49 +15,49 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateSort', () => {
-  it('should return InvalidQueryError if sort is not a string', async () => {
+  it('should return InvalidParamError if sort is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.sort = ['a', 'b']
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('sort'))
+    expect(result).toStrictEqual(new InvalidParamError('sort'))
   })
 
-  it('should return InvalidQueryError if sort has more than 5 properties', async () => {
+  it('should return InvalidParamError if sort has more than 5 properties', async () => {
     const { request, sut } = makeSut()
     request.query.sort = 'a,b,c,d,e,f'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('Only 5 sort values are allowed'))
+    expect(result).toStrictEqual(new InvalidParamError('Only 5 sort values are allowed'))
   })
 
-  it('should return InvalidQueryError if contain duplicated sort values', async () => {
+  it('should return InvalidParamError if contain duplicated sort values', async () => {
     const { request, sut } = makeSut()
     request.query.sort = 'a,-a'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('sort'))
+    expect(result).toStrictEqual(new InvalidParamError('sort'))
   })
 
-  it('should return InvalidQueryError if sort has more than 24 characters', async () => {
+  it('should return InvalidParamError if sort has more than 24 characters', async () => {
     const { request, sut } = makeSut()
     request.query.sort = 'this_is_a_very_long_property'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('sort'))
+    expect(result).toStrictEqual(new InvalidParamError('sort'))
   })
 
-  it('should return InvalidQueryError if field is not a valid string', async () => {
+  it('should return InvalidParamError if field is not a valid string', async () => {
     const { request, sut } = makeSut()
     request.query.sort = 'th!s_i$_@_inv#lid_prop&'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('sort'))
+    expect(result).toStrictEqual(new InvalidParamError('sort'))
   })
 
   it('should return undefined if succeeds', async () => {

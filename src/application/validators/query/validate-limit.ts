@@ -1,20 +1,20 @@
 import { IValidator } from '@/domain/validators'
-import { InvalidQueryError } from '@/application/errors'
+import { InvalidParamError } from '@/application/errors'
 
 export class ValidateLimit implements IValidator {
-  async validate (input: Record<string, any>): Promise<InvalidQueryError | undefined> {
+  async validate (input: Record<string, any>): Promise<InvalidParamError | undefined> {
     const { limit } = input
 
     if (!limit) return
 
-    if (typeof limit !== 'string') return new InvalidQueryError('limit')
+    if (typeof limit !== 'string') return new InvalidParamError('limit')
 
-    if (!limit.match(/^[0-9]*$/)) return new InvalidQueryError('limit')
+    if (!limit.match(/^[0-9]*$/)) return new InvalidParamError('limit')
 
-    if (!Number.isSafeInteger(+limit)) return new InvalidQueryError('limit')
+    if (!Number.isSafeInteger(+limit)) return new InvalidParamError('limit')
 
-    if (+limit > 1000) return new InvalidQueryError('limit')
+    if (+limit > 1000) return new InvalidParamError('limit')
 
-    if (+limit <= 0) return new InvalidQueryError('limit')
+    if (+limit <= 0) return new InvalidParamError('limit')
   }
 }

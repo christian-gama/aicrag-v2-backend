@@ -1,8 +1,8 @@
-import { InvalidQueryError } from '@/application/errors'
+import { InvalidParamError } from '@/application/errors'
 import { QueryMethodsProtocol } from '@/infra/database/protocols/queries.model'
 
 export class MongoQueries implements QueryMethodsProtocol {
-  fields (query: Record<string, string>): Record<string, 0 | 1> | InvalidQueryError {
+  fields (query: Record<string, string>): Record<string, 0 | 1> | InvalidParamError {
     const fields = {}
 
     if (query.fields) {

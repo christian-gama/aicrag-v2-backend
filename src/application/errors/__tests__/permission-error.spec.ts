@@ -1,6 +1,6 @@
 import { PermissionError } from '@/application/errors'
 
-describe('invalidQueryError', () => {
+describe('permissionError', () => {
   it('should be an instance of Error', () => {
     const sut = new PermissionError()
 

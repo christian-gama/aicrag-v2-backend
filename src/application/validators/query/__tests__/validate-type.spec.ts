@@ -1,4 +1,4 @@
-import { InvalidQueryError } from '@/application/errors'
+import { InvalidParamError } from '@/application/errors'
 import { ValidateType } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,13 +15,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateType', () => {
-  it('should return InvalidQueryError if type is invalid', async () => {
+  it('should return InvalidParamError if type is invalid', async () => {
     const { request, sut } = makeSut()
     request.query.type = 'invalid_type'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('type'))
+    expect(result).toStrictEqual(new InvalidParamError('type'))
   })
 
   it('should return undefined if succeeds', async () => {

@@ -1,4 +1,4 @@
-import { InvalidQueryError } from '@/application/errors'
+import { InvalidParamError } from '@/application/errors'
 import { ValidatePage } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,49 +15,49 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validatePage', () => {
-  it('should return InvalidQueryError if page is not a string', async () => {
+  it('should return InvalidParamError if page is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.page = ['a', 'b']
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidParamError('page'))
   })
 
-  it('should return InvalidQueryError if page does not contain a number', async () => {
+  it('should return InvalidParamError if page does not contain a number', async () => {
     const { request, sut } = makeSut()
     request.query.page = 'abc'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidParamError('page'))
   })
 
-  it('should return InvalidQueryError if page is not an integer', async () => {
+  it('should return InvalidParamError if page is not an integer', async () => {
     const { request, sut } = makeSut()
     request.query.page = '1.2'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidParamError('page'))
   })
 
-  it('should return InvalidQueryError if page is not a safe integer', async () => {
+  it('should return InvalidParamError if page is not a safe integer', async () => {
     const { request, sut } = makeSut()
     request.query.page = '9007199254740992'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidParamError('page'))
   })
 
-  it('should return InvalidQueryError if page lesser or equal to 0', async () => {
+  it('should return InvalidParamError if page lesser or equal to 0', async () => {
     const { request, sut } = makeSut()
     request.query.page = '0'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('page'))
+    expect(result).toStrictEqual(new InvalidParamError('page'))
   })
 
   it('should return undefined if succeeds', async () => {

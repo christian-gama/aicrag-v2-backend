@@ -1,4 +1,4 @@
-import { InvalidQueryError } from '@/application/errors'
+import { InvalidParamError } from '@/application/errors'
 import { ValidateMonth } from '@/application/validators/query'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,31 +15,31 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateMonth', () => {
-  it('should return InvalidQueryError if month is not a string', async () => {
+  it('should return InvalidParamError if month is not a string', async () => {
     const { request, sut } = makeSut()
     request.query.month = ['a', 'b']
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('month'))
+    expect(result).toStrictEqual(new InvalidParamError('month'))
   })
 
-  it('should return InvalidQueryError if month contains more than 2 characters', async () => {
+  it('should return InvalidParamError if month contains more than 2 characters', async () => {
     const { request, sut } = makeSut()
     request.query.month = '123'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('month'))
+    expect(result).toStrictEqual(new InvalidParamError('month'))
   })
 
-  it('should return InvalidQueryError if month is not valid', async () => {
+  it('should return InvalidParamError if month is not valid', async () => {
     const { request, sut } = makeSut()
     request.query.month = '13'
 
     const result = await sut.validate(request.query)
 
-    expect(result).toStrictEqual(new InvalidQueryError('month'))
+    expect(result).toStrictEqual(new InvalidParamError('month'))
   })
 
   it('should return undefined if succeeds', async () => {
