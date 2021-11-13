@@ -8,5 +8,5 @@ export interface IValidator {
    * @param input Is the object to be validated.
    * @returns Return an Error if validation fails and return undefined if succeeds.
    */
-  validate: (input: Record<any, any>) => IValidatorReturn
+  validate: (input: Record<string, any>) => IValidatorReturn
 }
