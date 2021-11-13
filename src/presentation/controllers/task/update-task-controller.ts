@@ -1,6 +1,6 @@
 import { ITaskRepository } from '@/domain/repositories/task'
 import { IValidator } from '@/domain/validators'
-import { ConflictParamError, MustLoginError, TaskNotFoundError } from '@/application/errors'
+import { MustLoginError, TaskNotFoundError } from '@/application/errors'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller.model'
 
@@ -14,7 +14,8 @@ export class UpdateTaskController implements IController {
     private readonly validateStatus: IValidator,
     private readonly validateTaskId: IValidator,
     private readonly validateTaskParam: IValidator,
-    private readonly validateType: IValidator
+    private readonly validateType: IValidator,
+    private readonly validateUniqueTaskId: IValidator
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -79,9 +80,11 @@ export class UpdateTaskController implements IController {
     }
 
     if (data.taskId && data.taskId !== task.taskId) {
-      const error = await this.validateTaskId.validate(data)
-      if (error instanceof ConflictParamError) return this.httpHelper.conflict(error)
-      if (error instanceof Error) return this.httpHelper.badRequest(error)
+      let error = await this.validateTaskId.validate(data)
+      if (error) return this.httpHelper.badRequest(error)
+
+      error = await this.validateUniqueTaskId.validate(data)
+      if (error) return this.httpHelper.conflict(error)
 
       update.taskId = data.taskId
     }

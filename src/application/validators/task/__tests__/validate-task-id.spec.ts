@@ -1,9 +1,8 @@
 import { ITask, IUser } from '@/domain'
-import { ITaskRepository } from '@/domain/repositories'
-import { ConflictParamError, InvalidParamError, InvalidTypeError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateTaskId } from '@/application/validators/task'
 import { HttpRequest } from '@/presentation/http/protocols'
-import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub } from '@/tests/__mocks__'
+import { makeFakeTask, makeFakeUser } from '@/tests/__mocks__'
 import faker from 'faker'
 
 interface SutTypes {
@@ -11,7 +10,6 @@ interface SutTypes {
   fakeUser: IUser
   request: HttpRequest
   sut: ValidateTaskId
-  taskRepositoryStub: ITaskRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -20,11 +18,10 @@ const makeSut = (): SutTypes => {
   const request: HttpRequest = {
     body: { taskId: faker.random.alphaNumeric(100) }
   }
-  const taskRepositoryStub = makeTaskRepositoryStub(fakeTask)
 
-  const sut = new ValidateTaskId(taskRepositoryStub)
+  const sut = new ValidateTaskId()
 
-  return { fakeTask, fakeUser, request, sut, taskRepositoryStub }
+  return { fakeTask, fakeUser, request, sut }
 }
 
 describe('validateTaskId', () => {
@@ -44,32 +41,6 @@ describe('validateTaskId', () => {
     const result = await sut.validate(request.body)
 
     expect(result).toStrictEqual(new InvalidParamError('taskId'))
-  })
-
-  it('should return ConflictParamError if taskId already exists from a different task', async () => {
-    const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
-    jest.spyOn(taskRepositoryStub, 'findByTaskId').mockReturnValueOnce(Promise.resolve(makeFakeTask(makeFakeUser())))
-
-    request.body.user = fakeUser
-    request.body.task = fakeTask
-    request.body.taskId = faker.random.alphaNumeric(120)
-
-    const result = await sut.validate(request.body)
-
-    expect(result).toStrictEqual(new ConflictParamError('taskId'))
-  })
-
-  it('should return undefined if taskId already exists but from same task', async () => {
-    const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
-    jest.spyOn(taskRepositoryStub, 'findByTaskId').mockReturnValueOnce(Promise.resolve(fakeTask))
-
-    request.body.user = fakeUser
-    request.body.task = fakeTask
-    request.body.taskId = faker.random.alphaNumeric(120)
-
-    const result = await sut.validate(request.body)
-
-    expect(result).toBeUndefined()
   })
 
   it('should return undefined if succeeds', async () => {

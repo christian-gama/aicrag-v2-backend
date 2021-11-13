@@ -22,6 +22,7 @@ interface SutTypes {
   validateTaskIdStub: IValidator
   validateTaskParamStub: IValidator
   validateTypeStub: IValidator
+  validateUniqueTaskIdStub: IValidator
 }
 
 const makeSut = (): SutTypes => {
@@ -37,6 +38,7 @@ const makeSut = (): SutTypes => {
   const validateTaskIdStub = makeValidatorStub()
   const validateTaskParamStub = makeValidatorStub()
   const validateTypeStub = makeValidatorStub()
+  const validateUniqueTaskIdStub = makeValidatorStub()
 
   const sut = new UpdateTaskController(
     httpHelper,
@@ -47,7 +49,8 @@ const makeSut = (): SutTypes => {
     validateStatusStub,
     validateTaskIdStub,
     validateTaskParamStub,
-    validateTypeStub
+    validateTypeStub,
+    validateUniqueTaskIdStub
   )
 
   return {
@@ -63,7 +66,8 @@ const makeSut = (): SutTypes => {
     validateStatusStub,
     validateTaskIdStub,
     validateTaskParamStub,
-    validateTypeStub
+    validateTypeStub,
+    validateUniqueTaskIdStub
   }
 }
 

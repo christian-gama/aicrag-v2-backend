@@ -9,7 +9,8 @@ import {
   makeValidateDuration,
   makeValidateStatus,
   makeValidateTaskId,
-  makeValidateType
+  makeValidateType,
+  makeValidateUniqueTaskId
 } from '@/main/factories/validators/task'
 import { makeValidateUUID } from '../../validators/common'
 
@@ -23,6 +24,7 @@ export const makeUpdateTaskController = (): IController => {
   const validateTaskId = makeValidateTaskId()
   const validateUUID = makeValidateUUID()
   const validateType = makeValidateType()
+  const validateUniqueTaskId = makeValidateUniqueTaskId()
 
   const updateTaskController = new UpdateTaskController(
     httpHelper,
@@ -33,7 +35,8 @@ export const makeUpdateTaskController = (): IController => {
     validateStatus,
     validateTaskId,
     validateUUID,
-    validateType
+    validateType,
+    validateUniqueTaskId
   )
 
   return makeTryCatchDecorator(updateTaskController)
