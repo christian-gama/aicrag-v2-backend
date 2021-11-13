@@ -7,6 +7,7 @@ import { UpdateUserController } from '../'
 interface SutTypes {
   httpHelper: IHttpHelper
   sut: UpdateUserController
+  validateAccountActivatedStub: IValidator
   validateEmailStub: IValidator
   validateHandicapStub: IValidator
   validateNameStub: IValidator
@@ -14,6 +15,7 @@ interface SutTypes {
 }
 const makeSut = (): SutTypes => {
   const httpHelper = makeHttpHelper()
+  const validateAccountActivatedStub = makeValidatorStub()
   const validateEmailStub = makeValidatorStub()
   const validateHandicapStub = makeValidatorStub()
   const validateNameStub = makeValidatorStub()
@@ -21,13 +23,22 @@ const makeSut = (): SutTypes => {
 
   const sut = new UpdateUserController(
     httpHelper,
+    validateAccountActivatedStub,
     validateEmailStub,
     validateHandicapStub,
     validateNameStub,
     validateRoleStub
   )
 
-  return { httpHelper, sut, validateEmailStub, validateHandicapStub, validateNameStub, validateRoleStub }
+  return {
+    httpHelper,
+    sut,
+    validateAccountActivatedStub,
+    validateEmailStub,
+    validateHandicapStub,
+    validateNameStub,
+    validateRoleStub
+  }
 }
 
 describe('updateUserController', () => {
@@ -63,6 +74,15 @@ describe('updateUserController', () => {
     jest.spyOn(validateHandicapStub, 'validate').mockReturnValueOnce(new Error())
 
     const result = await sut.handle({ body: { handicap: 'invalid_handicap' } })
+
+    expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('should return an error if tries to update accountActivated and accountActivated is invalid', async () => {
+    const { httpHelper, sut, validateAccountActivatedStub } = makeSut()
+    jest.spyOn(validateAccountActivatedStub, 'validate').mockReturnValueOnce(new Error())
+
+    const result = await sut.handle({ body: { accountActivated: 'invalid_accountActivated' } })
 
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
   })
