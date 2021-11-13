@@ -22,7 +22,7 @@ const makeSut = (): SutTypes => {
 describe('validateEmailExists', () => {
   it('should return a UserCredentialError if email does not exists', async () => {
     const { sut, userRepositoryStub } = makeSut()
-    const data = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com' }
     jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
 
     const result = await sut.validate(data)
@@ -32,12 +32,21 @@ describe('validateEmailExists', () => {
 
   it('should call findByEmail with correct value', async () => {
     const { sut, userRepositoryStub } = makeSut()
-    const data = { email: 'invalid_email@email.com', password: 'any_password' }
+    const data = { email: 'invalid_email@email.com' }
     const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
 
     await sut.validate(data)
 
     expect(findUserByEmailSpy).toHaveBeenCalledWith(data.email)
+  })
+
+  it('should return undefined if succeeds', async () => {
+    const { sut } = makeSut()
+    const data = { email: 'valid_email@email.com' }
+
+    const result = await sut.validate(data)
+
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined if param is undefined', async () => {
