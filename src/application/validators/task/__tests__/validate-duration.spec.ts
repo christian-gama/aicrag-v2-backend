@@ -21,7 +21,7 @@ describe('validateDuration', () => {
 
     const result = sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidTypeError('duration'))
+    expect(result).toStrictEqual(new InvalidTypeError('duration', 'number', typeof request.body.duration))
   })
 
   it('should return InvalidParamError if type is TX and duration is longer than 30', () => {

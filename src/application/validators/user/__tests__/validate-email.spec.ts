@@ -29,7 +29,7 @@ describe('validateEmail', () => {
 
     const result = await sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidTypeError('email'))
+    expect(result).toStrictEqual(new InvalidTypeError('email', 'string', typeof request.body.email))
   })
 
   it('should return a new InvalidParamError if email is invalid', () => {

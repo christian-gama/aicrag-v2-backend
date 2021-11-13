@@ -21,7 +21,7 @@ describe('validateTaskParam', () => {
 
     const result = sut.validate(request.params)
 
-    expect(result).toStrictEqual(new InvalidTypeError('id'))
+    expect(result).toStrictEqual(new InvalidTypeError('id', 'string', typeof request.params.id))
   })
 
   it('should return InvalidParamError if there is no id', () => {

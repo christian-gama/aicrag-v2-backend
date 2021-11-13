@@ -6,16 +6,18 @@ export class ValidateTaskId implements IValidator {
   constructor (private readonly taskRepository: ITaskRepository) {}
 
   async validate (input: any): Promise<InvalidParamError | InvalidTypeError | undefined> {
-    if (input.taskId == null) return
+    const { taskId, task, user } = input
 
-    if (typeof input.taskId !== 'string') return new InvalidTypeError('taskId')
+    if (!taskId) return
 
-    if (input.taskId.length > 120) return new InvalidParamError('taskId')
+    if (typeof taskId !== 'string') return new InvalidTypeError('taskId', 'string', typeof taskId)
 
-    if (input.task && input.user) {
-      const task = await this.taskRepository.findByTaskId(input.taskId, input.user.personal.id)
+    if (taskId.length > 120) return new InvalidParamError('taskId')
 
-      if (task && task.id !== input.task.id) return new ConflictParamError('taskId')
+    if (task && user) {
+      const foundTask = await this.taskRepository.findByTaskId(taskId, user.personal.id)
+
+      if (foundTask && foundTask.id !== task.id) return new ConflictParamError('taskId')
     }
   }
 }

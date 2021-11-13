@@ -24,7 +24,7 @@ describe('validatePassword', () => {
 
     const result = sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidTypeError('password'))
+    expect(result).toStrictEqual(new InvalidTypeError('password', 'string', typeof request.body.password))
   })
 
   it('should return InvalidParamError if password is lesser than 6 characters', () => {

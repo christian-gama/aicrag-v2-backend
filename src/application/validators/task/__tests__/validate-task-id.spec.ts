@@ -34,7 +34,7 @@ describe('validateTaskId', () => {
 
     const result = await sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidTypeError('taskId'))
+    expect(result).toStrictEqual(new InvalidTypeError('taskId', 'string', typeof request.body.taskId))
   })
 
   it('should return InvalidParamError if taskId length is greater than 120', async () => {

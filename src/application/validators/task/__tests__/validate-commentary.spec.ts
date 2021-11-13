@@ -22,7 +22,7 @@ describe('validateCommentary', () => {
 
     const result = sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidTypeError('commentary'))
+    expect(result).toStrictEqual(new InvalidTypeError('commentary', 'string', typeof request.body.commentary))
   })
 
   it('should return InvalidParamError if commentary length is greater than 400', () => {

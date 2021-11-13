@@ -114,7 +114,7 @@ describe('loginController', () => {
   it('should call badRequest with the correct value if it is an InvalidTypeError', async () => {
     const { loginValidatorStub, httpHelper, request, sut } = makeSut()
     const badRequestSpy = jest.spyOn(httpHelper, 'badRequest')
-    const error = new InvalidTypeError('email')
+    const error = new InvalidTypeError('email', 'string', typeof request.body.email)
     jest.spyOn(loginValidatorStub, 'validate').mockReturnValueOnce(error)
 
     await sut.handle(request)

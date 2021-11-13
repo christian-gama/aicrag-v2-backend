@@ -6,11 +6,11 @@ export class ValidateActivationPin implements IValidator {
   constructor (private readonly userRepository: IUserRepository) {}
 
   async validate (
-    input: any
+    input: Record<string, any>
   ): Promise<AccountAlreadyActivatedError | PinIsExpiredError | InvalidPinError | InvalidTypeError | undefined> {
     const { email, activationPin } = input
 
-    if (typeof activationPin !== 'string') return new InvalidTypeError('activationPin')
+    if (typeof activationPin !== 'string') return new InvalidTypeError('activationPin', 'string', typeof activationPin)
 
     const user = await this.userRepository.findByEmail(email)
     if (!user) return new InvalidPinError()

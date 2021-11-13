@@ -41,7 +41,7 @@ describe('validateActivationCode', () => {
 
     const result = await sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidTypeError('activationPin'))
+    expect(result).toStrictEqual(new InvalidTypeError('activationPin', 'string', typeof request.body.activationPin))
   })
 
   it('should call findByEmail with correct email', async () => {

@@ -34,7 +34,7 @@ describe('validateEmailPin', () => {
 
     const result = await sut.validate(request.body)
 
-    expect(result).toStrictEqual(new InvalidTypeError('tempEmailPin'))
+    expect(result).toStrictEqual(new InvalidTypeError('tempEmailPin', 'string', typeof request.body.emailPin))
   })
 
   it('should return an InvalidPinError if email pin is not valid', async () => {

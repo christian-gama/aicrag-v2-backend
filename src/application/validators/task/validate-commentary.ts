@@ -4,10 +4,12 @@ import { InvalidTypeError } from '@/application/errors/invalid-type-error'
 
 export class ValidateCommentary implements IValidator {
   validate (input: any): InvalidParamError | InvalidTypeError | undefined {
-    if (input.commentary == null) return
+    const { commentary } = input
 
-    if (typeof input.commentary !== 'string') return new InvalidTypeError('commentary')
+    if (!commentary) return
 
-    if (input.commentary.length > 400) return new InvalidParamError('commentary')
+    if (typeof commentary !== 'string') return new InvalidTypeError('commentary', 'string', typeof commentary)
+
+    if (commentary.length > 400) return new InvalidParamError('commentary')
   }
 }
