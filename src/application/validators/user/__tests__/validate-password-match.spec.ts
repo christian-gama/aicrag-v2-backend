@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 import { IComparer } from '@/domain/cryptography'
 import { IUserRepository } from '@/domain/repositories'
-import { UserCredentialError } from '@/application/errors'
+import { InvalidTypeError, UserCredentialError } from '@/application/errors'
 import { ValidatePasswordMatch } from '@/application/validators/user'
 import { makeFakeUser, makeUserRepositoryStub, makeComparerStub } from '@/tests/__mocks__'
 
@@ -23,6 +23,24 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validatePasswordMatch', () => {
+  it('should return InvalidTypeError if email has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { email: 123, password: 'any_password' }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('email', 'string', typeof data.email))
+  })
+
+  it('should return InvalidTypeError if password has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { email: 'any_email', password: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('password', 'string', typeof data.password))
+  })
+
   it('should return a UserCredentialError if email does not exists', async () => {
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com', password: 'any_password' }

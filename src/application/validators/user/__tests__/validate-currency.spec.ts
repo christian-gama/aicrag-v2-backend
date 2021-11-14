@@ -1,5 +1,5 @@
 import { IValidator } from '@/domain/validators'
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateCurrency } from '@/application/validators/user'
 
 interface SutTypes {
@@ -13,6 +13,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateCurrency', () => {
+  it('should return InvalidTypeError if param has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { currency: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('currency', 'string', typeof data.currency))
+  })
+
   it('should return InvalidParamError if currency is different from USD or BRL', () => {
     const { sut } = makeSut()
     const data = { currency: 'invalid_currency' }

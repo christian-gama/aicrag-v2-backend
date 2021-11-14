@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
-import { ConflictParamError } from '@/application/errors'
+import { ConflictParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateEmailAlreadyExists } from '@/application/validators/user'
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
@@ -20,6 +20,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateEmailAlreadyExists', () => {
+  it('should return InvalidTypeError if param has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { email: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('email', 'string', typeof data.email))
+  })
+
   it('should return a ConflictParamError if email exists', async () => {
     const { sut } = makeSut()
     const data = { email: 'invalid_email@email.com' }

@@ -1,6 +1,6 @@
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-import { ConflictParamError } from '../../errors'
+import { ConflictParamError, InvalidTypeError } from '../../errors'
 
 export class ValidateEmailAlreadyExists implements IValidator {
   constructor (private readonly userRepository: IUserRepository) {}
@@ -9,6 +9,10 @@ export class ValidateEmailAlreadyExists implements IValidator {
     const { email } = input
 
     if (!email) return
+
+    if (typeof email !== 'string') {
+      return new InvalidTypeError('email', 'string', typeof email)
+    }
 
     const user = await this.userRepository.findByEmail(email)
     if (user) return new ConflictParamError('email')

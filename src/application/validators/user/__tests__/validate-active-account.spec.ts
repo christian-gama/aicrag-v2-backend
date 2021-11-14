@@ -1,7 +1,7 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-import { InactiveAccountError } from '@/application/errors'
+import { InactiveAccountError, InvalidTypeError } from '@/application/errors'
 import { ValidateActiveAccount } from '@/application/validators/user'
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
@@ -22,7 +22,16 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateActiveAccount', () => {
-  it('should return a InactiveAccountError if user account is inactive', async () => {
+  it('should return InvalidTypeError if param has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { email: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('email', 'string', typeof data.email))
+  })
+
+  it('should return InactiveAccountError if user account is inactive', async () => {
     const { fakeUser, sut } = makeSut()
     const data = { email: 'invalid_email@email.com' }
     fakeUser.settings.accountActivated = false

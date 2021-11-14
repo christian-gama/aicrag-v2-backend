@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateDate } from '@/application/validators/task'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,6 +15,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateDate', () => {
+  it('should return InvalidTypeError if date has an invalid type', () => {
+    const { sut } = makeSut()
+    const data = { date: 123 }
+
+    const result = sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('date', 'string', typeof data.date))
+  })
+
   it('should return InvalidParamError if is an invalid date', () => {
     const { request, sut } = makeSut()
     request.body.date = 'invalid_date'

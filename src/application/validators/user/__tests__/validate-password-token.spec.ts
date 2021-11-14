@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
-import { MissingParamError } from '@/application/errors'
+import { InvalidTypeError, MissingParamError } from '@/application/errors'
 import { ValidatePasswordToken } from '@/application/validators/user'
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
@@ -21,6 +21,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validatePasswordToken', () => {
+  it('should return InvalidTypeError if email has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { email: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('email', 'string', typeof data.email))
+  })
+
   it('should return a MissingParamError if email does not exists', async () => {
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com' }

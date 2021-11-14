@@ -1,5 +1,5 @@
 import { IValidator } from '@/domain/validators'
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidatePasswordComparison } from '@/application/validators/user'
 import faker from 'faker'
 
@@ -14,6 +14,26 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validatePasswordComparison', () => {
+  it('should return InvalidTypeError if password has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { password: 123, passwordConfirmation: 'any_password' }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('password', 'string', typeof data.password))
+  })
+
+  it('should return InvalidTypeError if passwordConfirmation has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { password: 'any_password', passwordConfirmation: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(
+      new InvalidTypeError('passwordConfirmation', 'string', typeof data.passwordConfirmation)
+    )
+  })
+
   it('should return InvalidParamError if passwords are not equal', () => {
     const { sut } = makeSut()
     const data = {

@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
-import { UserCredentialError } from '@/application/errors'
+import { InvalidTypeError, UserCredentialError } from '@/application/errors'
 import { ValidateEmailExists } from '@/application/validators/user'
 import { makeFakeUser, makeUserRepositoryStub } from '@/tests/__mocks__'
 
@@ -20,6 +20,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateEmailExists', () => {
+  it('should return InvalidTypeError if param has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { email: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('email', 'string', typeof data.email))
+  })
+
   it('should return a UserCredentialError if email does not exists', async () => {
     const { sut, userRepositoryStub } = makeSut()
     const data = { email: 'invalid_email@email.com' }

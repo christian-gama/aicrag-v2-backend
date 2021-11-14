@@ -1,6 +1,6 @@
 import { ITask, IUser } from '@/domain'
 import { ITaskRepository } from '@/domain/repositories/task'
-import { ConflictParamError } from '@/application/errors'
+import { ConflictParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateUniqueTaskId } from '@/application/validators/task'
 import { HttpRequest } from '@/presentation/http/protocols'
 import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub } from '@/tests/__mocks__'
@@ -24,6 +24,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateUniqueTaskId', () => {
+  it('should return InvalidTypeError if taskId has an invalid taskId', async () => {
+    const { sut } = makeSut()
+    const data = { taskId: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('taskId', 'string', typeof data.taskId))
+  })
+
   it('should return ConflictParamError if taskId is not unique', async () => {
     const { fakeTask, request, sut } = makeSut()
     request.body.taskId = fakeTask.taskId

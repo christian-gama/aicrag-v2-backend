@@ -1,6 +1,6 @@
 import { IUser } from '@/domain'
 import { IComparer } from '@/domain/cryptography'
-import { UserCredentialError } from '@/application/errors'
+import { InvalidTypeError, UserCredentialError } from '@/application/errors'
 import { ValidateCurrentPassword } from '@/application/validators/user'
 import { HttpRequest } from '@/presentation/http/protocols'
 import { makeFakeUser, makeComparerStub } from '@/tests/__mocks__'
@@ -23,6 +23,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateCurrentPassword', () => {
+  it('should return InvalidTypeError if param has an invalid type', async () => {
+    const { sut } = makeSut()
+    const data = { currentPassword: 123 }
+
+    const result = await sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('currentPassword', 'string', typeof data.currentPassword))
+  })
+
   it('should return a UserCredentialError if there is no user', async () => {
     const { request, sut } = makeSut()
     request.body.user = undefined

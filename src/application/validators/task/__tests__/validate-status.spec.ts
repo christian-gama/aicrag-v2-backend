@@ -1,4 +1,4 @@
-import { InvalidParamError } from '@/application/errors'
+import { InvalidParamError, InvalidTypeError } from '@/application/errors'
 import { ValidateStatus } from '@/application/validators/task'
 import { HttpRequest } from '@/presentation/http/protocols'
 
@@ -15,6 +15,15 @@ const makeSut = (): SutTypes => {
 }
 
 describe('validateStatus', () => {
+  it('should return InvalidTypeError if status has an invalid type', () => {
+    const { sut } = makeSut()
+    const data = { status: 123 }
+
+    const result = sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidTypeError('status', 'string', typeof data.status))
+  })
+
   it('should return InvalidParamError if is an invalid status', () => {
     const { request, sut } = makeSut()
     request.body.status = 'invalid_status'
