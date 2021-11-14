@@ -1,4 +1,5 @@
 export * from '../validation-composite'
+export * from './validate-account-status'
 export * from './validate-activation-pin'
 export * from './validate-active-account'
 export * from './validate-currency'
