@@ -1,6 +1,8 @@
-import { InvalidParamError, InvalidTypeError } from '@/application/errors'
+import { IUserRole } from '@/domain'
+import { InvalidParamError, InvalidTypeError, PermissionError } from '@/application/errors'
 import { ValidateRole } from '@/application/validators/user'
 import { HttpRequest } from '@/presentation/http/protocols'
+import { makeFakeUser } from '@/tests/__mocks__'
 
 interface SutTypes {
   request: HttpRequest
@@ -31,6 +33,16 @@ describe('validateRole', () => {
     const result = await sut.validate(request.query)
 
     expect(result).toStrictEqual(new InvalidParamError('role'))
+  })
+
+  it('should return PermissionError if user is administrator and tries to update his role', async () => {
+    const { request, sut } = makeSut()
+    request.query.user = makeFakeUser({ settings: { role: IUserRole.administrator } })
+    request.query.role = 'user'
+
+    const result = await sut.validate(request.query)
+
+    expect(result).toStrictEqual(new PermissionError())
   })
 
   it('should return undefined if succeeds', async () => {

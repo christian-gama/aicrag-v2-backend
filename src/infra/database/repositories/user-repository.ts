@@ -14,7 +14,6 @@ export class UserRepository implements IUserRepository {
     const _name = getName(name)
     const _id = getId(id)
     const _role: Record<string, any> = getRole(role)
-    console.log(query)
     const result = await userCollection.aggregate<IUser>(
       [
         {

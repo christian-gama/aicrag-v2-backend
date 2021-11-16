@@ -1,4 +1,4 @@
-import { IUser } from '@/domain'
+import { IUser, IUserRole } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError, UserNotFoundError } from '@/application/errors'
@@ -19,11 +19,16 @@ export class UpdateUserController implements IController {
     const userToUpdate = await this.userRepository.findById(httpRequest.body.id)
     if (!userToUpdate) return this.httpHelper.notFound(new UserNotFoundError())
 
-    const data = httpRequest.body
+    const data = { user: userToUpdate, ...httpRequest.body }
 
     const error = await this.updateUserValidator.validate(data)
     if (error) {
-      return this.httpHelper.badRequest(error)
+      switch (error.name) {
+        case 'PermissionError':
+          return this.httpHelper.forbidden(error)
+        default:
+          return this.httpHelper.badRequest(error)
+      }
     }
 
     const update = {}
@@ -45,7 +50,7 @@ export class UpdateUserController implements IController {
     }
 
     if (data.role) {
-      update['settings.role'] = data.role
+      update['settings.role'] = IUserRole[data.role]
     }
 
     if (data.tokenVersion) {
@@ -65,19 +70,9 @@ export class UpdateUserController implements IController {
 
       const updatedUser = await this.userRepository.updateById<IUser>(userToUpdate.personal.id, update)
 
-      const userWithoutPassword = this.hidePassword(updatedUser)
-
-      result = this.httpHelper.ok({ user: userWithoutPassword })
+      result = this.httpHelper.ok({ user: updatedUser })
 
       return result
     }
-  }
-
-  private hidePassword (updatedUser: IUser): Partial<IUser> {
-    const result = { ...(updatedUser as Omit<IUser, 'personal'> & { personal: Partial<IUser['personal']> }) }
-
-    delete result.personal.password
-
-    return result as Partial<IUser>
   }
 }

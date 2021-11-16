@@ -1,7 +1,7 @@
-import { IUser } from '@/domain'
+import { IUser, IUserRole } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-import { MustLoginError } from '@/application/errors'
+import { MustLoginError, PermissionError } from '@/application/errors'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeUser, makeUserRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
@@ -65,12 +65,12 @@ describe('updateUserController', () => {
   })
 
   it('should call updateUserValidator with correct data', async () => {
-    const { request, sut, updateUserValidatorStub } = makeSut()
+    const { fakeUser, request, sut, updateUserValidatorStub } = makeSut()
     const validateSpy = jest.spyOn(updateUserValidatorStub, 'validate')
 
     await sut.handle(request)
 
-    expect(validateSpy).toHaveBeenCalledWith(request.body)
+    expect(validateSpy).toHaveBeenCalledWith({ user: fakeUser, ...request.body })
   })
 
   it('should return badRequest if updateUserValidator fails', async () => {
@@ -80,6 +80,15 @@ describe('updateUserController', () => {
     const result = await sut.handle(request)
 
     expect(result).toStrictEqual(httpHelper.badRequest(new Error()))
+  })
+
+  it('should return badRequest if updateUserValidator fails with a PermissionError', async () => {
+    const { httpHelper, request, sut, updateUserValidatorStub } = makeSut()
+    jest.spyOn(updateUserValidatorStub, 'validate').mockReturnValueOnce(new PermissionError())
+
+    const result = await sut.handle(request)
+
+    expect(result).toStrictEqual(httpHelper.forbidden(new PermissionError()))
   })
 
   it('should call updateById with correct values if only accountStatus is changed', async () => {
@@ -163,7 +172,7 @@ describe('updateUserController', () => {
 
     expect(updateMeSpy).toHaveBeenCalledWith(fakeUser.personal.id, {
       'logs.updatedAt': new Date(Date.now()),
-      'settings.role': request.body.role
+      'settings.role': IUserRole[request.body.role]
     })
   })
 
@@ -196,7 +205,7 @@ describe('updateUserController', () => {
       'personal.name': request.body.name,
       'settings.activateAccount': request.body.accountStatus === 'active',
       'settings.handicap': request.body.handicap,
-      'settings.role': request.body.role,
+      'settings.role': IUserRole[request.body.role],
       tokenVersion: request.body.tokenVersion
     })
   })
@@ -219,8 +228,6 @@ describe('updateUserController', () => {
     const { fakeUser, httpHelper, request, sut } = makeSut()
 
     const result = await sut.handle(request)
-
-    delete (fakeUser.personal as any).password
 
     expect(result).toStrictEqual(httpHelper.ok({ user: fakeUser }))
   })
