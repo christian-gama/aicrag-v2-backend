@@ -1,0 +1,23 @@
+type Mutation {
+  updateUser(input: UpdateUserQuery!): UpdateUser! @protected @administrator
+}
+
+input UpdateUserQuery {
+  accountStatus: String
+  email: String
+  handicap: Float
+  id: UUID!
+  name: String
+  role: String
+  tokenVersion: Int
+}
+
+type UpdateUserHasChanges {
+  user: FullUser!
+}
+
+type UpdateUserNoChanges {
+  message: String!
+}
+
+union UpdateUser = UpdateUserNoChanges | UpdateUserHasChanges

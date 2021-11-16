@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+
 import { Resolvers } from '@/main/graphql/generated'
 
 export const resolver: Resolvers = {

@@ -84,15 +84,8 @@ input FindAllUsersQuery {
   limit: String
   name: String
   page: String
-  role: FindAllUsersRole
+  role: String
   sort: String
-}
-
-enum FindAllUsersRole {
-  administrator
-  guest
-  moderator
-  user
 }
 
 type FindOneTask {
@@ -218,6 +211,7 @@ type Mutation {
   updateMe(input: UpdateMeInput!): UpdateMe!
   updatePassword(input: UpdatePasswordInput!): UpdatePassword!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
+  updateUser(input: UpdateUserQuery!): UpdateUser!
 }
 
 type PublicUser {
@@ -385,6 +379,26 @@ input UpdateTaskParam {
   id: UUID!
 }
 
+union UpdateUser = UpdateUserHasChanges | UpdateUserNoChanges
+
+type UpdateUserHasChanges {
+  user: FullUser!
+}
+
+type UpdateUserNoChanges {
+  message: String!
+}
+
+input UpdateUserQuery {
+  accountStatus: String
+  email: String
+  handicap: Float
+  id: UUID!
+  name: String
+  role: String
+  tokenVersion: Int
+}
+
 enum UserCurrency {
   BRL
   USD
@@ -404,18 +418,11 @@ type UserPersonal {
   password: String!
 }
 
-enum UserRole {
-  administrator
-  guest
-  moderator
-  user
-}
-
 type UserSettings {
   accountActivated: Boolean!
   currency: UserCurrency!
   handicap: Int!
-  role: UserRole!
+  role: Int!
 }
 
 type UserTemporary {

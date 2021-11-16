@@ -9,7 +9,7 @@ input FindAllUsersQuery {
   name: String
   page: String
   sort: String
-  role: FindAllUsersRole
+  role: String
 }
 
 type FindAllUsers {
@@ -19,9 +19,3 @@ type FindAllUsers {
   page: String!
 }
 
-enum FindAllUsersRole {
-  administrator
-  moderator
-  user
-  guest
-}

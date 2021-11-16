@@ -14,7 +14,7 @@ export const findAllUsersQuery = (query: {
       ${query.limit ? `limit: "${query.limit}",` : ''}
       ${query.name ? `name: "${query.name}",` : ''}
       ${query.page ? `page: "${query.page}",` : ''}
-      ${query.role ? `role: ${query.role},` : ''}
+      ${query.role ? `role: "${query.role}",` : ''}
       ${query.sort ? `sort: "${query.sort}",` : ''}
       }) {
         count

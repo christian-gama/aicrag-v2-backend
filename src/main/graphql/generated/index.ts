@@ -94,16 +94,9 @@ export type FindAllUsersQuery = {
   limit?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['String']>;
-  role?: Maybe<FindAllUsersRole>;
+  role?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
 };
-
-export enum FindAllUsersRole {
-  Administrator = 'administrator',
-  Guest = 'guest',
-  Moderator = 'moderator',
-  User = 'user'
-}
 
 export type FindOneTask = {
   __typename?: 'FindOneTask';
@@ -235,6 +228,7 @@ export type Mutation = {
   updateMe: UpdateMe;
   updatePassword: UpdatePassword;
   updateTask: UpdateTask;
+  updateUser: UpdateUser;
 };
 
 
@@ -306,6 +300,11 @@ export type MutationUpdatePasswordArgs = {
 export type MutationUpdateTaskArgs = {
   input: UpdateTaskInput;
   param: UpdateTaskParam;
+};
+
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserQuery;
 };
 
 export type PublicUser = {
@@ -519,6 +518,28 @@ export type UpdateTaskParam = {
   id: Scalars['UUID'];
 };
 
+export type UpdateUser = UpdateUserHasChanges | UpdateUserNoChanges;
+
+export type UpdateUserHasChanges = {
+  __typename?: 'UpdateUserHasChanges';
+  user: FullUser;
+};
+
+export type UpdateUserNoChanges = {
+  __typename?: 'UpdateUserNoChanges';
+  message: Scalars['String'];
+};
+
+export type UpdateUserQuery = {
+  accountStatus?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  handicap?: Maybe<Scalars['Float']>;
+  id: Scalars['UUID'];
+  name?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
+  tokenVersion?: Maybe<Scalars['Int']>;
+};
+
 export enum UserCurrency {
   Brl = 'BRL',
   Usd = 'USD'
@@ -540,19 +561,12 @@ export type UserPersonal = {
   password: Scalars['String'];
 };
 
-export enum UserRole {
-  Administrator = 'administrator',
-  Guest = 'guest',
-  Moderator = 'moderator',
-  User = 'user'
-}
-
 export type UserSettings = {
   __typename?: 'UserSettings';
   accountActivated: Scalars['Boolean'];
   currency: UserCurrency;
   handicap: Scalars['Int'];
-  role: UserRole;
+  role: Scalars['Int'];
 };
 
 export type UserTemporary = {
@@ -658,7 +672,6 @@ export type ResolversTypes = {
   FindAllTasksQuery: FindAllTasksQuery;
   FindAllUsers: ResolverTypeWrapper<FindAllUsers>;
   FindAllUsersQuery: FindAllUsersQuery;
-  FindAllUsersRole: FindAllUsersRole;
   FindOneTask: ResolverTypeWrapper<FindOneTask>;
   FindOneTaskParam: FindOneTaskParam;
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -715,10 +728,13 @@ export type ResolversTypes = {
   UpdateTaskInput: UpdateTaskInput;
   UpdateTaskNoChanges: ResolverTypeWrapper<UpdateTaskNoChanges>;
   UpdateTaskParam: UpdateTaskParam;
+  UpdateUser: ResolversTypes['UpdateUserHasChanges'] | ResolversTypes['UpdateUserNoChanges'];
+  UpdateUserHasChanges: ResolverTypeWrapper<UpdateUserHasChanges>;
+  UpdateUserNoChanges: ResolverTypeWrapper<UpdateUserNoChanges>;
+  UpdateUserQuery: UpdateUserQuery;
   UserCurrency: UserCurrency;
   UserLogs: ResolverTypeWrapper<UserLogs>;
   UserPersonal: ResolverTypeWrapper<UserPersonal>;
-  UserRole: UserRole;
   UserSettings: ResolverTypeWrapper<UserSettings>;
   UserTemporary: ResolverTypeWrapper<UserTemporary>;
   VerifyResetPasswordToken: ResolverTypeWrapper<VerifyResetPasswordToken>;
@@ -792,6 +808,10 @@ export type ResolversParentTypes = {
   UpdateTaskInput: UpdateTaskInput;
   UpdateTaskNoChanges: UpdateTaskNoChanges;
   UpdateTaskParam: UpdateTaskParam;
+  UpdateUser: ResolversParentTypes['UpdateUserHasChanges'] | ResolversParentTypes['UpdateUserNoChanges'];
+  UpdateUserHasChanges: UpdateUserHasChanges;
+  UpdateUserNoChanges: UpdateUserNoChanges;
+  UpdateUserQuery: UpdateUserQuery;
   UserLogs: UserLogs;
   UserPersonal: UserPersonal;
   UserSettings: UserSettings;
@@ -956,6 +976,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateMe?: Resolver<ResolversTypes['UpdateMe'], ParentType, ContextType, RequireFields<MutationUpdateMeArgs, 'input'>>;
   updatePassword?: Resolver<ResolversTypes['UpdatePassword'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
+  updateUser?: Resolver<ResolversTypes['UpdateUser'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
@@ -1083,6 +1104,20 @@ export type UpdateTaskNoChangesResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UpdateUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUser'] = ResolversParentTypes['UpdateUser']> = {
+  __resolveType: TypeResolveFn<'UpdateUserHasChanges' | 'UpdateUserNoChanges', ParentType, ContextType>;
+};
+
+export type UpdateUserHasChangesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserHasChanges'] = ResolversParentTypes['UpdateUserHasChanges']> = {
+  user?: Resolver<ResolversTypes['FullUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdateUserNoChangesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserNoChanges'] = ResolversParentTypes['UpdateUserNoChanges']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserLogsResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserLogs'] = ResolversParentTypes['UserLogs']> = {
   createdAt?: Resolver<ResolversTypes['DateString'], ParentType, ContextType>;
   lastLoginAt?: Resolver<Maybe<ResolversTypes['DateString']>, ParentType, ContextType>;
@@ -1103,7 +1138,7 @@ export type UserSettingsResolvers<ContextType = any, ParentType extends Resolver
   accountActivated?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   currency?: Resolver<ResolversTypes['UserCurrency'], ParentType, ContextType>;
   handicap?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['UserRole'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1164,6 +1199,9 @@ export type Resolvers<ContextType = any> = {
   UpdateTask?: UpdateTaskResolvers<ContextType>;
   UpdateTaskHasChanges?: UpdateTaskHasChangesResolvers<ContextType>;
   UpdateTaskNoChanges?: UpdateTaskNoChangesResolvers<ContextType>;
+  UpdateUser?: UpdateUserResolvers<ContextType>;
+  UpdateUserHasChanges?: UpdateUserHasChangesResolvers<ContextType>;
+  UpdateUserNoChanges?: UpdateUserNoChangesResolvers<ContextType>;
   UserLogs?: UserLogsResolvers<ContextType>;
   UserPersonal?: UserPersonalResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;
