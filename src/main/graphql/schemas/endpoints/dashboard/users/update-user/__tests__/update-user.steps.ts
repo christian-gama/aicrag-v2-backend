@@ -49,7 +49,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I try to update a user', async () => {
-      const query = updateUserMutation({ id: randomUUID() })
+      const query = updateUserMutation({ id: randomUUID() }, {})
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -78,7 +78,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I try to update a user', async () => {
-      const query = updateUserMutation({ id: fakeUserToUpdate.personal.id })
+      const query = updateUserMutation({ id: fakeUserToUpdate.personal.id }, {})
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -108,10 +108,12 @@ defineFeature(feature, (test) => {
     })
 
     when('I try to update my perimssion to a lower permission', async () => {
-      const query = updateUserMutation({
-        id: fakeUser.personal.id,
-        role: 'moderator'
-      })
+      const query = updateUserMutation(
+        { id: fakeUser.personal.id },
+        {
+          role: 'moderator'
+        }
+      )
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -145,10 +147,12 @@ defineFeature(feature, (test) => {
     })
 
     when('I try to update a user', async () => {
-      const query = updateUserMutation({
-        id: fakeUserToUpdate.personal.id,
-        role: 'moderator'
-      })
+      const query = updateUserMutation(
+        { id: fakeUserToUpdate.personal.id },
+        {
+          role: 'moderator'
+        }
+      )
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)

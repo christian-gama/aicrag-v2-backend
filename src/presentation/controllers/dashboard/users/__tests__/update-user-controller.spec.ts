@@ -29,6 +29,9 @@ const makeSut = (): SutTypes => {
       role: 'moderator',
       tokenVersion: 2
     },
+    params: {
+      id: fakeUser.personal.id
+    },
     user: fakeUser
   }
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
@@ -70,7 +73,7 @@ describe('updateUserController', () => {
 
     await sut.handle(request)
 
-    expect(validateSpy).toHaveBeenCalledWith({ user: fakeUser, ...request.body })
+    expect(validateSpy).toHaveBeenCalledWith({ user: fakeUser, ...request.body, ...request.params })
   })
 
   it('should return badRequest if updateUserValidator fails', async () => {

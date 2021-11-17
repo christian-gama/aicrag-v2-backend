@@ -1,15 +1,18 @@
 type Mutation {
-  updateUser(input: UpdateUserQuery!): UpdateUser! @protected @administrator
+  updateUser(param: UpdateUserParam!, input: UpdateUserInput!): UpdateUser! @protected @administrator
 }
 
-input UpdateUserQuery {
+input UpdateUserInput {
   accountStatus: String
   email: String
   handicap: Float
-  id: UUID!
   name: String
   role: String
   tokenVersion: Int
+}
+
+input UpdateUserParam {
+  id: UUID!
 }
 
 type UpdateUserHasChanges {

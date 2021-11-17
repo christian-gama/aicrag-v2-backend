@@ -1,18 +1,20 @@
-export const updateUserMutation = (input: {
-  accountStatus?: string
-  email?: string
-  handicap?: number
-  id: string
-  name?: string
-  role?: string
-  tokenVersion?: number
-}): string => `
+export const updateUserMutation = (
+  param: { id: string },
+  input: {
+    accountStatus?: string
+    email?: string
+    handicap?: number
+
+    name?: string
+    role?: string
+    tokenVersion?: number
+  }
+): string => `
   mutation {
-    updateUser(input: {
+    updateUser(param: { id: "${param.id}" }, input: {
       ${input.accountStatus ? `accountStatus: "${input.accountStatus}",` : ''}
       ${input.email ? `email: "${input.email}",` : ''}
       ${input.handicap ? `handicap: ${input.handicap},` : ''}
-      ${input.id ? `id: "${input.id}",` : ''}
       ${input.name ? `name: "${input.name}",` : ''}
       ${input.role ? `role: "${input.role}",` : ''}
       ${input.tokenVersion ? `tokenVersion: ${input.tokenVersion},` : ''}

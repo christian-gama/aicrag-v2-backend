@@ -211,7 +211,7 @@ type Mutation {
   updateMe(input: UpdateMeInput!): UpdateMe!
   updatePassword(input: UpdatePasswordInput!): UpdatePassword!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
-  updateUser(input: UpdateUserQuery!): UpdateUser!
+  updateUser(input: UpdateUserInput!, param: UpdateUserParam!): UpdateUser!
 }
 
 type PublicUser {
@@ -385,18 +385,21 @@ type UpdateUserHasChanges {
   user: FullUser!
 }
 
+input UpdateUserInput {
+  accountStatus: String
+  email: String
+  handicap: Float
+  name: String
+  role: String
+  tokenVersion: Int
+}
+
 type UpdateUserNoChanges {
   message: String!
 }
 
-input UpdateUserQuery {
-  accountStatus: String
-  email: String
-  handicap: Float
+input UpdateUserParam {
   id: UUID!
-  name: String
-  role: String
-  tokenVersion: Int
 }
 
 enum UserCurrency {

@@ -304,7 +304,8 @@ export type MutationUpdateTaskArgs = {
 
 
 export type MutationUpdateUserArgs = {
-  input: UpdateUserQuery;
+  input: UpdateUserInput;
+  param: UpdateUserParam;
 };
 
 export type PublicUser = {
@@ -525,19 +526,22 @@ export type UpdateUserHasChanges = {
   user: FullUser;
 };
 
+export type UpdateUserInput = {
+  accountStatus?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  handicap?: Maybe<Scalars['Float']>;
+  name?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
+  tokenVersion?: Maybe<Scalars['Int']>;
+};
+
 export type UpdateUserNoChanges = {
   __typename?: 'UpdateUserNoChanges';
   message: Scalars['String'];
 };
 
-export type UpdateUserQuery = {
-  accountStatus?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  handicap?: Maybe<Scalars['Float']>;
+export type UpdateUserParam = {
   id: Scalars['UUID'];
-  name?: Maybe<Scalars['String']>;
-  role?: Maybe<Scalars['String']>;
-  tokenVersion?: Maybe<Scalars['Int']>;
 };
 
 export enum UserCurrency {
@@ -730,8 +734,9 @@ export type ResolversTypes = {
   UpdateTaskParam: UpdateTaskParam;
   UpdateUser: ResolversTypes['UpdateUserHasChanges'] | ResolversTypes['UpdateUserNoChanges'];
   UpdateUserHasChanges: ResolverTypeWrapper<UpdateUserHasChanges>;
+  UpdateUserInput: UpdateUserInput;
   UpdateUserNoChanges: ResolverTypeWrapper<UpdateUserNoChanges>;
-  UpdateUserQuery: UpdateUserQuery;
+  UpdateUserParam: UpdateUserParam;
   UserCurrency: UserCurrency;
   UserLogs: ResolverTypeWrapper<UserLogs>;
   UserPersonal: ResolverTypeWrapper<UserPersonal>;
@@ -810,8 +815,9 @@ export type ResolversParentTypes = {
   UpdateTaskParam: UpdateTaskParam;
   UpdateUser: ResolversParentTypes['UpdateUserHasChanges'] | ResolversParentTypes['UpdateUserNoChanges'];
   UpdateUserHasChanges: UpdateUserHasChanges;
+  UpdateUserInput: UpdateUserInput;
   UpdateUserNoChanges: UpdateUserNoChanges;
-  UpdateUserQuery: UpdateUserQuery;
+  UpdateUserParam: UpdateUserParam;
   UserLogs: UserLogs;
   UserPersonal: UserPersonal;
   UserSettings: UserSettings;
@@ -976,7 +982,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateMe?: Resolver<ResolversTypes['UpdateMe'], ParentType, ContextType, RequireFields<MutationUpdateMeArgs, 'input'>>;
   updatePassword?: Resolver<ResolversTypes['UpdatePassword'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
-  updateUser?: Resolver<ResolversTypes['UpdateUser'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
+  updateUser?: Resolver<ResolversTypes['UpdateUser'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input' | 'param'>>;
 };
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
