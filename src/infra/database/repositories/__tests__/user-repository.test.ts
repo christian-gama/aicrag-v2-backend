@@ -42,6 +42,25 @@ describe('userRepository', () => {
     userCollection = client.collection('users')
   })
 
+  describe('delete', () => {
+    it('should return true if delete a task', async () => {
+      const { fakeUser, sut } = makeSut()
+      await userCollection.insertOne(fakeUser)
+
+      const deleted = await sut.deleteById(fakeUser.personal.id)
+
+      expect(deleted).toBeTruthy()
+    })
+
+    it('should return false if does not delete a task', async () => {
+      const { sut } = makeSut()
+
+      const deleted = await sut.deleteById('invalid_id')
+
+      expect(deleted).toBeFalsy()
+    })
+  })
+
   describe('findAll', () => {
     it('should return a result if finds one or more users', async () => {
       const { sut } = makeSut()
