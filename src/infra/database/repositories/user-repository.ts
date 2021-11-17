@@ -7,6 +7,14 @@ import { IQuery, IQueryResult } from '../protocols/queries.model'
 export class UserRepository implements IUserRepository {
   constructor (private readonly createUserRepository: ICreateUserRepository, private readonly database: IDatabase) {}
 
+  async deleteById (userId: string): Promise<boolean> {
+    const userCollection = this.database.collection('users')
+
+    const deleted = await userCollection.deleteOne({ 'personal.id': userId })
+
+    return deleted
+  }
+
   async findAll<T extends IUser>(query: IFindAllQuery): Promise<IQueryResult<T>> {
     const userCollection = this.database.collection('users')
     const { email, name, id, role } = query

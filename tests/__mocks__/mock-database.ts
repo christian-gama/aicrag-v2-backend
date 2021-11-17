@@ -89,6 +89,10 @@ export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
 
 export const makeUserRepositoryStub = (fakeUser: IUser): IUserRepository => {
   class UserRepositoryStub implements IUserRepository {
+    async deleteById (userId: string): Promise<boolean> {
+      return true
+    }
+
     async findAll<T extends IUser>(query: IQuery): Promise<IQueryResult<T>> {
       return (await Promise.resolve({
         count: 1,

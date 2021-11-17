@@ -5,7 +5,14 @@ import { IQuery, IQueryResult } from '@/infra/database/protocols/queries.model'
 /**
  * @description Generic user database repository.
  */
-export interface IUserRepository extends IFindAll, IFindAllByID, IFindUserByEmail, IFindUserById, ISave, IUpdateById {}
+export interface IUserRepository
+  extends IDeleteById,
+  IFindAll,
+  IFindAllByID,
+  IFindUserByEmail,
+  IFindUserById,
+  ISave,
+  IUpdateById {}
 
 export interface IFindAllQuery extends IQuery {
   email?: string
@@ -13,6 +20,17 @@ export interface IFindAllQuery extends IQuery {
   name?: string
   role?: string
 }
+
+export interface IDeleteById {
+  /**
+   * @async Asynchronous method.
+   * @description Receive an user id and tries to delete it.
+   * @param userId User id that will be used as reference to delete the user.
+   * @returns Return true if deleted, false otherwise.
+   */
+  deleteById: (userId: string) => Promise<Boolean>
+}
+
 export interface IFindAll {
   /**
    * @async Asynchronous method.
