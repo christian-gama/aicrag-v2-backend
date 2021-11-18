@@ -19,7 +19,14 @@ export class DeleteUserController implements IController {
     const data = { user, ...httpRequest.params }
 
     const error = await this.deleteUserValidator.validate(data)
-    if (error) return this.httpHelper.badRequest(error)
+    if (error) {
+      switch (error.name) {
+        case 'ForbiddenError':
+          return this.httpHelper.forbidden(error)
+        default:
+          return this.httpHelper.badRequest(error)
+      }
+    }
 
     const deleted = await this.userRepository.deleteById(data.id)
     if (!deleted) return this.httpHelper.badRequest(new UserNotFoundError())
