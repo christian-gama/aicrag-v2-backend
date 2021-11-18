@@ -61,6 +61,22 @@ export class TaskRepository implements ITaskRepository {
     return result as ITask
   }
 
+  async superFindById (id: string): Promise<ITask | null> {
+    const taskCollection = this.database.collection('tasks')
+
+    const result = await taskCollection.findOne<ITask>({ id })
+
+    return result
+  }
+
+  async superUpdateById<T extends ITask | null>(id: string, update: ITaskDbFilter): Promise<T> {
+    const taskCollection = this.database.collection('tasks')
+
+    const result = await taskCollection.updateOne<ITask>({ id }, update)
+
+    return result as T
+  }
+
   async updateById<T extends ITask | null>(id: string, userId: string, update: ITaskDbFilter): Promise<T> {
     const taskCollection = this.database.collection('tasks')
 

@@ -9,7 +9,9 @@ export interface ITaskRepository
   IFindTaskById,
   IFindTaskByTaskId,
   ISaveTask,
-  IUpdateTask {}
+  ISuperFindTaskById,
+  ISuperUpdateById,
+  IUpdateById {}
 
 export interface IDeleteManyTask {
   /**
@@ -74,11 +76,33 @@ export interface ISaveTask {
   save: (taskData: ITaskData) => Promise<ITask>
 }
 
-export interface IUpdateTask {
+export interface ISuperFindTaskById {
+  /**
+   * @async Asynchronous method.
+   * @description Method used by administrator. Receive an id and a user id and tries to find a task that belongs to that user.
+   * @param id Unique id from the task that will be searched for.
+   * @returns Return a task if finds it or null if does not.
+   */
+  superFindById: (id: string) => Promise<ITask | null>
+}
+
+export interface ISuperUpdateById {
+  /**
+   * @async Asynchronous method.
+   * @description Method used by administrator. Receive a task and then update it based on its id.
+   * @param id Unique Id from the task that will be updated on database.
+   * @param update Properties that will be updated.
+   * @returns Return the updated task or null.
+   */
+  superUpdateById: <T extends ITask | null>(id: string, update: ITaskDbFilter) => Promise<T>
+}
+
+export interface IUpdateById {
   /**
    * @async Asynchronous method.
    * @description Receive a task and then update it based on its id.
    * @param id Unique Id from the task that will be updated on database.
+   * @param userId Unique user id that belongs to the task.
    * @param update Properties that will be updated.
    * @returns Return the updated task or null.
    */
