@@ -50,6 +50,14 @@ input DeleteTaskParam {
   id: UUID!
 }
 
+type DeleteUser {
+  message: String!
+}
+
+input DeleteUserParam {
+  id: UUID!
+}
+
 type DetailedInvoice {
   date: GetAllInvoicesDate!
   tasks: Int!
@@ -198,6 +206,7 @@ type Mutation {
   activateAccount(input: ActivateAccountInput!): ActivateAccount
   createTask(input: CreateTaskInput!): CreateTask!
   deleteTask(param: FindOneTaskParam!): DeleteTask!
+  deleteUser(param: DeleteUserParam!): DeleteUser!
   empty: String
   forgotPassword(input: ForgotPasswordInput!): ForgotPassword!
   login(input: LoginInput!): Login

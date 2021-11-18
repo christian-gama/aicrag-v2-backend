@@ -1,0 +1,11 @@
+type Mutation {
+  deleteUser(param: DeleteUserParam!): DeleteUser! @protected @administrator
+}
+
+input DeleteUserParam {
+  id: UUID!
+}
+
+type DeleteUser {
+  message: String!
+}

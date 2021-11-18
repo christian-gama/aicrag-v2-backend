@@ -59,6 +59,15 @@ export type DeleteTaskParam = {
   id: Scalars['UUID'];
 };
 
+export type DeleteUser = {
+  __typename?: 'DeleteUser';
+  message: Scalars['String'];
+};
+
+export type DeleteUserParam = {
+  id: Scalars['UUID'];
+};
+
 export type DetailedInvoice = {
   __typename?: 'DetailedInvoice';
   date: GetAllInvoicesDate;
@@ -215,6 +224,7 @@ export type Mutation = {
   activateAccount?: Maybe<ActivateAccount>;
   createTask: CreateTask;
   deleteTask: DeleteTask;
+  deleteUser: DeleteUser;
   empty?: Maybe<Scalars['String']>;
   forgotPassword: ForgotPassword;
   login?: Maybe<Login>;
@@ -244,6 +254,11 @@ export type MutationCreateTaskArgs = {
 
 export type MutationDeleteTaskArgs = {
   param: FindOneTaskParam;
+};
+
+
+export type MutationDeleteUserArgs = {
+  param: DeleteUserParam;
 };
 
 
@@ -670,6 +685,8 @@ export type ResolversTypes = {
   DateString: ResolverTypeWrapper<Scalars['DateString']>;
   DeleteTask: ResolverTypeWrapper<DeleteTask>;
   DeleteTaskParam: DeleteTaskParam;
+  DeleteUser: ResolverTypeWrapper<DeleteUser>;
+  DeleteUserParam: DeleteUserParam;
   DetailedInvoice: ResolverTypeWrapper<DetailedInvoice>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   FindAllTasks: ResolverTypeWrapper<FindAllTasks>;
@@ -757,6 +774,8 @@ export type ResolversParentTypes = {
   DateString: Scalars['DateString'];
   DeleteTask: DeleteTask;
   DeleteTaskParam: DeleteTaskParam;
+  DeleteUser: DeleteUser;
+  DeleteUserParam: DeleteUserParam;
   DetailedInvoice: DetailedInvoice;
   EmailAddress: Scalars['EmailAddress'];
   FindAllTasks: FindAllTasks;
@@ -878,6 +897,11 @@ export type DeleteTaskResolvers<ContextType = any, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DeleteUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteUser'] = ResolversParentTypes['DeleteUser']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type DetailedInvoiceResolvers<ContextType = any, ParentType extends ResolversParentTypes['DetailedInvoice'] = ResolversParentTypes['DetailedInvoice']> = {
   date?: Resolver<ResolversTypes['GetAllInvoicesDate'], ParentType, ContextType>;
   tasks?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -969,6 +993,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   activateAccount?: Resolver<Maybe<ResolversTypes['ActivateAccount']>, ParentType, ContextType, RequireFields<MutationActivateAccountArgs, 'input'>>;
   createTask?: Resolver<ResolversTypes['CreateTask'], ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'input'>>;
   deleteTask?: Resolver<ResolversTypes['DeleteTask'], ParentType, ContextType, RequireFields<MutationDeleteTaskArgs, 'param'>>;
+  deleteUser?: Resolver<ResolversTypes['DeleteUser'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'param'>>;
   empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   forgotPassword?: Resolver<ResolversTypes['ForgotPassword'], ParentType, ContextType, RequireFields<MutationForgotPasswordArgs, 'input'>>;
   login?: Resolver<Maybe<ResolversTypes['Login']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
@@ -1169,6 +1194,7 @@ export type Resolvers<ContextType = any> = {
   CreateTask?: CreateTaskResolvers<ContextType>;
   DateString?: GraphQLScalarType;
   DeleteTask?: DeleteTaskResolvers<ContextType>;
+  DeleteUser?: DeleteUserResolvers<ContextType>;
   DetailedInvoice?: DetailedInvoiceResolvers<ContextType>;
   EmailAddress?: GraphQLScalarType;
   FindAllTasks?: FindAllTasksResolvers<ContextType>;
