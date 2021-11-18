@@ -221,6 +221,7 @@ type Mutation {
   updatePassword(input: UpdatePasswordInput!): UpdatePassword!
   updateTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
   updateUser(input: UpdateUserInput!, param: UpdateUserParam!): UpdateUser!
+  updateUserTask(input: UpdateTaskInput!, param: UpdateTaskParam!): UpdateTask!
 }
 
 type PublicUser {

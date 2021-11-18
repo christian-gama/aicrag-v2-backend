@@ -239,6 +239,7 @@ export type Mutation = {
   updatePassword: UpdatePassword;
   updateTask: UpdateTask;
   updateUser: UpdateUser;
+  updateUserTask: UpdateTask;
 };
 
 
@@ -321,6 +322,12 @@ export type MutationUpdateTaskArgs = {
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
   param: UpdateUserParam;
+};
+
+
+export type MutationUpdateUserTaskArgs = {
+  input: UpdateTaskInput;
+  param: UpdateTaskParam;
 };
 
 export type PublicUser = {
@@ -1008,6 +1015,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updatePassword?: Resolver<ResolversTypes['UpdatePassword'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'input'>>;
   updateTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input' | 'param'>>;
   updateUser?: Resolver<ResolversTypes['UpdateUser'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input' | 'param'>>;
+  updateUserTask?: Resolver<ResolversTypes['UpdateTask'], ParentType, ContextType, RequireFields<MutationUpdateUserTaskArgs, 'input' | 'param'>>;
 };
 
 export type PublicUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUser'] = ResolversParentTypes['PublicUser']> = {
