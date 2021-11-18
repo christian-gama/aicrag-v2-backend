@@ -54,6 +54,10 @@ export const makeInvoiceRepositoryStub = (fakeTask: ITask): IInvoiceRepository =
 
 export const makeTaskRepositoryStub = (fakeTask: ITask): ITaskRepository => {
   class TaskRepositoryStub implements ITaskRepository {
+    async deleteManyByUserId (userId: string): Promise<number> {
+      return await Promise.resolve(1)
+    }
+
     async deleteById (id: string, userId: string): Promise<boolean> {
       return await Promise.resolve(true)
     }

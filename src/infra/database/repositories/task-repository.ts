@@ -8,6 +8,14 @@ import { ITaskDbFilter } from '../protocols/update-task-options.model'
 export class TaskRepository implements ITaskRepository {
   constructor (private readonly createTaskRepository: ICreateTaskRepository, private readonly database: IDatabase) {}
 
+  async deleteManyByUserId (userId: string): Promise<number> {
+    const taskCollection = this.database.collection('tasks')
+
+    const deletedCount = await taskCollection.deleteMany({ user: userId })
+
+    return deletedCount
+  }
+
   async deleteById (id: string, userId: string): Promise<boolean> {
     const taskCollection = this.database.collection('tasks')
 

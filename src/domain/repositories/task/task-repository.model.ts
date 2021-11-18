@@ -4,11 +4,22 @@ import { ITaskDbFilter } from '@/infra/database/protocols/update-task-options.mo
 
 export interface ITaskRepository
   extends IDeleteTask,
+  IDeleteManyTask,
   IFindAllTasks,
   IFindTaskById,
   IFindTaskByTaskId,
   ISaveTask,
   IUpdateTask {}
+
+export interface IDeleteManyTask {
+  /**
+   * @async Asynchronous method.
+   * @description Receive a user id and tries to find all tasks that belongs to that user.
+   * @param userId The user id which belongs to the tasks
+   * @returns Return the amount of tasks that were deleted.
+   */
+  deleteManyByUserId: (userId: string) => Promise<number>
+}
 
 export interface IDeleteTask {
   /**

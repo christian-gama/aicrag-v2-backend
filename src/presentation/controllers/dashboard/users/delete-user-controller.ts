@@ -1,4 +1,4 @@
-import { IUserRepository } from '@/domain/repositories'
+import { ITaskRepository, IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError, UserNotFoundError } from '@/application/errors'
 import { HttpRequest, HttpResponse, IHttpHelper } from '@/presentation/http/protocols'
@@ -8,6 +8,7 @@ export class DeleteUserController implements IController {
   constructor (
     private readonly deleteUserValidator: IValidator,
     private readonly httpHelper: IHttpHelper,
+    private readonly taskRepository: ITaskRepository,
     private readonly userRepository: IUserRepository
   ) {}
 
@@ -22,6 +23,8 @@ export class DeleteUserController implements IController {
 
     const deleted = await this.userRepository.deleteById(data.id)
     if (!deleted) return this.httpHelper.badRequest(new UserNotFoundError())
+
+    await this.taskRepository.deleteManyByUserId(data.id)
 
     const result = this.httpHelper.deleted()
 
