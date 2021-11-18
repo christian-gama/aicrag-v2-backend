@@ -57,7 +57,7 @@ describe('deleteUserController', () => {
   })
 
   it('should return badRequest if validation returns an error', async () => {
-    const { httpHelper, request, sut, deleteUserValidatorStub } = makeSut()
+    const { deleteUserValidatorStub, httpHelper, request, sut } = makeSut()
     jest.spyOn(deleteUserValidatorStub, 'validate').mockReturnValueOnce(Promise.resolve(new Error()))
 
     const result = await sut.handle(request)
@@ -75,12 +75,12 @@ describe('deleteUserController', () => {
   })
 
   it('should call validate with correct data', async () => {
-    const { request, sut, deleteUserValidatorStub } = makeSut()
+    const { deleteUserValidatorStub, fakeUser, request, sut } = makeSut()
     const validateSpy = jest.spyOn(deleteUserValidatorStub, 'validate')
 
     await sut.handle(request)
 
-    expect(validateSpy).toHaveBeenCalledWith(request.params)
+    expect(validateSpy).toHaveBeenCalledWith({ user: fakeUser, ...request.params })
   })
 
   it('should call delete with correct data', async () => {
