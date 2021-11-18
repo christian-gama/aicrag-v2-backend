@@ -17,7 +17,7 @@ export class UpdateUserController implements IController {
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
     const userToUpdate = await this.userRepository.findById(httpRequest.params.id)
-    if (!userToUpdate) return this.httpHelper.notFound(new UserNotFoundError())
+    if (!userToUpdate) return this.httpHelper.badRequest(new UserNotFoundError())
 
     const data = { user: userToUpdate, ...httpRequest.body, ...httpRequest.params }
 

@@ -1,7 +1,7 @@
 import { IUser, IUserRole } from '@/domain'
 import { IUserRepository } from '@/domain/repositories'
 import { IValidator } from '@/domain/validators'
-import { MustLoginError, PermissionError } from '@/application/errors'
+import { MustLoginError, PermissionError, UserNotFoundError } from '@/application/errors'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeUser, makeUserRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
@@ -74,6 +74,15 @@ describe('updateUserController', () => {
     await sut.handle(request)
 
     expect(validateSpy).toHaveBeenCalledWith({ user: fakeUser, ...request.body, ...request.params })
+  })
+
+  it('should return badRequest if does not find a user with id', async () => {
+    const { httpHelper, request, sut, userRepositoryStub } = makeSut()
+    jest.spyOn(userRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
+
+    const result = await sut.handle(request)
+
+    expect(result).toStrictEqual(httpHelper.badRequest(new UserNotFoundError()))
   })
 
   it('should return badRequest if updateUserValidator fails', async () => {
