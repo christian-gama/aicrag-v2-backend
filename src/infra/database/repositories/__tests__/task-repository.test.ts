@@ -163,6 +163,24 @@ describe('taskRepository', () => {
     })
   })
 
+  describe('superFindById', () => {
+    it('should return a task if finds it', async () => {
+      const { sut } = makeSut()
+
+      const found = await sut.superFindById(task.id)
+
+      expect(found).toStrictEqual(task)
+    })
+
+    it('should return null if does not find a task', async () => {
+      const { sut } = makeSut()
+
+      const found = await sut.superFindById('invalid_id')
+
+      expect(found).toBeNull()
+    })
+  })
+
   describe('findByTaskId', () => {
     it('should return a task if finds a task by taskId', async () => {
       const { sut } = makeSut()
@@ -214,6 +232,44 @@ describe('taskRepository', () => {
       const { fakeTask, sut } = makeSut()
 
       const updatedTask = await sut.updateById(fakeTask.id, fakeTask.user, { commentary: 'changed_commentary' })
+
+      expect(updatedTask).toBeNull()
+    })
+  })
+
+  describe('superUpdateById', () => {
+    it('should return a task if superUpdateById finds a task', async () => {
+      const { sut } = makeSut()
+
+      const updatedTask = await sut.superUpdateById(task.id, { taskId: 'changed_task_id' })
+
+      expect(updatedTask).toHaveProperty('_id')
+    })
+
+    it('should return a task with updated values', async () => {
+      const { sut } = makeSut()
+
+      const updatedTask = await sut.superUpdateById(task.id, { taskId: 'changed_task_id' })
+
+      expect(updatedTask?.taskId).toBe('changed_task_id')
+    })
+
+    it('should return a task if pass multiple update properties', async () => {
+      const { sut } = makeSut()
+
+      const updatedTask = await sut.superUpdateById(task.id, {
+        commentary: 'changed_commentary',
+        taskId: 'changed_task_id'
+      })
+
+      expect(updatedTask?.commentary).toBe('changed_commentary')
+      expect(updatedTask?.taskId).toBe('changed_task_id')
+    })
+
+    it('should return null if does not superUpdateById finds a user', async () => {
+      const { fakeTask, sut } = makeSut()
+
+      const updatedTask = await sut.superUpdateById(fakeTask.id, { commentary: 'changed_commentary' })
 
       expect(updatedTask).toBeNull()
     })
