@@ -16,7 +16,7 @@ export class DeleteUserController implements IController {
     const user = httpRequest.user
     if (!user) return this.httpHelper.unauthorized(new MustLoginError())
 
-    const data = httpRequest.params
+    const data = { user, ...httpRequest.params }
 
     const error = await this.deleteUserValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)

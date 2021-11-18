@@ -1,6 +1,6 @@
 import { IValidator } from '@/domain/validators'
 import { ValidationComposite } from '@/application/validators/user'
-import { makeRequiredFields } from '.'
+import { makeRequiredFields, makeValidateDeletePermission } from '.'
 import { makeValidateUUID } from '../common'
 
 export const makeDeleteUserValidator = (): IValidator => {
@@ -12,6 +12,7 @@ export const makeDeleteUserValidator = (): IValidator => {
   }
 
   validations.push(makeValidateUUID())
+  validations.push(makeValidateDeletePermission())
 
   return new ValidationComposite(validations)
 }
