@@ -1,11 +1,18 @@
 import { IUser } from '@/domain'
+import { ITaskRepository } from '@/domain/repositories'
 import { IUserRepository } from '@/domain/repositories/user'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError, UserNotFoundError } from '@/application/errors'
 import { DeleteUserController } from '@/presentation/controllers/dashboard/users'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { makeHttpHelper } from '@/main/factories/helpers'
-import { makeFakeUser, makeUserRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
+import {
+  makeFakeTask,
+  makeFakeUser,
+  makeTaskRepositoryStub,
+  makeUserRepositoryStub,
+  makeValidatorStub
+} from '@/tests/__mocks__'
 
 interface SutTypes {
   deleteUserValidatorStub: IValidator
@@ -13,17 +20,20 @@ interface SutTypes {
   httpHelper: IHttpHelper
   request: HttpRequest
   sut: DeleteUserController
+  taskRepositoryStub: ITaskRepository
   userRepositoryStub: IUserRepository
 }
 
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
+  const fakeTask = makeFakeTask(fakeUser)
   const httpHelper = makeHttpHelper()
   const request: HttpRequest = { params: { id: 'valid_id' }, user: fakeUser }
+  const taskRepositoryStub = makeTaskRepositoryStub(fakeTask)
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
   const deleteUserValidatorStub = makeValidatorStub()
 
-  const sut = new DeleteUserController(deleteUserValidatorStub, httpHelper, userRepositoryStub)
+  const sut = new DeleteUserController(deleteUserValidatorStub, httpHelper, taskRepositoryStub, userRepositoryStub)
 
   return {
     deleteUserValidatorStub,
@@ -31,6 +41,7 @@ const makeSut = (): SutTypes => {
     httpHelper,
     request,
     sut,
+    taskRepositoryStub,
     userRepositoryStub
   }
 }
@@ -79,6 +90,15 @@ describe('deleteUserController', () => {
     await sut.handle(request)
 
     expect(deleteTaskSpy).toHaveBeenCalledWith(request.params.id)
+  })
+
+  it('should call deleteManyByUserId if succeeds', async () => {
+    const { request, sut, taskRepositoryStub } = makeSut()
+    const deleteManyByUserIdSpy = jest.spyOn(taskRepositoryStub, 'deleteManyByUserId')
+
+    await sut.handle(request)
+
+    expect(deleteManyByUserIdSpy).toHaveBeenCalledWith(request.params.id)
   })
 
   it('should return deleted if succeeds', async () => {

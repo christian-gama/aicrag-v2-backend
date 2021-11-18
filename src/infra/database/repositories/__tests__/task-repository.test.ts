@@ -57,7 +57,25 @@ describe('taskRepository', () => {
     await taskCollection.insertOne(task)
   })
 
-  describe('delete', () => {
+  describe('deleteManyByUserId', () => {
+    it('should return a count greater than 0 if delete one or more task', async () => {
+      const { sut } = makeSut()
+
+      const result = await sut.deleteManyByUserId(task.user)
+
+      expect(result).toBeGreaterThan(0)
+    })
+
+    it('should return a count equal to 0 if does not delete a task', async () => {
+      const { sut } = makeSut()
+
+      const result = await sut.deleteManyByUserId('invalid_id')
+
+      expect(result).toBe(0)
+    })
+  })
+
+  describe('deleteById', () => {
     it('should return true if delete a task', async () => {
       const { sut } = makeSut()
 
