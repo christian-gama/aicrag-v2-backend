@@ -79,6 +79,23 @@ input FindAllTasksQuery {
   sort: String
 }
 
+type FindAllUserTasks {
+  count: Int!
+  displaying: Int!
+  documents: [Task!]!
+  page: String!
+}
+
+input FindAllUserTasksParam {
+  userId: UUID!
+}
+
+input FindAllUserTasksQuery {
+  limit: String
+  page: String
+  sort: String
+}
+
 type FindAllUsers {
   count: Int!
   displaying: Int!
@@ -242,6 +259,7 @@ type PublicUserSettings {
 type Query {
   empty: String
   findAllTasks(query: FindAllTasksQuery!): FindAllTasks!
+  findAllUserTasks(param: FindAllUserTasksParam!, query: FindAllUserTasksQuery!): FindAllUserTasks!
   findAllUsers(query: FindAllUsersQuery!): FindAllUsers!
   findOneTask(param: FindOneTaskParam!): FindOneTask!
   getAllInvoices(query: GetAllInvoicesQuery!): GetAllInvoices!

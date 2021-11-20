@@ -1,0 +1,22 @@
+type Query {
+  findAllUserTasks(param: FindAllUserTasksParam!, query: FindAllUserTasksQuery!): FindAllUserTasks!
+    @protected
+    @administrator
+}
+
+type FindAllUserTasks {
+  count: Int!
+  displaying: Int!
+  documents: [Task!]!
+  page: String!
+}
+
+input FindAllUserTasksQuery {
+  limit: String
+  page: String
+  sort: String
+}
+
+input FindAllUserTasksParam {
+  userId: UUID!
+}
