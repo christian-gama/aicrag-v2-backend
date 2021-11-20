@@ -205,8 +205,6 @@ defineFeature(feature, (test) => {
     )
 
     then('I should have updated my task', () => {
-      console.log(result.body)
-
       expect(result.body.data.updateUserTask.task.id).toBe(fakeTask.id)
     })
 

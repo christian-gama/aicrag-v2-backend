@@ -51,7 +51,6 @@ describe('ValidateDeletePermission', () => {
     const { fakeUser, sut, userRepositoryStub } = makeSut()
     const data = { id: 'any_id', user: fakeUser }
     const fakeUser2 = makeFakeUser({ settings: { role: 4 } })
-    console.log(fakeUser2)
 
     jest.spyOn(userRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(fakeUser2))
 
