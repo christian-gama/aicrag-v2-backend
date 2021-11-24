@@ -89,7 +89,7 @@
   "dependencies": {
     "@graphql-tools/merge": "^8.2.0",
     "@graphql-tools/schema": "^8.3.0",
-    "@graphql-tools/utils": "^8.4.0",
+    "@graphql-tools/utils": "^8.5.2",
     "apollo-server-express": "^3.4.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
