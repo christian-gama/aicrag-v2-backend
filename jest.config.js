@@ -19,7 +19,15 @@ module.exports = {
   maxWorkers: 1,
   testMatch: ['**/*.steps.ts', '**/*.test.ts', '**/*.spec.ts', '!**/integration.test.ts', '!**/ci.test.ts'],
   transform: {
-    '.+\\.ts$': 'ts-jest'
+    '.+\\.ts$': [
+      '@swc/jest',
+      {
+        jsc: {
+          target: 'es2021'
+        },
+        sourceMaps: true
+      }
+    ]
   },
   moduleNameMapper: {
     '@/tests/(.*)': '<rootDir>/tests/$1',
