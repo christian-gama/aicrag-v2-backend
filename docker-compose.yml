@@ -10,16 +10,14 @@ services:
       - '27018:27017'
   api:
     container_name: api-container
-    image: node:14
+    build: .
     restart: always
     volumes:
-      - './dist/:/usr/workspace/aicrag-v2/dist/'
-      - './package.json:/usr/workspace/aicrag-v2/package.json'
-      - './config.env:/usr/workspace/aicrag-v2/config.env'
+      - './dist/:/usr/aicrag/dist/'
+      - './package.json:/usr/aicrag/package.json'
+      - './config.env:/usr/aicrag/config.env'
     ports:
-      - '3000:3000'
+      - '3033:3033'
       - '9222:9222'
-    working_dir: /usr/workspace/aicrag-v2/
-    command: bash -c "npm install --only=prod && npm run dev:docker"
     links:
       - mongo

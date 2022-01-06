@@ -10,7 +10,7 @@
     "codegen:watch": "rimraf src/main/graphql/generated && graphql-codegen --watch",
     "codegen": "rimraf src/main/graphql/generated && graphql-codegen",
     "dev:docker": "nodemon -L -e '*' --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/express/server.js",
-    "dev:local": "cross-env PORT=8000 MONGO_URL=mongodb://localhost:27017/aicrag nodemon -e '*' --watch ./dist --inspect --nolazy ./dist/main/express/server.js",
+    "dev:local": "cross-env PORT=3034 MONGO_URL=mongodb://localhost:27017/aicrag nodemon -e '*' --watch ./dist --inspect --nolazy ./dist/main/express/server.js",
     "docker:down": "docker-compose down",
     "docker:restart": "yarn build && docker-compose restart api",
     "docker:up": "yarn build && docker-compose up -d",
