@@ -1,5 +1,5 @@
 type Query {
-  findAllTasks(query: FindAllTasksQuery!): FindAllTasks! @protected
+  findAllTasks(query: FindAllTasksQueries!): FindAllTasks! @protected
 }
 
 type FindAllTasks {
@@ -9,7 +9,7 @@ type FindAllTasks {
   page: String!
 }
 
-input FindAllTasksQuery {
+input FindAllTasksQueries {
   limit: String
   page: String
   sort: String

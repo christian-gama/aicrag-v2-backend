@@ -1,5 +1,5 @@
 type Query {
-  getInvoiceByMonth(query: GetInvoiceByMonthQuery!): GetInvoiceByMonth! @protected
+  getInvoiceByMonth(query: GetInvoiceByMonthQueries!): GetInvoiceByMonth! @protected
 }
 
 type GetInvoiceByMonth {
@@ -9,7 +9,7 @@ type GetInvoiceByMonth {
   page: String!
 }
 
-input GetInvoiceByMonthQuery {
+input GetInvoiceByMonthQueries {
   duration: Int
   limit: String
   month: String!

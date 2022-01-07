@@ -73,7 +73,7 @@ type FindAllTasks {
   page: String!
 }
 
-input FindAllTasksQuery {
+input FindAllTasksQueries {
   limit: String
   page: String
   sort: String
@@ -90,7 +90,7 @@ input FindAllUserTasksParam {
   userId: UUID!
 }
 
-input FindAllUserTasksQuery {
+input FindAllUserTasksQueries {
   limit: String
   page: String
   sort: String
@@ -103,7 +103,7 @@ type FindAllUsers {
   page: String!
 }
 
-input FindAllUsersQuery {
+input FindAllUsersQueries {
   email: String
   id: String
   limit: String
@@ -149,7 +149,7 @@ type GetAllInvoicesDate {
   year: Int!
 }
 
-input GetAllInvoicesQuery {
+input GetAllInvoicesQueries {
   limit: String
   page: String
   sort: String
@@ -182,7 +182,7 @@ enum GetInvoiceByMonthPeriod {
   today
 }
 
-input GetInvoiceByMonthQuery {
+input GetInvoiceByMonthQueries {
   duration: Int
   limit: String
   month: String!
@@ -258,12 +258,12 @@ type PublicUserSettings {
 
 type Query {
   empty: String
-  findAllTasks(query: FindAllTasksQuery!): FindAllTasks!
-  findAllUserTasks(param: FindAllUserTasksParam!, query: FindAllUserTasksQuery!): FindAllUserTasks!
-  findAllUsers(query: FindAllUsersQuery!): FindAllUsers!
+  findAllTasks(query: FindAllTasksQueries!): FindAllTasks!
+  findAllUserTasks(param: FindAllUserTasksParam!, query: FindAllUserTasksQueries!): FindAllUserTasks!
+  findAllUsers(query: FindAllUsersQueries!): FindAllUsers!
   findOneTask(param: FindOneTaskParam!): FindOneTask!
-  getAllInvoices(query: GetAllInvoicesQuery!): GetAllInvoices!
-  getInvoiceByMonth(query: GetInvoiceByMonthQuery!): GetInvoiceByMonth!
+  getAllInvoices(query: GetAllInvoicesQueries!): GetAllInvoices!
+  getInvoiceByMonth(query: GetInvoiceByMonthQueries!): GetInvoiceByMonth!
   verifyResetPasswordToken(param: VerifyResetPasswordTokenInput!): VerifyResetPasswordToken!
 }
 

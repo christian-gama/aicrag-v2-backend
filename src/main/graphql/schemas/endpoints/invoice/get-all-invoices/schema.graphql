@@ -1,5 +1,5 @@
 type Query {
-  getAllInvoices(query: GetAllInvoicesQuery!): GetAllInvoices! @protected
+  getAllInvoices(query: GetAllInvoicesQueries!): GetAllInvoices! @protected
 }
 
 type GetAllInvoices {
@@ -15,7 +15,7 @@ type DetailedInvoice {
   totalUsd: Float!
 }
 
-input GetAllInvoicesQuery {
+input GetAllInvoicesQueries {
   limit: String
   page: String
   sort: String

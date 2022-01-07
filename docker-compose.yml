@@ -17,7 +17,7 @@ services:
       - './package.json:/usr/aicrag/package.json'
       - './config.env:/usr/aicrag/config.env'
     ports:
-      - '3033:3033'
+      - '4000:4000'
       - '9222:9222'
     links:
       - mongo

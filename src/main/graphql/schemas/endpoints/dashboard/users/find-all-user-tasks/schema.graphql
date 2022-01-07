@@ -1,5 +1,5 @@
 type Query {
-  findAllUserTasks(param: FindAllUserTasksParam!, query: FindAllUserTasksQuery!): FindAllUserTasks!
+  findAllUserTasks(param: FindAllUserTasksParam!, query: FindAllUserTasksQueries!): FindAllUserTasks!
     @protected
     @administrator
 }
@@ -11,7 +11,7 @@ type FindAllUserTasks {
   page: String!
 }
 
-input FindAllUserTasksQuery {
+input FindAllUserTasksQueries {
   limit: String
   page: String
   sort: String

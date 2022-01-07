@@ -1,8 +1,8 @@
 type Query {
-  findAllUsers(query: FindAllUsersQuery!): FindAllUsers! @protected @administrator
+  findAllUsers(query: FindAllUsersQueries!): FindAllUsers! @protected @administrator
 }
 
-input FindAllUsersQuery {
+input FindAllUsersQueries {
   email: String
   id: String
   limit: String

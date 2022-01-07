@@ -83,7 +83,7 @@ export type FindAllTasks = {
   page: Scalars['String'];
 };
 
-export type FindAllTasksQuery = {
+export type FindAllTasksQueries = {
   limit?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
@@ -101,7 +101,7 @@ export type FindAllUserTasksParam = {
   userId: Scalars['UUID'];
 };
 
-export type FindAllUserTasksQuery = {
+export type FindAllUserTasksQueries = {
   limit?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
@@ -115,7 +115,7 @@ export type FindAllUsers = {
   page: Scalars['String'];
 };
 
-export type FindAllUsersQuery = {
+export type FindAllUsersQueries = {
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['String']>;
@@ -166,7 +166,7 @@ export type GetAllInvoicesDate = {
   year: Scalars['Int'];
 };
 
-export type GetAllInvoicesQuery = {
+export type GetAllInvoicesQueries = {
   limit?: Maybe<Scalars['String']>;
   page?: Maybe<Scalars['String']>;
   sort?: Maybe<Scalars['String']>;
@@ -200,7 +200,7 @@ export enum GetInvoiceByMonthPeriod {
   Today = 'today'
 }
 
-export type GetInvoiceByMonthQuery = {
+export type GetInvoiceByMonthQueries = {
   duration?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['String']>;
   month: Scalars['String'];
@@ -380,18 +380,18 @@ export type Query = {
 
 
 export type QueryFindAllTasksArgs = {
-  query: FindAllTasksQuery;
+  query: FindAllTasksQueries;
 };
 
 
 export type QueryFindAllUserTasksArgs = {
   param: FindAllUserTasksParam;
-  query: FindAllUserTasksQuery;
+  query: FindAllUserTasksQueries;
 };
 
 
 export type QueryFindAllUsersArgs = {
-  query: FindAllUsersQuery;
+  query: FindAllUsersQueries;
 };
 
 
@@ -401,12 +401,12 @@ export type QueryFindOneTaskArgs = {
 
 
 export type QueryGetAllInvoicesArgs = {
-  query: GetAllInvoicesQuery;
+  query: GetAllInvoicesQueries;
 };
 
 
 export type QueryGetInvoiceByMonthArgs = {
-  query: GetInvoiceByMonthQuery;
+  query: GetInvoiceByMonthQueries;
 };
 
 
@@ -722,12 +722,12 @@ export type ResolversTypes = {
   DetailedInvoice: ResolverTypeWrapper<DetailedInvoice>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   FindAllTasks: ResolverTypeWrapper<FindAllTasks>;
-  FindAllTasksQuery: FindAllTasksQuery;
+  FindAllTasksQueries: FindAllTasksQueries;
   FindAllUserTasks: ResolverTypeWrapper<FindAllUserTasks>;
   FindAllUserTasksParam: FindAllUserTasksParam;
-  FindAllUserTasksQuery: FindAllUserTasksQuery;
+  FindAllUserTasksQueries: FindAllUserTasksQueries;
   FindAllUsers: ResolverTypeWrapper<FindAllUsers>;
-  FindAllUsersQuery: FindAllUsersQuery;
+  FindAllUsersQueries: FindAllUsersQueries;
   FindOneTask: ResolverTypeWrapper<FindOneTask>;
   FindOneTaskParam: FindOneTaskParam;
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -736,12 +736,12 @@ export type ResolversTypes = {
   FullUser: ResolverTypeWrapper<FullUser>;
   GetAllInvoices: ResolverTypeWrapper<GetAllInvoices>;
   GetAllInvoicesDate: ResolverTypeWrapper<GetAllInvoicesDate>;
-  GetAllInvoicesQuery: GetAllInvoicesQuery;
+  GetAllInvoicesQueries: GetAllInvoicesQueries;
   GetAllInvoicesType: GetAllInvoicesType;
   GetInvoiceByMonth: ResolverTypeWrapper<GetInvoiceByMonth>;
   GetInvoiceByMonthOperator: GetInvoiceByMonthOperator;
   GetInvoiceByMonthPeriod: GetInvoiceByMonthPeriod;
-  GetInvoiceByMonthQuery: GetInvoiceByMonthQuery;
+  GetInvoiceByMonthQueries: GetInvoiceByMonthQueries;
   GetInvoiceByMonthType: GetInvoiceByMonthType;
   InactiveAccount: ResolverTypeWrapper<InactiveAccount>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -814,12 +814,12 @@ export type ResolversParentTypes = {
   DetailedInvoice: DetailedInvoice;
   EmailAddress: Scalars['EmailAddress'];
   FindAllTasks: FindAllTasks;
-  FindAllTasksQuery: FindAllTasksQuery;
+  FindAllTasksQueries: FindAllTasksQueries;
   FindAllUserTasks: FindAllUserTasks;
   FindAllUserTasksParam: FindAllUserTasksParam;
-  FindAllUserTasksQuery: FindAllUserTasksQuery;
+  FindAllUserTasksQueries: FindAllUserTasksQueries;
   FindAllUsers: FindAllUsers;
-  FindAllUsersQuery: FindAllUsersQuery;
+  FindAllUsersQueries: FindAllUsersQueries;
   FindOneTask: FindOneTask;
   FindOneTaskParam: FindOneTaskParam;
   Float: Scalars['Float'];
@@ -828,9 +828,9 @@ export type ResolversParentTypes = {
   FullUser: FullUser;
   GetAllInvoices: GetAllInvoices;
   GetAllInvoicesDate: GetAllInvoicesDate;
-  GetAllInvoicesQuery: GetAllInvoicesQuery;
+  GetAllInvoicesQueries: GetAllInvoicesQueries;
   GetInvoiceByMonth: GetInvoiceByMonth;
-  GetInvoiceByMonthQuery: GetInvoiceByMonthQuery;
+  GetInvoiceByMonthQueries: GetInvoiceByMonthQueries;
   InactiveAccount: InactiveAccount;
   Int: Scalars['Int'];
   JWT: Scalars['JWT'];
