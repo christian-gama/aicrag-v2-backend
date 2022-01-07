@@ -8,14 +8,14 @@ Feature: Find all user tasks
     Scenario: Being logged out
       Given I am logged out
       When I try to find all tasks:
-      Then I should receive an error with message "Token is missing"
+      Then I should receive an error with message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Being a common user
       Given I am a common user
       Given I am logged in
       When I try to find all tasks
-      Then I should receive an error with message "You have no permission"
+      Then I should receive an error with message "Você não tem permissão"
       And I must receive a status code of 403
 
     Scenario: Having existent tasks

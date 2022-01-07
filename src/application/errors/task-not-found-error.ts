@@ -1,6 +1,6 @@
 export class TaskNotFoundError extends Error {
   constructor () {
-    super('No tasks were found')
+    super('Não foi possível encontrar tarefas')
     this.name = 'TaskNotFoundError'
   }
 }

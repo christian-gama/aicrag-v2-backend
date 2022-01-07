@@ -1,6 +1,6 @@
 export class TokenMissingError extends Error {
   constructor () {
-    super('Token is missing')
+    super('É necessário um token')
     this.name = 'TokenMissingError'
   }
 }

@@ -12,7 +12,7 @@ export class HttpHelper implements IHttpHelper {
   }
 
   deleted (): HttpResponse {
-    return { data: { message: 'Content deleted' }, status: true, statusCode: 204 }
+    return { data: { message: 'Conteúdo deletado' }, status: true, statusCode: 204 }
   }
 
   // ****************

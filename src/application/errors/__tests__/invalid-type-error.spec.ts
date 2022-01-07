@@ -12,6 +12,6 @@ describe('invalidTypeError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('The field any_field was expecting a string but receive number')
+    expect(result).toBe('O campo any_field esperava string, mas recebeu number')
   })
 })

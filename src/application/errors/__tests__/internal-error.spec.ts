@@ -12,6 +12,6 @@ describe('internalError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Internal error: Try again later')
+    expect(result).toBe('Erro interno, tente novamente mais tarde')
   })
 })

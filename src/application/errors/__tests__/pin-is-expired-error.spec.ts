@@ -12,6 +12,6 @@ describe('codeIsExpiredError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Pin is expired')
+    expect(result).toBe('O pin expirou')
   })
 })

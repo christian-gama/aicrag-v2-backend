@@ -9,7 +9,7 @@ Feature: Update task
     Scenario: Being logged out
       Given I am logged out
       When I try to update a task
-      Then I should receive an error with message "Token is missing"
+      Then I should receive an error with message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Using an existent task id
@@ -18,7 +18,7 @@ Feature: Update task
       When I try to update a new task with the following data:
         | commentary     | date                     | duration | status    | taskId | type |
         | Any commentary | 2021-10-27T14:32:33.465Z | 30       | completed | 1      | TX   |
-      Then I should receive an error with message "Param already exists: taskId"
+      Then I should receive an error with message "Parâmetro já existe: taskId"
       And I must receive a status code of 409
 
     Scenario Outline: Using an invalid input

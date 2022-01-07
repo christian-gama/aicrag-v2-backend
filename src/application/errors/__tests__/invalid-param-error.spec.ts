@@ -12,6 +12,6 @@ describe('invalidParamError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Invalid param: any_field')
+    expect(result).toBe('Parâmetro inválido: any_field')
   })
 })

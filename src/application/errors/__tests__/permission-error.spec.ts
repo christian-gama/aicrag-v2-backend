@@ -12,6 +12,6 @@ describe('permissionError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('You have no permission')
+    expect(result).toBe('Você não tem permissão')
   })
 })

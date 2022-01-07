@@ -12,6 +12,6 @@ describe('taskNotFoundError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('No tasks were found')
+    expect(result).toBe('Não foi possível encontrar tarefas')
   })
 })

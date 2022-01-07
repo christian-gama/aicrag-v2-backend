@@ -1,6 +1,6 @@
 export class MustLogoutError extends Error {
   constructor () {
-    super('You must logout first')
+    super('Você deve sair da sua conta antes')
     this.name = 'MustLogoutError'
   }
 }

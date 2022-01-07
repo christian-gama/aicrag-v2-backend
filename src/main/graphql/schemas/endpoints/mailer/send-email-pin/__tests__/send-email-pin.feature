@@ -18,5 +18,5 @@ Feature: Send email pin
         | email              | tempEmail | tempEmailPin |
         | any_email@mail.com | null      | 12345        |
       When I request to send an email with my pin
-      Then I should receive an error message "Credentials are invalid"
+      Then I should receive an error message "Suas credenciais estão inválidas"
       And I must receive a status code of 400

@@ -12,7 +12,7 @@ Feature: Update user
       When I request to update me with the following input:
         | currency | email              | name     |
         | BRL      | new_email@mail.com | New Name |
-      Then I should see an error that contains a message "Token is missing"
+      Then I should see an error that contains a message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Updating only currency
@@ -32,7 +32,7 @@ Feature: Update user
     Scenario: Updating only email using an invalid email
       Given I am logged in
       When I request to update my email with "invalid@email"
-      Then I should receive an error that contains a message "Invalid param: email"
+      Then I should receive an error that contains a message "Parâmetro inválido: email"
       And I must receive a status code of 400
 
     Scenario: Updating only name using a valid name
@@ -44,5 +44,5 @@ Feature: Update user
     Scenario: Updating only name using an invalid name
       Given I am logged in
       When I request to update my name with "Invalid_Name"
-      Then I should receive an error that contains a message "Invalid param: name"
+      Then I should receive an error that contains a message "Parâmetro inválido: name"
       And I must receive a status code of 400

@@ -11,7 +11,7 @@ Feature: Forgot password
     Scenario: Being logged in
       Given I am logged in
       When I request to reset my password using the email "any_email@mail.com"
-      Then I should receive an error message "You must logout first"
+      Then I should receive an error message "Você deve sair da sua conta antes"
       And I must receive a status code of 403
 
     Scenario: Using a valid email
@@ -25,5 +25,5 @@ Feature: Forgot password
       Given I have an account with the email "any_email@mail.com"
       Given I am logged out
       When I request to reset my password using the email "invalid_email@mail.com"
-      Then I should receive an error message "Credentials are invalid"
+      Then I should receive an error message "Suas credenciais estão inválidas"
       And I must receive a status code of 400

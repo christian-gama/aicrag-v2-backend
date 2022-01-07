@@ -12,6 +12,6 @@ describe('invalidTokenError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Token is invalid')
+    expect(result).toBe('O token é inválido')
   })
 })

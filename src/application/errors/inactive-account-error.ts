@@ -1,6 +1,6 @@
 export class InactiveAccountError extends Error {
   constructor () {
-    super('Account is not activated')
+    super('A conta não está ativada')
     this.name = 'InactiveAccountError'
   }
 }

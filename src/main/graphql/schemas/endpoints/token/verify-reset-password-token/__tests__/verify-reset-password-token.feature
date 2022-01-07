@@ -8,13 +8,13 @@ Feature: Verify reset password token
     Scenario: Being logged in
       Given I am logged in
       When I try to verify my token
-      Then I should receive an error with message "You must logout first"
+      Then I should receive an error with message "Você deve sair da sua conta antes"
       And I must receive a status code of 403
 
     Scenario: Using an invalid token
       Given I am logged out
       When I try to verify my token using an invalid token
-      Then I should receive an error with message "Token is invalid"
+      Then I should receive an error with message "O token é inválido"
       And I must receive a status code of 401
 
     Scenario: Using a valid token

@@ -12,7 +12,7 @@ Feature: Sign Up
       When I request try to create my account using the following data:
         | email              | name     | password | passwordConfirmation |
         | any_email@mail.com | Any Name | 12345678 | 12345678             |
-      Then I should receive an error with message "You must logout first"
+      Then I should receive an error with message "Você deve sair da sua conta antes"
       And I must receive a status code of 403
 
     Scenario: Using an existent email
@@ -21,7 +21,7 @@ Feature: Sign Up
       When I request try to create my account using the following data:
         | email              | name     | password | passwordConfirmation |
         | any_email@mail.com | Any Name | 12345678 | 12345678             |
-      Then I should receive an error with message "Param already exists: email"
+      Then I should receive an error with message "Parâmetro já existe: email"
       And I must receive a status code of 409
 
     Scenario: Using invalid data
@@ -29,7 +29,7 @@ Feature: Sign Up
       When I request try to create my account using the following invalid data:
         | email        | name     | password | passwordConfirmation |
         | invalid@mail | Any Name | 12345678 | 12345678             |
-      Then I should receive an error with message "Invalid param: email"
+      Then I should receive an error with message "Parâmetro inválido: email"
       And I must receive a status code of 400
 
     Scenario: Using valid data

@@ -1,6 +1,6 @@
 export class AccountAlreadyActivatedError extends Error {
   constructor () {
-    super('Account is already activated')
+    super('Conta já ativada')
     this.name = 'AccountAlreadyActivatedError'
   }
 }

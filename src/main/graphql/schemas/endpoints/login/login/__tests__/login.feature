@@ -25,7 +25,7 @@ Feature: Login
       When I request to login using the following credentials:
         | email              | password |
         | any_email@mail.com | 12345678 |
-      Then I should get a message "Account is not activated"
+      Then I should get a message "A conta não está ativada"
       And I must receive a status code of 200
 
     Scenario: I should not login if I use invalid credentials
@@ -36,6 +36,6 @@ Feature: Login
       When I request to login using the following credentials:
         | email              | password |
         | any_email@mail.com | 87654321 |
-      Then I should get an error with message "Credentials are invalid"
+      Then I should get an error with message "Suas credenciais estão inválidas"
       And I must receive a status code of 401
 

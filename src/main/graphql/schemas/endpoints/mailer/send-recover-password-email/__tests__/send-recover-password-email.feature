@@ -14,11 +14,11 @@ Feature: Send recover password email
     Scenario: Having an invalid email
       Given I have an account with the an email "any_email@mail.com" and a valid resetPasswordToken
       When I request to send an email using an invalid email "invalid_email@mail.com"
-      Then I should receive an error message "Credentials are invalid"
+      Then I should receive an error message "Suas credenciais estão inválidas"
       And I must receive a status code of 400
 
     Scenario: Having an invalid resetPasswordToken
       Given I have an account with the an email "any_email@mail.com" and an invalid resetPasswordToken
       When I request to send an email using my existent email
-      Then I should receive an error message "Missing param: resetPasswordToken"
+      Then I should receive an error message "Parâmetro necessário: resetPasswordToken"
       And I must receive a status code of 400

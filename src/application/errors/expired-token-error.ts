@@ -1,6 +1,6 @@
 export class ExpiredTokenError extends Error {
   constructor () {
-    super('Token is expired')
+    super('O token está expirado')
     this.name = 'ExpiredTokenError'
   }
 }

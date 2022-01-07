@@ -1,6 +1,6 @@
 export class PinIsExpiredError extends Error {
   constructor () {
-    super('Pin is expired')
+    super('O pin expirou')
     this.name = 'PinIsExpiredError'
   }
 }

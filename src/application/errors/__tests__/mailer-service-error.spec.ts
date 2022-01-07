@@ -12,6 +12,6 @@ describe('mailerServiceError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Could not send the email')
+    expect(result).toBe('Não foi possível enviar o email')
   })
 })

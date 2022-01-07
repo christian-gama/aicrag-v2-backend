@@ -8,13 +8,13 @@ Feature: Get all users
     Scenario: Being logged out
       Given I am logged out
       When I request to get all users
-      Then I should receive an error with message "Token is missing"
+      Then I should receive an error with message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Being a common user
       Given I am logged in as a common user
       When I request to get all users
-      Then I should receive an error with message "You have no permission"
+      Then I should receive an error with message "Você não tem permissão"
       And I must receive a status code of 403
 
     Scenario: Being an administrator

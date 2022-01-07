@@ -12,6 +12,6 @@ describe('mustLogoutError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('You must logout first')
+    expect(result).toBe('Você deve sair da sua conta antes')
   })
 })

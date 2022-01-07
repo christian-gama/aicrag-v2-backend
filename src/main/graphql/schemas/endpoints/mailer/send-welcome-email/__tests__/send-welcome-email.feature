@@ -15,11 +15,11 @@ Feature: Send welcome email
     Scenario: Having an invalid email
       Given I have an account with the email "any_email@mail.com"
       When I request to send an email using an invalid email "invalid_email@mail.com"
-      Then I should receive an error message "Credentials are invalid"
+      Then I should receive an error message "Suas credenciais estão inválidas"
       And I must receive a status code of 400
 
     Scenario: Having an account already activated
       Given I have an account with the email "any_email@mail.com" and account is already activated
       When I request to send an email using using my existent email
-      Then I should receive an error message "Account is already activated"
+      Then I should receive an error message "Conta já ativada"
       And I must receive a status code of 403

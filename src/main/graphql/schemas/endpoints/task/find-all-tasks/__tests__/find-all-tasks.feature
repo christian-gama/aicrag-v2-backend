@@ -7,7 +7,7 @@ Feature: Find all tasks
     Scenario: Being logged out
       Given I am logged out
       When I try to find all tasks:
-      Then I should receive an error with message "Token is missing"
+      Then I should receive an error with message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Having existent tasks

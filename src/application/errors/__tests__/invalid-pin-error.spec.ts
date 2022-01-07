@@ -12,6 +12,6 @@ describe('invalidCodeError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Invalid pin')
+    expect(result).toBe('O pin é inválido')
   })
 })

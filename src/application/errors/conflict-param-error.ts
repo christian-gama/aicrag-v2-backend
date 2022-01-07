@@ -1,6 +1,6 @@
 export class ConflictParamError extends Error {
   constructor (field: string) {
-    super(`Param already exists: ${field}`)
+    super(`Parâmetro já existe: ${field}`)
     this.name = 'ConflictParamError'
   }
 }

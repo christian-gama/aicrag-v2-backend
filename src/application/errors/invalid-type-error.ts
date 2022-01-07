@@ -2,7 +2,7 @@ export type ITypes = 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'un
 
 export class InvalidTypeError extends Error {
   constructor (field: string, expectedType: ITypes, actualType: ITypes) {
-    super(`The field ${field} was expecting a ${expectedType} but receive ${actualType}`)
+    super(`O campo ${field} esperava ${expectedType}, mas recebeu ${actualType}`)
     this.name = 'InvalidTypeError'
   }
 }

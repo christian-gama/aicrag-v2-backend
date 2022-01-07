@@ -12,6 +12,6 @@ describe('mustLoginError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('You must login first')
+    expect(result).toBe('Você deve fazer o login primeiro')
   })
 })

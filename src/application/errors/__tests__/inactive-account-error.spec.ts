@@ -12,6 +12,6 @@ describe('inactiveAccountError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Account is not activated')
+    expect(result).toBe('A conta não está ativada')
   })
 })

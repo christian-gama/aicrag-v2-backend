@@ -12,7 +12,7 @@ Feature: Update email by pin
         | any_email@mail.com | 12345        |
       Given I am logged out
       When I request to update my email using "12345"
-      Then I should see an error that contains a message "Token is missing"
+      Then I should see an error that contains a message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Using a temporary valid pin
@@ -31,6 +31,6 @@ Feature: Update email by pin
         | any_email@mail.com | 12345        |
       Given I am logged in
       When I request to update my email using "54321"
-      Then I should have receive an error that contains a message "Invalid pin"
+      Then I should have receive an error that contains a message "O pin é inválido"
       And I must receive a status code of 400
 

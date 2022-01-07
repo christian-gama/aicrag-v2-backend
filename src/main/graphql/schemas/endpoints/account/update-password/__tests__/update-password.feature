@@ -13,7 +13,7 @@ Feature: Update password
       When I request to update my password with the following valid input:
         | currentPassword | password | passwordConfirmation |
         | 12345678        | 87654321 | 87654321             |
-      Then I should see an error that contains a message "Token is missing"
+      Then I should see an error that contains a message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Using a valid input
@@ -32,7 +32,7 @@ Feature: Update password
       When I request to update my password with the following invalid current password:
         | currentPassword | password | passwordConfirmation |
         | 12121212        | 87654321 | 87654321             |
-      Then I should receive an error with a message "Credentials are invalid"
+      Then I should receive an error with a message "Suas credenciais estão inválidas"
       And I must receive a status code of 400
 
 
@@ -42,6 +42,6 @@ Feature: Update password
       When I request to update my password with the following invalid passwords:
         | currentPassword | password | passwordConfirmation |
         | 12345678        | 123      | 123                  |
-      Then I should receive an error with a message "Invalid param: password"
+      Then I should receive an error with a message "Parâmetro inválido: password"
       And I must receive a status code of 400
 

@@ -12,6 +12,6 @@ describe('userCredentialError', () => {
 
     const result = sut.message
 
-    expect(result).toBe('Credentials are invalid')
+    expect(result).toBe('Suas credenciais estão inválidas')
   })
 })

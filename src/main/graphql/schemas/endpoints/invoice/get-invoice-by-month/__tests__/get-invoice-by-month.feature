@@ -9,7 +9,7 @@ Feature: Get invoice by month
     Scenario: Being logged out
       Given I am logged out
       When I request to get my invoices from month "9" and year "2021" of type "both"
-      Then I should receive an error with message "Token is missing"
+      Then I should receive an error with message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Getting invoices from a specific month and year

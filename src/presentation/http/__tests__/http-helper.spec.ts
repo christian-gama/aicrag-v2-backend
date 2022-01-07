@@ -37,7 +37,7 @@ describe('httpHelper', () => {
       const result = sut.deleted()
 
       expect(result).toStrictEqual({
-        data: { message: 'Content deleted' },
+        data: { message: 'Conteúdo deletado' },
         status: true,
         statusCode: 204
       })

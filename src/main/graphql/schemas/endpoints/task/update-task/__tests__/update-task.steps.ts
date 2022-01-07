@@ -129,7 +129,7 @@ defineFeature(feature, (test) => {
     )
 
     then('I should receive an error with message of invalid param', () => {
-      expect(result.body.errors[0].message.startsWith('Invalid param:')).toBeTruthy()
+      expect(result.body.errors[0].message.startsWith('Parâmetro inválido:')).toBeTruthy()
     })
 
     and(/^I must receive a status code of (\d+)$/, (statusCode) => {

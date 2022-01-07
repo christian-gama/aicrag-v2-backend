@@ -1,6 +1,6 @@
 export class PermissionError extends Error {
   constructor () {
-    super('You have no permission')
+    super('Você não tem permissão')
     this.name = 'PermissionError'
   }
 }

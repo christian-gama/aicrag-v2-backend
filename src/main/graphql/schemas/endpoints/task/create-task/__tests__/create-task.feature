@@ -11,7 +11,7 @@ Feature: Create task
       When I try to create a new task with the following data:
         | commentary     | date                     | duration | status    | taskId | type |
         | Any commentary | 2021-10-27T14:32:33.465Z | 30       | completed | 1      | TX   |
-      Then I should receive an error with message "Token is missing"
+      Then I should receive an error with message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Using an existent task id
@@ -20,7 +20,7 @@ Feature: Create task
       When I try to create a new task with the following data:
         | commentary     | date                     | duration | status    | taskId | type |
         | Any commentary | 2021-10-27T14:32:33.465Z | 30       | completed | 1      | TX   |
-      Then I should receive an error with message "Param already exists: taskId"
+      Then I should receive an error with message "Parâmetro já existe: taskId"
       And I must receive a status code of 409
 
     Scenario Outline: Using an invalid input

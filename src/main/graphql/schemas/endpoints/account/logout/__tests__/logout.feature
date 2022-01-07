@@ -14,5 +14,5 @@ Feature: Logout
     Scenario: Being logged out
       Given I am logged out
       When I request to logout
-      Then I should see an error that contains a message "Token is missing"
+      Then I should see an error that contains a message "É necessário um token"
       And I must receive a status code of 401

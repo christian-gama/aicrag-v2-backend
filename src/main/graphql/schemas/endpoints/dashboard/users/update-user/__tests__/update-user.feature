@@ -9,21 +9,21 @@ Feature: Update user by id
     Scenario: Being logged out
       Given I am logged out
       When I try to update a user
-      Then I should receive an error with message "Token is missing"
+      Then I should receive an error with message "É necessário um token"
       And I must receive a status code of 401
 
     Scenario: Being a common user
       Given I am a common user
       Given I am logged in
       When I try to update a user
-      Then I should receive an error with message "You have no permission"
+      Then I should receive an error with message "Você não tem permissão"
       And I must receive a status code of 403
 
     Scenario: Trying to update the administrators permission to a lower permission
       Given I am an administrator
       Given I am logged in
       When I try to update my perimssion to a lower permission
-      Then I should receive an error with message "You have no permission"
+      Then I should receive an error with message "Você não tem permissão"
       And I must receive a status code of 403
 
     Scenario: Updating a user being an administrator
