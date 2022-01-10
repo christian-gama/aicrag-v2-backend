@@ -34,7 +34,11 @@ export default async (app: Express): Promise<ApolloServer> => {
 
   server.applyMiddleware({
     app,
-    cors: { credentials: true, origin: ['https://studio.apollographql.com'] },
+    cors: {
+      credentials: true,
+      exposedHeaders: ['x-access-token', 'x-refresh-token'],
+      origin: ['https://studio.apollographql.com']
+    },
     path: environment.GRAPHQL.ENDPOINT
   })
 
