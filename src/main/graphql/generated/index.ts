@@ -219,6 +219,13 @@ export enum GetInvoiceByMonthType {
   Both = 'both'
 }
 
+export type GetMe = {
+  __typename?: 'GetMe';
+  accessToken?: Maybe<Scalars['JWT']>;
+  refreshToken?: Maybe<Scalars['JWT']>;
+  user: PublicUser;
+};
+
 export type InactiveAccount = {
   __typename?: 'InactiveAccount';
   accessToken: Scalars['JWT'];
@@ -375,6 +382,7 @@ export type Query = {
   findOneTask: FindOneTask;
   getAllInvoices: GetAllInvoices;
   getInvoiceByMonth: GetInvoiceByMonth;
+  getMe: GetMe;
   verifyResetPasswordToken: VerifyResetPasswordToken;
 };
 
@@ -743,6 +751,7 @@ export type ResolversTypes = {
   GetInvoiceByMonthPeriod: GetInvoiceByMonthPeriod;
   GetInvoiceByMonthQueries: GetInvoiceByMonthQueries;
   GetInvoiceByMonthType: GetInvoiceByMonthType;
+  GetMe: ResolverTypeWrapper<GetMe>;
   InactiveAccount: ResolverTypeWrapper<InactiveAccount>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   JWT: ResolverTypeWrapper<Scalars['JWT']>;
@@ -831,6 +840,7 @@ export type ResolversParentTypes = {
   GetAllInvoicesQueries: GetAllInvoicesQueries;
   GetInvoiceByMonth: GetInvoiceByMonth;
   GetInvoiceByMonthQueries: GetInvoiceByMonthQueries;
+  GetMe: GetMe;
   InactiveAccount: InactiveAccount;
   Int: Scalars['Int'];
   JWT: Scalars['JWT'];
@@ -1016,6 +1026,13 @@ export type GetInvoiceByMonthResolvers<ContextType = any, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type GetMeResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetMe'] = ResolversParentTypes['GetMe']> = {
+  accessToken?: Resolver<Maybe<ResolversTypes['JWT']>, ParentType, ContextType>;
+  refreshToken?: Resolver<Maybe<ResolversTypes['JWT']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type InactiveAccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['InactiveAccount'] = ResolversParentTypes['InactiveAccount']> = {
   accessToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1083,6 +1100,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findOneTask?: Resolver<ResolversTypes['FindOneTask'], ParentType, ContextType, RequireFields<QueryFindOneTaskArgs, 'param'>>;
   getAllInvoices?: Resolver<ResolversTypes['GetAllInvoices'], ParentType, ContextType, RequireFields<QueryGetAllInvoicesArgs, 'query'>>;
   getInvoiceByMonth?: Resolver<ResolversTypes['GetInvoiceByMonth'], ParentType, ContextType, RequireFields<QueryGetInvoiceByMonthArgs, 'query'>>;
+  getMe?: Resolver<ResolversTypes['GetMe'], ParentType, ContextType>;
   verifyResetPasswordToken?: Resolver<ResolversTypes['VerifyResetPasswordToken'], ParentType, ContextType, RequireFields<QueryVerifyResetPasswordTokenArgs, 'param'>>;
 };
 
@@ -1254,6 +1272,7 @@ export type Resolvers<ContextType = any> = {
   GetAllInvoices?: GetAllInvoicesResolvers<ContextType>;
   GetAllInvoicesDate?: GetAllInvoicesDateResolvers<ContextType>;
   GetInvoiceByMonth?: GetInvoiceByMonthResolvers<ContextType>;
+  GetMe?: GetMeResolvers<ContextType>;
   InactiveAccount?: InactiveAccountResolvers<ContextType>;
   JWT?: GraphQLScalarType;
   Login?: LoginResolvers<ContextType>;

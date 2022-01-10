@@ -5,6 +5,7 @@ import {
   makeUpdatePasswordController,
   makeUpdateMeController
 } from '@/main/factories/controllers/account'
+import { makeGetMeController } from '@/main/factories/controllers/account/get-me-controller-factory'
 import { makeGetAllInvoicesController, makeGetInvoiceByMonthController } from '@/main/factories/controllers/invoice'
 import {
   makeActivateAccountController,
@@ -37,10 +38,11 @@ import { middlewareAdapter } from '../adapters/middleware-adapter'
 
 /* ******* Controllers ******* */
 // Account Routes
+export const getMeController = controllerAdapter(makeGetMeController())
 export const logoutController = controllerAdapter(makeLogoutController())
 export const updateEmailByPinController = controllerAdapter(makeUpdateEmailByPinController())
-export const updatePassword = controllerAdapter(makeUpdatePasswordController())
 export const updateMeController = controllerAdapter(makeUpdateMeController())
+export const updatePasswordController = controllerAdapter(makeUpdatePasswordController())
 
 // Invoice Routes
 export const getAllInvoicesController = controllerAdapter(makeGetAllInvoicesController())

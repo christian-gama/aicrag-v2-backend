@@ -1,0 +1,10 @@
+
+type Query {
+  getMe: GetMe! @protected
+}
+
+type GetMe {
+  user: PublicUser!
+  accessToken: JWT
+  refreshToken: JWT
+}
