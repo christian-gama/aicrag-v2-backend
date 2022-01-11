@@ -51,6 +51,6 @@ describe('logoutController', () => {
 
     const result = await sut.handle(request)
 
-    expect(result).toStrictEqual(httpHelper.ok({ message: "You've been logged out" }))
+    expect(result).toStrictEqual(httpHelper.ok({ message: 'Você encerrou sua sessão' }))
   })
 })

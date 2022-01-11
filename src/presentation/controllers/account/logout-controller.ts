@@ -13,7 +13,7 @@ export class LogoutController implements IController {
     user.tokenVersion++
     await this.userRepository.updateById(user.personal.id, { tokenVersion: user.tokenVersion })
 
-    const result = this.httpHelper.ok({ message: "You've been logged out" })
+    const result = this.httpHelper.ok({ message: 'Você encerrou sua sessão' })
 
     return result
   }

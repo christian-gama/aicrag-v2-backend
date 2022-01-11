@@ -7,7 +7,7 @@ Feature: Logout
     Scenario: Being logged in
       Given I am logged in
       When I request to logout
-      Then I should see a message "You've been logged out"
+      Then I should see a message "Você encerrou sua sessão"
       And I should have my tokenVersion incremented by 1
       And I must receive a status code of 200
 
