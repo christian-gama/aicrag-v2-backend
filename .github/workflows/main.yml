@@ -20,6 +20,27 @@ jobs:
           yarn install
           yarn test:ci
 
+      - name: Create .env
+        run: |
+          touch .env
+          echo NODE_ENV='production' >> .env
+          echo API_URL='http://localhost: >> .env
+          echo GRAPHQL_ENDPOINT='/graphql' >> .env
+          echo SENDGRID_APIKEY=${{ secrets.SENDGRID_API_KEY }} >> .env
+          echo MAILTRAP_HOST='smtp.mailtrap.io' >> .env
+          echo MAILTRAP_PORT='2525' >> .env
+          echo MAILTRAP_USER=${{ secrets.MAILTRAP_USER }} >> .env
+          echo MAILTRAP_PASSWORD=${{ secrets.MAILTRAP_PASSWORD }} >> .env
+          echo COOKIE_EXPIRES='30' >> .env
+          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
+          echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env
+          echo JWT_EXPIRES='600s' >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+          echo JWT_REFRESH_EXPIRES='30d' >> .env
+          echo JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }} >> .env
+          echo TEST_SEND_EMAIL='false' >> .env
+          cat .env
+
       - name: Deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
