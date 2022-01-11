@@ -43,7 +43,11 @@ describe('patch /reset-password', () => {
   it('should return 403 if user is logged in', async () => {
     await userCollection.insertOne(fakeUser)
 
-    const result = await request(app).patch('/api/v1/login/reset-password').set('x-refresh-token', refreshToken).send()
+    const result = await request(app)
+      .patch('/api/v1/login/reset-password')
+      .set('x-refresh-token', refreshToken)
+      .set('x-access-token', accessToken)
+      .send()
 
     expect(result.status).toBe(403)
   })
