@@ -15,7 +15,6 @@ export const controllerAdapter = (controller: IController) => {
   return async (req: AdaptRequest, res: Response, next: NextFunction) => {
     try {
       const httpResponseData = await controller.handle(req)
-
       res.status(httpResponseData.statusCode)
 
       if (httpResponseData.data.refreshToken) {

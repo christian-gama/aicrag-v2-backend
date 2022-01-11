@@ -12,6 +12,7 @@ export class PartialProtectedMiddleware implements IMiddleware {
     const response = await this.verifyAccessToken.verify(accessToken)
     if (response instanceof Error) return this.httpHelper.unauthorized(response)
 
+    console.log('accessToken', accessToken)
     const result = this.httpHelper.ok({ accessToken })
 
     return result

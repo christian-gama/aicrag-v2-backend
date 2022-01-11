@@ -1,3 +1,4 @@
+import { environment } from '@/main/config/environment'
 import { makePartialProtectedMiddleware } from '@/main/factories/middlewares'
 import { apolloErrorAdapter } from '../adapters'
 import { mapSchema, MapperKind, getDirective } from '@graphql-tools/utils'
@@ -23,8 +24,20 @@ export const partialProtectedDirectiveTransformer = (schema: GraphQLSchema): Gra
 
           const httpResponse = await makePartialProtectedMiddleware().handle(request)
 
-          if (httpResponse.data.accessToken) return resolve?.call(this, parent, args, context, info)
-          else throw apolloErrorAdapter('UnauthorizedError', httpResponse.data.message, 401)
+          if (httpResponse.data.accessToken) {
+            context?.res?.cookie('accessToken', httpResponse.data.accessToken, {
+              httpOnly: true,
+              secure: environment.SERVER.NODE_ENV === 'production'
+            })
+
+            context?.res?.setHeader('x-access-token', httpResponse.data.accessToken)
+
+            return resolve?.call(this, parent, args, context, info)
+          } else {
+            context?.res?.setHeader('x-access-token', '')
+            context?.res?.clearCookie('accessToken')
+            throw apolloErrorAdapter('UnauthorizedError', httpResponse.data.message, 401)
+          }
         }
       }
 

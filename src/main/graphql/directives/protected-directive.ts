@@ -31,12 +31,24 @@ export const protectedDirectiveTransformer = (schema: GraphQLSchema): GraphQLSch
               httpOnly: true,
               secure: environment.SERVER.NODE_ENV === 'production'
             })
+            context?.res?.cookie('refreshToken', httpResponse.data.refreshToken, {
+              httpOnly: true,
+              secure: environment.SERVER.NODE_ENV === 'production'
+            })
 
+            context?.res?.setHeader('x-access-token', httpResponse.data.accessToken)
+            context?.res?.setHeader('x-refresh-token', httpResponse.data.refreshToken)
             context.req.headers['x-access-token'] = httpResponse.data.accessToken
+            context.req.headers['x-refresh-token'] = httpResponse.data.refreshToken
             context.req.cookies.accessToken = httpResponse.data.accessToken
+            context.req.cookies.refreshToken = httpResponse.data.refreshToken
 
             return resolve?.call(this, parent, args, context, info)
           } else {
+            context?.res?.clearCookie('accessToken')
+            context?.res?.clearCookie('refreshToken')
+            context?.res?.setHeader('x-access-token', '')
+            context?.res?.setHeader('x-refresh-token', '')
             throw apolloErrorAdapter('UnauthorizedError', httpResponse.data.message, 401)
           }
         }

@@ -22,15 +22,28 @@ export const middlewareAdapter = (middleware: IMiddleware) => {
         return defaultResponse(res, httpResponse)
       }
 
-      if (httpResponse.data.refreshToken) {
+      if (httpResponse.data.accessToken) {
         res.cookie('accessToken', httpResponse.data.accessToken, {
           httpOnly: true,
           secure: environment.SERVER.NODE_ENV === 'production'
         })
 
-        req.headers['X-Access-Token'] = httpResponse.data.accessToken
+        res.header('x-access-token', httpResponse.data.accessToken)
 
+        req.headers['x-access-token'] = httpResponse.data.accessToken
         req.cookies.accessToken = httpResponse.data.accessToken
+      }
+
+      if (httpResponse.data.refreshToken) {
+        res.cookie('refreshToken', httpResponse.data.refreshToken, {
+          httpOnly: true,
+          secure: environment.SERVER.NODE_ENV === 'production'
+        })
+
+        res.header('x-refresh-token', httpResponse.data.refreshToken)
+
+        req.headers['x-refresh-token'] = httpResponse.data.refreshToken
+        req.cookies.refreshToken = httpResponse.data.refreshToken
       }
 
       if (httpResponse.data.user) req.user = httpResponse.data.user

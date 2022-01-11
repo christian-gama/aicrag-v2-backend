@@ -10,7 +10,7 @@ export const createAccessTokenCookie = (res: Response, httpResponse: HttpRespons
     secure: environment.SERVER.NODE_ENV === 'production'
   })
 
-  res.header('X-Access-Token', httpResponse.data.accessToken)
+  res.header('x-access-token', httpResponse.data.accessToken)
 
   return res
 }
@@ -21,7 +21,7 @@ export const createRefreshTokenCookie = (res: Response, httpResponse: HttpRespon
     secure: environment.SERVER.NODE_ENV === 'production'
   })
 
-  res.header('X-Refresh-Token', httpResponse.data.refreshToken)
+  res.header('x-refresh-token', httpResponse.data.refreshToken)
 
   return res
 }
