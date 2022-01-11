@@ -48,3 +48,5 @@ jobs:
           heroku_app_name: 'aicrag-v2-backend'
           heroku_email: 'christiangama.dev@gmail.com'
           usedocker: true
+        env:
+          PORT: 3000
