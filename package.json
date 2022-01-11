@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "babel:watch": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored --watch",
-    "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
+    "build": "rimraf dist && yarn codegen && babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "codegen:watch": "rimraf src/main/graphql/generated && graphql-codegen --watch",
     "codegen": "rimraf src/main/graphql/generated && graphql-codegen",
     "dev:docker": "nodemon -L -e '*' --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/express/server.js",
