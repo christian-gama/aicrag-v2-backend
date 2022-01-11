@@ -4,8 +4,13 @@ WORKDIR /usr/aicrag
 
 COPY package.json .
 COPY yarn.lock .
-COPY .env .
 RUN yarn install
+COPY tsconfig.build.json .
+COPY tsconfig.json .
+COPY babel.config.js .
+COPY .graphqlrc.yml .
+COPY .env .
+COPY ./src ./src
 RUN yarn build
 
 FROM node:16-alpine as production

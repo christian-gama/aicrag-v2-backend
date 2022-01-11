@@ -4,3 +4,8 @@
 !package.json
 !data
 !yarn.lock
+!.graphqlrc.yml
+!src
+!tsconfig.build.json
+!tsconfig.json
+!babel.config.js
