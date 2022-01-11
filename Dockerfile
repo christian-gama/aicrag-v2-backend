@@ -4,7 +4,7 @@ WORKDIR /usr/aicrag
 
 COPY package.json .
 COPY yarn.lock .
-COPY config.env .env
+COPY .env .
 RUN yarn install
 RUN yarn build
 
