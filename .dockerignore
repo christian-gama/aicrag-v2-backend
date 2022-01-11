@@ -1,5 +1,6 @@
 **
-!config.env
+!.env
+!.development.env
 !package.json
 !data
 !yarn.lock
