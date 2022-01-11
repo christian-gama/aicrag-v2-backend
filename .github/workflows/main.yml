@@ -6,19 +6,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and test
     steps:
     - uses: actions/checkout@v2
       name: Check out repository
+
     - uses: actions/setup-node@v1
       name: Set up Node.js
       with:
         node-version: 16
         env_file: ".env"
+
+    - name: Test
     - run: |
         npm install
         npm run test:ci
-      name: Test
+
     - uses: akhileshns/heroku-deploy@v3.12.12
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
