@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: 16
         env_file: ".env"
-      - run: |
+        run: |
           yarn install
           yarn test:ci
 
