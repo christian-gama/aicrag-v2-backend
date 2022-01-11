@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 16
 
-      - name: Test
+      - name: Install and Test
         run: |
           yarn install
           yarn test:ci
