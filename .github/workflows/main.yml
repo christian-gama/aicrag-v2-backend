@@ -16,6 +16,7 @@ jobs:
         node-version: 16
         env_file: ".env"
     - run: |
+        npm install
         npm run test:ci
       name: Test
     - uses: akhileshns/heroku-deploy@v3.12.12
