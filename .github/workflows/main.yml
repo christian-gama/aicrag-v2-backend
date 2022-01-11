@@ -19,10 +19,10 @@ jobs:
         npm run test:ci
     name: Test
     - uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: "aicrag-v2-backend"
-        heroku_email: "christiangama.dev@gmail.com"
-        usedocker: true
-        env_file: ".env"
+    with:
+      heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+      heroku_app_name: "aicrag-v2-backend"
+      heroku_email: "christiangama.dev@gmail.com"
+      usedocker: true
+      env_file: ".env"
 
