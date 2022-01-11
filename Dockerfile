@@ -20,6 +20,6 @@ COPY --from=builder /usr/aicrag/package.json .
 COPY --from=builder /usr/aicrag/dist .
 COPY --from=builder /usr/aicrag/.env .
 RUN yarn install --prod
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["yarn", "start"]
