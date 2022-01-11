@@ -1,5 +1,5 @@
 **
-!dist
 !config.env
 !package.json
 !data
+!yarn.lock
