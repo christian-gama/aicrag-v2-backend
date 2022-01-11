@@ -7,23 +7,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      name: Check out repository
+      - name: Check out repository
+        uses: actions/checkout@v2
 
-    - uses: actions/setup-node@v1
-      name: Set up Node.js and Test
-      with:
-        node-version: 16
-        env_file: ".env"
-    - run: |
-        yarn install
-        yarn test:ci
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
 
-    - uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: "aicrag-v2-backend"
-        heroku_email: "christiangama.dev@gmail.com"
-        usedocker: true
-        env_file: ".env"
+      - name: Test
+        run: |
+          yarn install
+          yarn test:ci
 
+      - name: Deploy to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'aicrag-v2-backend'
+          heroku_email: 'christiangama.dev@gmail.com'
+          usedocker: true
