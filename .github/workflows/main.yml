@@ -15,9 +15,9 @@ jobs:
       with:
         node-version: 16
         env_file: ".env"
-    - run: |
-        yarn install
-        yarn test:ci
+      - run: |
+          yarn install
+          yarn test:ci
 
     - uses: akhileshns/heroku-deploy@v3.12.12
       with:
