@@ -6,20 +6,33 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     environment: production
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 16
 
-      - name: Install and Test
-        run: |
-          yarn install
-          yarn test:coveralls
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Check tests
+        run: yarn test:ci
+
+      - name: Check linting
+        run: yarn lint
+
+      - name: Check commit message
+        uses: wagoid/commitlint-github-action@v4
 
       - name: Create .env
         run: |

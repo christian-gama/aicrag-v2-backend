@@ -14,6 +14,7 @@
     "docker:restart": "docker-compose restart aicrag_dev",
     "docker:up": "docker-compose up --build -d",
     "format": "prettier --write . && eslint . --fix",
+    "lint": "eslint . --fix",
     "start": "node dist/main/express/server.js",
     "test:ci": "jest --clearCache && yarn test:silent -c jest-ci-config.js --coverage",
     "test:commit": "yarn test:silent --bail --findRelatedTests",

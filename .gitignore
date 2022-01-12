@@ -1,12 +1,11 @@
-config.env
+.env
+.env.development
 coverage
 data
 dist
 globalConfig.json
+graphql-schema.txt
 node_modules
 yarn-error.log
-graphql-schema.txt
-.env
-.env.development
 
 
