@@ -40,11 +40,11 @@ export abstract class MailerService {
         user: environment.MAILER.MAILTRAP.USER
       },
       host: environment.MAILER.MAILTRAP.HOST,
-      port: +environment.MAILER.MAILTRAP.PORT
+      port: +(environment.MAILER.MAILTRAP.PORT as string)
     })
   }
 
   private sendgrid (): Transporter {
-    return nodemailer.createTransport(sendgrid({ apiKey: environment.MAILER.SENDGRID.API_KEY }))
+    return nodemailer.createTransport(sendgrid({ apiKey: environment.MAILER.SENDGRID.API_KEY as string }))
   }
 }

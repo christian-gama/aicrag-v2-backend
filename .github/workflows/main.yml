@@ -19,7 +19,7 @@ jobs:
       - name: Install and Test
         run: |
           yarn install
-          yarn test:ci
+          yarn test:coveralls
 
       - name: Create .env
         run: |
