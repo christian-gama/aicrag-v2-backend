@@ -1,11 +1,11 @@
 **
 !.env
 !.env.development
-!package.json
-!data
-!yarn.lock
 !.graphqlrc.yml
+!babel.config.js
+!data
+!package.json
 !src
 !tsconfig.build.json
 !tsconfig.json
-!babel.config.js
+!yarn.lock

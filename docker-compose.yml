@@ -5,7 +5,7 @@ services:
     image: mongo:5
     restart: always
     volumes:
-      - './data:/data/db:z'
+      - './data:/data/db'
     ports:
       - '27018:27017'
   aicrag_dev:
