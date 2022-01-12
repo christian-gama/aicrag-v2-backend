@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/christian-gama/aicrag-v2-backend.svg?branch=master)](https://app.travis-ci.com/christian-gama/aicrag-v2-backend)
+![Build Status](https://github.com/christian-gama/aicrag-v2-backend/actions/workflows/main.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/christian-gama/aicrag-v2-backend/badge.svg?branch=master)](https://coveralls.io/github/christian-gama/aicrag-v2-backend?branch=master)
 
 # Welcome to my first personal project: Aicrag (backend)
