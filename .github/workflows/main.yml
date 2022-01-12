@@ -28,6 +28,11 @@ jobs:
       - name: Check tests
         run: yarn test:ci
 
+      - name: Coveralls
+        uses: coverallsapp@github-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check linting
         run: yarn lint
 

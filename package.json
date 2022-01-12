@@ -8,6 +8,7 @@
     "babel:watch": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored --watch",
     "build": "rimraf dist && yarn codegen && babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "codegen": "rimraf src/main/graphql/generated && graphql-codegen",
+    "coveralls": "cat ./coverage/locv.info | coveralls",
     "dev:docker": "concurrently \"yarn babel:watch\" \"cross-env NODE_ENV=development nodemon -L -e '*' --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/express/server.js\"",
     "dev:local": "yarn build && cross-env PORT=4001 NODE_ENV=development MONGO_URL=mongodb://localhost:27017/aicrag nodemon -e '*' --watch ./dist --inspect --nolazy ./dist/main/express/server.js",
     "docker:down": "docker-compose down",
@@ -15,16 +16,15 @@
     "docker:up": "docker-compose up --build -d",
     "format": "prettier --write . && eslint . --fix",
     "lint": "eslint . --fix",
+    "prepare": "husky install",
     "start": "cross-env NODE_ENV=production node dist/main/express/server.js",
     "test:ci": "jest --clearCache && yarn test:silent -c jest-ci-config.js --coverage",
     "test:commit": "yarn test:silent --bail --findRelatedTests",
-    "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
     "test:integration": "yarn test:verbose -c jest-integration-config.js",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
     "test:unit": "yarn test:silent -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests --detectOpenHandles --verbose",
-    "test": "yarn test:unit && yarn test:integration",
-    "prepare": "husky install"
+    "test": "yarn test:unit && yarn test:integration"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
