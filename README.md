@@ -102,6 +102,7 @@ It will run on port 4001 as default.
 
 It will run on port 4000 as default.
 
+---
 
 > ### Fixing a permission error caused on Linux by Docker
 >
