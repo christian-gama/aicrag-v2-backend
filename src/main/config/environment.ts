@@ -18,20 +18,20 @@ dotenv.config({
 
 export const environment = {
   COOKIES: {
-    EXPIRES: process.env.COOKIE_EXPIRES,
-    SECRET: process.env.COOKIE_SECRET
+    EXPIRES: process.env.COOKIE_EXPIRES ?? '3s',
+    SECRET: process.env.COOKIE_SECRET ?? 'test_secret_key'
   },
   DB: {
     MONGO_URL: process.env.MONGO_URL
   },
   GRAPHQL: {
-    ENDPOINT: process.env.GRAPHQL_ENDPOINT
+    ENDPOINT: process.env.GRAPHQL_ENDPOINT ?? '/graphql'
   },
   JWT: {
-    ACCESS_EXPIRES: process.env.JWT_EXPIRES,
-    ACCESS_SECRET: process.env.JWT_SECRET,
-    REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES,
-    REFRESH_SECRET: process.env.JWT_REFRESH_SECRET
+    ACCESS_EXPIRES: process.env.JWT_EXPIRES ?? '3s',
+    ACCESS_SECRET: process.env.JWT_SECRET ?? 'test_secret_key',
+    REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES ?? '3s',
+    REFRESH_SECRET: process.env.JWT_REFRESH_SECRET ?? 'test_secret_key'
   },
   MAILER: {
     MAILTRAP: {
