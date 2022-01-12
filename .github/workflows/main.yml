@@ -28,7 +28,7 @@ jobs:
           echo PORT=4000 >> .env
           echo API_URL=http://localhost: >> .env
           echo GRAPHQL_ENDPOINT=/graphql >> .env
-          echo SENDGRID_APIKEY=${{ secrets.SENDGRID_API_KEY }} >> .env
+          echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> .env
           echo COOKIE_EXPIRES=30 >> .env
           echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
           echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env
