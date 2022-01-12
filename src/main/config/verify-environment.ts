@@ -5,7 +5,7 @@ export function verifyEnvironment (): void {
 
   let previousVariable: undefined | string
 
-  if (!environment.DB.MONGO_URL.startsWith('mongodb+srv://')) {
+  if (!environment.DB.MONGO_URL.startsWith('mongodb+srv://') && !environment.DB.MONGO_URL.startsWith('mongodb://')) {
     console.error('Invalid environment variable: MONGO_URL')
     process.exit(1)
   }
