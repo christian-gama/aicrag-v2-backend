@@ -4,6 +4,10 @@ import { createGraphqlSchema, handleError } from '@/main/graphql/utils'
 import { protectedDirectiveTransformer, partialProtectedDirectiveTransformer } from '../directives'
 import { permissionDirectiveTransformer } from '../directives/permission-directive'
 import { context } from './context'
+import {
+  ApolloServerPluginLandingPageDisabled,
+  ApolloServerPluginLandingPageGraphQLPlayground
+} from 'apollo-server-core'
 import { ApolloServer } from 'apollo-server-express'
 import { Express } from 'express'
 
@@ -21,6 +25,9 @@ export default async (app: Express): Promise<ApolloServer> => {
   const server = new ApolloServer({
     context,
     plugins: [
+      process.env.NODE_ENV === 'production'
+        ? ApolloServerPluginLandingPageDisabled()
+        : ApolloServerPluginLandingPageGraphQLPlayground(),
       {
         requestDidStart: async () => ({
           willSendResponse: async ({ response, errors }) => handleError(response, errors)

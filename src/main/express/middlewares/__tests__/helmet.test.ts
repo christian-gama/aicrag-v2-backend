@@ -1,9 +1,15 @@
+import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 import { Express } from 'express'
 import request from 'supertest'
 
 describe('helmet', () => {
+  const env = process.env.NODE_ENV as 'production' | 'development'
   let app: Express
+
+  afterAll(() => {
+    environment.SERVER.NODE_ENV = env
+  })
 
   beforeAll(async () => {
     app = await App.setup()
