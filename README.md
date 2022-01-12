@@ -90,7 +90,7 @@ Make sure you set the environment variables before running the following instruc
 
 `$ yarn dev:local`
 
-It will run on port 8000 as default.
+It will run on port 4001 as default.
 
 ---
 
@@ -98,6 +98,14 @@ It will run on port 8000 as default.
 >
 > If you want to run this server in a Docker environment, just run:
 
-`$ yarn docker:start`
+`$ yarn docker:up`
 
-It will run on port 3000 as default.
+It will run on port 4000 as default.
+
+
+> ### Fixing a permission error caused on Linux by Docker
+>
+> When docker maps a ./data folder from mongo, it will cause a permission error on Linux
+
+`$ sudo chmod 777 -R data`
+
