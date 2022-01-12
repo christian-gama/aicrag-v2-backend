@@ -3,7 +3,7 @@
 import dotenv from 'dotenv'
 import path from 'path'
 
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') })
+dotenv.config({ path: path.resolve(__dirname, process.env.NODE_ENV === 'production' ? '.env' : '.env.development') })
 
 export const environment = {
   COOKIES: {
@@ -11,10 +11,7 @@ export const environment = {
     SECRET: (process.env.COOKIE_SECRET as string) ?? 'Development_Secret_Key'
   },
   DB: {
-    MONGO_URL:
-      process.env.NODE_ENV === 'production'
-        ? (process.env.MONGO_URL as string)
-        : (process.env.MONGO_LOCAL_URL as string)
+    MONGO_URL: process.env.MONGO_URL as string
   },
   GRAPHQL: {
     ENDPOINT: (process.env.GRAPHQL_ENDPOINT as string) ?? '/graphql'
@@ -33,7 +30,7 @@ export const environment = {
       USER: process.env.MAILTRAP_USER as string
     },
     SENDGRID: {
-      APIKEY: process.env.SENDGRID_APIKEY as string
+      API_KEY: process.env.SENDGRID_API_KEY as string
     },
     SETTINGS: {
       FROM: 'Aicrag <aicrag.team@gmail.com>'

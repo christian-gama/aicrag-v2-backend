@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -24,13 +26,10 @@ jobs:
         run: |
           touch .env
           echo NODE_ENV=production >> .env
+          echo PORT=4000 >> .env
           echo API_URL=http://localhost: >> .env
           echo GRAPHQL_ENDPOINT=/graphql >> .env
           echo SENDGRID_APIKEY=${{ secrets.SENDGRID_API_KEY }} >> .env
-          echo MAILTRAP_HOST=smtp.mailtrap.io >> .env
-          echo MAILTRAP_PORT=2525 >> .env
-          echo MAILTRAP_USER=${{ secrets.MAILTRAP_USER }} >> .env
-          echo MAILTRAP_PASSWORD=${{ secrets.MAILTRAP_PASSWORD }} >> .env
           echo COOKIE_EXPIRES=30 >> .env
           echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
           echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env

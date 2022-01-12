@@ -1,21 +1,21 @@
-version: '3'
+version: '3.8'
 services:
   mongo:
     container_name: mongo-container
     image: mongo:5
     restart: always
     volumes:
-      - './data:/data/db'
+      - './data:/data/db:z'
     ports:
       - '27018:27017'
-  api:
-    container_name: api-container
-    build: .
+  aicrag_dev:
+    container_name: aicrag_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     restart: always
     volumes:
-      - './dist/:/usr/aicrag/dist/'
-      - './package.json:/usr/aicrag/package.json'
-      - './config.env:/usr/aicrag/config.env'
+      - './src/:/usr/aicrag/src/'
     ports:
       - '4000:4000'
       - '9222:9222'

@@ -6,3 +6,7 @@ globalConfig.json
 node_modules
 yarn-error.log
 graphql-schema.txt
+.env
+.env.development
+
+
