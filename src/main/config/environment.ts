@@ -1,6 +1,15 @@
 import dotenv from 'dotenv'
 import path from 'path'
 
+if (
+  process.env.NODE_ENV !== 'production' &&
+  process.env.NODE_ENV !== 'test' &&
+  process.env.NODE_ENV !== 'development'
+) {
+  console.error('Invalid environment variable: NODE_ENV (expected production, test or development)')
+  process.exit(1)
+}
+
 const isProduction = process.env.NODE_ENV === 'production'
 const root = path.resolve(__dirname, '../../..')
 dotenv.config({
@@ -9,20 +18,20 @@ dotenv.config({
 
 export const environment = {
   COOKIES: {
-    EXPIRES: process.env.COOKIE_EXPIRES ?? '30s',
-    SECRET: process.env.COOKIE_SECRET ?? 'Development_Secret_Key'
+    EXPIRES: process.env.COOKIE_EXPIRES,
+    SECRET: process.env.COOKIE_SECRET
   },
   DB: {
     MONGO_URL: process.env.MONGO_URL
   },
   GRAPHQL: {
-    ENDPOINT: process.env.GRAPHQL_ENDPOINT ?? '/graphql'
+    ENDPOINT: process.env.GRAPHQL_ENDPOINT
   },
   JWT: {
-    ACCESS_EXPIRES: process.env.JWT_EXPIRES ?? '30s',
-    ACCESS_SECRET: process.env.JWT_SECRET ?? 'Development_Secret_Key',
-    REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES ?? '30s',
-    REFRESH_SECRET: process.env.JWT_REFRESH_SECRET ?? 'Development_Secret_Key'
+    ACCESS_EXPIRES: process.env.JWT_EXPIRES,
+    ACCESS_SECRET: process.env.JWT_SECRET,
+    REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES,
+    REFRESH_SECRET: process.env.JWT_REFRESH_SECRET
   },
   MAILER: {
     MAILTRAP: {

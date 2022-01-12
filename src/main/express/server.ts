@@ -4,21 +4,24 @@ import { verifyEnvironment } from '../config/verify-environment'
 import { createSchemas, createIndexes } from '@/schemas/mongodb'
 
 console.log('################################################')
+verifyEnvironment()
 console.log(`Environment: ${environment.SERVER.NODE_ENV}`)
-console.log(`Mongo URL: ${environment.DB.MONGO_URL}`)
-console.log(`PORT: ${environment.SERVER.PORT}`)
-console.log(`API URL: ${environment.SERVER.API_URL}`)
 
 MongoAdapter.connect(environment.DB.MONGO_URL)
   .then(async () => {
-    verifyEnvironment()
+    process.on('uncaughtException', (err: Error) => {
+      console.log('Found an error (uncaughtException) - Shutting down server...')
+      console.error(err)
+
+      process.exit(1)
+    })
 
     const app = await (await import('./config/app')).default.setup()
 
     await createSchemas()
     await createIndexes()
 
-    app.listen(environment.SERVER.PORT, () => {
+    const server = app.listen(environment.SERVER.PORT, () => {
       console.log(
         `Server started at ${new Date().toLocaleString('pt-br', {
           timeZone: 'America/Sao_Paulo'
@@ -28,7 +31,23 @@ MongoAdapter.connect(environment.DB.MONGO_URL)
       console.log(`Apollo Server: ${environment.SERVER.GRAPHQL_URL}`)
       console.log('Press ctrl+c to exit...')
     })
+
+    process.on('unhandledRejection', (err: Error) => {
+      console.log('Found an error (unhandledRejection)- Shutting down server...')
+      console.log(err.name, err.message)
+
+      server.close(() => {
+        process.exit(1)
+      })
+    })
+
+    process.on('SIGTERM', () => {
+      console.log('SIGTERM received - Shutting down server...')
+      server.close(() => {
+        console.log('Process terminated.')
+      })
+    })
   })
   .catch((err) => {
-    console.log(err)
+    console.error('Error at server startup', err)
   })

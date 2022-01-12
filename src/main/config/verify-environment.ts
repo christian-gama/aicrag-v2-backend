@@ -1,7 +1,14 @@
 import { environment } from './environment'
 
 export function verifyEnvironment (): void {
+  console.log('Verifying environment variables...')
+
   let previousVariable: undefined | string
+
+  if (!environment.DB.MONGO_URL.startsWith('mongodb+srv://')) {
+    console.error('Invalid environment variable: MONGO_URL')
+    process.exit(1)
+  }
 
   function iterateProperties (environment: Record<string, any>): any {
     for (const variable in environment) {
@@ -12,11 +19,13 @@ export function verifyEnvironment (): void {
         iterateProperties(variableValue)
       } else {
         if (!variableValue) {
-          throw new Error(
+          console.error(
             `${
               previousVariable ? previousVariable + ' ' : ''
             }${variable} is undefined - You must set this variable in .env file`
           )
+
+          process.exit(1)
         }
         previousVariable = undefined
       }
@@ -24,6 +33,8 @@ export function verifyEnvironment (): void {
   }
 
   iterateProperties(environment)
+
+  console.log('Environment variables are OK')
 }
 
 const isObject = (value: any): boolean => {
