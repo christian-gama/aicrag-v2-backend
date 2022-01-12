@@ -13,6 +13,7 @@ MongoAdapter.connect(environment.DB.MONGO_URL)
     await createIndexes()
 
     app.listen(environment.SERVER.PORT, () => {
+      console.log('################################################')
       console.log(`Environment: ${environment.SERVER.NODE_ENV}`)
       console.log(
         `Server started at ${new Date().toLocaleString('pt-br', {
