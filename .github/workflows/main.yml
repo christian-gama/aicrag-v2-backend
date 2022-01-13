@@ -60,7 +60,6 @@ jobs:
           echo JWT_REFRESH_EXPIRES=30d >> .env
           echo JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }} >> .env
           echo TEST_SEND_EMAIL=false >> .env
-          echo ACTIONS=true >> .env
           cat .env
 
       - name: Deploy to heroku
