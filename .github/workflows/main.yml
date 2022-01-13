@@ -47,19 +47,19 @@ jobs:
       - name: Create .env
         run: |
           touch .env
-          echo NODE_ENV=production >> .env
-          echo PORT=4000 >> .env
-          echo API_URL=http://localhost: >> .env
-          echo GRAPHQL_ENDPOINT=/graphql >> .env
-          echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> .env
-          echo COOKIE_EXPIRES=30 >> .env
+          echo API_URL=${{ secrets.API_URL }} >> .env
+          echo COOKIE_EXPIRES=${{ secrets.COOKIE_EXPIRES }} >> .env
           echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
-          echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env
-          echo JWT_EXPIRES=600s >> .env
-          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
-          echo JWT_REFRESH_EXPIRES=30d >> .env
+          echo GRAPHQL_ENDPOINT=${{ secrets.GRAPHQL_ENDPOINT }} >> .env
+          echo JWT_EXPIRES=${{ secrets.JWT_EXPIRES }} >> .env
+          echo JWT_REFRESH_EXPIRES=${{ secrets.JWT_REFRESH_EXPIRES }} >> .env
           echo JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }} >> .env
-          echo TEST_SEND_EMAIL=false >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+          echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+          echo PORT=${{ secrets.PORT }} >> .env
+          echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> .env
+          echo WEB_URL=${{ secrets.WEB_URL }} >> .env
           cat .env
 
       - name: Deploy to heroku
