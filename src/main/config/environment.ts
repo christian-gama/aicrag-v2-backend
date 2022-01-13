@@ -52,6 +52,6 @@ export const environment = {
     GRAPHQL_URL: `${process.env.API_URL}${process.env.PORT}${process.env.GRAPHQL_ENDPOINT}`,
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
-    WEB_URL: process.env.WEB_URL
+    WEB_URL: process.env.WEB_URL ?? 'used in test'
   }
 }
