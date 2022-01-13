@@ -1,3 +1,4 @@
+import { environment } from '@/main/config/environment'
 import App from '@/main/express/config/app'
 import assert from 'assert'
 import { Express } from 'express'
@@ -17,7 +18,7 @@ describe('cors', () => {
   it('should enable cors', async () => {
     await request(app)
       .patch('/test_cors')
-      .expect('access-control-allow-origin', 'http://localhost:3000')
+      .expect('access-control-allow-origin', environment.SERVER.WEB_URL)
       .expect('access-control-allow-credentials', 'true')
   })
 
