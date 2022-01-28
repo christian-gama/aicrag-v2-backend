@@ -1,7 +1,7 @@
+# Welcome to my first personal project: Aicrag (backend)
+
 ![Build Status](https://github.com/christian-gama/aicrag-v2-backend/actions/workflows/main.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/christian-gama/aicrag-v2-backend/badge.svg?branch=master)](https://coveralls.io/github/christian-gama/aicrag-v2-backend?branch=master)
-
-# Welcome to my first personal project: Aicrag (backend)
 
 The purpose of this project is to save monthly invoices from a transcription project. It is possible to save the amount of money you earn per each task and keep your records saved. The project can also have Quality Assurance, besides the Transcriptionist, so it is also possibile to save the records for QAs.
 This project contains: signup, signin, account confirmation, password recovery and much more. This is a refactor from my previous version, which did not have Clean Architecture.
@@ -72,41 +72,40 @@ As this is my first personal project ever, you may find some stuffs that you dis
 - Supertest
 - Typescript
 - Validator
-- YARN
+- PNPM
 
 # Getting started
 
 Make sure you set the environment variables before running the following instructions.
 
-> ### Installing dependencies
+> ## Installing dependencies
 >
-> `$ yarn install`
+> `$ pnpm install`
 
 ---
 
-> ### Running locally
+> ## Running locally
 >
 > If you want to run this server locally, just run:
 
-`$ yarn dev:local`
+`$ pnpm dev:local`
 
 It will run on port 4001 as default.
 
 ---
 
-> ### Running in a Docker environment (Must have Docker installed)
+> ## Running in a Docker environment (Must have Docker installed)
 >
 > If you want to run this server in a Docker environment, just run:
 
-`$ yarn docker:up`
+`$ pnpm docker:up`
 
 It will run on port 4000 as default.
 
 ---
 
-> ### Fixing a permission error caused on Linux by Docker
+> ## Fixing a permission error caused on Linux by Docker
 >
 > When docker maps a ./data folder from mongo, it will cause a permission error on Linux
 
 `$ sudo chmod 777 -R data`
-
