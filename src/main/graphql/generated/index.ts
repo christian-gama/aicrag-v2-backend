@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -42,11 +43,11 @@ export type CreateTask = {
 };
 
 export type CreateTaskInput = {
-  commentary?: Maybe<Scalars['String']>;
+  commentary?: InputMaybe<Scalars['String']>;
   date: Scalars['DateString'];
   duration: Scalars['Float'];
   status: TaskStatus;
-  taskId?: Maybe<Scalars['String']>;
+  taskId?: InputMaybe<Scalars['String']>;
   type: TaskType;
 };
 
@@ -84,9 +85,9 @@ export type FindAllTasks = {
 };
 
 export type FindAllTasksQueries = {
-  limit?: Maybe<Scalars['String']>;
-  page?: Maybe<Scalars['String']>;
-  sort?: Maybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['String']>;
+  page?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
 };
 
 export type FindAllUserTasks = {
@@ -102,9 +103,9 @@ export type FindAllUserTasksParam = {
 };
 
 export type FindAllUserTasksQueries = {
-  limit?: Maybe<Scalars['String']>;
-  page?: Maybe<Scalars['String']>;
-  sort?: Maybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['String']>;
+  page?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
 };
 
 export type FindAllUsers = {
@@ -116,13 +117,13 @@ export type FindAllUsers = {
 };
 
 export type FindAllUsersQueries = {
-  email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  limit?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  page?: Maybe<Scalars['String']>;
-  role?: Maybe<Scalars['String']>;
-  sort?: Maybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  page?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
 };
 
 export type FindOneTask = {
@@ -167,9 +168,9 @@ export type GetAllInvoicesDate = {
 };
 
 export type GetAllInvoicesQueries = {
-  limit?: Maybe<Scalars['String']>;
-  page?: Maybe<Scalars['String']>;
-  sort?: Maybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['String']>;
+  page?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
   type: GetAllInvoicesType;
 };
 
@@ -201,14 +202,14 @@ export enum GetInvoiceByMonthPeriod {
 }
 
 export type GetInvoiceByMonthQueries = {
-  duration?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['String']>;
+  duration?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['String']>;
   month: Scalars['String'];
-  operator?: Maybe<GetInvoiceByMonthOperator>;
-  page?: Maybe<Scalars['String']>;
-  period?: Maybe<GetInvoiceByMonthPeriod>;
-  sort?: Maybe<Scalars['String']>;
-  taskId?: Maybe<Scalars['String']>;
+  operator?: InputMaybe<GetInvoiceByMonthOperator>;
+  page?: InputMaybe<Scalars['String']>;
+  period?: InputMaybe<GetInvoiceByMonthPeriod>;
+  sort?: InputMaybe<Scalars['String']>;
+  taskId?: InputMaybe<Scalars['String']>;
   type: GetInvoiceByMonthType;
   year: Scalars['String'];
 };
@@ -528,9 +529,9 @@ export type UpdateMeHasChanges = {
 };
 
 export type UpdateMeInput = {
-  currency?: Maybe<UserCurrency>;
-  email?: Maybe<Scalars['EmailAddress']>;
-  name?: Maybe<Scalars['String']>;
+  currency?: InputMaybe<UserCurrency>;
+  email?: InputMaybe<Scalars['EmailAddress']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateMeNoChanges = {
@@ -557,12 +558,12 @@ export type UpdateTaskHasChanges = {
 };
 
 export type UpdateTaskInput = {
-  commentary?: Maybe<Scalars['String']>;
-  date?: Maybe<Scalars['DateString']>;
-  duration?: Maybe<Scalars['Float']>;
-  status?: Maybe<TaskStatus>;
-  taskId?: Maybe<Scalars['String']>;
-  type?: Maybe<TaskType>;
+  commentary?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['DateString']>;
+  duration?: InputMaybe<Scalars['Float']>;
+  status?: InputMaybe<TaskStatus>;
+  taskId?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<TaskType>;
 };
 
 export type UpdateTaskNoChanges = {
@@ -582,12 +583,12 @@ export type UpdateUserHasChanges = {
 };
 
 export type UpdateUserInput = {
-  accountStatus?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  handicap?: Maybe<Scalars['Float']>;
-  name?: Maybe<Scalars['String']>;
-  role?: Maybe<Scalars['String']>;
-  tokenVersion?: Maybe<Scalars['Int']>;
+  accountStatus?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  handicap?: InputMaybe<Scalars['Float']>;
+  name?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Scalars['String']>;
+  tokenVersion?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateUserNoChanges = {
@@ -669,7 +670,7 @@ export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
-) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
