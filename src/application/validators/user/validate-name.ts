@@ -10,6 +10,6 @@ export class ValidateName implements IValidator {
     if (typeof name !== 'string') return new InvalidTypeError('name', 'string', typeof name)
 
     // Allow a-z, A-Z, space and period
-    if (name.match(/[^a-zA-Z .']/g)) return new InvalidParamError('name')
+    if (!name.match(/^[a-zA-Z\u00C0-\u00FF .']*$/g)) return new InvalidParamError('name')
   }
 }
