@@ -19,6 +19,8 @@ RUN pnpm build
 # Production
 FROM node:16-alpine
 WORKDIR /usr/aicrag
+RUN npm install -g pnpm
+RUN pnpm add -g pnpm
 COPY --from=builder /usr/aicrag/pnpm-lock.yaml .
 COPY --from=builder /usr/aicrag/package.json .
 COPY --from=builder /usr/aicrag/dist ./dist

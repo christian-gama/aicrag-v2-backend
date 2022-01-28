@@ -106,6 +106,7 @@ dependencies:
   graphql-scalars: 1.14.1_graphql@15.8.0
   helmet: 4.6.0
   html-to-text: 8.1.0
+  husky: 7.0.4
   jsonwebtoken: 8.5.1
   mongodb: 4.3.1
   nodemailer: 6.7.2
@@ -165,7 +166,6 @@ devDependencies:
   eslint-plugin-node: 11.1.0_eslint@7.32.0
   eslint-plugin-promise: 5.2.0_eslint@7.32.0
   faker: 5.5.3
-  husky: 7.0.4
   jest: 27.4.7
   jest-cucumber: 2.0.13
   lint-staged: 11.2.6
@@ -6626,7 +6626,7 @@ packages:
     resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
     engines: {node: '>=12'}
     hasBin: true
-    dev: true
+    dev: false
 
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
