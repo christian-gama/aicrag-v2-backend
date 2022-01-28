@@ -10,7 +10,7 @@ export class RecoverPasswordEmail extends MailerService implements IMailerServic
     const subject = 'Recupere a sua senha clicando no botão abaixo:'
 
     const html = pug.renderFile(path.resolve(__dirname, 'templates', 'forgot-password.pug'), {
-      attachment: `https://aicrag.app.br/login/reset-password/${user.temporary.resetPasswordToken as string}`,
+      attachment: `https://aicrag.netlify.com/entry/reset-password/${user.temporary.resetPasswordToken as string}`,
       name: user.personal.name,
       subject
     })
