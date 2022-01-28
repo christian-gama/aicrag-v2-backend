@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn eslint --fix
-yarn test:ci
+pnpm eslint --fix
+pnpm test:ci
