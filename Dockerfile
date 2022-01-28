@@ -1,24 +1,27 @@
+############
+# Build
 FROM node:16-alpine as builder
-
 WORKDIR /usr/aicrag
-
+RUN npm install -g pnpm
+RUN pnpm add -g pnpm
 COPY package.json .
-COPY yarn.lock .
-RUN yarn install
+COPY pnpm-lock.yaml .
+RUN pnpm install --unsafe-perm
 COPY tsconfig.build.json .
 COPY tsconfig.json .
 COPY babel.config.js .
 COPY .graphqlrc.yml .
 COPY .env .
 COPY ./src ./src
-RUN yarn build
+RUN pnpm build
 
-FROM node:16-alpine as production
+############
+# Production
+FROM node:16-alpine
 WORKDIR /usr/aicrag
-COPY --from=builder /usr/aicrag/yarn.lock .
+COPY --from=builder /usr/aicrag/pnpm-lock.yaml .
 COPY --from=builder /usr/aicrag/package.json .
 COPY --from=builder /usr/aicrag/dist ./dist
 COPY --from=builder /usr/aicrag/.env .
-RUN yarn install --prod
-
-CMD ["yarn", "start"]
+RUN pnpm install --production --unsafe-perm
+CMD ["pnpm", "start"]
