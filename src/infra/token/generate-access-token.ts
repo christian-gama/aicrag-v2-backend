@@ -7,6 +7,9 @@ export class GenerateAccessToken implements IGenerateToken {
 
   generate (user: IUser): string {
     const result = this.accessTokenEncrypter.encrypt({
+      currency: user.settings.currency,
+      email: user.personal.email,
+      name: user.personal.name,
       userId: user.personal.id
     })
 

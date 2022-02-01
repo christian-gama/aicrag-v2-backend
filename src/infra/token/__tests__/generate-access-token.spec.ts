@@ -24,6 +24,11 @@ describe('generateAccessToken', () => {
 
     sut.generate(fakeUser)
 
-    expect(encryptSpy).toHaveBeenCalledWith({ userId: fakeUser.personal.id })
+    expect(encryptSpy).toHaveBeenCalledWith({
+      currency: fakeUser.settings.currency,
+      email: fakeUser.personal.email,
+      name: fakeUser.personal.name,
+      userId: fakeUser.personal.id
+    })
   })
 })
