@@ -3,8 +3,8 @@ type Mutation {
 }
 
 input ActivateAccountInput {
-  email: EmailAddress!
   activationPin: String!
+  userId: UUID!
 }
 
 type ActivateAccount {

@@ -27,7 +27,7 @@ export type ActivateAccount = {
 
 export type ActivateAccountInput = {
   activationPin: Scalars['String'];
-  email: Scalars['EmailAddress'];
+  userId: Scalars['UUID'];
 };
 
 export type ActiveAccount = {

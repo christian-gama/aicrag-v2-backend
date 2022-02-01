@@ -1,6 +1,6 @@
-export const activateAccountMutation = (input: { email: string, activationPin: string }): string => `
+export const activateAccountMutation = (input: { userId: string, activationPin: string }): string => `
   mutation {
-    activateAccount (input: { email: "${input.email}", activationPin: "${input.activationPin}" }) {
+    activateAccount (input: { userId: "${input.userId}", activationPin: "${input.activationPin}" }) {
         accessToken
         refreshToken
         user {

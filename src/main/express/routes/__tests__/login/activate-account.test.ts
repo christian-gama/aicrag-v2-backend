@@ -46,7 +46,7 @@ describe('patch /activate-account', () => {
     const result = await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationPin: activationPin, email: fakeUser.personal.email })
+      .send({ activationPin: activationPin, userId: fakeUser.personal.id })
 
     expect(result.status).toBe(200)
   })
@@ -65,7 +65,7 @@ describe('patch /activate-account', () => {
     const result = await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationPin: 'invalid_pin', email: fakeUser.personal.email })
+      .send({ activationPin: 'invalid_pin', userId: fakeUser.personal.id })
 
     expect(result.status).toBe(400)
   })
@@ -78,7 +78,7 @@ describe('patch /activate-account', () => {
     const result = await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationPin: activationPin, email: fakeUser.personal.email })
+      .send({ activationPin: activationPin, userId: fakeUser.personal.id })
 
     expect(result.status).toBe(400)
   })
@@ -99,7 +99,7 @@ describe('patch /activate-account', () => {
     const result = await request(app)
       .patch('/api/v1/login/activate-account')
       .set('x-access-token', accessToken)
-      .send({ activationPin: activationPin, email: fakeUser.personal.email })
+      .send({ activationPin: activationPin, userId: fakeUser.personal.id })
 
     expect(result.status).toBe(400)
   })

@@ -24,7 +24,7 @@ const makeSut = (): SutTypes => {
   const request: HttpRequest = {
     body: {
       activationPin: fakeUser.temporary.activationPin,
-      email: fakeUser.personal.email
+      userId: fakeUser.personal.id
     }
   }
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
@@ -44,13 +44,13 @@ describe('validateActivationCode', () => {
     expect(result).toStrictEqual(new InvalidTypeError('activationPin', 'string', typeof request.body.activationPin))
   })
 
-  it('should call findByEmail with correct email', async () => {
+  it('should call findById with correct email', async () => {
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findById')
 
     await sut.validate(request.body)
 
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.userId)
   })
 
   it('should return an InvalidCode if activation pin is different from user activation pin', async () => {
@@ -91,7 +91,7 @@ describe('validateActivationCode', () => {
 
   it('should return an InvalidPinError if there is no user', async () => {
     const { request, sut, userRepositoryStub } = makeSut()
-    jest.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(userRepositoryStub, 'findById').mockReturnValueOnce(Promise.resolve(null))
 
     const value = await sut.validate(request.body)
 

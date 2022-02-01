@@ -39,7 +39,7 @@ const makeSut = (): SutTypes => {
   const generateRefreshTokenStub = makeGenerateTokenStub()
   const httpHelper = makeHttpHelper()
   const request = {
-    body: { activationPin: fakeUser.temporary.activationPin, email: fakeUser.personal.email }
+    body: { activationPin: fakeUser.temporary.activationPin, userId: fakeUser.personal.id }
   }
   const userRepositoryStub = makeUserRepositoryStub(fakeUser)
 
@@ -94,13 +94,13 @@ describe('activateAccountController', () => {
     expect(result).toStrictEqual(httpHelper.badRequest(error))
   })
 
-  it('should call findByEmail with correct email', async () => {
+  it('should call findById with correct id', async () => {
     const { request, sut, userRepositoryStub } = makeSut()
-    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findByEmail')
+    const findUserByEmailSpy = jest.spyOn(userRepositoryStub, 'findById')
 
     await sut.handle(request)
 
-    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.email)
+    expect(findUserByEmailSpy).toHaveBeenCalledWith(request.body.userId)
   })
 
   it('should call filter with correct user', async () => {

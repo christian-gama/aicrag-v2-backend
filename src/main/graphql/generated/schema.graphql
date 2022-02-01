@@ -18,7 +18,7 @@ type ActivateAccount {
 
 input ActivateAccountInput {
   activationPin: String!
-  email: EmailAddress!
+  userId: UUID!
 }
 
 type ActiveAccount {

@@ -6,7 +6,6 @@ import App from '@/main/express/config/app'
 import { makeMongoDb } from '@/main/factories/database/mongo-db-factory'
 import { userHelper } from '@/tests/helpers/user-helper'
 import { activateAccountMutation } from './activate-account-document'
-import { randomUUID } from 'crypto'
 import { Express } from 'express'
 import { loadFeature, defineFeature } from 'jest-cucumber'
 import { resolve } from 'path'
@@ -45,8 +44,8 @@ defineFeature(feature, (test) => {
     given('I have an account with the following credentials:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
-          email: table[0].email,
-          id: randomUUID(),
+          email: 'any@email.com',
+          id: table[0].userId,
           name: 'any_name',
           password: 'any_password'
         },
@@ -63,7 +62,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
+      const query = activateAccountMutation({ activationPin: table[0].activationPin, userId: table[0].userId })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -85,8 +84,8 @@ defineFeature(feature, (test) => {
     given('I have an account with the following credentials:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
-          email: table[0].email,
-          id: randomUUID(),
+          email: 'any@email.com',
+          id: table[0].userId,
           name: 'any_name',
           password: 'any_password'
         },
@@ -102,7 +101,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
+      const query = activateAccountMutation({ activationPin: table[0].activationPin, userId: table[0].userId })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)
@@ -127,8 +126,8 @@ defineFeature(feature, (test) => {
     given('I have an account with the following credentials:', async (table) => {
       fakeUser = await userHelper.insertUser(userCollection, {
         personal: {
-          email: table[0].email,
-          id: randomUUID(),
+          email: 'any@email.com',
+          id: table[0].userId,
           name: 'any_name',
           password: 'any_password'
         },
@@ -144,7 +143,7 @@ defineFeature(feature, (test) => {
     })
 
     when('I request to activate my account using the following credentials:', async (table) => {
-      const query = activateAccountMutation({ activationPin: table[0].activationPin, email: table[0].email })
+      const query = activateAccountMutation({ activationPin: table[0].activationPin, userId: table[0].userId })
 
       result = await request(app)
         .post(environment.GRAPHQL.ENDPOINT)

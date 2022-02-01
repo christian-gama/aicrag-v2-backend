@@ -22,7 +22,7 @@ export class ActivateAccountController implements IController {
     const error = await this.activateAccountValidator.validate(data)
     if (error) return this.httpHelper.badRequest(error)
 
-    const user = (await this.userRepository.findByEmail(data.email)) as IUser
+    const user = (await this.userRepository.findById(data.userId)) as IUser
 
     const update = {}
     Object.assign(update, this.activateAccount(user))

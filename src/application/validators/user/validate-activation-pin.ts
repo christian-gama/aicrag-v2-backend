@@ -8,13 +8,13 @@ export class ValidateActivationPin implements IValidator {
   async validate (
     input: Record<string, any>
   ): Promise<AccountAlreadyActivatedError | PinIsExpiredError | InvalidPinError | InvalidTypeError | undefined> {
-    const { email, activationPin } = input
+    const { userId, activationPin } = input
 
-    if (!activationPin || !email) return
+    if (!activationPin || !userId) return
 
     if (typeof activationPin !== 'string') return new InvalidTypeError('activationPin', 'string', typeof activationPin)
 
-    const user = await this.userRepository.findByEmail(email)
+    const user = await this.userRepository.findById(userId)
     if (!user) return new InvalidPinError()
 
     const { accountActivated } = user.settings

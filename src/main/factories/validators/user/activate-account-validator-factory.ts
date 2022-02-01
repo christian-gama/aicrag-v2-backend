@@ -5,7 +5,7 @@ import { makeRequiredFields, makeValidateActivationPin } from '.'
 export const makeActivateAccountValidator = (): IValidator => {
   const validations: IValidator[] = []
 
-  const fields = ['email', 'activationPin']
+  const fields = ['userId', 'activationPin']
   for (const field of fields) {
     validations.push(makeRequiredFields(field))
   }
