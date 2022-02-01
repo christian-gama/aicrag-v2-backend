@@ -1,0 +1,7 @@
+type Query {
+  getAuthentication: GetAuthentication!
+}
+
+type GetAuthentication {
+  authentication: String!
+}

@@ -27,6 +27,7 @@ import {
   makeUpdateTaskController
 } from '@/main/factories/controllers/task'
 import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/token'
+import { makeGetAuthenticationController } from '@/main/factories/controllers/token/get-authentication-controller-factory'
 import {
   makePartialProtectedMiddleware,
   makeIsLoggedInMiddleware,
@@ -71,6 +72,7 @@ export const findOneTaskController = controllerAdapter(makeFindOneTaskController
 export const updateTaskController = controllerAdapter(makeUpdateTaskController())
 
 // Token Routes
+export const getAuthentication = controllerAdapter(makeGetAuthenticationController())
 export const verifyResetPasswordTokenController = controllerAdapter(makeVerifyResetPasswordTokenController())
 
 /* ********** Middlewares *********** */

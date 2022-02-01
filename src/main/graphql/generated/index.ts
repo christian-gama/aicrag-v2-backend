@@ -180,6 +180,11 @@ export enum GetAllInvoicesType {
   Both = 'both'
 }
 
+export type GetAuthentication = {
+  __typename?: 'GetAuthentication';
+  authentication: Scalars['String'];
+};
+
 export type GetInvoiceByMonth = {
   __typename?: 'GetInvoiceByMonth';
   count: Scalars['Int'];
@@ -382,6 +387,7 @@ export type Query = {
   findAllUsers: FindAllUsers;
   findOneTask: FindOneTask;
   getAllInvoices: GetAllInvoices;
+  getAuthentication: GetAuthentication;
   getInvoiceByMonth: GetInvoiceByMonth;
   getMe: GetMe;
   verifyResetPasswordToken: VerifyResetPasswordToken;
@@ -747,6 +753,7 @@ export type ResolversTypes = {
   GetAllInvoicesDate: ResolverTypeWrapper<GetAllInvoicesDate>;
   GetAllInvoicesQueries: GetAllInvoicesQueries;
   GetAllInvoicesType: GetAllInvoicesType;
+  GetAuthentication: ResolverTypeWrapper<GetAuthentication>;
   GetInvoiceByMonth: ResolverTypeWrapper<GetInvoiceByMonth>;
   GetInvoiceByMonthOperator: GetInvoiceByMonthOperator;
   GetInvoiceByMonthPeriod: GetInvoiceByMonthPeriod;
@@ -839,6 +846,7 @@ export type ResolversParentTypes = {
   GetAllInvoices: GetAllInvoices;
   GetAllInvoicesDate: GetAllInvoicesDate;
   GetAllInvoicesQueries: GetAllInvoicesQueries;
+  GetAuthentication: GetAuthentication;
   GetInvoiceByMonth: GetInvoiceByMonth;
   GetInvoiceByMonthQueries: GetInvoiceByMonthQueries;
   GetMe: GetMe;
@@ -1019,6 +1027,11 @@ export type GetAllInvoicesDateResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type GetAuthenticationResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAuthentication'] = ResolversParentTypes['GetAuthentication']> = {
+  authentication?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type GetInvoiceByMonthResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetInvoiceByMonth'] = ResolversParentTypes['GetInvoiceByMonth']> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   displaying?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -1100,6 +1113,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findAllUsers?: Resolver<ResolversTypes['FindAllUsers'], ParentType, ContextType, RequireFields<QueryFindAllUsersArgs, 'query'>>;
   findOneTask?: Resolver<ResolversTypes['FindOneTask'], ParentType, ContextType, RequireFields<QueryFindOneTaskArgs, 'param'>>;
   getAllInvoices?: Resolver<ResolversTypes['GetAllInvoices'], ParentType, ContextType, RequireFields<QueryGetAllInvoicesArgs, 'query'>>;
+  getAuthentication?: Resolver<ResolversTypes['GetAuthentication'], ParentType, ContextType>;
   getInvoiceByMonth?: Resolver<ResolversTypes['GetInvoiceByMonth'], ParentType, ContextType, RequireFields<QueryGetInvoiceByMonthArgs, 'query'>>;
   getMe?: Resolver<ResolversTypes['GetMe'], ParentType, ContextType>;
   verifyResetPasswordToken?: Resolver<ResolversTypes['VerifyResetPasswordToken'], ParentType, ContextType, RequireFields<QueryVerifyResetPasswordTokenArgs, 'param'>>;
@@ -1272,6 +1286,7 @@ export type Resolvers<ContextType = any> = {
   FullUser?: FullUserResolvers<ContextType>;
   GetAllInvoices?: GetAllInvoicesResolvers<ContextType>;
   GetAllInvoicesDate?: GetAllInvoicesDateResolvers<ContextType>;
+  GetAuthentication?: GetAuthenticationResolvers<ContextType>;
   GetInvoiceByMonth?: GetInvoiceByMonthResolvers<ContextType>;
   GetMe?: GetMeResolvers<ContextType>;
   InactiveAccount?: InactiveAccountResolvers<ContextType>;
