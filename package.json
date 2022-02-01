@@ -76,7 +76,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
     "faker": "^5.5.3",
-
     "jest": "^27.4.7",
     "jest-cucumber": "^2.0.13",
     "lint-staged": "^11.2.6",
@@ -94,6 +93,7 @@
     "@graphql-tools/merge": "^8.2.1",
     "@graphql-tools/schema": "^8.3.1",
     "@graphql-tools/utils": "^8.6.1",
+    "apollo-server-core": "^3.6.2",
     "apollo-server-express": "^3.6.2",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
