@@ -1,6 +1,6 @@
 # Welcome to my first personal project: Aicrag (backend)
 
-![Build Status](https://github.com/christian-gama/aicrag-v2-backend/actions/workflows/main.yml/badge.svg)
+![Build Status](https://github.com/christian-gama/aicrag-v2-backend/actions/workflows/master.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/christian-gama/aicrag-v2-backend/badge.svg?branch=master)](https://coveralls.io/github/christian-gama/aicrag-v2-backend?branch=master)
 
 The purpose of this project is to save monthly invoices from a transcription project. It is possible to save the amount of money you earn per each task and keep your records saved. The project can also have Quality Assurance, besides the Transcriptionist, so it is also possibile to save the records for QAs.
