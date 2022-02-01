@@ -1,0 +1,79 @@
+name: Deploy to staging
+on:
+  push:
+    branches:
+      - staging
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    environment: staging
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.27.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          cache: 'pnpm'
+
+      - name: Use cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check tests
+        run: pnpm test:ci
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check linting
+        run: pnpm lint
+
+      - name: Check commit message
+        uses: wagoid/commitlint-github-action@v4
+
+      - name: Create .env
+        run: |
+          touch .env
+          echo API_URL=${{ secrets.API_URL }} >> .env
+          echo COOKIE_EXPIRES=${{ secrets.COOKIE_EXPIRES }} >> .env
+          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> .env
+          echo GRAPHQL_ENDPOINT=${{ secrets.GRAPHQL_ENDPOINT }} >> .env
+          echo JWT_EXPIRES=${{ secrets.JWT_EXPIRES }} >> .env
+          echo JWT_REFRESH_EXPIRES=${{ secrets.JWT_REFRESH_EXPIRES }} >> .env
+          echo JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+          echo MONGO_URL=${{ secrets.MONGO_URL }} >> .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+          echo PORT=${{ secrets.PORT }} >> .env
+          echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> .env
+          echo WEB_URL=${{ secrets.WEB_URL }} >> .env
+          cat .env
+
+      - name: Deploy to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'staging-api-aicrag'
+          heroku_email: 'christiangama.dev@gmail.com'
+          usedocker: true
+          env_file: '.env'
