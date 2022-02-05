@@ -69,4 +69,16 @@ describe('getAuthentication', () => {
       httpHelper.ok({ accessToken: 'any_token', authentication: 'protected', refreshToken: 'any_token' })
     )
   })
+
+  it('should call encrypt if access token was expired', async () => {
+    const { accessTokenEncrypterStub, sut, verifyAccessTokenStub, request } = makeSut()
+    const error = new Error()
+    error.name = 'ExpiredTokenError'
+    jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValue(Promise.resolve(error))
+    jest.spyOn(accessTokenEncrypterStub, 'encrypt').mockReturnValue('any_token')
+
+    await sut.handle(request)
+
+    expect(accessTokenEncrypterStub.encrypt).toHaveBeenCalled()
+  })
 })
