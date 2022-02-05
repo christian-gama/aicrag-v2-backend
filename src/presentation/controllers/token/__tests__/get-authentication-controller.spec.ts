@@ -1,10 +1,13 @@
+import { IEncrypter } from '@/domain/cryptography'
 import { IVerifyToken } from '@/domain/providers'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
+import { makeAccessTokenEncrypter } from '@/main/factories/cryptography'
 import { makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 import { GetAuthenticationController } from '..'
 
 interface SutTypes {
+  accessTokenEncrypterStub: IEncrypter
   httpHelper: IHttpHelper
   request: HttpRequest
   sut: GetAuthenticationController
@@ -15,6 +18,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
+  const accessTokenEncrypterStub = makeAccessTokenEncrypter()
   const request: HttpRequest = {
     headers: { 'x-access-token': 'any_token', 'x-refresh-token': 'any_token' }
   }
@@ -22,9 +26,14 @@ const makeSut = (): SutTypes => {
   const verifyAccessTokenStub = makeVerifyTokenStub(fakeUser)
   const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
 
-  const sut = new GetAuthenticationController(httpHelper, verifyAccessTokenStub, verifyRefreshTokenStub)
+  const sut = new GetAuthenticationController(
+    accessTokenEncrypterStub,
+    httpHelper,
+    verifyAccessTokenStub,
+    verifyRefreshTokenStub
+  )
 
-  return { httpHelper, request, sut, verifyAccessTokenStub, verifyRefreshTokenStub }
+  return { accessTokenEncrypterStub, httpHelper, request, sut, verifyAccessTokenStub, verifyRefreshTokenStub }
 }
 
 describe('getAuthentication', () => {
@@ -35,7 +44,9 @@ describe('getAuthentication', () => {
 
     const promise = await sut.handle(request)
 
-    expect(promise).toStrictEqual(httpHelper.ok({ authentication: 'none' }))
+    expect(promise).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', authentication: 'none', refreshToken: 'any_token' })
+    )
   })
 
   it('should return authentication equal to partial if user is not logged in', async () => {
@@ -44,7 +55,9 @@ describe('getAuthentication', () => {
 
     const promise = await sut.handle(request)
 
-    expect(promise).toStrictEqual(httpHelper.ok({ authentication: 'partial' }))
+    expect(promise).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', authentication: 'partial', refreshToken: 'any_token' })
+    )
   })
 
   it('should return authentication equal to protected if succeeds', async () => {
@@ -52,6 +65,20 @@ describe('getAuthentication', () => {
 
     const result = await sut.handle(request)
 
-    expect(result).toStrictEqual(httpHelper.ok({ authentication: 'protected' }))
+    expect(result).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', authentication: 'protected', refreshToken: 'any_token' })
+    )
+  })
+
+  it('should call encrypt if access token was expired', async () => {
+    const { accessTokenEncrypterStub, sut, verifyAccessTokenStub, request } = makeSut()
+    const error = new Error()
+    error.name = 'ExpiredTokenError'
+    jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValue(Promise.resolve(error))
+    jest.spyOn(accessTokenEncrypterStub, 'encrypt').mockReturnValue('any_token')
+
+    await sut.handle(request)
+
+    expect(accessTokenEncrypterStub.encrypt).toHaveBeenCalled()
   })
 })

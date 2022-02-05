@@ -182,7 +182,9 @@ export enum GetAllInvoicesType {
 
 export type GetAuthentication = {
   __typename?: 'GetAuthentication';
+  accessToken: Scalars['JWT'];
   authentication: Scalars['String'];
+  refreshToken: Scalars['JWT'];
 };
 
 export type GetInvoiceByMonth = {
@@ -1028,7 +1030,9 @@ export type GetAllInvoicesDateResolvers<ContextType = any, ParentType extends Re
 };
 
 export type GetAuthenticationResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAuthentication'] = ResolversParentTypes['GetAuthentication']> = {
+  accessToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
   authentication?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  refreshToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
