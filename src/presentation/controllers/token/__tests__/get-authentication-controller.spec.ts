@@ -1,13 +1,12 @@
-import { IEncrypter } from '@/domain/cryptography'
-import { IVerifyToken } from '@/domain/providers'
+import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
-import { makeAccessTokenEncrypter } from '@/main/factories/cryptography'
 import { makeHttpHelper } from '@/main/factories/helpers'
+import { makeGenerateAccessToken } from '@/main/factories/providers/token'
 import { makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 import { GetAuthenticationController } from '..'
 
 interface SutTypes {
-  accessTokenEncrypterStub: IEncrypter
+  generateAccessTokenStub: IGenerateToken
   httpHelper: IHttpHelper
   request: HttpRequest
   sut: GetAuthenticationController
@@ -18,7 +17,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
-  const accessTokenEncrypterStub = makeAccessTokenEncrypter()
+  const generateAccessTokenStub = makeGenerateAccessToken()
   const request: HttpRequest = {
     headers: { 'x-access-token': 'any_token', 'x-refresh-token': 'any_token' }
   }
@@ -27,13 +26,13 @@ const makeSut = (): SutTypes => {
   const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
 
   const sut = new GetAuthenticationController(
-    accessTokenEncrypterStub,
+    generateAccessTokenStub,
     httpHelper,
     verifyAccessTokenStub,
     verifyRefreshTokenStub
   )
 
-  return { accessTokenEncrypterStub, httpHelper, request, sut, verifyAccessTokenStub, verifyRefreshTokenStub }
+  return { generateAccessTokenStub, httpHelper, request, sut, verifyAccessTokenStub, verifyRefreshTokenStub }
 }
 
 describe('getAuthentication', () => {
@@ -70,15 +69,15 @@ describe('getAuthentication', () => {
     )
   })
 
-  it('should call encrypt if access token was expired', async () => {
-    const { accessTokenEncrypterStub, sut, verifyAccessTokenStub, request } = makeSut()
+  it('should call generate if access token was expired', async () => {
+    const { generateAccessTokenStub, sut, verifyAccessTokenStub, request } = makeSut()
     const error = new Error()
     error.name = 'ExpiredTokenError'
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValue(Promise.resolve(error))
-    jest.spyOn(accessTokenEncrypterStub, 'encrypt').mockReturnValue('any_token')
+    jest.spyOn(generateAccessTokenStub, 'generate').mockReturnValue('any_token')
 
     await sut.handle(request)
 
-    expect(accessTokenEncrypterStub.encrypt).toHaveBeenCalled()
+    expect(generateAccessTokenStub.generate).toHaveBeenCalled()
   })
 })

@@ -1,5 +1,4 @@
-import { IEncrypter } from '@/domain/cryptography'
-import { IVerifyToken } from '@/domain/providers'
+import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 import { getToken } from '@/infra/token'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
@@ -7,8 +6,8 @@ import { IMiddleware } from './protocols/middleware.model'
 
 export class ProtectedMiddleware implements IMiddleware {
   constructor (
+    private readonly generateAccessToken: IGenerateToken,
     private readonly httpHelper: IHttpHelper,
-    private readonly accessTokenEncrypter: IEncrypter,
     private readonly verifyAccessToken: IVerifyToken,
     private readonly verifyRefreshToken: IVerifyToken
   ) {}
@@ -29,13 +28,12 @@ export class ProtectedMiddleware implements IMiddleware {
     switch (accessTokenResponse.constructor) {
       case InvalidTokenError:
         return this.httpHelper.unauthorized(accessTokenResponse as Error)
+
       case TokenMissingError:
         return this.httpHelper.unauthorized(accessTokenResponse as Error)
+
       case ExpiredTokenError:
-        accessToken = this.accessTokenEncrypter.encrypt({
-          userId: refreshTokenResponse.personal.id
-        })
-        break
+        accessToken = await this.generateAccessToken.generate(refreshTokenResponse)
     }
 
     const result = this.httpHelper.ok({ accessToken, refreshToken })

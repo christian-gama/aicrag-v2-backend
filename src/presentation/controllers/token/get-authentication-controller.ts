@@ -1,12 +1,11 @@
-import { IEncrypter } from '@/domain/cryptography'
-import { IVerifyToken } from '@/domain/providers'
+import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { getToken } from '@/infra/token'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller.model'
 
 export class GetAuthenticationController implements IController {
   constructor (
-    private readonly accessTokenEncrypter: IEncrypter,
+    private readonly generateAccessToken: IGenerateToken,
     private readonly httpHelper: IHttpHelper,
     private readonly verifyAccessToken: IVerifyToken,
     private readonly verifyRefreshToken: IVerifyToken
@@ -28,9 +27,7 @@ export class GetAuthenticationController implements IController {
       decodedAccessToken.name === 'ExpiredTokenError' &&
       !(decodedRefreshToken instanceof Error)
     ) {
-      accessToken = this.accessTokenEncrypter.encrypt({
-        userId: decodedRefreshToken.personal.id
-      })
+      accessToken = await this.generateAccessToken.generate(decodedRefreshToken)
       isValidAccessToken = true
     }
 

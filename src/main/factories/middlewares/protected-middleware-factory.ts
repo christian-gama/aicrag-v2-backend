@@ -1,19 +1,18 @@
 import { ProtectedMiddleware } from '@/presentation/middlewares'
 import { IMiddleware } from '@/presentation/middlewares/protocols/middleware.model'
-import { makeAccessTokenEncrypter } from '../cryptography'
 import { makeTryCatchDecorator } from '../decorators'
 import { makeHttpHelper } from '../helpers'
-import { makeVerifyAccessToken, makeVerifyRefreshToken } from '../providers/token'
+import { makeGenerateAccessToken, makeVerifyAccessToken, makeVerifyRefreshToken } from '../providers/token'
 
 export const makeProtectedMiddleware = (): IMiddleware => {
+  const generateAccessToken = makeGenerateAccessToken()
   const httpHelper = makeHttpHelper()
-  const accessTokenEncrypter = makeAccessTokenEncrypter()
   const verifyAccessToken = makeVerifyAccessToken()
   const verifyRefreshToken = makeVerifyRefreshToken()
 
   const protectedMiddleware = new ProtectedMiddleware(
+    generateAccessToken,
     httpHelper,
-    accessTokenEncrypter,
     verifyAccessToken,
     verifyRefreshToken
   )
