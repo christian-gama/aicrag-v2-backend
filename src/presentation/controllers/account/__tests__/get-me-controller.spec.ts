@@ -28,7 +28,7 @@ const makeSut = (): SutTypes => {
   return { fakeUser, filterUserDataStub, httpHelper, request, sut }
 }
 
-describe('getMeController', () => {
+describe.only('getMeController', () => {
   it('should return MustLoginError if user is not logged in', async () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
@@ -40,6 +40,21 @@ describe('getMeController', () => {
 
   it('should return ok if succeeds', async () => {
     const { httpHelper, request, sut, filterUserDataStub, fakeUser } = makeSut()
+
+    const result = await sut.handle(request)
+
+    expect(result).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', refreshToken: 'any_token', user: filterUserDataStub.filter(fakeUser) })
+    )
+  })
+
+  it('should use cookies if headers do not have tokens', async () => {
+    const { httpHelper, request, sut, filterUserDataStub, fakeUser } = makeSut()
+    request.headers = undefined
+    request.cookies = {
+      accessToken: 'any_token',
+      refreshToken: 'any_token'
+    }
 
     const result = await sut.handle(request)
 
