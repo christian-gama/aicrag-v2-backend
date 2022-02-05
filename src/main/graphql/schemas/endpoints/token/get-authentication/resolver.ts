@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-import { makeGetAuthenticationController } from '@/main/factories/controllers/token/get-authentication-controller-factory'
+import { makeGetAuthenticationController } from '@/main/factories/controllers/token'
 import { resolverAdapter } from '@/main/graphql/adapters'
 import { Resolvers } from '@/main/graphql/generated'
 
