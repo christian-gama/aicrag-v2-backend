@@ -43,9 +43,7 @@ describe('getAuthentication', () => {
 
     const promise = await sut.handle(request)
 
-    expect(promise).toStrictEqual(
-      httpHelper.ok({ accessToken: 'any_token', authentication: 'none', refreshToken: 'any_token' })
-    )
+    expect(promise).toStrictEqual(httpHelper.ok({ authentication: 'none' }))
   })
 
   it('should return authentication equal to partial if user is not logged in', async () => {
@@ -54,9 +52,7 @@ describe('getAuthentication', () => {
 
     const promise = await sut.handle(request)
 
-    expect(promise).toStrictEqual(
-      httpHelper.ok({ accessToken: 'any_token', authentication: 'partial', refreshToken: 'any_token' })
-    )
+    expect(promise).toStrictEqual(httpHelper.ok({ accessToken: 'any_token', authentication: 'partial' }))
   })
 
   it('should return authentication equal to protected if succeeds', async () => {

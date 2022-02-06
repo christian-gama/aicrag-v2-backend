@@ -16,6 +16,7 @@ export class GetAuthenticationController implements IController {
 
     let accessToken = getToken.accessToken(httpRequest)
     const decodedAccessToken = await this.verifyAccessToken.verify(accessToken)
+
     let isValidAccessToken: boolean = !(decodedAccessToken instanceof Error)
 
     const refreshToken = getToken.refreshToken(httpRequest)
@@ -31,10 +32,16 @@ export class GetAuthenticationController implements IController {
       isValidAccessToken = true
     }
 
-    if (isValidAccessToken && isValidRefreshToken) authentication = 'protected'
-    else if (isValidAccessToken && !isValidRefreshToken) authentication = 'partial'
-
-    const result = this.httpHelper.ok({ accessToken, authentication, refreshToken })
+    let result = this.httpHelper.ok({ authentication })
+    if (isValidAccessToken) {
+      if (isValidRefreshToken) {
+        authentication = 'protected'
+        result = this.httpHelper.ok({ accessToken, authentication, refreshToken })
+      } else if (!isValidRefreshToken) {
+        authentication = 'partial'
+        result = this.httpHelper.ok({ accessToken, authentication })
+      }
+    }
 
     return result
   }
