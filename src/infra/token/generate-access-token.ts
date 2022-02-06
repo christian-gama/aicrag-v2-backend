@@ -6,7 +6,6 @@ export class GenerateAccessToken implements IGenerateToken {
   constructor (private readonly accessTokenEncrypter: IEncrypter) {}
 
   generate (user: IUser): string {
-    console.log(user)
     const result = this.accessTokenEncrypter.encrypt({
       currency: user.settings.currency,
       email: user.personal.email,
