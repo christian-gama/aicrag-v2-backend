@@ -28,7 +28,7 @@ const makeSut = (): SutTypes => {
   return { fakeUser, filterUserDataStub, httpHelper, request, sut }
 }
 
-describe.only('getMeController', () => {
+describe('getMeController', () => {
   it('should return MustLoginError if user is not logged in', async () => {
     const { httpHelper, request, sut } = makeSut()
     request.user = undefined
