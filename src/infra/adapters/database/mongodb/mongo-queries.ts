@@ -39,7 +39,7 @@ export class MongoQueries implements QueryMethodsProtocol {
     if (query.sort) {
       const sortArr = query.sort.split(',')
       for (const property of sortArr) {
-        const cleanProperty = property.trim().startsWith('-') ? property.substr(1) : property
+        const cleanProperty = property.trim().startsWith('-') ? property.substring(1) : property
         sort[cleanProperty] = property.trim().startsWith('-') ? -1 : 1
       }
     }
