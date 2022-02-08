@@ -9,7 +9,7 @@ COPY tsconfig.build.json .
 COPY tsconfig.json .
 COPY babel.config.js .
 COPY .graphqlrc.yml .
-COPY .env.development .
 COPY ./src ./src
 RUN pnpm build
+COPY .env.development .
 CMD ["pnpm", "dev:docker"]

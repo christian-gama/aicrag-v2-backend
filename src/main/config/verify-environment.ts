@@ -1,8 +1,6 @@
 import { environment } from './environment'
 
 export function verifyEnvironment (): void {
-  console.log('Verifying environment variables...')
-
   let previousVariable: undefined | string
 
   if (!environment.DB.MONGO_URL.startsWith('mongodb+srv://') && !environment.DB.MONGO_URL.startsWith('mongodb://')) {

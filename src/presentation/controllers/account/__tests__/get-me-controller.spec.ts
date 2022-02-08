@@ -47,4 +47,19 @@ describe('getMeController', () => {
       httpHelper.ok({ accessToken: 'any_token', refreshToken: 'any_token', user: filterUserDataStub.filter(fakeUser) })
     )
   })
+
+  it('should use cookies if headers do not have tokens', async () => {
+    const { httpHelper, request, sut, filterUserDataStub, fakeUser } = makeSut()
+    request.headers = undefined
+    request.cookies = {
+      accessToken: 'any_token',
+      refreshToken: 'any_token'
+    }
+
+    const result = await sut.handle(request)
+
+    expect(result).toStrictEqual(
+      httpHelper.ok({ accessToken: 'any_token', refreshToken: 'any_token', user: filterUserDataStub.filter(fakeUser) })
+    )
+  })
 })

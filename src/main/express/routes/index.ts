@@ -26,8 +26,10 @@ import {
   makeFindOneTaskController,
   makeUpdateTaskController
 } from '@/main/factories/controllers/task'
-import { makeVerifyResetPasswordTokenController } from '@/main/factories/controllers/token'
-import { makeGetAuthenticationController } from '@/main/factories/controllers/token/get-authentication-controller-factory'
+import {
+  makeVerifyResetPasswordTokenController,
+  makeGetAuthenticationController
+} from '@/main/factories/controllers/token'
 import {
   makePartialProtectedMiddleware,
   makeIsLoggedInMiddleware,

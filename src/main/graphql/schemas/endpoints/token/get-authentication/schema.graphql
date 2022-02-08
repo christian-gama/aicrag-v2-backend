@@ -3,5 +3,7 @@ type Query {
 }
 
 type GetAuthentication {
+  accessToken: JWT
   authentication: String!
+  refreshToken: JWT
 }

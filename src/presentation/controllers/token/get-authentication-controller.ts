@@ -1,10 +1,11 @@
-import { IVerifyToken } from '@/domain/providers'
+import { IGenerateToken, IVerifyToken } from '@/domain/providers'
 import { getToken } from '@/infra/token'
 import { IHttpHelper, HttpRequest, HttpResponse } from '@/presentation/http/protocols'
 import { IController } from '../protocols/controller.model'
 
 export class GetAuthenticationController implements IController {
   constructor (
+    private readonly generateAccessToken: IGenerateToken,
     private readonly httpHelper: IHttpHelper,
     private readonly verifyAccessToken: IVerifyToken,
     private readonly verifyRefreshToken: IVerifyToken
@@ -13,16 +14,34 @@ export class GetAuthenticationController implements IController {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     let authentication: 'partial' | 'protected' | 'none' = 'none'
 
-    const accessToken = getToken.accessToken(httpRequest)
-    const isValidAccessToken = !((await this.verifyAccessToken.verify(accessToken)) instanceof Error)
+    let accessToken = getToken.accessToken(httpRequest)
+    const decodedAccessToken = await this.verifyAccessToken.verify(accessToken)
+
+    let isValidAccessToken: boolean = !(decodedAccessToken instanceof Error)
 
     const refreshToken = getToken.refreshToken(httpRequest)
-    const isValidRefreshToken = !((await this.verifyRefreshToken.verify(refreshToken)) instanceof Error)
+    const decodedRefreshToken = await this.verifyRefreshToken.verify(refreshToken)
+    const isValidRefreshToken: boolean = !(decodedRefreshToken instanceof Error)
 
-    if (isValidAccessToken && isValidRefreshToken) authentication = 'protected'
-    else if (isValidAccessToken && !isValidRefreshToken) authentication = 'partial'
+    if (
+      decodedAccessToken instanceof Error &&
+      decodedAccessToken.name === 'ExpiredTokenError' &&
+      !(decodedRefreshToken instanceof Error)
+    ) {
+      accessToken = await this.generateAccessToken.generate(decodedRefreshToken)
+      isValidAccessToken = true
+    }
 
-    const result = this.httpHelper.ok({ authentication })
+    let result = this.httpHelper.ok({ authentication })
+    if (isValidAccessToken) {
+      if (isValidRefreshToken) {
+        authentication = 'protected'
+        result = this.httpHelper.ok({ accessToken, authentication, refreshToken })
+      } else if (!isValidRefreshToken) {
+        authentication = 'partial'
+        result = this.httpHelper.ok({ accessToken, authentication })
+      }
+    }
 
     return result
   }

@@ -1,17 +1,17 @@
 import { IUser } from '@/domain'
-import { IEncrypter } from '@/domain/cryptography'
-import { IRefreshToken, IVerifyToken } from '@/domain/providers'
+import { IGenerateToken, IRefreshToken, IVerifyToken } from '@/domain/providers'
 import { ExpiredTokenError, InvalidTokenError, TokenMissingError } from '@/application/errors'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
 import { ProtectedMiddleware } from '@/presentation/middlewares'
 import { makeHttpHelper } from '@/main/factories/helpers'
-import { makeEncrypterStub, makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
+import { makeGenerateAccessToken } from '@/main/factories/providers/token'
+import { makeFakeRefreshToken, makeFakeUser, makeVerifyTokenStub } from '@/tests/__mocks__'
 
 interface SutTypes {
   fakeRefreshToken: IRefreshToken
   fakeUser: IUser
+  generateAccessTokenStub: IGenerateToken
   httpHelper: IHttpHelper
-  refreshTokenEncrypter: IEncrypter
   request: HttpRequest
   sut: ProtectedMiddleware
   verifyAccessTokenStub: IVerifyToken
@@ -22,18 +22,23 @@ const makeSut = (): SutTypes => {
   const fakeRefreshToken = makeFakeRefreshToken()
   const fakeUser = makeFakeUser()
   const httpHelper = makeHttpHelper()
-  const refreshTokenEncrypter = makeEncrypterStub()
+  const generateAccessTokenStub = makeGenerateAccessToken()
   const request: HttpRequest = { cookies: { accessToken: 'any_token', refreshToken: 'any_token' } }
   const verifyAccessTokenStub = makeVerifyTokenStub(fakeUser)
   const verifyRefreshTokenStub = makeVerifyTokenStub(fakeUser)
 
-  const sut = new ProtectedMiddleware(httpHelper, refreshTokenEncrypter, verifyAccessTokenStub, verifyRefreshTokenStub)
+  const sut = new ProtectedMiddleware(
+    generateAccessTokenStub,
+    httpHelper,
+    verifyAccessTokenStub,
+    verifyRefreshTokenStub
+  )
 
   return {
     fakeRefreshToken,
     fakeUser,
+    generateAccessTokenStub,
     httpHelper,
-    refreshTokenEncrypter,
     request,
     sut,
     verifyAccessTokenStub,
@@ -88,14 +93,14 @@ describe('protectedMiddleware', () => {
     )
   })
 
-  it('should call encrypt if response is instance of ExpiredTokenError', async () => {
-    const { sut, fakeUser, refreshTokenEncrypter, request, verifyAccessTokenStub } = makeSut()
-    const encryptSpy = jest.spyOn(refreshTokenEncrypter, 'encrypt')
+  it('should call generate if response is instance of ExpiredTokenError', async () => {
+    const { sut, fakeUser, generateAccessTokenStub, request, verifyAccessTokenStub } = makeSut()
+    const encryptSpy = jest.spyOn(generateAccessTokenStub, 'generate')
     jest.spyOn(verifyAccessTokenStub, 'verify').mockReturnValueOnce(Promise.resolve(new ExpiredTokenError()))
 
     await sut.handle(request)
 
-    expect(encryptSpy).toHaveBeenCalledWith({ userId: fakeUser.personal.id })
+    expect(encryptSpy).toHaveBeenCalledWith(fakeUser)
   })
 
   it('should call access token verify with correct token', async () => {

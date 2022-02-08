@@ -11,8 +11,8 @@ export class GetMeController implements IController {
     if (!user) return this.httpHelper.forbidden(new MustLoginError())
 
     const filteredUser = this.filterUserData.filter(user)
-    const accessToken = headers?.['x-access-token'] ?? cookies?.accessToken ?? undefined
-    const refreshToken = headers?.['x-refresh-token'] ?? cookies?.refreshToken ?? undefined
+    const accessToken = headers?.['x-access-token'] ?? cookies?.accessToken
+    const refreshToken = headers?.['x-refresh-token'] ?? cookies?.refreshToken
 
     const result = this.httpHelper.ok({ accessToken, refreshToken, user: filteredUser })
 

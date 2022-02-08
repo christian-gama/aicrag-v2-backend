@@ -86,7 +86,7 @@ export class MongoAdapter extends ICollection implements IDatabase {
     const cursor = this._collection.find(filter, { projection: fields })
 
     const count = await cursor.count()
-    const documents = await cursor.skip(skip).limit(limit).sort(sort).toArray()
+    const documents = await cursor.sort(sort).skip(skip).limit(limit).toArray()
 
     const currentPage = skip / limit + 1
     const displaying = documents.length
