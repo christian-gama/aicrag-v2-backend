@@ -18,13 +18,13 @@
     "lint": "eslint . --fix",
     "prepare": "husky install",
     "start": "cross-env NODE_ENV=production node dist/main/express/server.js",
-    "test:ci": "jest --clearCache && pnpm run test:silent -- -c jest-ci-config.js --coverage",
+    "test:ci": "pnpm run test -- --coverage",
     "test:commit": "pnpm run test:silent -- --bail --findRelatedTests",
     "test:integration": "pnpm run test:verbose -- -c jest-integration-config.js",
     "test:silent": "jest --passWithNoTests --silent --noStackTrace",
     "test:unit": "pnpm run test:silent -- -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests --detectOpenHandles --verbose",
-    "test": "pnpm run test:unit && pnpm run test:integration"
+    "test": "jest --clearCache && pnpm run test:silent -- -c jest-ci-config.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
