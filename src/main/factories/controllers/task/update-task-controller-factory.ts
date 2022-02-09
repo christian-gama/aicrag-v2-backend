@@ -1,7 +1,7 @@
 import { IController } from '@/presentation/controllers/protocols/controller.model'
 import { UpdateTaskController } from '@/presentation/controllers/task'
 import { makeTryCatchDecorator } from '@/main/factories/decorators'
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { makeDateUtils, makeHttpHelper } from '@/main/factories/helpers'
 import { makeTaskRepository } from '@/main/factories/repositories'
 import {
   makeValidateCommentary,
@@ -15,6 +15,7 @@ import {
 import { makeValidateUUID } from '../../validators/common'
 
 export const makeUpdateTaskController = (): IController => {
+  const dateUtils = makeDateUtils()
   const httpHelper = makeHttpHelper()
   const taskRepository = makeTaskRepository()
   const validateCommentary = makeValidateCommentary()
@@ -27,6 +28,7 @@ export const makeUpdateTaskController = (): IController => {
   const validateUniqueTaskId = makeValidateUniqueTaskId()
 
   const updateTaskController = new UpdateTaskController(
+    dateUtils,
     httpHelper,
     taskRepository,
     validateCommentary,

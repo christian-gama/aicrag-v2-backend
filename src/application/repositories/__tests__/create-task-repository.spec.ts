@@ -1,6 +1,8 @@
 import { ITaskData, IUser } from '@/domain'
 import { IUuid } from '@/domain/helpers'
+import { DateUtils } from '@/application/helpers/date-utils'
 import { CreateTaskRepository } from '@/application/repositories'
+import { makeDateUtils } from '@/main/factories/helpers'
 import { makeFakeUser, makeUuidStub } from '@/tests/__mocks__'
 import { makeFakeTaskData } from '@/tests/__mocks__/mock-task'
 import MockDate from 'mockdate'
@@ -13,11 +15,12 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
+  const dateUtils = makeDateUtils()
   const fakeUser = makeFakeUser()
   const fakeTaskData = makeFakeTaskData(fakeUser)
   const uuidStub = makeUuidStub()
 
-  const sut = new CreateTaskRepository(uuidStub)
+  const sut = new CreateTaskRepository(dateUtils, uuidStub)
 
   return { fakeTaskData, fakeUser, sut, uuidStub }
 }
@@ -33,8 +36,8 @@ describe('createTaskRepository', () => {
 
   it('should return a task with correct values', async () => {
     const { fakeTaskData, sut, uuidStub } = makeSut()
-    const { commentary, date, duration, taskId, status, type, user } = fakeTaskData
-    const d = new Date(Date.parse(date))
+    const { commentary, duration, taskId, status, type, user } = fakeTaskData
+    const d = new DateUtils().getUTCDate(new Date().toISOString())
     const fakeId = uuidStub.generate()
     const usd =
       type === 'TX' ? (duration / 60) * 65 * user.settings.handicap : (duration / 60) * 112.5 * user.settings.handicap
@@ -67,7 +70,7 @@ describe('createTaskRepository', () => {
   it('should return a task with correct values if commentary and taskId are falsy', async () => {
     const { fakeTaskData, sut, uuidStub } = makeSut()
     const { date, duration, status, type, user } = fakeTaskData
-    const d = new Date(Date.parse(date))
+    const d = new Date(date)
     const fakeId = uuidStub.generate()
     const usd =
       type === 'TX' ? (duration / 60) * 65 * user.settings.handicap : (duration / 60) * 112.5 * user.settings.handicap

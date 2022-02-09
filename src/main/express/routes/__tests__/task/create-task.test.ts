@@ -44,7 +44,7 @@ describe('post /task', () => {
     fakeTask = makeFakeTask(fakeUser)
     fakeTaskData = {
       commentary: fakeTask.commentary,
-      date: fakeTask.date.full.toString(),
+      date: fakeTask.date.full.toISOString(),
       duration: fakeTask.duration,
       status: fakeTask.status,
       taskId: fakeTask.taskId,

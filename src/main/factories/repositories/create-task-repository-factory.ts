@@ -1,8 +1,9 @@
 import { CreateTaskRepository } from '@/application/repositories'
-import { makeUuid } from '../helpers'
+import { makeDateUtils, makeUuid } from '../helpers'
 
 export const makeCreateTaskRepository = (): CreateTaskRepository => {
+  const dateUtils = makeDateUtils()
   const uuid = makeUuid()
 
-  return new CreateTaskRepository(uuid)
+  return new CreateTaskRepository(dateUtils, uuid)
 }

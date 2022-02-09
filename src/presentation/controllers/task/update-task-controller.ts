@@ -1,3 +1,4 @@
+import { IDateUtils } from '@/domain/helpers'
 import { ITaskRepository } from '@/domain/repositories/task'
 import { IValidator } from '@/domain/validators'
 import { MustLoginError, TaskNotFoundError } from '@/application/errors'
@@ -6,6 +7,7 @@ import { IController } from '../protocols/controller.model'
 
 export class UpdateTaskController implements IController {
   constructor (
+    private readonly dateUtils: IDateUtils,
     private readonly httpHelper: IHttpHelper,
     private readonly taskRepository: ITaskRepository,
     private readonly validateCommentary: IValidator,
@@ -41,17 +43,19 @@ export class UpdateTaskController implements IController {
       update.commentary = data.commentary
     }
 
-    if (data.date && data.date !== task.date.full.toISOString()) {
+    if (data.date) {
       const error = await this.validateDate.validate(data)
       if (error) return this.httpHelper.badRequest(error)
 
-      const date = new Date(Date.parse(data.date))
+      if (new Date(data.date).toISOString() !== task.date.full.toISOString()) {
+        const date = this.dateUtils.getUTCDate(data.date)
 
-      update['date.day'] = date.getUTCDate()
-      update['date.full'] = date
-      update['date.hours'] = date.toLocaleTimeString('pt-br', { timeZone: 'UTC' })
-      update['date.month'] = date.getUTCMonth()
-      update['date.year'] = date.getUTCFullYear()
+        update['date.day'] = date.getUTCDate()
+        update['date.full'] = date
+        update['date.hours'] = date.toLocaleTimeString('pt-br', { timeZone: 'UTC' })
+        update['date.month'] = date.getUTCMonth()
+        update['date.year'] = date.getUTCFullYear()
+      }
     }
 
     if ((data.duration && data.duration !== task.duration) || (data.type && data.type !== task.type)) {

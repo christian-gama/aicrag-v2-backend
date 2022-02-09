@@ -7,10 +7,25 @@ export class ValidateDate implements IValidator {
 
     if (!date) return
 
-    if (typeof date !== 'string' && typeof date !== 'object') {
+    console.log(date)
+
+    if (typeof date !== 'string') {
       return new InvalidTypeError('date', 'string', typeof date)
     }
 
     if (isNaN(Date.parse(date))) return new InvalidParamError('date')
+
+    const dateArray = date
+      .split('-')
+      .join(' ')
+      .split('T')
+      .join(' ')
+      .split(':')
+      .join(' ')
+      .split('.')
+      .join(' ')
+      .split(' ')
+
+    if (dateArray.length < 7 || dateArray.length > 9) return new InvalidParamError('date')
   }
 }

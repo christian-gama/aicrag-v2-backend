@@ -7,7 +7,7 @@ interface SutTypes {
   sut: ValidateDate
 }
 const makeSut = (): SutTypes => {
-  const request: HttpRequest = { body: { date: new Date(Date.now()) } }
+  const request: HttpRequest = { body: { date: new Date().toISOString() } }
 
   const sut = new ValidateDate()
 
@@ -41,15 +41,6 @@ describe('validateDate', () => {
     expect(result).toBeUndefined()
   })
 
-  it('should return undefined if is a valid date as string', () => {
-    const { request, sut } = makeSut()
-    request.body.date = request.body.date.toString()
-
-    const result = sut.validate(request.body)
-
-    expect(result).toBeUndefined()
-  })
-
   it('should return undefined if param is undefined', () => {
     const { sut } = makeSut()
     const data = {}
@@ -57,5 +48,14 @@ describe('validateDate', () => {
     const result = sut.validate(data)
 
     expect(result).toBeUndefined()
+  })
+
+  it('should return InvalidParamError if its not in the correct format', () => {
+    const { sut } = makeSut()
+    const data = { date: new Date().toString() }
+
+    const result = sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidParamError('date'))
   })
 })

@@ -1,3 +1,3 @@
 {
-  "*.ts": ["prettier --write", "eslint --fix", "pnpm test:commit"]
+  "*.ts": ["prettier --write", "eslint --fix"]
 }

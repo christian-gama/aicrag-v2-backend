@@ -4,7 +4,7 @@ import faker from 'faker'
 export const makeFakeTaskData = (fakeUser: IUser): ITaskData => {
   return {
     commentary: faker.lorem.words(10),
-    date: new Date(Date.now()).toString(),
+    date: new Date().toISOString(),
     duration: 30,
     status: 'completed',
     taskId: faker.datatype.uuid(),
