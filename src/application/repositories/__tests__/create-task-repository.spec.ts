@@ -33,8 +33,8 @@ describe('createTaskRepository', () => {
 
   it('should return a task with correct values', async () => {
     const { fakeTaskData, sut, uuidStub } = makeSut()
-    const { commentary, date, duration, taskId, status, type, user } = fakeTaskData
-    const d = new Date(Date.parse(date))
+    const { commentary, duration, taskId, status, type, user } = fakeTaskData
+    const d = new Date(2022, 0, 1, 0, 0, 0, 0)
     const fakeId = uuidStub.generate()
     const usd =
       type === 'TX' ? (duration / 60) * 65 * user.settings.handicap : (duration / 60) * 112.5 * user.settings.handicap
@@ -45,7 +45,7 @@ describe('createTaskRepository', () => {
       commentary,
       date: {
         day: d.getUTCDate(),
-        full: d,
+        full: new Date(d.setHours(d.getTimezoneOffset() / 60)),
         hours: d.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
         month: d.getUTCMonth(),
         year: d.getUTCFullYear()
@@ -80,7 +80,7 @@ describe('createTaskRepository', () => {
       commentary: '',
       date: {
         day: d.getUTCDate(),
-        full: d,
+        full: new Date(d.setHours(d.getTimezoneOffset() / 60)),
         hours: d.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
         month: d.getUTCMonth(),
         year: d.getUTCFullYear()

@@ -7,7 +7,7 @@ interface SutTypes {
   sut: ValidateDate
 }
 const makeSut = (): SutTypes => {
-  const request: HttpRequest = { body: { date: new Date(Date.now()) } }
+  const request: HttpRequest = { body: { date: new Date().toISOString() } }
 
   const sut = new ValidateDate()
 
@@ -35,15 +35,6 @@ describe('validateDate', () => {
 
   it('should return undefined if is a valid date', () => {
     const { request, sut } = makeSut()
-
-    const result = sut.validate(request.body)
-
-    expect(result).toBeUndefined()
-  })
-
-  it('should return undefined if is a valid date as string', () => {
-    const { request, sut } = makeSut()
-    request.body.date = request.body.date.toString()
 
     const result = sut.validate(request.body)
 
