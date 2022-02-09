@@ -4,7 +4,7 @@ import { IValidator } from '@/domain/validators'
 import { InvalidParamError, MustLoginError, TaskNotFoundError } from '@/application/errors'
 import { UpdateTaskController } from '@/presentation/controllers/task'
 import { IHttpHelper, HttpRequest } from '@/presentation/http/protocols'
-import { makeHttpHelper } from '@/main/factories/helpers'
+import { makeDateUtils, makeHttpHelper } from '@/main/factories/helpers'
 import { makeFakeTask, makeFakeUser, makeTaskRepositoryStub, makeValidatorStub } from '@/tests/__mocks__'
 import MockDate from 'mockdate'
 
@@ -26,6 +26,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
+  const dateUtils = makeDateUtils()
   const fakeUser = makeFakeUser()
   const fakeTask = makeFakeTask(fakeUser)
   const httpHelper = makeHttpHelper()
@@ -41,6 +42,7 @@ const makeSut = (): SutTypes => {
   const validateUniqueTaskIdStub = makeValidatorStub()
 
   const sut = new UpdateTaskController(
+    dateUtils,
     httpHelper,
     taskRepositoryStub,
     validateCommentaryStub,
@@ -162,9 +164,11 @@ describe('updateTaskController', () => {
     fakeTask.date.hours = date.toLocaleTimeString('pt-br', { timeZone: 'UTC' })
     fakeTask.date.month = date.getUTCMonth()
     fakeTask.date.year = date.getUTCFullYear()
-    request.body.date = fakeTask.date.full
+    request.body.date = new Date(2022, 0, 1).toISOString()
 
-    const result = (await sut.handle(request)).data.task.date
+    const { data } = await sut.handle(request)
+
+    const result = data.task.date
 
     expect(result.day).toBe(date.getUTCDate())
     expect(result.full).toBe(date)
@@ -176,14 +180,14 @@ describe('updateTaskController', () => {
   it('should call updateById with correct values if changes date', async () => {
     const { fakeTask, fakeUser, request, sut, taskRepositoryStub } = makeSut()
     const updateTaskSpy = jest.spyOn(taskRepositoryStub, 'updateById')
-    const date = new Date()
+    const date = new Date(2022, 0, 1).toISOString()
 
     request.body.date = date
 
     await sut.handle(request)
 
     // Must parse date because of innacuracy, which makes the test fail
-    const parsedDate = new Date(Date.parse(date.toString()))
+    const parsedDate = new Date(date)
 
     expect(updateTaskSpy).toHaveBeenCalledWith(fakeTask.id, fakeUser.personal.id, {
       'date.day': parsedDate.getUTCDate(),
@@ -191,7 +195,7 @@ describe('updateTaskController', () => {
       'date.hours': parsedDate.toLocaleTimeString('pt-br', { timeZone: 'UTC' }),
       'date.month': parsedDate.getUTCMonth(),
       'date.year': parsedDate.getUTCFullYear(),
-      'logs.updatedAt': date
+      'logs.updatedAt': new Date()
     })
   })
 

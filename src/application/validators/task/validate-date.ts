@@ -7,6 +7,8 @@ export class ValidateDate implements IValidator {
 
     if (!date) return
 
+    console.log(date)
+
     if (typeof date !== 'string') {
       return new InvalidTypeError('date', 'string', typeof date)
     }

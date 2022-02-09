@@ -49,4 +49,13 @@ describe('validateDate', () => {
 
     expect(result).toBeUndefined()
   })
+
+  it('should return InvalidParamError if its not in the correct format', () => {
+    const { sut } = makeSut()
+    const data = { date: new Date().toString() }
+
+    const result = sut.validate(data)
+
+    expect(result).toStrictEqual(new InvalidParamError('date'))
+  })
 })

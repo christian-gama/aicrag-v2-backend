@@ -1,14 +1,14 @@
-import { IUuid } from '@/domain/helpers'
+import { IDateUtils, IUuid } from '@/domain/helpers'
 import { ICreateTaskRepository } from '@/domain/repositories/task'
 import { ITask, ITaskData } from '@/domain/task'
 
 export class CreateTaskRepository implements ICreateTaskRepository {
-  constructor (private readonly uuid: IUuid) {}
+  constructor (private readonly dateUtils: IDateUtils, private readonly uuid: IUuid) {}
 
   create (taskData: ITaskData): ITask {
     const { commentary, date, duration, status, taskId, type, user } = taskData
 
-    const d = this.getDate(date)
+    const d = this.dateUtils.getUTCDate(date)
     const handicap = user.settings.handicap
     const id = this.uuid.generate()
     const _duration = Math.round(duration * 100) / 100
@@ -37,23 +37,5 @@ export class CreateTaskRepository implements ICreateTaskRepository {
     }
 
     return result
-  }
-
-  /**
-   * @param date '1970-01-01T00:00:00.000-00:00 / yyyy-MM-ddTHH:mm:ss.SSSZ-HH:mm'
-   */
-  private getDate (date: string): Date {
-    const [year, month, day, hour, minute, seconds, milliseconds] = date
-      .split('-')
-      .join(' ')
-      .split('T')
-      .join(' ')
-      .split(':')
-      .join(' ')
-      .split('.')
-      .join(' ')
-      .split(' ')
-
-    return new Date(+year, +month - 1, +day, +hour, +minute, +seconds, +milliseconds)
   }
 }
