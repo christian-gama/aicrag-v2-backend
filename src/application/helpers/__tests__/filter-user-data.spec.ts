@@ -28,7 +28,8 @@ describe('filterUserData', () => {
         name: fakeUser.personal.name
       },
       settings: {
-        currency: fakeUser.settings.currency
+        currency: fakeUser.settings.currency,
+        role: fakeUser.settings.role
       }
     })
   })

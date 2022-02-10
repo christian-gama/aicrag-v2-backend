@@ -379,6 +379,7 @@ export type PublicUserPersonal = {
 export type PublicUserSettings = {
   __typename?: 'PublicUserSettings';
   currency: UserCurrency;
+  role: Scalars['Int'];
 };
 
 export type Query = {
@@ -1107,6 +1108,7 @@ export type PublicUserPersonalResolvers<ContextType = any, ParentType extends Re
 
 export type PublicUserSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUserSettings'] = ResolversParentTypes['PublicUserSettings']> = {
   currency?: Resolver<ResolversTypes['UserCurrency'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
