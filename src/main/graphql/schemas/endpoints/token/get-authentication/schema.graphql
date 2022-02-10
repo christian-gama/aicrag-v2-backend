@@ -2,9 +2,20 @@ type Query {
   getAuthentication: GetAuthentication!
 }
 
-type GetAuthentication {
-  accessToken: JWT
+type GetAuthenticationProtected {
   authentication: String!
-  refreshToken: JWT
-  user: PublicUser
+  accessToken: JWT!
+  refreshToken: JWT!
+  user: PublicUser!
 }
+
+type GetAuthenticationPartial {
+  authentication: String!
+  accessToken: JWT!
+}
+
+type GetAuthenticationNone {
+  authentication: String!
+}
+
+union GetAuthentication = GetAuthenticationProtected | GetAuthenticationPartial | GetAuthenticationNone
