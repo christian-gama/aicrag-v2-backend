@@ -6,4 +6,5 @@ type GetAuthentication {
   accessToken: JWT
   authentication: String!
   refreshToken: JWT
+  user: PublicUser
 }

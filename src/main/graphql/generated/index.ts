@@ -185,6 +185,7 @@ export type GetAuthentication = {
   accessToken?: Maybe<Scalars['JWT']>;
   authentication: Scalars['String'];
   refreshToken?: Maybe<Scalars['JWT']>;
+  user?: Maybe<PublicUser>;
 };
 
 export type GetInvoiceByMonth = {
@@ -1034,6 +1035,7 @@ export type GetAuthenticationResolvers<ContextType = any, ParentType extends Res
   accessToken?: Resolver<Maybe<ResolversTypes['JWT']>, ParentType, ContextType>;
   authentication?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   refreshToken?: Resolver<Maybe<ResolversTypes['JWT']>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['PublicUser']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
