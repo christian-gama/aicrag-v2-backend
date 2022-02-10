@@ -3,7 +3,7 @@ import rateLimit from 'express-rate-limit'
 
 const message = 'Too many requests from this IP, please try again in an hour'
 export const limiter = rateLimit({
-  max: environment.SERVER.NODE_ENV === 'test' ? 0 : 120,
+  max: environment.SERVER.NODE_ENV === 'test' ? 0 : 90,
   message,
   windowMs: 60 * 1000
 })
