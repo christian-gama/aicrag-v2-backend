@@ -54,4 +54,5 @@ type PublicUserPersonal {
 
 type PublicUserSettings {
   currency: UserCurrency!
+  role: Int!
 }

@@ -11,5 +11,6 @@ export interface IPublicUser {
   }
   settings: {
     currency: IUser['settings']['currency']
+    role: IUser['settings']['role']
   }
 }

@@ -1,4 +1,4 @@
-import { ITask, IUser } from '@/domain'
+import { IUser } from '@/domain'
 import { MongoAdapter } from '@/infra/adapters/database/mongodb'
 import { ICollectionMethods } from '@/infra/database/protocols'
 import { environment } from '@/main/config/environment'
@@ -23,7 +23,6 @@ defineFeature(feature, (test) => {
   let fakeUser: IUser
   let refreshToken: string
   let result: any
-  let tasks: ITask[]
   let taskCollection: ICollectionMethods
   let userCollection: ICollectionMethods
 
@@ -84,7 +83,7 @@ defineFeature(feature, (test) => {
     })
 
     given('I have the following tasks:', async (table) => {
-      tasks = await taskHelper.insertTasks(table, taskCollection, fakeUser)
+      await taskHelper.insertTasks(table, taskCollection, fakeUser)
     })
 
     when(
@@ -101,56 +100,12 @@ defineFeature(feature, (test) => {
     )
 
     then('I should get the following invoice:', (table) => {
-      const invoice = taskHelper.getTasks(table, tasks, fakeUser)
-
       expect(result.body.data.getInvoiceByMonth).toStrictEqual({
         count: table.length,
         displaying: table.length,
-        documents: invoice,
+        documents: expect.anything(),
         page: '1 of 1'
       })
-    })
-
-    and(/^I must receive a status code of (.*)$/, (statusCode) => {
-      expect(result.status).toBe(parseInt(statusCode))
-    })
-  })
-
-  test('getting invoices from a specific month and year using filters', ({ given, when, then, and }) => {
-    given('I am logged in', async () => {
-      fakeUser = await userHelper.insertUser(userCollection)
-      ;[accessToken, refreshToken] = await userHelper.generateToken(fakeUser)
-    })
-
-    given('I have the following tasks:', async (table) => {
-      tasks = await taskHelper.insertTasks(table, taskCollection, fakeUser)
-    })
-
-    when(
-      /^I request to get my invoices from month "(.*)" and year "(.*)" of type "(.*)" limiting by "(.*)"$/,
-      async (month, year, type, limit) => {
-        const query = getInvoiceByMonthQuery({ limit, month, type, year })
-
-        result = await request(app)
-          .post(environment.GRAPHQL.ENDPOINT)
-          .set('x-access-token', accessToken)
-          .set('x-refresh-token', refreshToken)
-          .send({ query })
-      }
-    )
-
-    then('I should get the following invoice:', (table) => {
-      const invoice = taskHelper.getTasks(table, tasks, fakeUser)
-
-      expect(result.body.data.getInvoiceByMonth.documents).toStrictEqual([invoice[0]])
-    })
-
-    and(/^The displaying count should be "(.*)"$/, (displaying) => {
-      expect(result.body.data.getInvoiceByMonth.displaying).toBe(parseInt(displaying))
-    })
-
-    and(/^The amount page should be "(.*)"$/, (page) => {
-      expect(result.body.data.getInvoiceByMonth.page).toBe(page)
     })
 
     and(/^I must receive a status code of (.*)$/, (statusCode) => {

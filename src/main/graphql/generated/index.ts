@@ -180,11 +180,25 @@ export enum GetAllInvoicesType {
   Both = 'both'
 }
 
-export type GetAuthentication = {
-  __typename?: 'GetAuthentication';
-  accessToken?: Maybe<Scalars['JWT']>;
+export type GetAuthentication = GetAuthenticationNone | GetAuthenticationPartial | GetAuthenticationProtected;
+
+export type GetAuthenticationNone = {
+  __typename?: 'GetAuthenticationNone';
   authentication: Scalars['String'];
-  refreshToken?: Maybe<Scalars['JWT']>;
+};
+
+export type GetAuthenticationPartial = {
+  __typename?: 'GetAuthenticationPartial';
+  accessToken: Scalars['JWT'];
+  authentication: Scalars['String'];
+};
+
+export type GetAuthenticationProtected = {
+  __typename?: 'GetAuthenticationProtected';
+  accessToken: Scalars['JWT'];
+  authentication: Scalars['String'];
+  refreshToken: Scalars['JWT'];
+  user: PublicUser;
 };
 
 export type GetInvoiceByMonth = {
@@ -379,6 +393,7 @@ export type PublicUserPersonal = {
 export type PublicUserSettings = {
   __typename?: 'PublicUserSettings';
   currency: UserCurrency;
+  role: Scalars['Int'];
 };
 
 export type Query = {
@@ -755,7 +770,10 @@ export type ResolversTypes = {
   GetAllInvoicesDate: ResolverTypeWrapper<GetAllInvoicesDate>;
   GetAllInvoicesQueries: GetAllInvoicesQueries;
   GetAllInvoicesType: GetAllInvoicesType;
-  GetAuthentication: ResolverTypeWrapper<GetAuthentication>;
+  GetAuthentication: ResolversTypes['GetAuthenticationNone'] | ResolversTypes['GetAuthenticationPartial'] | ResolversTypes['GetAuthenticationProtected'];
+  GetAuthenticationNone: ResolverTypeWrapper<GetAuthenticationNone>;
+  GetAuthenticationPartial: ResolverTypeWrapper<GetAuthenticationPartial>;
+  GetAuthenticationProtected: ResolverTypeWrapper<GetAuthenticationProtected>;
   GetInvoiceByMonth: ResolverTypeWrapper<GetInvoiceByMonth>;
   GetInvoiceByMonthOperator: GetInvoiceByMonthOperator;
   GetInvoiceByMonthPeriod: GetInvoiceByMonthPeriod;
@@ -848,7 +866,10 @@ export type ResolversParentTypes = {
   GetAllInvoices: GetAllInvoices;
   GetAllInvoicesDate: GetAllInvoicesDate;
   GetAllInvoicesQueries: GetAllInvoicesQueries;
-  GetAuthentication: GetAuthentication;
+  GetAuthentication: ResolversParentTypes['GetAuthenticationNone'] | ResolversParentTypes['GetAuthenticationPartial'] | ResolversParentTypes['GetAuthenticationProtected'];
+  GetAuthenticationNone: GetAuthenticationNone;
+  GetAuthenticationPartial: GetAuthenticationPartial;
+  GetAuthenticationProtected: GetAuthenticationProtected;
   GetInvoiceByMonth: GetInvoiceByMonth;
   GetInvoiceByMonthQueries: GetInvoiceByMonthQueries;
   GetMe: GetMe;
@@ -1030,9 +1051,25 @@ export type GetAllInvoicesDateResolvers<ContextType = any, ParentType extends Re
 };
 
 export type GetAuthenticationResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAuthentication'] = ResolversParentTypes['GetAuthentication']> = {
-  accessToken?: Resolver<Maybe<ResolversTypes['JWT']>, ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'GetAuthenticationNone' | 'GetAuthenticationPartial' | 'GetAuthenticationProtected', ParentType, ContextType>;
+};
+
+export type GetAuthenticationNoneResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAuthenticationNone'] = ResolversParentTypes['GetAuthenticationNone']> = {
   authentication?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  refreshToken?: Resolver<Maybe<ResolversTypes['JWT']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GetAuthenticationPartialResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAuthenticationPartial'] = ResolversParentTypes['GetAuthenticationPartial']> = {
+  accessToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
+  authentication?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GetAuthenticationProtectedResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetAuthenticationProtected'] = ResolversParentTypes['GetAuthenticationProtected']> = {
+  accessToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
+  authentication?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  refreshToken?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['PublicUser'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1107,6 +1144,7 @@ export type PublicUserPersonalResolvers<ContextType = any, ParentType extends Re
 
 export type PublicUserSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublicUserSettings'] = ResolversParentTypes['PublicUserSettings']> = {
   currency?: Resolver<ResolversTypes['UserCurrency'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1291,6 +1329,9 @@ export type Resolvers<ContextType = any> = {
   GetAllInvoices?: GetAllInvoicesResolvers<ContextType>;
   GetAllInvoicesDate?: GetAllInvoicesDateResolvers<ContextType>;
   GetAuthentication?: GetAuthenticationResolvers<ContextType>;
+  GetAuthenticationNone?: GetAuthenticationNoneResolvers<ContextType>;
+  GetAuthenticationPartial?: GetAuthenticationPartialResolvers<ContextType>;
+  GetAuthenticationProtected?: GetAuthenticationProtectedResolvers<ContextType>;
   GetInvoiceByMonth?: GetInvoiceByMonthResolvers<ContextType>;
   GetMe?: GetMeResolvers<ContextType>;
   InactiveAccount?: InactiveAccountResolvers<ContextType>;

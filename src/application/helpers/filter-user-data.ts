@@ -10,7 +10,8 @@ export class FilterUserData implements IFilterUserData {
         name: user.personal.name
       },
       settings: {
-        currency: user.settings.currency
+        currency: user.settings.currency,
+        role: user.settings.role
       }
     }
 

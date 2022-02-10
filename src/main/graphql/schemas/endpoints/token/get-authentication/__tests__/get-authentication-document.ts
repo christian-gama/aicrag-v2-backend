@@ -1,7 +1,25 @@
 export const getAuthentication = (): string => `
   query {
     getAuthentication {
-        authentication
+        ...on GetAuthenticationProtected {
+          authentication
+          accessToken
+          refreshToken
+          user {
+            personal {
+              name
+            }
+          }
+        }
+
+        ...on GetAuthenticationPartial {
+          authentication
+          accessToken
+        }
+
+        ...on GetAuthenticationNone {
+          authentication
+        }
     }
   }
 `
