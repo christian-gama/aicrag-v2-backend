@@ -223,7 +223,7 @@ export enum GetInvoiceByMonthPeriod {
 }
 
 export type GetInvoiceByMonthQueries = {
-  duration?: InputMaybe<Scalars['Int']>;
+  duration?: InputMaybe<Scalars['Float']>;
   limit?: InputMaybe<Scalars['String']>;
   month: Scalars['String'];
   operator?: InputMaybe<GetInvoiceByMonthOperator>;
