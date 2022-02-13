@@ -13,7 +13,7 @@ describe('getPeriod', () => {
   })
 
   it('should a filter with the day if period is today', () => {
-    MockDate.set(new Date('2021-01-01T00:00:00.000Z'))
+    MockDate.set(new Date('2021-01-01T03:00:00.000Z'))
 
     const result = getPeriod('1', '2020', 'today')
 
@@ -25,7 +25,7 @@ describe('getPeriod', () => {
   })
 
   it('should a filter with the day if period is past_3_days', () => {
-    MockDate.set(new Date('2021-01-04T00:00:00.000Z'))
+    MockDate.set(new Date('2021-01-04T03:00:00.000Z'))
 
     const result = getPeriod('1', '2020', 'past_3_days')
     const today = new Date().getUTCDate()
@@ -39,7 +39,7 @@ describe('getPeriod', () => {
   })
 
   it('should a filter with the day if period is past_7_days', () => {
-    MockDate.set(new Date('2021-01-08T00:00:00.000Z'))
+    MockDate.set(new Date('2021-01-08T03:00:00.000Z'))
 
     const result = getPeriod('1', '2020', 'past_7_days')
     const today = new Date().getUTCDate()
@@ -53,7 +53,7 @@ describe('getPeriod', () => {
   })
 
   it('should a filter with the day if period is past_15_days', () => {
-    MockDate.set(new Date('2021-01-16T00:00:00.000Z'))
+    MockDate.set(new Date('2021-01-16T03:00:00.000Z'))
 
     const result = getPeriod('1', '2020', 'past_15_days')
     const today = new Date().getUTCDate()
@@ -67,7 +67,7 @@ describe('getPeriod', () => {
   })
 
   it('should return day 1 if the difference of days is lesser than 1 when period is past_3_days', () => {
-    MockDate.set(new Date('2021-01-01T00:00:00.000Z'))
+    MockDate.set(new Date('2021-01-01T03:00:00.000Z'))
 
     const result = getPeriod('1', '2020', 'past_7_days')
 
@@ -79,7 +79,7 @@ describe('getPeriod', () => {
   })
 
   it('should return day 1 if the difference of days is lesser than 1 when period is past_7_days', () => {
-    MockDate.set(new Date('2021-01-01T00:00:00.000Z'))
+    MockDate.set(new Date('2021-01-01T03:00:00.000Z'))
 
     const result = getPeriod('1', '2020', 'past_7_days')
 
@@ -91,7 +91,7 @@ describe('getPeriod', () => {
   })
 
   it('should return day 1 if the difference of days is lesser than 1', () => {
-    MockDate.set(new Date('2021-01-01T00:00:00.000Z'))
+    MockDate.set(new Date('2021-01-01T03:00:00.000Z'))
 
     const result = getPeriod('1', '2020', 'past_15_days')
 
