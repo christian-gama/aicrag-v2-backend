@@ -108,7 +108,7 @@
     "graphql-request": "^3.7.0",
     "graphql-scalars": "^1.14.1",
     "helmet": "^4.6.0",
-    "html-to-text": "^8.1.0",
+    "html-to-text": "^9.0.0",
     "husky": "^7.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.3.1",
